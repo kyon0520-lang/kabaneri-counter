@@ -1,49 +1,63 @@
-# カバネリ CZ発光カウンター
+# みんなのスロット
 
-スマスロ 甲鉄城のカバネリのCZ抽選を、その場で押して数えるためのカウンターです。
-無名・生駒・銅藍の非発光／発光／高確発光を数えると、発光率とCZ 1回あたりの平均ポイントが自動で出ます。
+パチスロを打ちながら数えるためのカウンター置き場です。
+1機種目として、スマスロ 甲鉄城のカバネリ 海門決戦のCZ発光カウンターを公開しています。
 
-- 公開URL: https://kabaneri-counter.pages.dev/
-- 取扱説明書: https://kabaneri-counter.pages.dev/manual.html
+- サイト: https://minnanoslot.com/
+- カバネリカウンター: https://minnanoslot.com/kabaneri/
+- 取扱説明書: https://minnanoslot.com/kabaneri/manual.html
 
-## ファイル
+## ファイル構成
 
 | ファイル | 役割 |
 |---|---|
-| `index.html` | アプリ本体（これ1つで動きます） |
-| `manual.html` | 取扱説明書 |
-| `manifest.webmanifest` | アプリ名「カバネリカウンター」・全画面表示・アイコンの設定 |
-| `sw.js` | オフラインで動かす仕組み（圏外のホールでも起動できます） |
-| `apple-touch-icon.png` | iPhoneのホーム画面アイコン（180px） |
-| `icon-192.png` / `icon-512.png` | Android・PWA用アイコン |
-| `ogp.png` | Xでシェアしたときに出る画像（1200×630） |
+| `index.html` | サイトのトップページ（機種の一覧） |
+| `kabaneri/index.html` | カバネリカウンター本体（これ1つで動きます） |
+| `kabaneri/manual.html` | 取扱説明書 |
+| `kabaneri/manifest.webmanifest` | アプリ名「カバネリカウンター」・全画面表示・アイコンの設定 |
+| `kabaneri/sw.js` | オフラインで動かす仕組み（圏外のホールでも起動できます） |
+| `kabaneri/apple-touch-icon.png` | iPhoneのホーム画面アイコン（180px） |
+| `kabaneri/icon-192.png` / `icon-512.png` | Android・PWA用アイコン |
+| `kabaneri/ogp.png` | Xでシェアしたときに出る画像（1200×630） |
+
+機種を増やすときは `機種名/` のフォルダを作り、トップページの一覧にリンクを足します。
+
+## 編集のしかた
+
+**このフォルダのファイルを直接編集しないこと。** カウンター本体と取扱説明書は
+`/Users/Shared/kabaneri-counter/` の `index.html` / `manual.html` が原本で、
+ここのファイルはそこから自動生成されます（PWA・OGP・アクセス解析のタグが足されます）。
+
+1. `/Users/Shared/kabaneri-counter/index.html` を編集
+2. `kabaneri/sw.js` の `const CACHE = 'kabaneri-counter-v11';` の**数字を1つ上げる**
+   ※ここを上げないと、古い画面がキャッシュされたままになります
+3. 生成する
+
+   ```bash
+   python3 /Users/Shared/kabaneri-counter/build-pages.py
+   ```
+
+トップページ（`index.html`）だけは原本がないので、ここで直接編集します。
 
 ## 公開のしかた（Cloudflare Pages）
 
-このリポジトリを Cloudflare Pages に接続すると、`git push` するだけで自動的に公開されます。
+このフォルダの中身をそのままアップロードする方式（直接アップロード）です。
 
-### 初回だけ必要な設定
+```bash
+cd /Users/Shared/kabaneri-counter/github-pages && npx wrangler pages deploy . --project-name=kabaneri-counter --branch=main
+```
 
-1. https://dash.cloudflare.com/ でアカウントを作成（メール認証のみ・無料）
-2. 左メニューの **Workers & Pages** → **Create** → **Pages** タブ → **Connect to Git**
-3. GitHubとの連携を許可し、`kabaneri-counter` リポジトリを選択
-4. ビルド設定は以下のとおり（静的ファイルだけなのでビルド不要）
+1〜2分で https://minnanoslot.com/ に反映されます。
+`kabaneri-counter.pages.dev` でも同じものが見られます。
 
-   | 項目 | 値 |
-   |---|---|
-   | Project name | `kabaneri-counter` |
-   | Production branch | `main` |
-   | Framework preset | None |
-   | Build command | （空欄） |
-   | Build output directory | `/` |
+### 独自ドメイン
 
-5. **Save and Deploy** → 1〜2分で `https://kabaneri-counter.pages.dev/` が公開されます
+`minnanoslot.com` は Cloudflare のダッシュボードで
+**Workers & Pages → kabaneri-counter → Custom domains** から接続しています。
 
-※ プロジェクト名を変えると公開URLも変わります。`index.html` のOGP設定（`og:url` / `og:image`）が `kabaneri-counter.pages.dev` を指しているので、別名にした場合はそこも直してください。
+### GitHub
 
-### 2回目以降
-
-`main` ブランチに push すれば自動で反映されます。
+コードの保管用です。push しても自動公開はされないので、上のコマンドと合わせて実行します。
 
 ```bash
 git add -A && git commit -m "変更内容" && git push
@@ -51,14 +65,8 @@ git add -A && git commit -m "変更内容" && git push
 
 ## アクセス解析
 
-Cloudflare Pages のプロジェクト設定から **Web Analytics** を有効にすると、日別のアクセス数・参照元が見られます。Cookieを使わないため、同意バナーは不要です。
-
-## 修正するとき
-
-1. `index.html` を編集
-2. `sw.js` の `const CACHE = 'kabaneri-counter-v1';` の**数字を1つ上げる**（`v2`, `v3`…）
-   ※ここを上げないと、古い画面がキャッシュされたままになります
-3. commit して push
+Cloudflare Web Analytics を使っています。計測タグは `build-pages.py` が各ページに入れます。
+Cookieを使わないため、同意バナーは不要です。
 
 ## 注意
 
