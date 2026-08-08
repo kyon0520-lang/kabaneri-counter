@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="カバネリカウンター">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="カバネリ CZ発光カウンター">
+<meta property="og:title" content="カバネリ CZ発光カウンター">
+<meta property="og:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。スマホでそのまま使えます。">
+<meta property="og:url" content="https://kyon0520-lang.github.io/kabaneri-counter/">
+<meta property="og:image" content="https://kyon0520-lang.github.io/kabaneri-counter/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="カバネリ CZ発光カウンター">
+<meta name="twitter:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。">
+<meta name="twitter:image" content="https://kyon0520-lang.github.io/kabaneri-counter/ogp.png">
+<title>カバネリ CZ発光カウンター</title>
+<style>
+  :root{
+    --bg:#0d0f14;
+    --panel:#171b23;
+    --panel2:#1f242e;
+    --line:#2b3240;
+    --text:#e8ecf3;
+    --muted:#8a93a6;
+    --red:#e2453c;
+    --green:#2fb56a;
+    --blue:#3b82f6;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{background:var(--bg)}
+  body{
+    margin:0;
+    background:transparent;
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    padding:0 0 110px;
+  }
+
+  header{
+    position:sticky;top:0;z-index:10;
+    background:rgba(13,15,20,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:14px 16px calc(12px);
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  h1{font-size:15px;margin:0;letter-spacing:.02em;flex:1;min-width:0}
+  h1 small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
+  .ghost{
+    background:rgba(31,36,46,.6);border:1px solid var(--line);color:var(--muted);
+    border-radius:8px;padding:8px 10px;font-size:12px;cursor:pointer;
+    white-space:nowrap;flex:0 0 auto;
+  }
+  .ghost:active{background:var(--panel2)}
+  a.ghost{text-decoration:none;display:inline-flex;align-items:center}
+  main{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+
+  .card{
+    background:rgba(23,27,35,.82);backdrop-filter:blur(6px);
+    border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;
+  }
+  .card-head{
+    display:flex;align-items:center;gap:12px;padding:14px 14px 12px;
+  }
+  .icon{
+    width:46px;height:46px;flex:0 0 46px;border-radius:50%;
+    display:grid;place-items:center;
+    font-size:22px;font-weight:700;color:#fff;
+    box-shadow:0 0 0 2px rgba(255,255,255,.08) inset;
+  }
+  .icon.red{background:linear-gradient(160deg,#ff6b60,#c2201a);box-shadow:0 0 16px rgba(226,69,60,.45)}
+  .icon.green{background:linear-gradient(160deg,#57d992,#178c4c);box-shadow:0 0 16px rgba(47,181,106,.45)}
+  .icon.blue{background:linear-gradient(160deg,#6ea8ff,#1d5fd6);box-shadow:0 0 16px rgba(59,130,246,.45)}
+  .name{font-size:15px;font-weight:700;line-height:1.3;flex:1}
+  .name span{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:2px}
+
+  /* ＋／− 切り替え */
+  .mode{
+    display:flex;flex:0 0 auto;border:1px solid var(--line);
+    border-radius:10px;overflow:hidden;background:var(--bg);
+  }
+  .mode button{
+    width:44px;height:38px;border:0;background:transparent;color:var(--muted);
+    font-size:20px;font-weight:700;line-height:1;cursor:pointer;font-family:inherit;
+  }
+  .mode button:active{background:var(--panel2)}
+  .mode button.on{background:#2f6bd8;color:#fff}
+  .mode button.minus.on{background:#c2201a;color:#fff}
+  .card.minus{border-color:rgba(226,69,60,.55)}
+  .card.minus button.cnt .num{color:#ff8078}
+  .card.minus button.cnt .pt{visibility:hidden}
+
+  .btns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:0 14px 12px}
+  button.cnt{
+    border:1px solid var(--line);background:var(--panel2);color:var(--text);
+    border-radius:11px;padding:12px 4px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+    font-family:inherit;transition:transform .06s ease;
+  }
+  button.cnt:active{transform:scale(.95)}
+  button.cnt .lbl{font-size:12px;font-weight:600}
+  button.cnt .num{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+  button.cnt .pt{font-size:10px;color:var(--muted)}
+  button.cnt.hi{border-color:rgba(224,178,74,.5)}
+  button.cnt.hi .lbl{color:#e8c06a;font-size:10px;white-space:nowrap}
+  .red button.cnt.glow{border-color:rgba(226,69,60,.6)}
+  .green button.cnt.glow{border-color:rgba(47,181,106,.6)}
+  .blue button.cnt.glow{border-color:rgba(59,130,246,.6)}
+  button.cnt.cz{border-style:dashed}
+
+  /* 銅藍は強制周期ボタンが増えるので5列 */
+  .blue .btns{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .blue button.cnt .lbl{font-size:11px}
+  .blue button.cnt.hi .lbl{font-size:8.5px;letter-spacing:-.04em}
+  button.cnt.force{
+    justify-content:center;gap:3px;
+    border-style:dashed;border-color:rgba(138,147,166,.55);
+  }
+  button.cnt.force .lbl{font-size:11px;color:#cfd6e4}
+  button.cnt.force .pt{font-size:9px}
+
+  /* 現在のポイント（突入ボタンで0に戻る） */
+  .now{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin:0 14px 12px;padding:10px 14px;
+    background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:11px;
+  }
+  .now .k{font-size:11px;color:var(--muted);line-height:1.5}
+  .now .k small{display:block;font-size:9px;opacity:.85}
+  .now .brk{
+    display:block;margin:4px 0 3px;font-size:12px;color:var(--text);
+    font-variant-numeric:tabular-nums;
+  }
+  .now .brk b{font-weight:700;font-size:14px}
+  .now .brk i{font-style:normal;color:var(--muted);margin:0 6px}
+  .now .v{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+  .now .v em{font-style:normal;font-size:13px;font-weight:500;color:var(--muted);margin-left:3px}
+  .red   .now .v{color:#ff8a80}
+  .green .now .v{color:#7fe0ab}
+  .blue  .now .v{color:#8fc0ff}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1px solid var(--line);background:rgba(0,0,0,.18);
+  }
+  .stat{padding:10px 6px;text-align:center;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:0}
+  .stat .k{font-size:10px;color:var(--muted);margin-bottom:4px}
+  .stat .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+  .stat .v em{font-style:normal;font-size:11px;color:var(--muted);font-weight:400;margin-left:2px}
+
+  .total{
+    background:linear-gradient(180deg,rgba(28,34,48,.85),rgba(23,27,35,.85));
+    backdrop-filter:blur(6px);
+    border:1px solid var(--line);border-radius:14px;padding:14px;
+  }
+  .total h2{margin:0 0 12px;font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.05em}
+  .total-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tbox{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+  .tbox .k{font-size:11px;color:var(--muted)}
+  .tbox .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:4px}
+  .tbox .v em{font-style:normal;font-size:12px;color:var(--muted);font-weight:400;margin-left:3px}
+  .tbox.wide{grid-column:1/-1;background:rgba(59,130,246,.10);border-color:rgba(59,130,246,.35)}
+  .tbox.wide .v{color:#8fc0ff}
+  .tbox.wide.rate{background:rgba(47,181,106,.10);border-color:rgba(47,181,106,.35)}
+  .tbox.wide.rate .v{color:#7fe0ab}
+  .formula{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5}
+
+  /* CZ突入ptの分布パネル */
+  .graphpanel{
+    display:none;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:12px;flex-direction:column;gap:10px;
+  }
+  .graphpanel.open{display:flex}
+  .graphpanel h2{margin:0;font-size:13px;font-weight:700}
+  .graphpanel .note{margin:0;font-size:10px;color:var(--muted);line-height:1.6}
+  .distwrap{overflow-x:auto}
+  table.dist{width:100%;table-layout:fixed;border-collapse:collapse;font-size:11px}
+  table.dist th:nth-child(1), table.dist td:nth-child(1){width:52px}
+  table.dist th:nth-child(2), table.dist td:nth-child(2){width:78px}
+  table.dist th:nth-child(4), table.dist td:nth-child(4){width:58px}
+  table.dist th, table.dist td{border:1px solid var(--line);padding:5px 4px;text-align:center}
+  table.dist th{background:rgba(59,130,246,.16);font-size:10px;font-weight:600;white-space:nowrap}
+  table.dist td.range{color:var(--muted);white-space:nowrap}
+  table.dist td.cnt{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+  table.dist tr.hit td{background:rgba(59,130,246,.07)}
+  table.dist tfoot td{background:rgba(0,0,0,.28);font-weight:700}
+  td.dbar{padding:4px 6px}
+  .barwrap{display:flex;align-items:center;gap:6px}
+  .bartrack{
+    flex:1;min-width:0;height:12px;border-radius:3px;overflow:hidden;
+    background:rgba(255,255,255,.05);
+  }
+  .barfill{height:12px;border-radius:3px;background:linear-gradient(90deg,#2f6bd8,#8fc0ff)}
+  .barpct{
+    flex:0 0 34px;text-align:right;font-size:10px;
+    font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap;
+  }
+
+  /* 確認ダイアログ（ブラウザの confirm を使わない） */
+  .modal{
+    position:fixed;inset:0;z-index:50;padding:24px;
+    background:rgba(6,8,12,.72);backdrop-filter:blur(3px);
+    display:grid;place-items:center;
+  }
+  .modal[hidden]{display:none}
+  .sheet{
+    width:100%;max-width:320px;background:var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:18px 16px 14px;
+  }
+  .sheet p{margin:0 0 6px;font-size:14px;font-weight:700}
+  .sheet .sub{margin:0 0 14px;font-size:11px;color:var(--muted);font-weight:400;line-height:1.6}
+  .sheet .acts{display:flex;gap:8px}
+  .sheet .acts button{
+    flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;
+    font-family:inherit;cursor:pointer;border:1px solid var(--line);
+    background:var(--panel2);color:var(--text);
+  }
+  .sheet .acts button.danger{background:#c2201a;border-color:#c2201a;color:#fff}
+
+  .toast{
+    position:fixed;left:0;right:0;bottom:88px;margin:0 auto;width:max-content;z-index:60;
+    background:rgba(31,36,46,.97);border:1px solid var(--line);color:var(--text);
+    padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.6;
+    max-width:94%;text-align:center;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .toast[hidden]{display:none}
+  .toast span{white-space:nowrap}
+  .toast button{
+    flex:0 0 auto;white-space:nowrap;
+    background:transparent;border:1px solid var(--line);
+    color:#8fc0ff;border-radius:7px;padding:5px 9px;font-size:11px;
+    font-family:inherit;cursor:pointer;
+  }
+
+  /* 下段ベル（画面下に固定） */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    background:rgba(13,15,20,.94);backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+    padding:9px 16px calc(9px + env(safe-area-inset-bottom));
+    display:flex;gap:12px;align-items:center;justify-content:center;
+  }
+  .bell{display:flex;gap:8px;align-items:center;width:100%;max-width:560px}
+  .bell .mode{flex:0 0 auto;height:38px}
+  .bell button.cnt{
+    flex:1;min-width:0;padding:8px 4px;gap:3px;
+    border-color:rgba(224,178,74,.55);
+  }
+  .bell button.cnt .lbl{color:#e8c06a;font-size:11px;white-space:nowrap}
+  .bell button.cnt .num{font-size:20px}
+  .bell button.cnt .pt{font-size:9px}
+  .bell .gwrap{flex:0 0 86px;display:flex;flex-direction:column;gap:3px}
+  .bell .glbl{font-size:9px;color:var(--muted);text-align:center}
+  .bell input{
+    width:100%;height:32px;border-radius:9px;padding:0 6px;
+    border:1px solid rgba(224,178,74,.4);background:var(--bg);color:var(--text);
+    font-size:15px;font-family:inherit;font-variant-numeric:tabular-nums;text-align:center;
+  }
+  .bell input::-webkit-outer-spin-button,
+  .bell input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .bell .rate{
+    flex:0 0 58px;text-align:right;font-variant-numeric:tabular-nums;
+    font-size:18px;font-weight:800;color:#e8c06a;line-height:1.15;
+  }
+  .bell .rate em{font-style:normal;font-size:9px;color:var(--muted);font-weight:400;display:block}
+
+  .bell button.cnt.minusmode{border-color:rgba(226,69,60,.55)}
+  .bell button.cnt.minusmode .num{color:#ff8078}
+
+  /* リセット（銅藍カードの下） */
+  .resetrow{display:flex;gap:10px}
+  .resetrow button{
+    flex:1;border-radius:10px;padding:10px 8px;font-size:14px;font-weight:600;
+    font-family:inherit;cursor:pointer;border:1px solid var(--line);
+    background:var(--panel2);color:var(--text);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  }
+  .resetrow button .sub{font-size:10px;font-weight:400;color:var(--muted)}
+  .resetrow button:active{transform:scale(.98)}
+  .resetrow button.cur{flex:1.6;border-color:rgba(224,178,74,.45)}
+  .resetrow button.cur .main{color:#e8c06a}
+  .resetrow button.danger{background:transparent;color:#e2453c;border-color:rgba(226,69,60,.4)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>カバネリ CZ発光<small>非発光 1pt ／ 発光 15pt</small></h1>
+  <div style="display:flex;gap:6px">
+    <button class="ghost" id="graphbtn">規定pt分布グラフ</button>
+    <a class="ghost" id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
+  </div>
+</header>
+
+<main>
+  <section class="graphpanel" id="graphpanel">
+    <h2>CZ突入時のポイント分布</h2>
+    <div class="distwrap">
+      <table class="dist">
+        <thead>
+          <tr><th>規定pt</th><th>ポイント数</th><th>振り分け</th><th>CZ突入pt</th></tr>
+        </thead>
+        <tbody id="distbody"></tbody>
+        <tfoot>
+          <tr><td colspan="2">平均</td><td id="distavg">—</td><td class="cnt" id="distn">0</td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="note">無名・生駒のCZ突入を押したときの現在のポイントを1件ずつ記録しています（銅藍の周期突入は含みません）。全リセットで消えます。</p>
+  </section>
+
+  <!-- カード群をJSで描画 -->
+  <div id="cards-top" style="display:flex;flex-direction:column;gap:14px"></div>
+
+  <section class="total">
+    <h2>合計（無名 ＋ 生駒）</h2>
+    <div class="total-grid">
+      <div class="tbox wide rate">
+        <div class="k">平均発光率</div>
+        <div class="v" id="t-rate">—<em>%</em></div>
+        <div class="formula">無名・生駒の発光回数 ÷ 出現回数（非発光 ＋ 発光）／ 高確発光は含みません</div>
+      </div>
+      <div class="tbox wide">
+        <div class="k">CZ 1回あたりの平均ポイント</div>
+        <div class="v" id="t-avg">—<em>pt / CZ</em></div>
+        <div class="formula">無名・生駒のポイント（非発光×1 ＋ 発光×15 ＋ 高確発光×15 － 有利区間リセットで消えた分）÷ 無名・生駒のCZ突入回数</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="cards-bottom" style="display:flex;flex-direction:column;gap:14px"></div>
+
+  <div class="resetrow">
+    <button class="cur" id="curreset">
+      <span class="main">現在ポイントリセット</span>
+      <span class="sub">（有利区間リセット時）</span>
+    </button>
+    <button class="danger" id="reset2">
+      <span class="main">全リセット</span>
+    </button>
+  </div>
+</main>
+
+<div class="bar">
+  <div class="bell">
+    <div class="mode" id="bellmode">
+      <button class="plus on" data-mode="1" aria-label="プラス">＋</button>
+      <button class="minus"   data-mode="-1" aria-label="マイナス">−</button>
+    </div>
+    <button class="cnt" id="bellbtn">
+      <span class="lbl">下段ベル</span><span class="num" id="bellnum">0</span><span class="pt">回</span>
+    </button>
+    <div class="gwrap">
+      <span class="glbl">現在のG数</span>
+      <input type="number" id="games" inputmode="numeric" min="0" max="99999" step="1" placeholder="0" aria-label="現在のG数">
+    </div>
+    <div class="rate" id="bellrate">—<em>確率</em></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+    <p id="mtitle">すべてのカウントを 0 に戻します</p>
+    <p class="sub">無名・生駒・銅藍のすべての回数と、下段ベル・G数が消えます。</p>
+    <div class="acts">
+      <button id="mcancel">キャンセル</button>
+      <button id="mok" class="danger">リセットする</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const NO_PT = 1, GLOW_PT = 15, HI_PT = 15;   // 高確発光もポイントは発光と同じ（発光率には入れない）
+
+const CHARS = [
+  { id:'red',   cls:'red',   mark:'無', name:'無名', sub:'赤', hit:'CZ突入',   avg:'平均 pt/CZ' },
+  { id:'green', cls:'green', mark:'生', name:'生駒', sub:'緑', hit:'CZ突入',   avg:'平均 pt/CZ' },
+  { id:'blue',  cls:'blue',  mark:'銅', name:'銅藍', sub:'青', hit:'周期突入', avg:'平均 pt/周期', force:true },
+];
+
+// 合計の「平均 pt/CZ」に含めるキャラ（無名＝赤 と 生駒＝緑 のみ）
+const AVG_IDS = ['red', 'green'];
+
+const KEY = 'kabaneri-cz-counter-v1';
+let state;
+let czLog = [];      // CZ突入時のポイント記録
+let bell = { n:0, g:0 };   // 下段ベルの回数と現在のG数
+// キャラごとの ＋/− モード（起動時は必ず ＋）
+const mode = { red:1, green:1, blue:1 };
+
+// no/glow/cz は通算。cur* は突入ボタンで0に戻る現在値、last* はその取り消し用
+function blank(){
+  const s = {};
+  CHARS.forEach(c => s[c.id] = {
+    no:0, glow:0, hi:0, cz:0,
+    curNo:0, curGlow:0, curHi:0,
+    lastNo:0, lastGlow:0, lastHi:0,
+    lost:0        // 有利区間リセットで消えたポイント（合計から差し引く）
+  });
+  return s;
+}
+
+// 保存データ・バックアップデータを安全な形に整える
+function normalize(raw){
+  const s = blank();
+  CHARS.forEach(c => {
+    const v = raw && raw[c.id];
+    if (v) s[c.id] = {
+      no:+v.no||0, glow:+v.glow||0, hi:+v.hi||0, cz:+v.cz||0,
+      curNo:+v.curNo||0, curGlow:+v.curGlow||0, curHi:+v.curHi||0,
+      lastNo:+v.lastNo||0, lastGlow:+v.lastGlow||0, lastHi:+v.lastHi||0,
+      lost:+v.lost||0
+    };
+  });
+  return s;
+}
+
+function load(){
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY));
+    if (raw && raw.state) {
+      state = normalize(raw.state);
+      czLog = Array.isArray(raw.czLog)
+        ? raw.czLog.filter(r => r && isFinite(+r.pt)).map(r => ({ c:String(r.c || ''), pt:+r.pt }))
+        : [];
+      bell = { n:Math.max(0, +(raw.bell && raw.bell.n) || 0),
+               g:Math.max(0, +(raw.bell && raw.bell.g) || 0) };
+      return;
+    }
+  } catch(e){}
+  state = blank();
+  czLog = [];
+  bell = { n:0, g:0 };
+}
+
+let saveFailed = false;
+
+function save(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify({ state, czLog, bell }));
+  } catch(e) {
+    saveFailed = true;
+  }
+}
+
+/* 保存領域が本当に使えるか（読み書きして確かめる） */
+function storageWorks(){
+  try {
+    const k = '__kbn_test__';
+    localStorage.setItem(k, '1');
+    const ok = localStorage.getItem(k) === '1';
+    localStorage.removeItem(k);
+    return ok;
+  } catch(e) { return false; }
+}
+
+function buildCards(){
+  const cardHtml = c => `
+    <section class="card ${c.cls}" data-id="${c.id}">
+      <div class="card-head">
+        <div class="icon ${c.cls}">${c.mark}</div>
+        <div class="name">${c.name}<span>${c.sub}のアイコン</span></div>
+        <div class="mode">
+          <button class="plus on" data-mode="1" aria-label="プラス">＋</button>
+          <button class="minus"   data-mode="-1" aria-label="マイナス">−</button>
+        </div>
+      </div>
+      <div class="btns">
+        <button class="cnt no"   data-type="no">
+          <span class="lbl">非発光</span><span class="num" data-v="no">0</span><span class="pt">+${NO_PT}pt</span>
+        </button>
+        <button class="cnt glow" data-type="glow">
+          <span class="lbl">発光</span><span class="num" data-v="glow">0</span><span class="pt">+${GLOW_PT}pt</span>
+        </button>
+        <button class="cnt hi" data-type="hi">
+          <span class="lbl">高確発光など</span><span class="num" data-v="hi">0</span><span class="pt">+${HI_PT}pt</span>
+        </button>
+        <button class="cnt cz"   data-type="cz">
+          <span class="lbl">${c.hit}</span><span class="num" data-v="cz">0</span><span class="pt">回</span>
+        </button>
+        ${c.force ? `<button class="cnt force">
+          <span class="lbl">強制周期</span><span class="pt">150,300G</span>
+        </button>` : ''}
+      </div>
+      <div class="now">
+        <div class="k">現在のポイント
+          <span class="brk">非発光 <b data-v="curNo">0</b><i>／</i>発光 <b data-v="curGlow">0</b><i>／</i>高確 <b data-v="curHi">0</b></span>
+          <small>${c.hit}で0に戻ります</small>
+        </div>
+        <div class="v" data-v="cur">0<em>pt</em></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">合計ポイント</div><div class="v" data-v="pt">0<em>pt</em></div></div>
+        <div class="stat"><div class="k">発光率</div><div class="v" data-v="rate">—</div></div>
+        <div class="stat"><div class="k">${c.avg}</div><div class="v" data-v="avg">—</div></div>
+      </div>
+    </section>
+  `;
+
+  const paint = (el, chars) =>
+    document.getElementById(el).innerHTML = chars.map(cardHtml).join('');
+
+  paint('cards-top',    CHARS.filter(c => AVG_IDS.includes(c.id)));
+  paint('cards-bottom', CHARS.filter(c => !AVG_IDS.includes(c.id)));
+
+  document.querySelectorAll('.card').forEach(card => {
+    const id = card.dataset.id;
+
+    card.addEventListener('click', e => {
+      const modeBtn = e.target.closest('.mode button');
+      if (modeBtn) { setMode(id, +modeBtn.dataset.mode); return; }
+
+      // 強制周期：現在のポイントだけ無効にする（回数・発光率はそのまま）
+      if (e.target.closest('button.force')) { dropPoints([id]); return; }
+
+      const btn = e.target.closest('button.cnt');
+      if (btn) add(id, btn.dataset.type);
+    });
+  });
+}
+
+function setMode(id, m){
+  mode[id] = m;
+  const card = document.querySelector(`.card[data-id="${id}"]`);
+  card.classList.toggle('minus', m === -1);
+  card.querySelector('.mode .plus').classList.toggle('on', m === 1);
+  card.querySelector('.mode .minus').classList.toggle('on', m === -1);
+}
+
+function add(id, type){
+  const s = state[id], d = mode[id];
+
+  if (type === 'cz') {
+    if (d === 1) {                      // 突入 → 現在のポイントを0に
+      czLog.push({ c:id, pt: s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT });
+      s.lastNo = s.curNo; s.lastGlow = s.curGlow; s.lastHi = s.curHi;
+      s.curNo = 0; s.curGlow = 0; s.curHi = 0;
+      s.cz++;
+    } else {                            // 押し間違い → 直前のリセットも取り消す
+      if (s.cz === 0) return;
+      s.cz--;
+      s.curNo += s.lastNo; s.curGlow += s.lastGlow; s.curHi += s.lastHi;  // 取り消し後に数えた分も残す
+      s.lastNo = 0; s.lastGlow = 0; s.lastHi = 0;
+      for (let i = czLog.length - 1; i >= 0; i--) {      // 記録も1件取り消す
+        if (czLog[i].c === id) { czLog.splice(i, 1); break; }
+      }
+    }
+  } else {
+    const next = s[type] + d;
+    if (next < 0) return;               // 0 未満にはしない
+    s[type] = next;
+    const cur = { no:'curNo', glow:'curGlow', hi:'curHi' }[type];
+    s[cur] = Math.max(0, s[cur] + d);
+  }
+
+  if (navigator.vibrate) navigator.vibrate(12);
+  render(); save();
+}
+
+/* 確認ダイアログ（confirm はサンドボックス環境で無視されるため自前で用意） */
+const modal = document.getElementById('modal');
+const openReset  = () => { modal.hidden = false; };
+const closeReset = () => { modal.hidden = true; };
+
+function doReset(){
+  closeReset();
+  state = blank();
+  czLog = [];
+  bell = { n:0, g:0 };
+  document.getElementById('games').value = '';
+  document.getElementById('bellmode').querySelector('.plus').click();
+  CHARS.forEach(c => setMode(c.id, 1));
+  render(); save();
+  toast('カウントをリセットしました');
+}
+
+document.getElementById('mok').addEventListener('click', doReset);
+document.getElementById('mcancel').addEventListener('click', closeReset);
+modal.addEventListener('click', e => { if (e.target === modal) closeReset(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReset(); });
+
+/* 画面内メッセージ（alert の代わり） */
+let toastTimer;
+function toast(msg, undo){
+  const el = document.getElementById('toast');
+  el.textContent = '';
+  const text = document.createElement('span');
+  text.textContent = msg;
+  el.appendChild(text);
+  if (undo) {
+    const b = document.createElement('button');
+    b.textContent = '元に戻す';
+    b.addEventListener('click', () => { el.hidden = true; undo(); });
+    el.appendChild(b);
+  }
+  el.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.hidden = true; }, undo ? 6000 : 2600);
+}
+
+/* ---------- CZ突入時のポイント分布 ---------- */
+const DIST_STEP = 15, DIST_MAX = 150;
+const DIST_ROWS = [15,30,45,60,75,90,105,120,135,150];
+
+function distIndex(pt){
+  if (pt >= DIST_MAX) return DIST_ROWS.length - 1;
+  const i = Math.floor(pt / DIST_STEP) - 1;
+  return i;                       // 0未満なら「15pt未満」
+}
+
+function renderDist(){
+  const body = document.getElementById('distbody');
+  const counts = new Array(DIST_ROWS.length).fill(0);
+  let under = 0;
+
+  const rows = czLog.filter(r => AVG_IDS.includes(r.c));   // 銅藍は含めない
+  rows.forEach(r => {
+    const i = distIndex(r.pt);
+    if (i < 0) under++; else counts[i]++;
+  });
+
+  const total = rows.length;
+  const pct = n => total ? n / total * 100 : 0;
+  const maxPct = Math.max(pct(under), ...counts.map(pct), 1);
+
+  const row = (label, range, n) => {
+    const p = pct(n);
+    const w = (p / maxPct * 100).toFixed(1);
+    return `<tr class="${n ? 'hit' : ''}">
+      <td>${label}</td>
+      <td class="range">${range}</td>
+      <td class="dbar"><div class="barwrap">
+        <div class="bartrack"><div class="barfill" style="width:${n ? w : 0}%"></div></div>
+        <span class="barpct">${p.toFixed(1)}%</span>
+      </div></td>
+      <td class="cnt">${fmt(n)}</td>
+    </tr>`;
+  };
+
+  let html = under ? row('15pt未満', '0〜14', under) : '';
+  html += DIST_ROWS.map((b, i) =>
+    row(`${b}pt`, i === DIST_ROWS.length - 1 ? '150以上' : `${b}〜${b + DIST_STEP - 1}`, counts[i])
+  ).join('');
+  body.innerHTML = html;
+
+  const avg = total ? rows.reduce((a, r) => a + r.pt, 0) / total : 0;
+  document.getElementById('distavg').textContent = total ? `${avg.toFixed(1)}pt` : '—';
+  document.getElementById('distn').textContent = `${fmt(total)}回`;
+}
+
+document.getElementById('graphbtn').addEventListener('click', () => {
+  document.getElementById('graphpanel').classList.toggle('open');
+});
+
+/* 有利区間リセット：現在のポイントを0にして、その分を合計ポイントからも差し引く。
+   非発光・発光・高確発光・CZ突入の回数はそのまま残す。 */
+function dropPoints(ids){
+  const snap = {};
+  let dropped = 0;
+  ids.forEach(id => {
+    const s = state[id];
+    snap[id] = { curNo:s.curNo, curGlow:s.curGlow, curHi:s.curHi,
+                 lastNo:s.lastNo, lastGlow:s.lastGlow, lastHi:s.lastHi, lost:s.lost };
+    const p = s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT;
+    s.lost += p;
+    dropped += p;
+    s.curNo = 0; s.curGlow = 0; s.curHi = 0;
+    s.lastNo = 0; s.lastGlow = 0; s.lastHi = 0;
+  });
+  render(); save();
+
+  if (!dropped) { toast('現在のポイントはすでに0です'); return; }
+
+  toast(`${fmt(dropped)}pt を無効にしました`, () => {
+    ids.forEach(id => Object.assign(state[id], snap[id]));
+    render(); save();
+    toast('元に戻しました');
+  });
+}
+
+function resetPoints(){
+  dropPoints(CHARS.map(c => c.id));
+}
+
+document.getElementById('curreset').addEventListener('click', resetPoints);
+
+const fmt = n => n.toLocaleString('ja-JP');
+
+function render(){
+  let T = { no:0, glow:0, cz:0, pt:0 };
+
+  CHARS.forEach(c => {
+    const s = state[c.id];
+    // 有利区間リセットで消えた分(lost)を引いたものが有効ポイント
+    const pt = Math.max(0, s.no * NO_PT + s.glow * GLOW_PT + s.hi * HI_PT - s.lost);
+    const appear = s.no + s.glow;      // 発光率は高確発光を含めない
+    const card = document.querySelector(`.card[data-id="${c.id}"]`);
+    const set = (k, html) => card.querySelector(`[data-v="${k}"]`).innerHTML = html;
+
+    set('no', fmt(s.no));
+    set('glow', fmt(s.glow));
+    set('hi', fmt(s.hi));
+    set('cz', fmt(s.cz));
+    set('curNo', fmt(s.curNo));
+    set('curGlow', fmt(s.curGlow));
+    set('curHi', fmt(s.curHi));
+    set('cur', `${fmt(s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT)}<em>pt</em>`);
+    set('pt', `${fmt(pt)}<em>pt</em>`);
+    set('rate', appear ? `${(s.glow / appear * 100).toFixed(1)}<em>%</em>` : '—');
+    set('avg', s.cz ? `${(pt / s.cz).toFixed(2)}` : '—');
+
+    if (AVG_IDS.includes(c.id)) {
+      T.no += s.no; T.glow += s.glow; T.cz += s.cz; T.pt += pt;
+    }
+  });
+
+  const appearT = T.no + T.glow;
+  document.getElementById('t-rate').innerHTML = appearT
+    ? `${(T.glow / appearT * 100).toFixed(1)}<em>%</em>`
+    : `—<em>%</em>`;
+
+  document.getElementById('t-avg').innerHTML  = T.cz
+    ? `${(T.pt / T.cz).toFixed(2)}<em>pt / CZ</em>`
+    : `—<em>pt / CZ</em>`;
+
+  renderDist();
+  renderBell();
+}
+
+/* 下段ベル：回数とG数から確率を出す（1/◯◯.◯） */
+function renderBell(){
+  document.getElementById('bellnum').textContent = fmt(bell.n);
+  const el = document.getElementById('bellrate');
+  el.innerHTML = (bell.n > 0 && bell.g > 0)
+    ? `1/${(bell.g / bell.n).toFixed(1)}<em>確率</em>`
+    : `—<em>確率</em>`;
+}
+
+// カードと同じで、＋/− を選んでから下段ベルを押す
+let bellMode = 1;
+
+document.getElementById('bellmode').addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  bellMode = +b.dataset.mode;
+  const wrap = document.getElementById('bellmode');
+  wrap.querySelector('.plus').classList.toggle('on', bellMode === 1);
+  wrap.querySelector('.minus').classList.toggle('on', bellMode === -1);
+  document.getElementById('bellbtn').classList.toggle('minusmode', bellMode === -1);
+});
+
+document.getElementById('bellbtn').addEventListener('click', () => {
+  const next = bell.n + bellMode;
+  if (next < 0) return;
+  bell.n = next;
+  if (navigator.vibrate) navigator.vibrate(12);
+  renderBell(); save();
+});
+
+document.getElementById('games').addEventListener('input', e => {
+  bell.g = Math.max(0, Math.floor(+e.target.value || 0));
+  renderBell(); save();
+});
+
+document.getElementById('reset2').addEventListener('click', openReset);
+
+/* ---------- オフライン対応（サービスワーカー） ---------- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+/* ---------- 起動 ---------- */
+load();
+buildCards();
+document.getElementById('games').value = bell.g ? bell.g : '';
+render();
+
+// 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
+if (!storageWorks()) {
+  setTimeout(() => toast('この開き方では記録が保存されません。ブラウザで開き直してください。'), 600);
+}
+
+/* ---------- データ保持の保険 ---------- */
+// 画面を離れる直前にもう一度書き込む（アプリが落とされる直前の取りこぼし対策）
+const saveNow = () => { if (state) save(); };
+window.addEventListener('pagehide', saveNow);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') saveNow();
+});
+
+// 端末に「このデータは消さないで」と申請する（対応していない環境では無視される）
+if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persist().catch(() => {});
+}
+
+</script>
+</body>
+</html>

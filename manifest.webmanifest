@@ -1,0 +1,17 @@
+{
+  "name": "カバネリ CZ発光カウンター",
+  "short_name": "カバネリカウンター",
+  "description": "スマスロ カバネリのCZ発光・突入回数を数えて、平均発光率とCZ 1回あたりの平均ポイントを出すカウンター。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0f14",
+  "theme_color": "#0d0f14",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
