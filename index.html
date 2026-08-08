@@ -48,9 +48,10 @@
     background:rgba(13,15,20,.92);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
-    padding:calc(14px + env(safe-area-inset-top)) 16px 12px;
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:calc(12px + env(safe-area-inset-top)) 16px 10px;
+    display:flex;flex-direction:column;gap:9px;
   }
+  header .tools{display:flex;gap:6px}
   h1{font-size:15px;margin:0;letter-spacing:.02em;flex:1;min-width:0}
   h1 small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
   .ghost{
@@ -205,6 +206,80 @@
     font-variant-numeric:tabular-nums;color:var(--text);white-space:nowrap;
   }
 
+  /* 実戦の保存ボタン */
+  .saverow{display:flex}
+  .saverow button{
+    flex:1;border-radius:12px;padding:13px 10px;font-family:inherit;cursor:pointer;
+    border:1px solid rgba(47,181,106,.5);background:rgba(47,181,106,.12);color:#7fe0ab;
+    font-size:15px;font-weight:700;
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+  }
+  .saverow button .sub{font-size:10px;font-weight:400;color:var(--muted)}
+  .saverow button:active{transform:scale(.99)}
+
+  /* 履歴パネル */
+  .histpanel{
+    display:none;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;padding:12px;flex-direction:column;gap:10px;
+  }
+  .histpanel.open{display:flex}
+  .histpanel h2{margin:0;font-size:13px;font-weight:700}
+  .histpanel .note{margin:0;font-size:10px;color:var(--muted);line-height:1.6}
+  .histsum{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  }
+  .histsum div{
+    background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    padding:8px 6px;text-align:center;
+  }
+  .histsum .k{font-size:9px;color:var(--muted)}
+  .histsum .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+  .histlist{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto}
+  .histrow{
+    background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    padding:9px 11px;cursor:pointer;
+  }
+  .histrow .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .histrow .dt{font-size:12px;font-weight:600}
+  .histrow .tag{
+    font-size:9px;padding:2px 6px;border-radius:999px;flex:0 0 auto;
+    border:1px solid var(--line);color:var(--muted);
+  }
+  .histrow .tag.set{border-color:rgba(47,181,106,.5);color:#7fe0ab}
+  .histrow .fig{
+    display:flex;gap:12px;margin-top:4px;font-size:11px;color:var(--muted);
+    font-variant-numeric:tabular-nums;flex-wrap:wrap;
+  }
+  .histrow .fig b{color:var(--text);font-weight:700}
+  .histrow .detail{
+    display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
+    font-size:11px;color:var(--muted);line-height:1.8;font-variant-numeric:tabular-nums;
+  }
+  .histrow.open .detail{display:block}
+  .histrow .detail .del{
+    margin-top:8px;background:transparent;border:1px solid rgba(226,69,60,.4);
+    color:#e2453c;border-radius:8px;padding:6px 12px;font-size:11px;
+    font-family:inherit;cursor:pointer;
+  }
+  .histempty{font-size:11px;color:var(--muted);text-align:center;padding:14px 0}
+
+  /* 保存シートの入力 */
+  .sheet .field{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+  .sheet .field label{font-size:11px;color:var(--muted);font-weight:400}
+  .sheet .chips{display:flex;gap:5px;flex-wrap:wrap}
+  .sheet .chips button{
+    flex:0 0 auto;padding:7px 11px;border-radius:8px;font-size:12px;font-weight:600;
+    border:1px solid var(--line);background:var(--panel2);color:var(--text);
+    font-family:inherit;cursor:pointer;
+  }
+  .sheet .chips button.on{background:#2f6bd8;border-color:#2f6bd8;color:#fff}
+  .sheet .review{
+    background:var(--bg);border:1px solid var(--line);border-radius:9px;
+    padding:9px 11px;font-size:11px;color:var(--muted);line-height:1.8;
+    font-variant-numeric:tabular-nums;margin-bottom:11px;
+  }
+  .sheet .review b{color:var(--text)}
+
   /* 確認ダイアログ（ブラウザの confirm を使わない） */
   .modal{
     position:fixed;inset:0;z-index:50;padding:24px;
@@ -296,7 +371,8 @@
 
 <header>
   <h1>カバネリ CZ発光<small>非発光 1pt ／ 発光 15pt</small></h1>
-  <div style="display:flex;gap:6px">
+  <div class="tools">
+    <button class="ghost" id="histbtn">履歴</button>
     <button class="ghost" id="graphbtn">規定pt分布グラフ</button>
     <a class="ghost" id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
   </div>
@@ -319,6 +395,17 @@
     <p class="note">無名・生駒のCZ突入を押したときの現在のポイントを1件ずつ記録しています（銅藍の周期突入は含みません）。全リセットで消えます。</p>
   </section>
 
+  <section class="histpanel" id="histpanel">
+    <h2>実戦履歴</h2>
+    <div class="histsum">
+      <div><div class="k">実戦数</div><div class="v" id="hs-n">0</div></div>
+      <div><div class="k">通算 発光率</div><div class="v" id="hs-rate">—</div></div>
+      <div><div class="k">通算 平均pt/CZ</div><div class="v" id="hs-avg">—</div></div>
+    </div>
+    <div class="histlist" id="histlist"></div>
+    <p class="note">保存した実戦は端末内にだけ残ります。行をタップすると内訳が開きます。</p>
+  </section>
+
   <!-- カード群をJSで描画 -->
   <div id="cards-top" style="display:flex;flex-direction:column;gap:14px"></div>
 
@@ -339,6 +426,13 @@
   </section>
 
   <div id="cards-bottom" style="display:flex;flex-direction:column;gap:14px"></div>
+
+  <div class="saverow">
+    <button id="savebtn">
+      <span class="main">この実戦を保存</span>
+      <span class="sub">履歴に残す・カウントは選んでリセット</span>
+    </button>
+  </div>
 
   <div class="resetrow">
     <button class="cur" id="curreset">
@@ -375,6 +469,37 @@
     <div class="acts">
       <button id="mcancel">キャンセル</button>
       <button id="mok" class="danger">リセットする</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="savemodal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="stitle">
+    <p id="stitle">この実戦を保存します</p>
+    <div class="review" id="sreview"></div>
+    <div class="field">
+      <label>設定（わかれば・任意）</label>
+      <div class="chips" id="setchips">
+        <button data-set="">不明</button>
+        <button data-set="1">1</button>
+        <button data-set="2">2</button>
+        <button data-set="3">3</button>
+        <button data-set="4">4</button>
+        <button data-set="5">5</button>
+        <button data-set="6">6</button>
+      </div>
+    </div>
+    <div class="field" id="evfield" hidden>
+      <label>その根拠</label>
+      <div class="chips" id="evchips">
+        <button data-ev="public">設定公開</button>
+        <button data-ev="confirmed">確定演出</button>
+        <button data-ev="guess">推測</button>
+      </div>
+    </div>
+    <div class="acts">
+      <button id="scancel">キャンセル</button>
+      <button id="sok" class="danger" style="background:#2f6bd8;border-color:#2f6bd8;color:#fff">保存する</button>
     </div>
   </div>
 </div>
@@ -593,16 +718,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReset()
 
 /* 画面内メッセージ（alert の代わり） */
 let toastTimer;
-function toast(msg, undo){
+function toast(msg, action, label){
   const el = document.getElementById('toast');
   el.textContent = '';
   const text = document.createElement('span');
   text.textContent = msg;
   el.appendChild(text);
-  if (undo) {
+  if (action) {
     const b = document.createElement('button');
-    b.textContent = '元に戻す';
-    b.addEventListener('click', () => { el.hidden = true; undo(); });
+    b.textContent = label || '元に戻す';
+    b.addEventListener('click', () => { el.hidden = true; action(); });
     el.appendChild(b);
   }
   el.hidden = false;
@@ -783,8 +908,206 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+/* ---------- 実戦履歴 ---------- */
+const HIST_KEY = 'kabaneri-history-v1';
+let hist = [];
+let sessionId = null;
+
+function newId(p){ return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+function loadHist(){
+  try {
+    const raw = JSON.parse(localStorage.getItem(HIST_KEY));
+    hist = Array.isArray(raw && raw.records) ? raw.records : [];
+    sessionId = (raw && raw.sessionId) || newId('s_');
+  } catch(e) { hist = []; sessionId = newId('s_'); }
+}
+
+function saveHist(){
+  try {
+    localStorage.setItem(HIST_KEY, JSON.stringify({ records: hist, sessionId }));
+  } catch(e){}
+}
+
+/* 保存＝送信できる形。このまま API に送れる */
+function buildRecord(){
+  const chars = {};
+  CHARS.forEach(c => {
+    const s = state[c.id];
+    chars[c.id] = { no:s.no, glow:s.glow, hi:s.hi, cz:s.cz, lost:s.lost };
+  });
+  return {
+    id: newId('r_'),
+    sessionId,
+    date: new Date().toISOString(),
+    machine: 'kabaneri-unato',
+    games: bell.g,
+    bell: bell.n,
+    chars,
+    czPoints: czLog.map(r => r.pt),
+    czPointsBy: czLog.map(r => ({ c:r.c, pt:r.pt })),
+    setting: null,
+    evidence: null,
+    sent: false
+  };
+}
+
+function recTotals(r){
+  let pt = 0, no = 0, glow = 0, cz = 0;
+  AVG_IDS.forEach(id => {
+    const c = r.chars[id]; if (!c) return;
+    pt += c.no * NO_PT + c.glow * GLOW_PT + (c.hi || 0) * HI_PT - (c.lost || 0);
+    no += c.no; glow += c.glow; cz += c.cz;
+  });
+  return { pt: Math.max(0, pt), no, glow, cz };
+}
+
+const fmtDate = iso => {
+  const d = new Date(iso);
+  return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+};
+
+function renderHist(){
+  const list = document.getElementById('histlist');
+
+  if (!hist.length) {
+    list.innerHTML = '<div class="histempty">まだ保存された実戦はありません</div>';
+  } else {
+    list.innerHTML = hist.map(r => {
+      const t = recTotals(r);
+      const appear = t.no + t.glow;
+      const rate = appear ? (t.glow / appear * 100).toFixed(1) + '%' : '—';
+      const avg = t.cz ? (t.pt / t.cz).toFixed(1) : '—';
+      const setTag = r.setting
+        ? `<span class="tag set">設定${r.setting}</span>`
+        : `<span class="tag">設定不明</span>`;
+      const rows = CHARS.map(c => {
+        const x = r.chars[c.id] || {};
+        return `${c.name} 非発光${fmt(x.no||0)} / 発光${fmt(x.glow||0)} / 高確${fmt(x.hi||0)} / ${c.hit}${fmt(x.cz||0)}`;
+      }).join('<br>');
+      return `<div class="histrow" data-id="${r.id}">
+        <div class="top"><span class="dt">${fmtDate(r.date)}</span>${setTag}</div>
+        <div class="fig">
+          <span>${fmt(r.games)}<b>G</b></span>
+          <span>下段ベル <b>${fmt(r.bell)}</b></span>
+          <span>発光率 <b>${rate}</b></span>
+          <span>平均 <b>${avg}</b>pt/CZ</span>
+        </div>
+        <div class="detail">
+          ${rows}<br>
+          CZ突入時のpt: ${r.czPoints.length ? r.czPoints.map(p => fmt(p)).join(', ') : 'なし'}
+          <br><button class="del" data-del="${r.id}">この実戦を削除</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // 通算
+  let pt = 0, no = 0, glow = 0, cz = 0;
+  hist.forEach(r => { const t = recTotals(r); pt += t.pt; no += t.no; glow += t.glow; cz += t.cz; });
+  const appear = no + glow;
+  document.getElementById('hs-n').textContent = fmt(hist.length);
+  document.getElementById('hs-rate').textContent = appear ? (glow / appear * 100).toFixed(1) + '%' : '—';
+  document.getElementById('hs-avg').textContent = cz ? (pt / cz).toFixed(2) : '—';
+}
+
+document.getElementById('histbtn').addEventListener('click', () => {
+  document.getElementById('histpanel').classList.toggle('open');
+  renderHist();
+});
+
+document.getElementById('histlist').addEventListener('click', e => {
+  const del = e.target.closest('[data-del]');
+  if (del) {
+    hist = hist.filter(r => r.id !== del.dataset.del);
+    saveHist(); renderHist(); renderDist();
+    toast('削除しました');
+    return;
+  }
+  const row = e.target.closest('.histrow');
+  if (row) row.classList.toggle('open');
+});
+
+/* ---------- 保存シート ---------- */
+let pendingSetting = null, pendingEvidence = null;
+
+function openSaveSheet(){
+  const t = { pt:0, no:0, glow:0, cz:0 };
+  AVG_IDS.forEach(id => {
+    const s = state[id];
+    t.pt += s.no * NO_PT + s.glow * GLOW_PT + s.hi * HI_PT - s.lost;
+    t.no += s.no; t.glow += s.glow; t.cz += s.cz;
+  });
+  const appear = t.no + t.glow;
+  const b = state.blue;
+
+  if (!bell.g && !appear && !b.no && !b.glow) {
+    toast('まだ数えたデータがありません');
+    return;
+  }
+
+  document.getElementById('sreview').innerHTML =
+    `<b>${fmt(bell.g)}G</b> ／ 下段ベル <b>${fmt(bell.n)}</b><br>` +
+    CHARS.map(c => {
+      const s = state[c.id];
+      return `${c.name}: 非発光${fmt(s.no)} / 発光${fmt(s.glow)} / 高確${fmt(s.hi)} / ${c.hit}${fmt(s.cz)}`;
+    }).join('<br>') +
+    `<br>CZ突入時のpt: ${czLog.length ? czLog.map(r => fmt(r.pt)).join(', ') : 'なし'}`;
+
+  pendingSetting = null; pendingEvidence = null;
+  document.querySelectorAll('#setchips button').forEach(x => x.classList.toggle('on', x.dataset.set === ''));
+  document.querySelectorAll('#evchips button').forEach(x => x.classList.remove('on'));
+  document.getElementById('evfield').hidden = true;
+  document.getElementById('savemodal').hidden = false;
+}
+
+document.getElementById('savebtn').addEventListener('click', openSaveSheet);
+document.getElementById('scancel').addEventListener('click', () => {
+  document.getElementById('savemodal').hidden = true;
+});
+document.getElementById('savemodal').addEventListener('click', e => {
+  if (e.target.id === 'savemodal') document.getElementById('savemodal').hidden = true;
+});
+
+document.getElementById('setchips').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  pendingSetting = b.dataset.set ? +b.dataset.set : null;
+  document.querySelectorAll('#setchips button').forEach(x => x.classList.toggle('on', x === b));
+  document.getElementById('evfield').hidden = !pendingSetting;
+  if (!pendingSetting) {
+    pendingEvidence = null;
+    document.querySelectorAll('#evchips button').forEach(x => x.classList.remove('on'));
+  }
+});
+
+document.getElementById('evchips').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  pendingEvidence = b.dataset.ev;
+  document.querySelectorAll('#evchips button').forEach(x => x.classList.toggle('on', x === b));
+});
+
+document.getElementById('sok').addEventListener('click', () => {
+  const rec = buildRecord();
+  rec.setting = pendingSetting;
+  rec.evidence = pendingSetting ? pendingEvidence : null;
+  hist.unshift(rec);
+  if (hist.length > 500) hist.length = 500;
+  sessionId = newId('s_');            // 次の実戦へ
+  saveHist();
+  document.getElementById('savemodal').hidden = true;
+  renderHist(); renderDist();
+  toast('保存しました', () => {        // 続けてカウントを消したいとき
+    state = blank(); czLog = []; bell = { n:0, g:0 };
+    document.getElementById('games').value = '';
+    CHARS.forEach(c => setMode(c.id, 1));
+    render(); save();
+    toast('カウントを0にしました');
+  }, 'カウントを0にする');
+});
+
 /* ---------- 起動 ---------- */
 load();
+loadHist();
 buildCards();
 document.getElementById('games').value = bell.g ? bell.g : '';
 render();
