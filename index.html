@@ -280,6 +280,24 @@
   }
   .sheet .review b{color:var(--text)}
 
+  /* 結果カード */
+  .cardsheet{max-width:420px}
+  .cardsheet img{
+    width:100%;border-radius:10px;border:1px solid var(--line);display:block;margin-bottom:12px;
+  }
+  .cardsheet .hint{
+    font-size:10px;color:var(--muted);line-height:1.7;margin:0 0 11px;
+  }
+  .sheet .acts.stack{flex-direction:column}
+  .sheet .acts.stack button{width:100%}
+  .sheet .acts button.primary{background:#2f6bd8;border-color:#2f6bd8;color:#fff}
+  .sheet .acts button.ghostish{background:transparent;color:var(--muted)}
+  .histrow .detail .card{
+    margin-top:8px;margin-right:6px;background:transparent;border:1px solid rgba(59,130,246,.45);
+    color:#8fc0ff;border-radius:8px;padding:6px 12px;font-size:11px;
+    font-family:inherit;cursor:pointer;
+  }
+
   /* 確認ダイアログ（ブラウザの confirm を使わない） */
   .modal{
     position:fixed;inset:0;z-index:50;padding:24px;
@@ -500,6 +518,30 @@
     <div class="acts">
       <button id="scancel">キャンセル</button>
       <button id="sok" class="danger" style="background:#2f6bd8;border-color:#2f6bd8;color:#fff">保存する</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="savedmodal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <p>保存しました</p>
+    <p class="sub" id="savedsub"></p>
+    <div class="acts stack">
+      <button class="primary" id="mkcard">結果カードを作る</button>
+      <button id="clearafter">カウントを0にする</button>
+      <button class="ghostish" id="savedclose">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="cardmodal" hidden>
+  <div class="sheet cardsheet" role="dialog" aria-modal="true">
+    <p>結果カード</p>
+    <img id="cardimg" alt="この実戦の結果カード">
+    <p class="hint" id="cardhint">画像を長押しすると「写真に追加」できます。</p>
+    <div class="acts stack">
+      <button class="primary" id="cardshare">シェアする</button>
+      <button class="ghostish" id="cardclose">閉じる</button>
     </div>
   </div>
 </div>
@@ -732,7 +774,7 @@ function toast(msg, action, label){
   }
   el.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.hidden = true; }, undo ? 6000 : 2600);
+  toastTimer = setTimeout(() => { el.hidden = true; }, action ? 6000 : 2600);
 }
 
 /* ---------- CZ突入時のポイント分布 ---------- */
@@ -996,7 +1038,7 @@ function renderHist(){
         <div class="detail">
           ${rows}<br>
           CZ突入時のpt: ${r.czPoints.length ? r.czPoints.map(p => fmt(p)).join(', ') : 'なし'}
-          <br><button class="del" data-del="${r.id}">この実戦を削除</button>
+          <br><button class="card" data-card="${r.id}">結果カードを作る</button><button class="del" data-del="${r.id}">この実戦を削除</button>
         </div>
       </div>`;
     }).join('');
@@ -1017,6 +1059,12 @@ document.getElementById('histbtn').addEventListener('click', () => {
 });
 
 document.getElementById('histlist').addEventListener('click', e => {
+  const card = e.target.closest('[data-card]');
+  if (card) {
+    const r = hist.find(x => x.id === card.dataset.card);
+    if (r) openCardSheet(r);
+    return;
+  }
   const del = e.target.closest('[data-del]');
   if (del) {
     hist = hist.filter(r => r.id !== del.dataset.del);
@@ -1096,13 +1144,217 @@ document.getElementById('sok').addEventListener('click', () => {
   saveHist();
   document.getElementById('savemodal').hidden = true;
   renderHist(); renderDist();
-  toast('保存しました', () => {        // 続けてカウントを消したいとき
-    state = blank(); czLog = []; bell = { n:0, g:0 };
-    document.getElementById('games').value = '';
-    CHARS.forEach(c => setMode(c.id, 1));
-    render(); save();
-    toast('カウントを0にしました');
-  }, 'カウントを0にする');
+  openSavedSheet(rec);
+});
+
+/* ---------- 結果カード ---------- */
+const CARD_W = 1200, CARD_H = 630;
+const CARD_JP = '-apple-system,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif';
+
+function buildCard(r){
+  const cv = document.createElement('canvas');
+  cv.width = CARD_W; cv.height = CARD_H;
+  const g = cv.getContext('2d');
+
+  const grd = g.createLinearGradient(0, 0, CARD_W, CARD_H);
+  grd.addColorStop(0, '#1e2534');
+  grd.addColorStop(1, '#0b0d12');
+  g.fillStyle = grd;
+  g.fillRect(0, 0, CARD_W, CARD_H);
+
+  const t = recTotals(r);
+  const appear = t.no + t.glow;
+  const rate = appear ? (t.glow / appear * 100).toFixed(1) : null;
+  const avg = t.cz ? (t.pt / t.cz).toFixed(2) : null;
+  const bellRate = (r.bell && r.games) ? (r.games / r.bell).toFixed(1) : null;
+
+  g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+
+  // 見出し
+  g.fillStyle = '#8a93a6';
+  g.font = `500 24px ${CARD_JP}`;
+  g.fillText('カバネリ CZ発光カウンター', 64, 74);
+
+  g.fillStyle = '#e8ecf3';
+  g.font = `800 46px ${CARD_JP}`;
+  const d = new Date(r.date);
+  g.fillText(`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} の実戦`, 64, 130);
+
+  if (r.setting) {
+    const label = `設定${r.setting}`;
+    g.font = `800 26px ${CARD_JP}`;
+    const w = g.measureText(label).width + 36;
+    g.fillStyle = 'rgba(47,181,106,.18)';
+    g.beginPath(); g.roundRect(CARD_W - 64 - w, 90, w, 46, 23); g.fill();
+    g.strokeStyle = 'rgba(47,181,106,.6)'; g.lineWidth = 2; g.stroke();
+    g.fillStyle = '#7fe0ab';
+    g.textAlign = 'center';
+    g.fillText(label, CARD_W - 64 - w / 2, 122);
+    g.textAlign = 'left';
+  }
+
+  // 主要な数字
+  const cells = [
+    { k: '発光率',      v: rate ? rate : '—',     u: rate ? '%' : '',    c: '#7fe0ab' },
+    { k: '平均 pt/CZ',  v: avg ? avg : '—',       u: '',                 c: '#8fc0ff' },
+    { k: '総ゲーム数',  v: fmt(r.games),          u: 'G',                c: '#e8ecf3' },
+    { k: '下段ベル',    v: bellRate ? '1/' + bellRate : '—', u: '',      c: '#e8c06a' },
+  ];
+  cells.forEach((c, i) => {
+    const x = 64 + i * 272, y = 190;
+    g.fillStyle = 'rgba(255,255,255,.04)';
+    g.beginPath(); g.roundRect(x, y, 248, 150, 16); g.fill();
+    g.strokeStyle = 'rgba(255,255,255,.10)'; g.lineWidth = 2; g.stroke();
+
+    g.fillStyle = '#8a93a6';
+    g.font = `500 20px ${CARD_JP}`;
+    g.fillText(c.k, x + 22, y + 42);
+
+    g.fillStyle = c.c;
+    g.font = `800 54px ${CARD_JP}`;
+    g.fillText(c.v, x + 22, y + 110);
+    if (c.u) {
+      const w = g.measureText(c.v).width;
+      g.font = `600 24px ${CARD_JP}`;
+      g.fillStyle = '#8a93a6';
+      g.fillText(c.u, x + 28 + w, y + 110);
+    }
+  });
+
+  // キャラ別
+  const marks = [['red', '無', '#c2201a'], ['green', '生', '#178c4c'], ['blue', '銅', '#1d5fd6']];
+  marks.forEach(([id, mk, col], i) => {
+    const x = 64, y = 400 + i * 66;
+    const s = r.chars[id] || { no:0, glow:0, hi:0, cz:0 };
+
+    g.fillStyle = col;
+    g.beginPath(); g.arc(x + 22, y - 8, 22, 0, Math.PI * 2); g.fill();
+    g.fillStyle = '#fff';
+    g.font = `700 22px ${CARD_JP}`;
+    g.textAlign = 'center';
+    g.fillText(mk, x + 22, y);
+    g.textAlign = 'left';
+
+    g.fillStyle = '#cfd6e4';
+    g.font = `500 24px ${CARD_JP}`;
+    const hit = id === 'blue' ? '周期' : 'CZ';
+    g.fillText(`非発光 ${fmt(s.no)}   発光 ${fmt(s.glow)}   高確 ${fmt(s.hi || 0)}   ${hit} ${fmt(s.cz)}`, x + 60, y);
+  });
+
+  // CZ突入時のptの分布
+  if (r.czPoints && r.czPoints.length) {
+    const bx = 700, by = 380, bw = 436, bh = 170;
+    g.fillStyle = '#8a93a6';
+    g.font = `500 20px ${CARD_JP}`;
+    g.fillText(`CZ突入時のポイント（${r.czPoints.length}回）`, bx, by);
+
+    const counts = new Array(DIST_ROWS.length).fill(0);
+    r.czPoints.forEach(p => {
+      const i = distIndex(p);
+      if (i >= 0) counts[i]++;
+    });
+    const max = Math.max(1, ...counts);
+    const cw = bw / counts.length;
+    counts.forEach((n, i) => {
+      const h = Math.round(n / max * (bh - 30));
+      const x = bx + i * cw, y = by + bh - h;
+      g.fillStyle = n ? '#3b82f6' : 'rgba(255,255,255,.07)';
+      g.beginPath(); g.roundRect(x + 3, n ? y : by + bh - 4, cw - 6, n ? h : 4, 4); g.fill();
+      if (n) {
+        g.fillStyle = '#cfd6e4';
+        g.font = `600 16px ${CARD_JP}`;
+        g.textAlign = 'center';
+        g.fillText(String(n), x + cw / 2, y - 8);
+        g.textAlign = 'left';
+      }
+    });
+    g.fillStyle = '#6d7688';
+    g.font = `400 15px ${CARD_JP}`;
+    g.fillText('15pt', bx, by + bh + 24);
+    g.textAlign = 'right';
+    g.fillText('150pt〜', bx + bw, by + bh + 24);
+    g.textAlign = 'left';
+  }
+
+  g.fillStyle = '#6d7688';
+  g.font = `500 20px ${CARD_JP}`;
+  g.fillText('kabaneri-counter.pages.dev', 64, CARD_H - 34);
+
+  return cv.toDataURL('image/png');
+}
+
+let cardUrl = null;
+
+function openCardSheet(r){
+  cardUrl = buildCard(r);
+  document.getElementById('cardimg').src = cardUrl;
+  document.getElementById('cardhint').textContent =
+    (navigator.canShare && navigator.share)
+      ? 'シェアからXや写真アプリに送れます。画像の長押しでも保存できます。'
+      : '画像を長押しすると「写真に追加」できます。';
+  document.getElementById('cardmodal').hidden = false;
+}
+
+async function shareCard(){
+  if (!cardUrl) return;
+  try {
+    const blob = await (await fetch(cardUrl)).blob();
+    const file = new File([blob], 'kabaneri-result.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        text: 'カバネリ CZ発光カウンターで記録\nhttps://kabaneri-counter.pages.dev/'
+      });
+      return;
+    }
+  } catch(e) {
+    if (e && e.name === 'AbortError') return;   // ユーザーが閉じただけ
+  }
+  // 共有が使えない環境はダウンロード
+  try {
+    const a = document.createElement('a');
+    a.href = cardUrl; a.download = 'kabaneri-result.png';
+    document.body.appendChild(a); a.click(); a.remove();
+  } catch(e) {
+    toast('画像を長押しして保存してください');
+  }
+}
+
+document.getElementById('cardshare').addEventListener('click', shareCard);
+document.getElementById('cardclose').addEventListener('click', () => {
+  document.getElementById('cardmodal').hidden = true;
+});
+document.getElementById('cardmodal').addEventListener('click', e => {
+  if (e.target.id === 'cardmodal') document.getElementById('cardmodal').hidden = true;
+});
+
+/* 保存直後の案内 */
+let lastSaved = null;
+
+function openSavedSheet(r){
+  lastSaved = r;
+  const t = recTotals(r);
+  const appear = t.no + t.glow;
+  document.getElementById('savedsub').textContent =
+    `${fmt(r.games)}G ／ 発光率 ${appear ? (t.glow / appear * 100).toFixed(1) + '%' : '—'}` +
+    ` ／ 平均 ${t.cz ? (t.pt / t.cz).toFixed(2) : '—'}pt/CZ`;
+  document.getElementById('savedmodal').hidden = false;
+}
+
+document.getElementById('savedclose').addEventListener('click', () => {
+  document.getElementById('savedmodal').hidden = true;
+});
+document.getElementById('mkcard').addEventListener('click', () => {
+  document.getElementById('savedmodal').hidden = true;
+  if (lastSaved) openCardSheet(lastSaved);
+});
+document.getElementById('clearafter').addEventListener('click', () => {
+  document.getElementById('savedmodal').hidden = true;
+  state = blank(); czLog = []; bell = { n:0, g:0 };
+  document.getElementById('games').value = '';
+  CHARS.forEach(c => setMode(c.id, 1));
+  render(); save();
+  toast('カウントを0にしました');
 });
 
 /* ---------- 起動 ---------- */
