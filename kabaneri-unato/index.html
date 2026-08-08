@@ -148,7 +148,7 @@
   .blue  .now .v{color:#8fc0ff}
 
   .stats{
-    display:grid;grid-template-columns:repeat(3,1fr);
+    display:grid;grid-template-columns:repeat(2,1fr);
     border-top:1px solid var(--line);background:rgba(0,0,0,.18);
   }
   .stat{padding:10px 6px;text-align:center;border-right:1px solid var(--line)}
@@ -670,7 +670,6 @@ function buildCards(){
         <div class="v" data-v="cur">0<em>pt</em></div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="k">合計ポイント</div><div class="v" data-v="pt">0<em>pt</em></div></div>
         <div class="stat"><div class="k">発光率</div><div class="v" data-v="rate">—</div></div>
         <div class="stat"><div class="k">${c.avg}</div><div class="v" data-v="avg">—</div></div>
       </div>
@@ -832,7 +831,7 @@ document.getElementById('graphbtn').addEventListener('click', () => {
   document.getElementById('graphpanel').classList.toggle('open');
 });
 
-/* 有利区間リセット：現在のポイントを0にして、その分を合計ポイントからも差し引く。
+/* 有利区間リセット：現在のポイントを0にして、その分を通算ポイントからも差し引く。
    非発光・発光・高確発光・CZ突入の回数はそのまま残す。 */
 function dropPoints(ids){
   const snap = {};
@@ -885,7 +884,6 @@ function render(){
     set('curGlow', fmt(s.curGlow));
     set('curHi', fmt(s.curHi));
     set('cur', `${fmt(s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT)}<em>pt</em>`);
-    set('pt', `${fmt(pt)}<em>pt</em>`);
     set('rate', appear ? `${(s.glow / appear * 100).toFixed(1)}<em>%</em>` : '—');
     set('avg', s.cz ? `${(pt / s.cz).toFixed(2)}` : '—');
 
