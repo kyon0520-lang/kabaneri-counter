@@ -439,7 +439,7 @@
       <div class="tbox wide">
         <div class="k">CZ 1回あたりの平均ポイント</div>
         <div class="v" id="t-avg">—<em>pt / CZ</em></div>
-        <div class="formula">無名・生駒のポイント（非発光×1 ＋ 発光×15 ＋ 高確発光×15 － 有利区間リセットで消えた分）÷ 無名・生駒のCZ突入回数</div>
+        <div class="formula">無名・生駒のCZ突入時に記録されたポイントの平均／数え途中の現在のポイントは含みません</div>
       </div>
     </div>
   </section>
@@ -865,13 +865,19 @@ document.getElementById('curreset').addEventListener('click', resetPoints);
 
 const fmt = n => n.toLocaleString('ja-JP');
 
+/* 平均pt/CZ は、突入ボタンを押した時点で確定したポイントだけで出す。
+   まだ突入していない現在のポイントを混ぜると、分子だけ増えて平均が上振れする。 */
+function czAvg(ids){
+  const rows = czLog.filter(r => ids.includes(r.c));
+  if (!rows.length) return null;
+  return rows.reduce((a, r) => a + r.pt, 0) / rows.length;
+}
+
 function render(){
-  let T = { no:0, glow:0, cz:0, pt:0 };
+  let T = { no:0, glow:0 };
 
   CHARS.forEach(c => {
     const s = state[c.id];
-    // 有利区間リセットで消えた分(lost)を引いたものが有効ポイント
-    const pt = Math.max(0, s.no * NO_PT + s.glow * GLOW_PT + s.hi * HI_PT - s.lost);
     const appear = s.no + s.glow;      // 発光率は高確発光を含めない
     const card = document.querySelector(`.card[data-id="${c.id}"]`);
     const set = (k, html) => card.querySelector(`[data-v="${k}"]`).innerHTML = html;
@@ -885,10 +891,11 @@ function render(){
     set('curHi', fmt(s.curHi));
     set('cur', `${fmt(s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT)}<em>pt</em>`);
     set('rate', appear ? `${(s.glow / appear * 100).toFixed(1)}<em>%</em>` : '—');
-    set('avg', s.cz ? `${(pt / s.cz).toFixed(2)}` : '—');
+    const a = czAvg([c.id]);
+    set('avg', a === null ? '—' : a.toFixed(2));
 
     if (AVG_IDS.includes(c.id)) {
-      T.no += s.no; T.glow += s.glow; T.cz += s.cz; T.pt += pt;
+      T.no += s.no; T.glow += s.glow;
     }
   });
 
@@ -897,9 +904,10 @@ function render(){
     ? `${(T.glow / appearT * 100).toFixed(1)}<em>%</em>`
     : `—<em>%</em>`;
 
-  document.getElementById('t-avg').innerHTML  = T.cz
-    ? `${(T.pt / T.cz).toFixed(2)}<em>pt / CZ</em>`
-    : `—<em>pt / CZ</em>`;
+  const tAvg = czAvg(AVG_IDS);
+  document.getElementById('t-avg').innerHTML  = tAvg === null
+    ? `—<em>pt / CZ</em>`
+    : `${tAvg.toFixed(2)}<em>pt / CZ</em>`;
 
   renderDist();
   renderBell();
@@ -994,13 +1002,27 @@ function buildRecord(){
 }
 
 function recTotals(r){
-  let pt = 0, no = 0, glow = 0, cz = 0;
+  let no = 0, glow = 0, cz = 0;
   AVG_IDS.forEach(id => {
     const c = r.chars[id]; if (!c) return;
-    pt += c.no * NO_PT + c.glow * GLOW_PT + (c.hi || 0) * HI_PT - (c.lost || 0);
     no += c.no; glow += c.glow; cz += c.cz;
   });
-  return { pt: Math.max(0, pt), no, glow, cz };
+
+  // 平均は、CZ突入時に確定したポイントだけを使う（画面の出し方と揃える）。
+  // czPointsBy を持たない古い記録だけ、回数からの概算に落とす。
+  let ptSum, czN;
+  if (Array.isArray(r.czPointsBy)) {
+    const rows = r.czPointsBy.filter(x => AVG_IDS.includes(x.c));
+    ptSum = rows.reduce((a, x) => a + x.pt, 0);
+    czN = rows.length;
+  } else {
+    ptSum = AVG_IDS.reduce((a, id) => {
+      const c = r.chars[id];
+      return c ? a + c.no * NO_PT + c.glow * GLOW_PT + (c.hi || 0) * HI_PT - (c.lost || 0) : a;
+    }, 0);
+    czN = cz;
+  }
+  return { no, glow, cz, ptSum: Math.max(0, ptSum), czN };
 }
 
 const fmtDate = iso => {
@@ -1018,7 +1040,7 @@ function renderHist(){
       const t = recTotals(r);
       const appear = t.no + t.glow;
       const rate = appear ? (t.glow / appear * 100).toFixed(1) + '%' : '—';
-      const avg = t.cz ? (t.pt / t.cz).toFixed(1) : '—';
+      const avg = t.czN ? (t.ptSum / t.czN).toFixed(1) : '—';
       const setTag = r.setting
         ? `<span class="tag set">設定${r.setting}</span>`
         : `<span class="tag">設定不明</span>`;
@@ -1044,12 +1066,12 @@ function renderHist(){
   }
 
   // 通算
-  let pt = 0, no = 0, glow = 0, cz = 0;
-  hist.forEach(r => { const t = recTotals(r); pt += t.pt; no += t.no; glow += t.glow; cz += t.cz; });
+  let pt = 0, no = 0, glow = 0, czN = 0;
+  hist.forEach(r => { const t = recTotals(r); pt += t.ptSum; no += t.no; glow += t.glow; czN += t.czN; });
   const appear = no + glow;
   document.getElementById('hs-n').textContent = fmt(hist.length);
   document.getElementById('hs-rate').textContent = appear ? (glow / appear * 100).toFixed(1) + '%' : '—';
-  document.getElementById('hs-avg').textContent = cz ? (pt / cz).toFixed(2) : '—';
+  document.getElementById('hs-avg').textContent = czN ? (pt / czN).toFixed(2) : '—';
 }
 
 document.getElementById('histbtn').addEventListener('click', () => {
@@ -1079,11 +1101,10 @@ document.getElementById('histlist').addEventListener('click', e => {
 let pendingSetting = null, pendingEvidence = null;
 
 function openSaveSheet(){
-  const t = { pt:0, no:0, glow:0, cz:0 };
+  const t = { no:0, glow:0 };
   AVG_IDS.forEach(id => {
     const s = state[id];
-    t.pt += s.no * NO_PT + s.glow * GLOW_PT + s.hi * HI_PT - s.lost;
-    t.no += s.no; t.glow += s.glow; t.cz += s.cz;
+    t.no += s.no; t.glow += s.glow;
   });
   const appear = t.no + t.glow;
   const b = state.blue;
@@ -1268,7 +1289,7 @@ function buildCard(r){
   const t = recTotals(r);
   const appear = t.no + t.glow;
   const rate = appear ? (t.glow / appear * 100).toFixed(1) : null;
-  const avg = t.cz ? (t.pt / t.cz).toFixed(2) : null;
+  const avg = t.czN ? (t.ptSum / t.czN).toFixed(2) : null;
   const bellRate = (r.bell && r.games) ? (r.games / r.bell).toFixed(1) : null;
 
   g.textAlign = 'left'; g.textBaseline = 'alphabetic';
@@ -1433,7 +1454,7 @@ function openSavedSheet(r){
   const appear = t.no + t.glow;
   document.getElementById('savedsub').textContent =
     `${fmt(r.games)}G ／ 発光率 ${appear ? (t.glow / appear * 100).toFixed(1) + '%' : '—'}` +
-    ` ／ 平均 ${t.cz ? (t.pt / t.cz).toFixed(2) : '—'}pt/CZ`;
+    ` ／ 平均 ${t.czN ? (t.ptSum / t.czN).toFixed(2) : '—'}pt/CZ`;
   document.getElementById('savedmodal').hidden = false;
 }
 

@@ -303,6 +303,7 @@
     border-radius:0 10px 10px 0;padding:13px 16px;display:flex;flex-direction:column;gap:5px;
   }
   .formula b{font-size:13.5px}
+  .formula .cap{margin:0;font-size:12px;color:var(--ink-3);line-height:1.8}
   .formula code{
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
     color:var(--ink);line-height:1.9;
@@ -384,7 +385,7 @@
       <li><span class="num">5</span><span class="txt"><b>現在のポイント</b><span>前回のCZ突入からの累計。内訳（非発光/発光/高確）も出ます。</span></span></li>
       <li><span class="num">6</span><span class="txt"><b>＋／− 切り替え</b><span>−にすると、そのカードのボタンを押すたびに1つ減ります。押し間違いの修正用。</span></span></li>
       <li><span class="num">7</span><span class="txt"><b>発光率</b><span>発光 ÷（非発光＋発光）。高確発光は含みません。</span></span></li>
-      <li><span class="num">8</span><span class="txt"><b>平均 pt/CZ</b><span>通算ポイント ÷ CZ突入回数。銅藍は「平均 pt/周期」。</span></span></li>
+      <li><span class="num">8</span><span class="txt"><b>平均 pt/CZ</b><span>CZ突入を押したときのポイントの平均。<strong>数え途中の現在のポイントは入りません</strong>ので、突入を押すまで動きません。銅藍は「平均 pt/周期」。</span></span></li>
     </ul>
   </section>
 
@@ -444,12 +445,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr><th>非発光</th><td class="yes">+1</td><td class="yes">分母+1</td><td class="yes">変わる</td><td class="no">—</td></tr>
-          <tr><th>発光</th><td class="yes">+15</td><td class="yes">分子+1</td><td class="yes">変わる</td><td class="no">—</td></tr>
-          <tr><th>高確発光など</th><td class="yes">+15</td><td class="no">入らない</td><td class="yes">変わる</td><td class="no">—</td></tr>
-          <tr><th>CZ突入 / 周期突入</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="yes">回数+1</td><td class="yes">1件記録</td></tr>
-          <tr><th>現在ポイントリセット</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="yes">減った分で再計算</td><td class="no">そのまま</td></tr>
-          <tr><th>強制周期（銅藍）</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="yes">減った分で再計算</td><td class="no">記録しない</td></tr>
+          <tr><th>非発光</th><td class="yes">+1</td><td class="yes">分母+1</td><td class="no">変わらない</td><td class="no">—</td></tr>
+          <tr><th>発光</th><td class="yes">+15</td><td class="yes">分子+1</td><td class="no">変わらない</td><td class="no">—</td></tr>
+          <tr><th>高確発光など</th><td class="yes">+15</td><td class="no">入らない</td><td class="no">変わらない</td><td class="no">—</td></tr>
+          <tr><th>CZ突入 / 周期突入</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="yes">ここで更新</td><td class="yes">1件記録</td></tr>
+          <tr><th>現在ポイントリセット</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="no">そのまま</td><td class="no">そのまま</td></tr>
+          <tr><th>強制周期（銅藍）</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="no">そのまま</td><td class="no">記録しない</td></tr>
           <tr><th>下段ベル</th><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
           <tr><th>全リセット</th><td class="yes">0</td><td class="yes">0</td><td class="yes">0</td><td class="yes">全消去</td></tr>
         </tbody>
@@ -472,14 +473,15 @@
     </div>
     <div class="formula">
       <b>平均 pt/CZ</b>
-      <code>ポイント ÷ CZ突入回数</code>
+      <code>CZ突入時に記録されたポイントの合計 ÷ その記録の件数</code>
+      <span class="cap">数え途中の現在のポイントは、まだCZに届いていないので入れません。入れると分子だけ増えて、平均が実際より高く出ます。</span>
     </div>
 
     <div class="example">
-      <b>例：無名を 非発光10・発光2・高確発光1、CZ突入2回 数えた場合</b>
-      <div class="row"><span>ポイント　10×1 ＋ 2×15 ＋ 1×15</span><span>55pt</span></div>
+      <b>例：無名を 非発光10・発光2・高確発光1 数え、CZ突入を 30pt と 25pt の時点で2回押した場合</b>
       <div class="row"><span>発光率　2 ÷（10＋2）</span><span>16.7%</span></div>
-      <div class="row"><span>平均 pt/CZ　55 ÷ 2</span><span>27.50</span></div>
+      <div class="row"><span>平均 pt/CZ　(30 ＋ 25) ÷ 2</span><span>27.50</span></div>
+      <div class="row"><span>このあと数えた分は、次にCZ突入を押すまで平均に入りません</span><span>—</span></div>
     </div>
   </section>
 
@@ -492,7 +494,7 @@
     <p><strong>CZ突入を−で取り消すと、リセットされる直前の現在ポイントも戻り、分布グラフの記録も1件消えます。</strong></p>
 
     <h3>有利区間リセットが入ったとき</h3>
-    <p>画面下の <strong>現在ポイントリセット</strong> を押します。たまっていた現在ポイントは台側で消えているので、通算のポイントからも同じ分だけ差し引かれ、平均pt/CZが正しく保たれます。押した回数や発光率はそのまま残ります。</p>
+    <p>画面下の <strong>現在ポイントリセット</strong> を押します。たまっていた現在ポイントが0に戻ります。その分はCZに届かずに消えたポイントなので平均pt/CZには最初から入っておらず、平均・発光率・押した回数はどれも変わりません。</p>
 
     <div class="shot">
       <div class="bar">
