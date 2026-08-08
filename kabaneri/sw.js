@@ -1,44 +1,14 @@
-// オフラインでも起動できるようにするサービスワーカー
-// index.html を更新したら CACHE の数字を上げること（古いキャッシュが残るのを防ぐ）
-const CACHE = 'kabaneri-counter-v11';
-
-const ASSETS = [
-  './',
-  './index.html',
-  './manual.html',
-  './manifest.webmanifest',
-  './icon-192.png',
-  './icon-512.png',
-  './apple-touch-icon.png'
-];
-
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE)
-      .then(c => c.addAll(ASSETS))
-      .then(() => self.skipWaiting())
-  );
-});
+// 旧URL（/kabaneri/）に残っているサービスワーカーを自分で片づけるためのファイル。
+// ここを普通のリダイレクトにするとブラウザが更新を拒否して古い版が残り続けるので、
+// 実体のあるJSとして置いておく必要がある。
+self.addEventListener('install', () => self.skipWaiting());
 
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
-});
-
-// まずネットワーク、だめならキャッシュ（ホールで圏外でも起動できる）
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-
-  e.respondWith(
-    fetch(e.request)
-      .then(res => {
-        const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
-        return res;
-      })
-      .catch(() => caches.match(e.request).then(hit => hit || caches.match('./index.html')))
+      .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.matchAll({ type: 'window' }))
+      .then(cs => cs.forEach(c => c.navigate('/kabaneri-unato/')))
   );
 });

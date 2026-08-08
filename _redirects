@@ -1,0 +1,9 @@
+# 旧URL（/kabaneri/）から新URL（/kabaneri-unato/）への転送。
+# index.html と sw.js は実体を置いてある（サービスワーカーの後片づけが必要なため）。
+/kabaneri/manual.html      /kabaneri-unato/manual.html      301
+/kabaneri/manual           /kabaneri-unato/manual           301
+/kabaneri/manifest.webmanifest  /kabaneri-unato/manifest.webmanifest  301
+/kabaneri/ogp.png          /kabaneri-unato/ogp.png          301
+/kabaneri/icon-192.png     /kabaneri-unato/icon-192.png     301
+/kabaneri/icon-512.png     /kabaneri-unato/icon-512.png     301
+/kabaneri/apple-touch-icon.png  /kabaneri-unato/apple-touch-icon.png  301

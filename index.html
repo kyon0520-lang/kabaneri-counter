@@ -11,10 +11,10 @@
 <meta property="og:title" content="みんなのスロット">
 <meta property="og:description" content="打ちながら数えるパチスロ実戦カウンター。その場で発光率と平均ポイントが出ます。">
 <meta property="og:url" content="https://minnanoslot.com/">
-<meta property="og:image" content="https://minnanoslot.com/kabaneri/ogp.png">
+<meta property="og:image" content="https://minnanoslot.com/kabaneri-unato/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="./kabaneri/icon-192.png">
-<link rel="apple-touch-icon" href="./kabaneri/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="./kabaneri-unato/icon-192.png">
+<link rel="apple-touch-icon" href="./kabaneri-unato/apple-touch-icon.png">
 <style>
   :root{
     --bg:#0d0f14; --panel:#171b23; --panel2:#1f242e; --line:#2b3240;
@@ -80,7 +80,7 @@
   <section>
     <h2>カウンター</h2>
     <div class="list">
-      <a class="machine" href="./kabaneri/">
+      <a class="machine" href="./kabaneri-unato/">
         <span class="marks">
           <span class="r">無</span><span class="g">生</span><span class="b">銅</span>
         </span>
@@ -110,12 +110,12 @@
 </div>
 
 <script>
-// 旧構成（サイト直下）で登録されたサービスワーカーが残っていると
+// 旧構成（サイト直下・/kabaneri/）で登録されたサービスワーカーが残っていると
 // 古い画面が表示され続けるため、ここで解除しておく
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(rs => {
     rs.forEach(r => {
-      if (r.scope.endsWith('/') && !r.scope.includes('/kabaneri/')) r.unregister();
+      if (!r.scope.includes('/kabaneri-unato/')) r.unregister();
     });
   }).catch(() => {});
 }

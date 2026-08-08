@@ -4,23 +4,29 @@
 1機種目として、スマスロ 甲鉄城のカバネリ 海門決戦のCZ発光カウンターを公開しています。
 
 - サイト: https://minnanoslot.com/
-- カバネリカウンター: https://minnanoslot.com/kabaneri/
-- 取扱説明書: https://minnanoslot.com/kabaneri/manual.html
+- カバネリカウンター: https://minnanoslot.com/kabaneri-unato/
+- 取扱説明書: https://minnanoslot.com/kabaneri-unato/manual.html
 
 ## ファイル構成
 
 | ファイル | 役割 |
 |---|---|
 | `index.html` | サイトのトップページ（機種の一覧） |
-| `kabaneri/index.html` | カバネリカウンター本体（これ1つで動きます） |
-| `kabaneri/manual.html` | 取扱説明書 |
-| `kabaneri/manifest.webmanifest` | アプリ名「カバネリカウンター」・全画面表示・アイコンの設定 |
-| `kabaneri/sw.js` | オフラインで動かす仕組み（圏外のホールでも起動できます） |
-| `kabaneri/apple-touch-icon.png` | iPhoneのホーム画面アイコン（180px） |
-| `kabaneri/icon-192.png` / `icon-512.png` | Android・PWA用アイコン |
-| `kabaneri/ogp.png` | Xでシェアしたときに出る画像（1200×630） |
+| `kabaneri-unato/index.html` | カバネリカウンター本体（これ1つで動きます） |
+| `kabaneri-unato/manual.html` | 取扱説明書 |
+| `kabaneri-unato/manifest.webmanifest` | アプリ名「カバネリカウンター」・全画面表示・アイコンの設定 |
+| `kabaneri-unato/sw.js` | オフラインで動かす仕組み（圏外のホールでも起動できます） |
+| `kabaneri-unato/apple-touch-icon.png` | iPhoneのホーム画面アイコン（180px） |
+| `kabaneri-unato/icon-192.png` / `icon-512.png` | Android・PWA用アイコン |
+| `kabaneri-unato/ogp.png` | Xでシェアしたときに出る画像（1200×630） |
 
 機種を増やすときは `機種名/` のフォルダを作り、トップページの一覧にリンクを足します。
+フォルダ名はシリーズ名だけでなく機種まで区別できる形にします（例: `kabaneri-unato` = カバネリ 海門決戦）。
+
+`kabaneri/` は旧URLで、新URLへ転送するためだけに残しています。
+`index.html` と `sw.js` は実体を置く必要があります（旧サービスワーカーの後片づけのため、
+リダイレクトにするとブラウザが更新を拒否して古い版が残り続けます）。
+残りの転送は `_redirects` に書いてあります。
 
 ## 編集のしかた
 
@@ -29,7 +35,7 @@
 ここのファイルはそこから自動生成されます（PWA・OGP・アクセス解析のタグが足されます）。
 
 1. `/Users/Shared/kabaneri-counter/index.html` を編集
-2. `kabaneri/sw.js` の `const CACHE = 'kabaneri-counter-v11';` の**数字を1つ上げる**
+2. `kabaneri-unato/sw.js` の `const CACHE = 'kabaneri-counter-v12';` の**数字を1つ上げる**
    ※ここを上げないと、古い画面がキャッシュされたままになります
 3. 生成する
 
