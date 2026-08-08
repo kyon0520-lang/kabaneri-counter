@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0d0f14">
+<meta name="theme-color" content="#0d1c2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="カバネリカウンター">
@@ -23,12 +23,12 @@
 <title>カバネリ CZ発光カウンター</title>
 <style>
   :root{
-    --bg:#0d0f14;
-    --panel:#171b23;
-    --panel2:#1f242e;
-    --line:#2b3240;
-    --text:#e8ecf3;
-    --muted:#8a93a6;
+    --bg:#0d1c2e;
+    --panel:#16283f;
+    --panel2:#1e3049;
+    --line:#2c4560;
+    --text:#e6f0fa;
+    --muted:#93aac4;
     --red:#e2453c;
     --green:#2fb56a;
     --blue:#3b82f6;
@@ -45,7 +45,7 @@
 
   header{
     position:sticky;top:0;z-index:10;
-    background:rgba(13,15,20,.92);
+    background:rgba(13,28,46,.92);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
     padding:calc(12px + env(safe-area-inset-top)) 16px 10px;
@@ -55,7 +55,7 @@
   h1{font-size:15px;margin:0;letter-spacing:.02em;flex:1;min-width:0}
   h1 small{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
   .ghost{
-    background:rgba(31,36,46,.6);border:1px solid var(--line);color:var(--muted);
+    background:rgba(30,48,73,.6);border:1px solid var(--line);color:var(--muted);
     border-radius:8px;padding:8px 10px;font-size:12px;cursor:pointer;
     white-space:nowrap;flex:0 0 auto;
   }
@@ -64,7 +64,7 @@
   main{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
 
   .card{
-    background:rgba(23,27,35,.82);backdrop-filter:blur(6px);
+    background:rgba(22,40,63,.82);backdrop-filter:blur(6px);
     border:1px solid var(--line);border-radius:14px;
     overflow:hidden;
   }
@@ -132,7 +132,7 @@
   .now{
     display:flex;align-items:center;justify-content:space-between;gap:10px;
     margin:0 14px 12px;padding:10px 14px;
-    background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:11px;
+    background:rgba(6,18,32,.42);border:1px solid var(--line);border-radius:11px;
   }
   .now .k{font-size:11px;color:var(--muted);line-height:1.5}
   .now .k small{display:block;font-size:9px;opacity:.85}
@@ -159,7 +159,7 @@
   .stat .v em{font-style:normal;font-size:11px;color:var(--muted);font-weight:400;margin-left:2px}
 
   .total{
-    background:linear-gradient(180deg,rgba(28,34,48,.85),rgba(23,27,35,.85));
+    background:linear-gradient(180deg,rgba(28,50,78,.85),rgba(20,37,58,.85));
     backdrop-filter:blur(6px);
     border:1px solid var(--line);border-radius:14px;padding:14px;
   }
@@ -193,7 +193,7 @@
   table.dist td.range{color:var(--muted);white-space:nowrap}
   table.dist td.cnt{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
   table.dist tr.hit td{background:rgba(59,130,246,.07)}
-  table.dist tfoot td{background:rgba(0,0,0,.28);font-weight:700}
+  table.dist tfoot td{background:rgba(6,18,32,.42);font-weight:700}
   td.dbar{padding:4px 6px}
   .barwrap{display:flex;align-items:center;gap:6px}
   .bartrack{
@@ -303,7 +303,7 @@
   /* 確認ダイアログ（ブラウザの confirm を使わない） */
   .modal{
     position:fixed;inset:0;z-index:50;padding:24px;
-    background:rgba(6,8,12,.72);backdrop-filter:blur(3px);
+    background:rgba(6,16,28,.72);backdrop-filter:blur(3px);
     display:grid;place-items:center;
   }
   .modal[hidden]{display:none}
@@ -323,7 +323,7 @@
 
   .toast{
     position:fixed;left:0;right:0;bottom:88px;margin:0 auto;width:max-content;z-index:60;
-    background:rgba(31,36,46,.97);border:1px solid var(--line);color:var(--text);
+    background:rgba(30,48,73,.97);border:1px solid var(--line);color:var(--text);
     padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.6;
     max-width:94%;text-align:center;
     display:flex;align-items:center;justify-content:center;gap:8px;
@@ -340,7 +340,7 @@
   /* 下段ベル（画面下に固定） */
   .bar{
     position:fixed;left:0;right:0;bottom:0;z-index:20;
-    background:rgba(13,15,20,.94);backdrop-filter:blur(8px);
+    background:rgba(11,24,40,.94);backdrop-filter:blur(8px);
     border-top:1px solid var(--line);
     padding:9px 16px calc(9px + env(safe-area-inset-bottom));
     display:flex;gap:12px;align-items:center;justify-content:center;
