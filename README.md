@@ -1,78 +1,66 @@
-# カバネリ CZ発光カウンター — GitHub Pages 公開手順
+# カバネリ CZ発光カウンター
 
-このフォルダの中身をそのまま GitHub のリポジトリに置けば、iPhoneでアプリのように使えます。
+スマスロ 甲鉄城のカバネリのCZ抽選を、その場で押して数えるためのカウンターです。
+無名・生駒・銅藍の非発光／発光／高確発光を数えると、発光率とCZ 1回あたりの平均ポイントが自動で出ます。
 
-## 入っているもの
+- 公開URL: https://kabaneri-counter.pages.dev/
+- 取扱説明書: https://kabaneri-counter.pages.dev/manual.html
+
+## ファイル
 
 | ファイル | 役割 |
 |---|---|
 | `index.html` | アプリ本体（これ1つで動きます） |
+| `manual.html` | 取扱説明書 |
 | `manifest.webmanifest` | アプリ名「カバネリカウンター」・全画面表示・アイコンの設定 |
-| `sw.js` | オフラインで動かすための仕組み（圏外のホールでも起動できます） |
+| `sw.js` | オフラインで動かす仕組み（圏外のホールでも起動できます） |
 | `apple-touch-icon.png` | iPhoneのホーム画面アイコン（180px） |
 | `icon-192.png` / `icon-512.png` | Android・PWA用アイコン |
 | `ogp.png` | Xでシェアしたときに出る画像（1200×630） |
 
----
+## 公開のしかた（Cloudflare Pages）
 
-## 手順
+このリポジトリを Cloudflare Pages に接続すると、`git push` するだけで自動的に公開されます。
 
-### 1. リポジトリを作る
+### 初回だけ必要な設定
 
-1. https://github.com/new を開く（アカウントがなければ先に作成）
-2. **Repository name** に `kabaneri-counter` と入力
-3. **Public** を選ぶ（Privateだと Pages が使えません）
-4. 「Create repository」
+1. https://dash.cloudflare.com/ でアカウントを作成（メール認証のみ・無料）
+2. 左メニューの **Workers & Pages** → **Create** → **Pages** タブ → **Connect to Git**
+3. GitHubとの連携を許可し、`kabaneri-counter` リポジトリを選択
+4. ビルド設定は以下のとおり（静的ファイルだけなのでビルド不要）
 
-### 2. ファイルをアップロードする
+   | 項目 | 値 |
+   |---|---|
+   | Project name | `kabaneri-counter` |
+   | Production branch | `main` |
+   | Framework preset | None |
+   | Build command | （空欄） |
+   | Build output directory | `/` |
 
-1. 作成後の画面で **uploading an existing file** をクリック
-2. Finderで `/Users/Shared/kabaneri-counter/github-pages/` を開き、**中のファイルを全部**ドラッグ＆ドロップ
-   （フォルダごとではなく、中身だけ。README.md は入れても入れなくてもOK）
-3. 下の「Commit changes」を押す
+5. **Save and Deploy** → 1〜2分で `https://kabaneri-counter.pages.dev/` が公開されます
 
-### 3. Pages を有効にする
+※ プロジェクト名を変えると公開URLも変わります。`index.html` のOGP設定（`og:url` / `og:image`）が `kabaneri-counter.pages.dev` を指しているので、別名にした場合はそこも直してください。
 
-1. リポジトリの **Settings** → 左メニューの **Pages**
-2. **Source** を `Deploy from a branch`、**Branch** を `main` / `/ (root)` にして Save
-3. 1〜2分待つと、同じ画面に公開URLが出ます
+### 2回目以降
 
-```
-https://あなたのユーザー名.github.io/kabaneri-counter/
-```
-
-### 4. X用の画像URLを直す（シェアする場合のみ）
-
-`index.html` の中に `USERNAME` という文字が3か所あります。ここを自分のGitHubユーザー名に置き換えてください。Xのカード画像がこのURLを見に行くためです。
-
-Macで一括置換するなら、ターミナルで（`あなたのユーザー名` の部分だけ書き換えて実行）:
+`main` ブランチに push すれば自動で反映されます。
 
 ```bash
-sed -i '' 's/USERNAME/あなたのユーザー名/g' /Users/Shared/kabaneri-counter/github-pages/index.html
+git add -A && git commit -m "変更内容" && git push
 ```
 
-置き換えた `index.html` をGitHubに再アップロードすれば完了です。
-（アプリの動作自体には影響しないので、シェアしないなら放置で問題ありません）
+## アクセス解析
 
-### 5. iPhoneでアプリにする
+Cloudflare Pages のプロジェクト設定から **Web Analytics** を有効にすると、日別のアクセス数・参照元が見られます。Cookieを使わないため、同意バナーは不要です。
 
-1. Safariで公開URLを開く
-2. 共有ボタン → **ホーム画面に追加**
-3. 名前が「カバネリカウンター」、アイコンが専用のものになっていることを確認して「追加」
-
-ホーム画面から起動すると、Safariのアドレスバーやタブが出ない全画面表示になります。一度開いておけば、次からは**圏外でも起動できます**。
-
----
-
-## あとから修正したいとき
+## 修正するとき
 
 1. `index.html` を編集
-2. `sw.js` の1行目あたりにある `const CACHE = 'kabaneri-counter-v1';` の **数字を1つ上げる**（`v2`, `v3`…）
+2. `sw.js` の `const CACHE = 'kabaneri-counter-v1';` の**数字を1つ上げる**（`v2`, `v3`…）
    ※ここを上げないと、古い画面がキャッシュされたままになります
-3. GitHubで対象ファイルを開き、鉛筆アイコン → 内容を貼り替え → Commit
+3. commit して push
 
 ## 注意
 
-- 公開URLは、知っている人なら誰でも開けます（検索には出にくいですが、非公開ではありません）
 - カウントのデータは**開いた人それぞれの端末**に保存されます。他人の操作が自分の数字に影響することはありません
-- 背景に使う画像も端末内に保存されるだけで、どこにも送信されません
+- 数値は自分で数えた記録にもとづくもので、設定を保証するものではありません
