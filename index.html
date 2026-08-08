@@ -1154,6 +1154,107 @@ document.getElementById('sok').addEventListener('click', () => {
 const CARD_W = 1080, CARD_H = 1350;
 const CARD_JP = '-apple-system,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif';
 
+/* 設定バッジ（トロフィーの色に合わせる） */
+function roundRectPath(g, x, y, w, h, r){
+  g.beginPath();
+  g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r);
+  g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r);
+  g.arcTo(x, y, x + w, y, r);
+  g.closePath();
+}
+
+function drawSettingBadge(g, setting, right, top){
+  const label = `設定${setting}`;
+  const fs = 44;
+  g.font = `800 ${fs}px ${CARD_JP}`;
+  const w = g.measureText(label).width + 66;
+  const h = 82, r = h / 2;
+  const x = right - w, y = top;
+
+  roundRectPath(g, x, y, w, h, r);
+  g.save();
+  g.clip();
+
+  let stroke = 'rgba(255,255,255,.25)', text = '#e8ecf3', shadow = false;
+
+  if (setting === 1) {                      // 特になし
+    g.fillStyle = 'rgba(255,255,255,.06)';
+    g.fillRect(x, y, w, h);
+    stroke = 'rgba(255,255,255,.20)';
+    text = '#aab3c4';
+
+  } else if (setting === 2) {               // 銅
+    const gd = g.createLinearGradient(x, y, x + w, y + h);
+    gd.addColorStop(0, '#d98d55'); gd.addColorStop(.5, '#a35a26'); gd.addColorStop(1, '#7c3f18');
+    g.fillStyle = gd; g.fillRect(x, y, w, h);
+    stroke = 'rgba(255,214,170,.7)'; text = '#fff'; shadow = true;
+
+  } else if (setting === 3) {               // 銀
+    const gd = g.createLinearGradient(x, y, x + w, y + h);
+    gd.addColorStop(0, '#f2f5f8'); gd.addColorStop(.45, '#aeb6c0'); gd.addColorStop(1, '#79828e');
+    g.fillStyle = gd; g.fillRect(x, y, w, h);
+    stroke = 'rgba(255,255,255,.85)'; text = '#2a3240';
+
+  } else if (setting === 4) {               // 金
+    const gd = g.createLinearGradient(x, y, x + w, y + h);
+    gd.addColorStop(0, '#ffe487'); gd.addColorStop(.45, '#e8b52f'); gd.addColorStop(1, '#a3760f');
+    g.fillStyle = gd; g.fillRect(x, y, w, h);
+    stroke = 'rgba(255,236,168,.9)'; text = '#4a3400';
+
+  } else if (setting === 5) {               // キリン柄
+    g.fillStyle = '#e8b44a'; g.fillRect(x, y, w, h);
+    g.fillStyle = '#8a5320';
+    const spots = [
+      [.08,.18,.16,.30],[.26,.10,.14,.26],[.42,.20,.17,.32],[.61,.09,.15,.28],
+      [.78,.20,.16,.30],[.14,.58,.16,.30],[.33,.62,.15,.28],[.52,.55,.17,.32],
+      [.71,.62,.15,.28],[.88,.55,.13,.26]
+    ];
+    spots.forEach(([px, py, pw, ph]) => {
+      const cx = x + px * w, cy = y + py * h, sw = pw * w * .8, sh = ph * h;
+      g.beginPath();
+      g.moveTo(cx, cy);
+      g.lineTo(cx + sw * .62, cy + sh * .18);
+      g.lineTo(cx + sw, cy + sh * .70);
+      g.lineTo(cx + sw * .38, cy + sh);
+      g.lineTo(cx - sw * .12, cy + sh * .55);
+      g.closePath();
+      g.fill();
+    });
+    stroke = 'rgba(255,236,180,.9)'; text = '#fff'; shadow = true;
+
+  } else if (setting === 6) {               // レインボー
+    const gd = g.createLinearGradient(x, y, x + w, y);
+    gd.addColorStop(0.00, '#ff5b5b');
+    gd.addColorStop(0.18, '#ffa23a');
+    gd.addColorStop(0.36, '#ffe14d');
+    gd.addColorStop(0.54, '#5ddb7a');
+    gd.addColorStop(0.72, '#4aa8ff');
+    gd.addColorStop(0.88, '#8a6bff');
+    gd.addColorStop(1.00, '#ff6bd6');
+    g.fillStyle = gd; g.fillRect(x, y, w, h);
+    stroke = 'rgba(255,255,255,.9)'; text = '#fff'; shadow = true;
+  }
+
+  g.restore();
+
+  roundRectPath(g, x, y, w, h, r);
+  g.strokeStyle = stroke; g.lineWidth = 3; g.stroke();
+
+  g.textAlign = 'center';
+  g.font = `800 ${fs}px ${CARD_JP}`;
+  if (shadow) {
+    g.shadowColor = 'rgba(0,0,0,.55)';
+    g.shadowBlur = 8;
+    g.shadowOffsetY = 2;
+  }
+  g.fillStyle = text;
+  g.fillText(label, x + w / 2, y + h / 2 + fs * 0.36);
+  g.shadowColor = 'transparent'; g.shadowBlur = 0; g.shadowOffsetY = 0;
+  g.textAlign = 'left';
+}
+
 function buildCard(r){
   const cv = document.createElement('canvas');
   cv.width = CARD_W; cv.height = CARD_H;
@@ -1185,18 +1286,7 @@ function buildCard(r){
   g.font = `800 52px ${CARD_JP}`;
   g.fillText(`${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} の実戦`, M, 162);
 
-  if (r.setting) {
-    const label = `設定${r.setting}`;
-    g.font = `800 30px ${CARD_JP}`;
-    const w = g.measureText(label).width + 44;
-    g.fillStyle = 'rgba(47,181,106,.18)';
-    g.beginPath(); g.roundRect(CARD_W - M - w, 112, w, 56, 28); g.fill();
-    g.strokeStyle = 'rgba(47,181,106,.65)'; g.lineWidth = 2; g.stroke();
-    g.fillStyle = '#7fe0ab';
-    g.textAlign = 'center';
-    g.fillText(label, CARD_W - M - w / 2, 151);
-    g.textAlign = 'left';
-  }
+  if (r.setting) drawSettingBadge(g, r.setting, CARD_W - M, 96);
 
   // 主要な数字（2×2）
   const cells = [
