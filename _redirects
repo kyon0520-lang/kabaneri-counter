@@ -1,3 +1,6 @@
+# 原本（src/）は配信しない。リポジトリに置いてあるだけで、公開対象ではない。
+/src/*                     /                                 301
+
 # 旧URL（/kabaneri/）から新URL（/kabaneri-unato/）への転送。
 # index.html と sw.js は実体を置いてある（サービスワーカーの後片づけが必要なため）。
 /kabaneri/manual.html      /kabaneri-unato/manual.html      301

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カバネリカウンター アイコン / シェア画像</title>
+<style>
+  :root{--bg:#0d0f14;--panel:#171b23;--line:#2b3240;--text:#e8ecf3;--muted:#8a93a6}
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    padding:28px 20px 60px;
+  }
+  .wrap{max-width:660px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+  section{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px;
+  }
+  h1{font-size:16px;margin:0;text-align:center}
+  h2{font-size:13px;margin:0;color:var(--muted);font-weight:600;letter-spacing:.04em}
+  img.icon{width:180px;height:180px;border-radius:40px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  img.ogp{width:100%;max-width:600px;border-radius:10px;border:1px solid var(--line)}
+  a.dl{
+    background:#2f6bd8;color:#fff;text-decoration:none;font-size:14px;font-weight:600;
+    padding:12px 20px;border-radius:10px;
+  }
+  p{font-size:12px;color:var(--muted);line-height:1.9;margin:0;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>カバネリカウンター アイコン / シェア画像</h1>
+
+  <section>
+    <h2>ホーム画面アイコン（512px）</h2>
+    <img class="icon" id="icon" alt="カバネリカウンターのアイコン">
+    <a class="dl" id="dlIcon" download="kabaneri-icon.png">アイコンを保存</a>
+    <p>
+      iPhone: 画像を長押し →「写真に追加」／ Mac: 右クリック →「イメージを保存」<br>
+      ショートカットApp でホーム画面に追加するとき、これをアイコンに指定します。
+    </p>
+  </section>
+
+  <section>
+    <h2>Xに添付するシェア画像（1200×630）</h2>
+    <img class="ogp" id="ogp" alt="カバネリカウンターのシェア画像">
+    <a class="dl" id="dlOgp" download="kabaneri-share.png">シェア画像を保存</a>
+    <p>
+      投稿にこの画像を添付すると、リンクのカードの代わりにこちらが表示されます。<br>
+      本文にURLを書き、画像を1枚添付するだけです。
+    </p>
+  </section>
+</div>
+
+<script>
+const JP = '-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif';
+const DOTS = [['#e2453c','無'], ['#2fb56a','生'], ['#3b82f6','銅']];
+
+// ホーム画面アイコン（正方形）
+function buildIcon(S){
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = S;
+  const g = cv.getContext('2d');
+  const k = S / 180;
+
+  const grd = g.createLinearGradient(0, 0, S, S);
+  grd.addColorStop(0, '#242c3c');
+  grd.addColorStop(1, '#0d0f14');
+  g.fillStyle = grd;
+  g.fillRect(0, 0, S, S);
+
+  DOTS.forEach(([col], i) => {
+    g.fillStyle = col;
+    g.beginPath(); g.arc((54 + i * 36) * k, 52 * k, 13 * k, 0, Math.PI * 2); g.fill();
+  });
+
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = '#e8ecf3';
+  g.font = `bold ${42 * k}px ${JP}`;
+  g.fillText('カバネリ', S / 2, 106 * k);
+  g.fillStyle = '#aab3c4';
+  g.font = `bold ${30 * k}px ${JP}`;
+  g.fillText('カウンター', S / 2, 145 * k);
+
+  return cv.toDataURL('image/png');
+}
+
+// Xに添付する横長画像
+function buildOgp(){
+  const W = 1200, H = 630;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const g = cv.getContext('2d');
+
+  const grd = g.createLinearGradient(0, 0, W, H);
+  grd.addColorStop(0, '#1e2534');
+  grd.addColorStop(1, '#0d0f14');
+  g.fillStyle = grd;
+  g.fillRect(0, 0, W, H);
+
+  // 3キャラのアイコン
+  DOTS.forEach(([col, mark], i) => {
+    const x = 250 + i * 175, y = 250, r = 62;
+    const cg = g.createLinearGradient(x - r, y - r, x + r, y + r);
+    cg.addColorStop(0, '#ffffff33');
+    cg.addColorStop(0, col);
+    g.fillStyle = col;
+    g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+    g.fillStyle = '#fff';
+    g.font = `bold 58px ${JP}`;
+    g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText(mark, x, y + 3);
+  });
+
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = '#e8ecf3';
+  g.font = `bold 64px ${JP}`;
+  g.fillText('カバネリ CZ発光カウンター', W / 2, 400);
+
+  g.fillStyle = '#8fc0ff';
+  g.font = `600 34px ${JP}`;
+  g.fillText('非発光 1pt ／ 発光 15pt ／ CZ平均ptを自動計算', W / 2, 470);
+
+  g.strokeStyle = '#2b3240';
+  g.lineWidth = 2;
+  g.beginPath(); g.moveTo(360, 528); g.lineTo(840, 528); g.stroke();
+
+  g.fillStyle = '#8a93a6';
+  g.font = `500 26px ${JP}`;
+  g.fillText('無名・生駒・銅藍を数えるだけ', W / 2, 566);
+
+  return cv.toDataURL('image/png');
+}
+
+const iconUrl = buildIcon(512);
+document.getElementById('icon').src = iconUrl;
+document.getElementById('dlIcon').href = iconUrl;
+
+const ogpUrl = buildOgp();
+document.getElementById('ogp').src = ogpUrl;
+document.getElementById('dlOgp').href = ogpUrl;
+</script>
+</body>
+</html>
