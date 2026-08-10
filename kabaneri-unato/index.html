@@ -34,6 +34,8 @@
     --blue:#3b82f6;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  /* display 指定のある要素にも hidden を効かせる */
+  [hidden]{display:none !important}
   html{background:var(--bg)}
   body{
     margin:0;
@@ -350,6 +352,19 @@
     font-family:inherit;font-size:11.5px;padding:9px 2px;cursor:pointer;white-space:nowrap;
   }
   .wtabs button.on{background:#2f6bd8;color:#fff;font-weight:700}
+  /* 記録と当選率の切り替え */
+  .wview{display:flex;gap:0;border-bottom:1px solid var(--line)}
+  .wview button{
+    flex:1;background:none;border:0;border-bottom:2px solid transparent;
+    color:var(--muted);font-family:inherit;font-size:12.5px;padding:10px 2px;cursor:pointer;
+  }
+  .wview button.on{color:var(--text);font-weight:700;border-bottom-color:#2f6bd8}
+  .winopen{
+    background:var(--panel2);border:1px dashed var(--line);border-radius:10px;
+    color:var(--text);font-family:inherit;font-size:13px;padding:12px;cursor:pointer;
+  }
+  /* 一覧は溜まっても高さを取りすぎないよう、この中でスクロールさせる */
+  .winlist{max-height:40vh;overflow-y:auto}
   .winform{display:flex;flex-direction:column;gap:7px}
   .wlbl{font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
   .winform input{
@@ -392,6 +407,7 @@
     font-family:inherit;cursor:pointer;
   }
   .winlist{display:flex;flex-direction:column;gap:5px}
+  .winstats{padding-bottom:8px}
   .winrow{
     display:flex;align-items:center;gap:8px;font-size:12px;
     background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;
@@ -706,7 +722,14 @@
     <button data-mode="reset">リセット後</button>
   </div>
 
-  <div class="winform">
+  <div class="wview" id="winview">
+    <button data-view="log" class="on">記録</button>
+    <button data-view="stats">当選率</button>
+  </div>
+
+  <button class="winopen" id="winopen" hidden>＋ 当選を追加</button>
+
+  <div class="winform" id="winform">
     <label class="wlbl">当選G数</label>
     <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="300000">
 
@@ -733,7 +756,7 @@
   </div>
 
   <div class="winlist" id="winlist"></div>
-  <div class="winstats" id="winstats"></div>
+  <div class="winstats" id="winstats" hidden></div>
 </aside>
 <button class="winhandle" id="winhandle" aria-label="当選履歴を開く">当<br>選</button>
 
@@ -1638,6 +1661,18 @@ memoScrim.addEventListener('click', closeMemo);
 const winPanel = document.getElementById('winpanel');
 const winScrim = document.getElementById('winscrim');
 let pendCycle = null, pendCz = null, pendBonus = null;
+let winView = 'log';      // 'log' = 記録 / 'stats' = 当選率
+let formOpen = true;      // 入力欄を開いているか
+
+function applyWinView(){
+  const log = winView === 'log';
+  document.getElementById('winform').hidden = !log || !formOpen;
+  document.getElementById('winopen').hidden = !log || formOpen;
+  document.getElementById('winlist').hidden = !log;
+  document.getElementById('winstats').hidden = log;
+  document.querySelectorAll('#winview button')
+    .forEach(b => b.classList.toggle('on', b.dataset.view === winView));
+}
 
 function openWin(){
   winPanel.classList.add('open');
@@ -1694,6 +1729,7 @@ document.getElementById('winadd').addEventListener('click', () => {
   el.value = '';
   pendCycle = pendCz = pendBonus = null;
   winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
+  formOpen = false; applyWinView();
   toast('追加しました');
 });
 
@@ -1705,11 +1741,23 @@ document.getElementById('winlist').addEventListener('click', e => {
   save(); renderWins();
 });
 
+document.getElementById('winview').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  winView = b.dataset.view;
+  applyWinView();
+});
+
+document.getElementById('winopen').addEventListener('click', () => {
+  formOpen = true; applyWinView();
+  document.getElementById('wing').focus();
+});
+
 document.getElementById('wintabs').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   winMode = b.dataset.mode;
   document.querySelectorAll('#wintabs button').forEach(x => x.classList.toggle('on', x === b));
   save(); renderWins();
+  applyWinView();
 });
 
 /* 状態によっては5・6周期が無いので、選べないようにする */
@@ -1742,6 +1790,8 @@ function renderWins(){
       }).join('')
     : `<div class="winempty">${WIN_MODES[winMode]}の記録はまだありません</div>`;
 
+  if (!shown.length) formOpen = true;
+  applyWinView();
   renderWinStats(shown);
 }
 
@@ -2102,6 +2152,7 @@ render();
 document.querySelectorAll('#wintabs button')
   .forEach(b => b.classList.toggle('on', b.dataset.mode === winMode));
 renderWins();
+applyWinView();
 setTimeout(flushUnsent, 1200);
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
