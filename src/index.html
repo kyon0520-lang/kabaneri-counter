@@ -211,15 +211,11 @@
   .histpanel.open{display:flex}
   .histpanel h2{margin:0;font-size:13px;font-weight:700}
   .histpanel .note{margin:0;font-size:10px;color:var(--muted);line-height:1.6}
-  .histsum{
-    display:grid;grid-template-columns:1fr;gap:8px;
+  .histpanel h2 .cnt{
+    margin-left:8px;font-size:10px;font-weight:600;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:2px 8px;
+    font-variant-numeric:tabular-nums;
   }
-  .histsum div{
-    background:var(--panel2);border:1px solid var(--line);border-radius:10px;
-    padding:8px 6px;text-align:center;
-  }
-  .histsum .k{font-size:9px;color:var(--muted)}
-  .histsum .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
   .histlist{display:flex;flex-direction:column;gap:6px;max-height:70vh;overflow-y:auto}
   /* 開いた行は結果カードが入るので、上限で切れないよう広めに取る */
   .histrow img.hcard{
@@ -430,11 +426,8 @@
   </section>
 
   <section class="histpanel" id="histpanel">
-    <h2>実戦履歴</h2>
-    <div class="histsum">
-      <div><div class="k">実戦数</div><div class="v" id="hs-n">0</div></div>
-    </div>
-    <div class="histlist" id="histlist"></div>
+    <h2>実戦履歴<span class="cnt" id="hs-n">0</span></h2>
+        <div class="histlist" id="histlist"></div>
     <p class="note">行をタップすると内訳が開きます。<br>みんなの集計への送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button></p>
   </section>
 
@@ -1143,7 +1136,7 @@ function renderHist(){
     }).join('');
   }
 
-  document.getElementById('hs-n').textContent = fmt(hist.length);
+  document.getElementById('hs-n').textContent = `${fmt(hist.length)}件`;
 }
 
 document.getElementById('histbtn').addEventListener('click', () => {
