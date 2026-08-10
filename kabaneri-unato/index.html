@@ -363,6 +363,10 @@
     color:var(--text);font-family:inherit;font-size:12px;padding:8px 12px;cursor:pointer;
   }
   .wchips button.on{background:#2f6bd8;border-color:#2f6bd8;color:#fff;font-weight:700}
+  .wchips button.sh.on{background:#eef2f8;border-color:#eef2f8;color:#16283f}
+  .wchips button.r{border-color:rgba(226,69,60,.6)}
+  .wchips button.g{border-color:rgba(47,181,106,.6)}
+  .wchips button.b{border-color:rgba(59,130,246,.6)}
   .wchips button.r.on{background:#c1272d;border-color:#c1272d}
   .wchips button.g.on{background:#17864a;border-color:#17864a}
   .wchips button.b.on{background:#245fc4;border-color:#245fc4}
@@ -376,11 +380,21 @@
     display:flex;align-items:center;gap:8px;font-size:12px;
     background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;
   }
+  /* CZ当選はキャラの色で枠を付ける */
+  .winrow.red{border-color:#e2453c}
+  .winrow.green{border-color:#2fb56a}
+  .winrow.blue{border-color:#3b82f6}
+  .winrow.red .via{color:#ff8a82}
+  .winrow.green .via{color:#5fd398}
+  .winrow.blue .via{color:#8fc0ff}
   .winrow .no{color:var(--muted);font-size:10px;flex:0 0 1.6em}
   .winrow .g{font-weight:700;font-variant-numeric:tabular-nums}
   .winrow .via{flex:1;min-width:0;color:var(--muted)}
-  .winrow .bn{font-size:11px}
-  .winrow .bn.ep{color:#e8c06a;font-weight:700}
+  .winrow .bn{
+    font-size:10.5px;font-weight:700;border-radius:999px;padding:4px 9px;white-space:nowrap;
+  }
+  .winrow .bn.ep{background:#2f6bd8;color:#fff}          /* エピソードB */
+  .winrow .bn.sh{background:#eef2f8;color:#16283f}       /* 駿城B */
   .winrow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;font-family:inherit}
   .winempty{font-size:11px;color:var(--muted);padding:6px 2px}
   .winstats table{width:100%;border-collapse:collapse;font-size:11.5px}
@@ -683,7 +697,7 @@
     <label class="wlbl">当たったボーナス</label>
     <div class="wchips" id="winbonus">
       <button data-bonus="episode">エピソードB</button>
-      <button data-bonus="shunjo">駿城B</button>
+      <button data-bonus="shunjo" class="sh">駿城B</button>
     </div>
 
     <button class="primary winadd" id="winadd">追加する</button>
@@ -1688,11 +1702,11 @@ function renderWins(){
     ? shown.map((w, i) => {
         const via = w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
         const ep = w.bonus === 'episode';
-        return `<div class="winrow">
+        return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
-          <span class="bn ${ep ? 'ep' : ''}">${BONUS[w.bonus] || ''}</span>
+          <span class="bn ${ep ? 'ep' : 'sh'}">${BONUS[w.bonus] || ''}</span>
           <button class="x" data-wdel="${i}" aria-label="削除">×</button>
         </div>`;
       }).join('')
