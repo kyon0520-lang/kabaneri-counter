@@ -330,6 +330,13 @@
     transform:translateX(-100%);transition:transform .26s cubic-bezier(.2,.7,.3,1);
   }
   .winpanel.open{transform:none}
+  .wtabs{display:flex;gap:4px;background:var(--panel2);border:1px solid var(--line);
+         border-radius:10px;padding:4px}
+  .wtabs button{
+    flex:1;background:none;border:0;border-radius:7px;color:var(--muted);
+    font-family:inherit;font-size:11.5px;padding:9px 2px;cursor:pointer;white-space:nowrap;
+  }
+  .wtabs button.on{background:#2f6bd8;color:#fff;font-weight:700}
   .winform{display:flex;flex-direction:column;gap:7px}
   .wlbl{font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
   .winform input{
@@ -637,6 +644,13 @@
 <aside class="winpanel" id="winpanel" aria-hidden="true">
   <div class="memohd"><b>当選履歴</b><button class="linkbtn" id="winclose">閉じる</button></div>
 
+  <div class="wtabs" id="wintabs">
+    <button data-mode="normal" class="on">通常</button>
+    <button data-mode="through">駆け抜け後</button>
+    <button data-mode="upper">上位後</button>
+    <button data-mode="reset">リセット後</button>
+  </div>
+
   <div class="winform">
     <label class="wlbl">当選G数</label>
     <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="300000">
@@ -723,8 +737,10 @@ const KEY = 'kabaneri-cz-counter-v1';
 let state;
 let czLog = [];      // CZ突入時のポイント記録
 let bell = { n:0, g:0 };   // 下段ベルの回数と現在のG数
+const WIN_MODES = { normal:'通常', through:'駆け抜け後', upper:'上位後', reset:'リセット後' };
 let memo = '';             // 実戦中のメモ。端末内だけに残し、送信はしない
-let wins = [];             // 当選履歴。{g, via:'cycle'|'cz', cycle, cz, bonus}
+let wins = [];             // 当選履歴。{g, mode, via:'cycle'|'cz', cycle, cz, bonus}
+let winMode = 'normal';    // いま見ている／記録する状態
 // キャラごとの ＋/− モード（起動時は必ず ＋）
 const mode = { red:1, green:1, blue:1 };
 
@@ -767,6 +783,7 @@ function load(){
                g:Math.max(0, +(raw.bell && raw.bell.g) || 0) };
       memo = typeof raw.memo === 'string' ? raw.memo.slice(0, 2000) : '';
       wins = Array.isArray(raw.wins) ? raw.wins.filter(w => w && isFinite(+w.g)).slice(0, 500) : [];
+      winMode = WIN_MODES[raw.winMode] ? raw.winMode : 'normal';
       return;
     }
   } catch(e){}
@@ -775,13 +792,14 @@ function load(){
   bell = { n:0, g:0 };
   memo = '';
   wins = [];
+  winMode = 'normal';
 }
 
 let saveFailed = false;
 
 function save(){
   try {
-    localStorage.setItem(KEY, JSON.stringify({ state, czLog, bell, memo, wins }));
+    localStorage.setItem(KEY, JSON.stringify({ state, czLog, bell, memo, wins, winMode }));
   } catch(e) {
     saveFailed = true;
   }
@@ -1650,7 +1668,7 @@ document.getElementById('winadd').addEventListener('click', () => {
   if (!pendBonus) { toast('ボーナスの種類を選んでください'); return; }
 
   wins.push({
-    g, via: pendCycle !== null ? 'cycle' : 'cz',
+    g, mode: winMode, via: pendCycle !== null ? 'cycle' : 'cz',
     cycle: pendCycle, cz: pendCz, bonus: pendBonus
   });
   if (wins.length > 500) wins.shift();
@@ -1664,14 +1682,24 @@ document.getElementById('winadd').addEventListener('click', () => {
 
 document.getElementById('winlist').addEventListener('click', e => {
   const x = e.target.closest('[data-wdel]'); if (!x) return;
-  wins.splice(+x.dataset.wdel, 1);
+  const target = wins.filter(w => (w.mode || 'normal') === winMode)[+x.dataset.wdel];
+  const i = wins.indexOf(target);
+  if (i >= 0) wins.splice(i, 1);
+  save(); renderWins();
+});
+
+document.getElementById('wintabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  winMode = b.dataset.mode;
+  document.querySelectorAll('#wintabs button').forEach(x => x.classList.toggle('on', x === b));
   save(); renderWins();
 });
 
 function renderWins(){
   const list = document.getElementById('winlist');
-  list.innerHTML = wins.length
-    ? wins.map((w, i) => {
+  const shown = wins.filter(w => (w.mode || 'normal') === winMode);   // タブで選んだ状態だけ
+  list.innerHTML = shown.length
+    ? shown.map((w, i) => {
         const via = w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
         const ep = w.bonus === 'episode';
         return `<div class="winrow">
@@ -1682,23 +1710,23 @@ function renderWins(){
           <button class="x" data-wdel="${i}" aria-label="削除">×</button>
         </div>`;
       }).join('')
-    : '<div class="winempty">まだ当選の記録はありません</div>';
+    : `<div class="winempty">${WIN_MODES[winMode]}の記録はまだありません</div>`;
 
-  renderWinStats();
+  renderWinStats(shown);
 }
 
-function renderWinStats(){
+function renderWinStats(shown){
   const box = document.getElementById('winstats');
-  const cyc = wins.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= 6);
-  const cz = wins.filter(w => w.via === 'cz');
+  const cyc = shown.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= 6);
+  const cz = shown.filter(w => w.via === 'cz');
 
-  if (!wins.length) { box.innerHTML = ''; return; }
+  if (!shown.length) { box.innerHTML = ''; return; }
 
   const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
   let html = '';
 
   if (cyc.length) {
-    html += '<h3>周期別（CZ当選は含みません）</h3><table><thead><tr>' +
+    html += `<h3>${WIN_MODES[winMode]}・周期別（CZ当選は含みません）</h3><table><thead><tr>` +
             '<th>周期</th><th>当選</th><th>当選率</th><th>エピソードB率</th></tr></thead><tbody>';
     for (let n = 1; n <= 6; n++) {
       const hit = cyc.filter(w => w.cycle === n);
@@ -1724,8 +1752,9 @@ function renderWinStats(){
     html += '</tbody></table>';
   }
 
-  const epAll = wins.filter(w => w.bonus === 'episode').length;
-  html += `<h3>合計 ${fmt(wins.length)}件 ／ エピソードB ${pct(epAll, wins.length)}</h3>`;
+  const epAll = shown.filter(w => w.bonus === 'episode').length;
+  html += `<h3>${WIN_MODES[winMode]} ${fmt(shown.length)}件 ／ エピソードB ${pct(epAll, shown.length)}`
+        + (wins.length !== shown.length ? `（全状態では ${fmt(wins.length)}件）` : '') + '</h3>';
   box.innerHTML = html;
 }
 
@@ -2036,6 +2065,8 @@ document.getElementById('games').value = bell.g ? bell.g : '';
 render();
 
 // 前回送れなかった分を、起動時に送り直す
+document.querySelectorAll('#wintabs button')
+  .forEach(b => b.classList.toggle('on', b.dataset.mode === winMode));
 renderWins();
 setTimeout(flushUnsent, 1200);
 
