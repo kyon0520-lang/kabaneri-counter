@@ -227,6 +227,8 @@
     border-radius:10px;border:1px solid var(--line);
   }
   .histrow .hacts{display:flex;gap:8px;flex-wrap:wrap}
+  .histrow .hdist{margin:0 0 12px}
+  .histrow .hdisth{font-size:11px;color:var(--muted);margin:0 0 6px}
   .histrow{
     background:var(--panel2);border:1px solid var(--line);border-radius:10px;
     padding:9px 11px;cursor:pointer;
@@ -274,15 +276,15 @@
 
   /* 結果カード */
   /* 結果カードは画面の幅いっぱいに見せる。中身が縦長なので余白を削る */
-  .cardsheet{
+  .sheet.cardsheet{
     max-width:560px;max-height:100svh;overflow-y:auto;
     padding:12px 10px 10px;border-radius:12px;
   }
-  .cardsheet img{
+  .sheet.cardsheet img{
     width:100%;max-width:100%;height:auto;border-radius:10px;
     border:1px solid var(--line);display:block;margin:0 auto 10px;
   }
-  .cardsheet .hint{
+  .sheet.cardsheet .hint{
     font-size:10px;color:var(--muted);line-height:1.7;margin:0 0 11px;
   }
   .sheet .acts.stack{flex-direction:column}
@@ -813,18 +815,17 @@ function distIndex(pt){
   return i;                       // 0未満なら「15pt未満」
 }
 
-function renderDist(){
-  const body = document.getElementById('distbody');
+/* ポイントの配列から、分布の表の中身を作る。
+   規定pt分布グラフと実戦履歴の両方で同じ見た目を使うための共通処理 */
+function distRowsHtml(pts){
   const counts = new Array(DIST_ROWS.length).fill(0);
   let under = 0;
-
-  const rows = czLog.filter(r => AVG_IDS.includes(r.c));   // 銅藍は含めない
-  rows.forEach(r => {
-    const i = distIndex(r.pt);
+  pts.forEach(pt => {
+    const i = distIndex(pt);
     if (i < 0) under++; else counts[i]++;
   });
 
-  const total = rows.length;
+  const total = pts.length;
   const pct = n => total ? n / total * 100 : 0;
   const maxPct = Math.max(pct(under), ...counts.map(pct), 1);
 
@@ -846,8 +847,22 @@ function renderDist(){
   html += DIST_ROWS.map((b, i) =>
     row(`${b}pt`, i === DIST_ROWS.length - 1 ? '150以上' : `${b}〜${b + DIST_STEP - 1}`, counts[i])
   ).join('');
-  body.innerHTML = html;
+  return html;
+}
 
+/* 分布の表をまるごと組み立てる（見出し行つき）。実戦履歴の中で使う */
+function distTableHtml(pts){
+  return `<div class="distwrap"><table class="dist">
+    <thead><tr><th>規定pt</th><th>ポイント数</th><th>振り分け</th><th>CZ突入pt</th></tr></thead>
+    <tbody>${distRowsHtml(pts)}</tbody>
+  </table></div>`;
+}
+
+function renderDist(){
+  const rows = czLog.filter(r => AVG_IDS.includes(r.c));   // 銅藍は含めない
+  document.getElementById('distbody').innerHTML = distRowsHtml(rows.map(r => r.pt));
+
+  const total = rows.length;
   const avg = total ? rows.reduce((a, r) => a + r.pt, 0) / total : 0;
   document.getElementById('distavg').textContent = total ? `${avg.toFixed(1)}pt` : '—';
   document.getElementById('distn').textContent = `${fmt(total)}回`;
@@ -1121,6 +1136,7 @@ function renderHist(){
         </div>
         <div class="detail">
           <img class="hcard" alt="この実戦の結果カード">
+          <div class="hdist"></div>
           <div class="hacts"><button class="card" data-card="${r.id}">大きく表示・シェア</button><button class="del" data-del="${r.id}">この実戦を削除</button></div>
         </div>
       </div>`;
@@ -1156,7 +1172,17 @@ document.getElementById('histlist').addEventListener('click', e => {
     const img = row.querySelector('img.hcard');
     if (row.classList.contains('open') && img && !img.src) {
       const rec = hist.find(x => x.id === row.dataset.id);
-      if (rec) { try { img.src = buildCard(rec); } catch (err) { img.remove(); } }
+      if (rec) {
+        try { img.src = buildCard(rec); } catch (err) { img.remove(); }
+        const box = row.querySelector('.hdist');
+        if (box) {
+          // 分布グラフと同じく、銅藍の周期突入は含めない
+          const pts = (rec.czPointsBy || []).filter(x => AVG_IDS.includes(x.c)).map(x => x.pt);
+          box.innerHTML = pts.length
+            ? `<div class="hdisth">CZ突入時のポイント分布（${fmt(pts.length)}回）</div>` + distTableHtml(pts)
+            : '<div class="hdisth">この実戦では無名・生駒のCZ突入がありません</div>';
+        }
+      }
     }
   }
 });
