@@ -246,7 +246,13 @@
   }
   .histsum .k{font-size:9px;color:var(--muted)}
   .histsum .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
-  .histlist{display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto}
+  .histlist{display:flex;flex-direction:column;gap:6px;max-height:70vh;overflow-y:auto}
+  /* 開いた行は結果カードが入るので、上限で切れないよう広めに取る */
+  .histrow img.hcard{
+    display:block;width:100%;max-width:260px;margin:4px auto 10px;
+    border-radius:10px;border:1px solid var(--line);
+  }
+  .histrow .hacts{display:flex;gap:8px;flex-wrap:wrap}
   .histrow{
     background:var(--panel2);border:1px solid var(--line);border-radius:10px;
     padding:9px 11px;cursor:pointer;
@@ -1109,10 +1115,6 @@ function renderHist(){
       const setTag = r.setting
         ? `<span class="tag set">設定${r.setting}</span>`
         : `<span class="tag">設定不明</span>`;
-      const rows = CHARS.map(c => {
-        const x = r.chars[c.id] || {};
-        return `${c.name} 非発光${fmt(x.no||0)} / 発光${fmt(x.glow||0)} / 高確${fmt(x.hi||0)} / ${c.hit}${fmt(x.cz||0)}`;
-      }).join('<br>');
       return `<div class="histrow" data-id="${r.id}">
         <div class="top"><span class="dt">${fmtDate(r.date)}</span>${setTag}</div>
         <div class="fig">
@@ -1122,9 +1124,8 @@ function renderHist(){
           <span>平均 <b>${avg}</b>pt/CZ</span>
         </div>
         <div class="detail">
-          ${rows}<br>
-          CZ突入時のpt: ${r.czPoints.length ? r.czPoints.map(p => fmt(p)).join(', ') : 'なし'}
-          <br><button class="card" data-card="${r.id}">結果カードを作る</button><button class="del" data-del="${r.id}">この実戦を削除</button>
+          <img class="hcard" alt="この実戦の結果カード">
+          <div class="hacts"><button class="card" data-card="${r.id}">大きく表示・シェア</button><button class="del" data-del="${r.id}">この実戦を削除</button></div>
         </div>
       </div>`;
     }).join('');
@@ -1153,7 +1154,15 @@ document.getElementById('histlist').addEventListener('click', e => {
     return;
   }
   const row = e.target.closest('.histrow');
-  if (row) row.classList.toggle('open');
+  if (row) {
+    row.classList.toggle('open');
+    // 開いたときに一度だけカードを描く。閉じても描き直さない
+    const img = row.querySelector('img.hcard');
+    if (row.classList.contains('open') && img && !img.src) {
+      const rec = hist.find(x => x.id === row.dataset.id);
+      if (rec) { try { img.src = buildCard(rec); } catch (err) { img.remove(); } }
+    }
+  }
 });
 
 /* ---------- 保存シート ---------- */
