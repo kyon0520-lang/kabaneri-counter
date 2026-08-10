@@ -350,7 +350,13 @@
     color:var(--text);font-family:inherit;font-size:12px;padding:8px 12px;cursor:pointer;
   }
   .wchips button.on{background:#2f6bd8;border-color:#2f6bd8;color:#fff;font-weight:700}
-  .wchips button.sh.on{background:#eef2f8;border-color:#eef2f8;color:#16283f}
+  /* ボーナスは選ぶ前から色で分かるようにする。選択中は輪郭で示す */
+  .wchips button[data-bonus="episode"]{background:#2f6bd8;border-color:#2f6bd8;color:#fff;opacity:.55}
+  .wchips button[data-bonus="shunjo"]{background:#eef2f8;border-color:#eef2f8;color:#16283f;opacity:.55}
+  .wchips button[data-bonus].on{
+    opacity:1;font-weight:700;
+    box-shadow:0 0 0 2px var(--panel), 0 0 0 4px #7fb0ff;
+  }
   .wchips button.r{border-color:rgba(226,69,60,.6)}
   .wchips button.g{border-color:rgba(47,181,106,.6)}
   .wchips button.b{border-color:rgba(59,130,246,.6)}
