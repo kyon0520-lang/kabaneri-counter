@@ -751,6 +751,8 @@ let state;
 let czLog = [];      // CZ突入時のポイント記録
 let bell = { n:0, g:0 };   // 下段ベルの回数と現在のG数
 const WIN_MODES = { normal:'通常', through:'駆け抜け後', upper:'上位後', reset:'リセット後' };
+// 駆け抜け後・上位後・リセット後は4周期まで
+const WIN_MAX_CYCLE = { normal:6, through:4, upper:4, reset:4 };
 let memo = '';             // 実戦中のメモ。端末内だけに残し、送信はしない
 let wins = [];             // 当選履歴。{g, mode, via:'cycle'|'cz', cycle, cz, bonus}
 let winMode = 'normal';    // いま見ている／記録する状態
@@ -1667,7 +1669,19 @@ document.getElementById('wintabs').addEventListener('click', e => {
   save(); renderWins();
 });
 
+/* 状態によっては5・6周期が無いので、選べないようにする */
+function syncCycleChoices(){
+  const max = WIN_MAX_CYCLE[winMode] || 6;
+  document.querySelectorAll('#wincycle button').forEach(b => {
+    const n = +b.dataset.cycle;
+    b.hidden = n > max;
+    if (n > max) b.classList.remove('on');
+  });
+  if (pendCycle !== null && pendCycle > max) pendCycle = null;
+}
+
 function renderWins(){
+  syncCycleChoices();
   const list = document.getElementById('winlist');
   const shown = wins.filter(w => (w.mode || 'normal') === winMode);   // タブで選んだ状態だけ
   list.innerHTML = shown.length
@@ -1700,7 +1714,8 @@ function renderWinStats(shown){
   if (cyc.length) {
     html += `<h3>${WIN_MODES[winMode]}・周期別（CZ当選は含みません）</h3><table><thead><tr>` +
             '<th>周期</th><th>当選</th><th>当選率</th><th>エピソードB率</th></tr></thead><tbody>';
-    for (let n = 1; n <= 6; n++) {
+    const maxC = WIN_MAX_CYCLE[winMode] || 6;
+    for (let n = 1; n <= maxC; n++) {
       const hit = cyc.filter(w => w.cycle === n);
       const reached = cyc.filter(w => w.cycle >= n).length;   // n周期に到達した回数
       const ep = hit.filter(w => w.bonus === 'episode').length;
