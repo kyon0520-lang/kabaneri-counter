@@ -249,7 +249,7 @@
   .histlist{display:flex;flex-direction:column;gap:6px;max-height:70vh;overflow-y:auto}
   /* 開いた行は結果カードが入るので、上限で切れないよう広めに取る */
   .histrow img.hcard{
-    display:block;width:100%;max-width:260px;margin:4px auto 10px;
+    display:block;width:100%;max-width:none;margin:4px 0 12px;
     border-radius:10px;border:1px solid var(--line);
   }
   .histrow .hacts{display:flex;gap:8px;flex-wrap:wrap}
@@ -1145,7 +1145,7 @@ function renderHist(){
         <div class="detail">
           <img class="hcard" alt="この実戦の結果カード">
           <div class="hdist"></div>
-          <div class="hacts"><button class="card" data-card="${r.id}">大きく表示・シェア</button><button class="del" data-del="${r.id}">この実戦を削除</button></div>
+          <div class="hacts"><button class="card" data-card="${r.id}">シェアする</button><button class="del" data-del="${r.id}">この実戦を削除</button></div>
         </div>
       </div>`;
     }).join('');
