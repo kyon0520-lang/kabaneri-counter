@@ -117,6 +117,64 @@
     color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:5px 12px;
   }
 
+  /* ===== 対応機種 ===== */
+  .machines{margin:42px 0 0;display:flex;flex-direction:column;gap:14px}
+  .mcard{
+    display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;
+    transition:box-shadow .25s,transform .2s;
+  }
+  .mcard:active{transform:scale(.995)}
+  @media (hover:hover){.mcard:hover{box-shadow:0 12px 32px rgba(20,32,52,.09)}}
+  .marks{display:flex;flex:0 0 auto}
+  .marks span{
+    width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+    font-size:16px;font-weight:700;color:#fff;margin-left:-11px;box-shadow:0 0 0 3px #fff;
+  }
+  .marks span:first-child{margin-left:0}
+  .marks .r{background:linear-gradient(160deg,#ff6b60,#c2201a)}
+  .marks .g{background:linear-gradient(160deg,#57d992,#178c4c)}
+  .marks .b{background:linear-gradient(160deg,#6ea8ff,#1d5fd6)}
+  .mcard .txt{flex:1;min-width:0}
+  .mcard .nm{display:block;font-size:16px;font-weight:700;line-height:1.5;letter-spacing:.03em}
+  .mcard .sub{display:block;font-size:12.5px;color:var(--ink-2)}
+  .mcard .arw{color:var(--ink-3);font-size:20px;flex:0 0 auto}
+  .mnext{
+    border:1px dashed var(--line);border-radius:20px;padding:22px;
+    font-size:13px;color:var(--ink-3);
+  }
+
+  /* ===== 参加のしかた ===== */
+  .plan{margin:42px 0 0;border-top:1px solid var(--line)}
+  .plan .row{
+    display:flex;flex-direction:column;gap:6px;
+    padding:24px 0;border-bottom:1px solid var(--line);
+  }
+  .plan h3{margin:0;font-size:16px;font-weight:700;letter-spacing:.04em}
+  .plan p{margin:0;color:var(--ink-2);font-size:13.5px;max-width:38em}
+  @media (min-width:760px){
+    .plan .row{flex-direction:row;align-items:baseline;gap:36px}
+    .plan h3{flex:0 0 11em}
+  }
+
+  /* ===== 最後の導線 ===== */
+  .cta{text-align:center}
+  .cta h2{
+    margin:0;font-weight:700;font-size:clamp(22px,5.8vw,34px);
+    line-height:1.7;letter-spacing:.03em;
+  }
+  .cta .actions{display:flex;justify-content:center;margin:32px 0 0}
+  .cta .sub{margin:14px 0 0;font-size:12px;color:var(--ink-3)}
+
+  /* ===== フッター ===== */
+  footer{border-top:1px solid var(--line);padding:42px 0 58px}
+  footer .row{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+  footer nav{display:flex;flex-wrap:wrap;gap:20px;font-size:12.5px}
+  footer nav a{color:var(--ink-2);text-decoration:none}
+  @media (hover:hover){footer nav a:hover{color:var(--accent)}}
+  footer .note{margin:24px 0 0;font-size:11.5px;color:var(--ink-3);max-width:52em}
+  footer .cr{margin:18px 0 0;font-size:11px;color:var(--ink-3);letter-spacing:.06em}
+
   /* ===== 出現 ===== */
   .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
   .rv.on{opacity:1;transform:none}
@@ -130,7 +188,8 @@
     .shot{margin-top:64px}
   }
 
-  .memo{background:#fff;border-top:1px solid var(--line);padding:40px 0 70px;color:var(--ink-3);font-size:12.5px}
+  /* 検討用の注記。本番へ移すときは丸ごと消す */
+  .memo{background:var(--bg-soft);border-top:1px solid var(--line);padding:32px 0 60px;color:var(--ink-3);font-size:12.5px}
 </style>
 </head>
 <body>
@@ -187,7 +246,7 @@
 </section>
 
 <!-- コンセプト -->
-<section class="soft">
+<section class="soft" id="concept">
   <div class="wrap">
     <p class="sec-lbl rv">CONCEPT</p>
     <h2 class="sec-ttl rv">一人の実戦は、<br>たいてい一人で終わる。</h2>
@@ -214,8 +273,80 @@
   </div>
 </section>
 
+<!-- 対応機種 -->
+<section id="machines">
+  <div class="wrap">
+    <p class="sec-lbl rv">MACHINES</p>
+    <h2 class="sec-ttl rv">まずは、カバネリから。</h2>
+    <p class="sec-txt rv">機種の数を増やすより先に、1台ぶんを最後まで数えきれる形にすることを優先しました。キャラごとの非発光・発光・高確発光、CZ突入、下段ベル。打ちながら押した数が、そのまま発光率と平均ポイントになります。</p>
+
+    <div class="machines">
+      <a class="mcard rv" href="./kabaneri-unato/">
+        <span class="marks">
+          <span class="r">無</span><span class="g">生</span><span class="b">銅</span>
+        </span>
+        <span class="txt">
+          <span class="nm">スマスロ カバネリ 海門決戦</span>
+          <span class="sub">CZ発光カウンター</span>
+        </span>
+        <span class="arw">›</span>
+      </a>
+      <div class="mnext rv">対応機種は順次追加していきます。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 参加のしかた -->
+<section class="soft" id="join">
+  <div class="wrap">
+    <p class="sec-lbl rv">HOW TO JOIN</p>
+    <h2 class="sec-ttl rv">参加のしかたは、<br>打つことだけ。</h2>
+    <p class="sec-txt rv">登録もインストールも要りません。ページを開いて押しはじめれば、それがもう参加です。</p>
+
+    <div class="plan">
+      <div class="row rv">
+        <h3>登録は要らない</h3>
+        <p>アカウントもメールアドレスも作りません。開いたその場から数えはじめられます。</p>
+      </div>
+      <div class="row rv">
+        <h3>記録は端末の中に</h3>
+        <p>カウントは開いた端末のブラウザ内に保存されます。ホーム画面に追加しておけば、圏外のホールでも起動できます。</p>
+      </div>
+      <div class="row rv">
+        <h3>送るかは自分で決める</h3>
+        <p>みんなの集計へ送るかどうかは自分で選べ、あとからいつでも止められます。送る場合も、名前・位置・店舗など個人を特定できるものは送りません。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 最後の導線 -->
+<section class="cta">
+  <div class="wrap">
+    <h2 class="rv">その誰かに、<br>あなたも入る。</h2>
+    <div class="actions rv"><a class="btn lg accent" href="./kabaneri-unato/">カウンターを開く</a></div>
+    <p class="sub rv">登録もインストールも要りません</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <div class="logo"><span class="dots"><i></i><i></i><i></i></span>みんなのスロット</div>
+      <nav>
+        <a href="#concept">コンセプト</a>
+        <a href="#machines">対応機種</a>
+        <a href="#join">参加のしかた</a>
+        <a href="./kabaneri-unato/">カウンター</a>
+      </nav>
+    </div>
+    <p class="note">数値は自分で数えた記録にもとづくもので、設定を保証するものではありません。</p>
+    <p class="cr">© みんなのスロット</p>
+  </div>
+</footer>
+
 <div class="memo">
-  <div class="wrap">トンマナ検討用のページです。この続き（対応機種・参加のしかた・導線）は、この見た目でよければ作ります。</div>
+  <div class="wrap">トンマナ検討用のページです。セクション1〜5まで入っています。未決：明るさの加減／差し色を青のままにするか／第一画面の端末の絵を残すか。</div>
 </div>
 
 <script>
