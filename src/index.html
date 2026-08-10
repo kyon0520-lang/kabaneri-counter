@@ -354,11 +354,13 @@
   .wchips button[data-bonus="episode"]{background:#2f6bd8;border-color:#2f6bd8;color:#fff;opacity:.55}
   .wchips button[data-bonus="shunjo"]{background:#eef2f8;border-color:#eef2f8;color:#16283f;opacity:.55}
   .wchips button[data-bonus="both"]{
-    background:none;border-color:#eef2f8;color:inherit;opacity:.55;
-    padding:0;overflow:hidden;display:inline-flex;align-items:stretch;
+    position:relative;background:none;border-color:#eef2f8;color:inherit;opacity:.55;
+    padding:0;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-width:104px;
   }
   .wchips button[data-bonus="both"] i,
-  .wchips button[data-bonus="both"] b{font-style:normal;padding:8px 11px;font-size:12px}
+  .wchips button[data-bonus="both"] b{
+    font-style:normal;padding:8px 0;font-size:12px;text-align:center;
+  }
   .wchips button[data-bonus="both"] i{background:#eef2f8;color:#16283f}
   .wchips button[data-bonus="both"] b{background:#2f6bd8;color:#fff}
   .wchips button[data-bonus].on{
@@ -393,11 +395,20 @@
   }
   .winrow .bn.ep{background:#2f6bd8;color:#fff}          /* エピソードB */
   .winrow .bn.sh{background:#eef2f8;color:#16283f}       /* 駿城B */
-  /* 駿→エピ は白と青のツートン。半分ずつ塗り分ける */
-  .winrow .bn.two{display:inline-flex;padding:0;overflow:hidden}
-  .winrow .bn.two i,.winrow .bn.two b{font-style:normal;padding:4px 7px}
+  /* 駿→エピ は白と青のツートン。左右をきっちり半分にし、矢印は境目に重ねる */
+  .winrow .bn.two{
+    position:relative;display:grid;grid-template-columns:1fr 1fr;
+    padding:0;overflow:hidden;min-width:84px;
+  }
+  .winrow .bn.two i,.winrow .bn.two b{font-style:normal;padding:4px 0;text-align:center}
   .winrow .bn.two i{background:#eef2f8;color:#16283f}
   .winrow .bn.two b{background:#2f6bd8;color:#fff}
+  .bn.two .ar, .wchips button.two .ar{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    background:var(--panel);color:#fff;border-radius:50%;
+    width:1.35em;height:1.35em;display:grid;place-items:center;
+    font-size:.92em;line-height:1;pointer-events:none;
+  }
   .winrow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;font-family:inherit}
   .winempty{font-size:11px;color:var(--muted);padding:6px 2px}
   .winstats table{width:100%;border-collapse:collapse;font-size:11.5px}
@@ -701,7 +712,7 @@
     <div class="wchips" id="winbonus">
       <button data-bonus="episode">エピソードB</button>
       <button data-bonus="shunjo" class="sh">駿城B</button>
-      <button data-bonus="both" class="two"><i>駿</i><b>→エピ</b></button>
+      <button data-bonus="both" class="two"><i>駿</i><b>エピ</b><span class="ar">→</span></button>
     </div>
 
     <button class="primary winadd" id="winadd">追加する</button>
@@ -1751,7 +1762,7 @@ function renderWins(){
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
           ${w.bonus === 'both'
-            ? '<span class="bn two"><i>駿</i><b>→エピ</b></span>'
+            ? '<span class="bn two"><i>駿</i><b>エピ</b><span class="ar">→</span></span>'
             : `<span class="bn ${w.bonus === 'episode' ? 'ep' : 'sh'}">${BONUS[w.bonus] || ''}</span>`}
           <button class="x" data-wdel="${i}" aria-label="削除">×</button>
         </div>`;
