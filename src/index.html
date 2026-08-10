@@ -1396,7 +1396,7 @@ window.addEventListener('online', () => { flushUnsent(); });
 
 /* ---------- 結果カード ---------- */
 // スマホで見やすい縦長（4:5）。Xのタイムラインでも切り取られない比率
-const CARD_W = 1080, CARD_H = 1350;
+const CARD_W = 1080, CARD_H = 1080;   // 分布の絵は履歴側の表で見せるのでカードには入れない
 const CARD_JP = '-apple-system,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif';
 
 /* 設定バッジ（トロフィーの色に合わせる） */
@@ -1570,11 +1570,11 @@ function buildCard(r){
 
   const marks = [['red','無','#c2201a'], ['green','生','#178c4c'], ['blue','銅','#1d5fd6']];
   marks.forEach(([id, mk, col], i) => {
-    const y = 762 + i * 76;
+    const y = 766 + i * 80;
     const s = r.chars[id] || { no:0, glow:0, hi:0, cz:0 };
 
     g.fillStyle = 'rgba(255,255,255,.04)';
-    g.beginPath(); g.roundRect(M, y - 34, CARD_W - M * 2, 62, 14); g.fill();
+    g.beginPath(); g.roundRect(M, y - 36, CARD_W - M * 2, 68, 14); g.fill();
 
     g.fillStyle = col;
     g.beginPath(); g.arc(M + 34, y - 3, 22, 0, Math.PI * 2); g.fill();
@@ -1586,39 +1586,26 @@ function buildCard(r){
 
     const hit = id === 'blue' ? '周期' : 'CZ';
     g.fillStyle = '#cfd6e4';
-    g.font = `500 27px ${CARD_JP}`;
-    g.fillText(`非発光 ${fmt(s.no)}   発光 ${fmt(s.glow)}   高確 ${fmt(s.hi || 0)}   ${hit} ${fmt(s.cz)}`, M + 74, y + 6);
-  });
+    g.font = `500 25px ${CARD_JP}`;
+    g.fillText(`非発光 ${fmt(s.no)}  発光 ${fmt(s.glow)}  高確 ${fmt(s.hi || 0)}  ${hit} ${fmt(s.cz)}`, M + 74, y + 6);
 
-  // CZ突入時のptの分布
-  const by = 1055, bh = 170;
-  g.fillStyle = '#8a93a6';
-  g.font = `500 24px ${CARD_JP}`;
-  g.fillText(`CZ突入時のポイント（${(r.czPoints || []).length}回）`, M, by - 22);
+    // このキャラの発光率と平均pt。回数だけでは何のための数字か分からないので添える
+    const appear = s.no + s.glow;                       // 発光率に高確は入れない
+    const rate = appear ? (s.glow / appear * 100).toFixed(1) + '%' : '—';
+    const pts = (r.czPointsBy || []).filter(x => x.c === id).map(x => x.pt);
+    const avg = pts.length ? (pts.reduce((a, b) => a + b, 0) / pts.length).toFixed(1) : '—';
 
-  const counts = new Array(DIST_ROWS.length).fill(0);
-  (r.czPoints || []).forEach(p => { const i = distIndex(p); if (i >= 0) counts[i]++; });
-  const max = Math.max(1, ...counts);
-  const bw = CARD_W - M * 2, colw = bw / counts.length;
-  counts.forEach((n, i) => {
-    const h = Math.round(n / max * (bh - 34));
-    const x = M + i * colw, y = by + bh - h;
-    g.fillStyle = n ? '#3b82f6' : 'rgba(255,255,255,.07)';
-    g.beginPath(); g.roundRect(x + 4, n ? y : by + bh - 5, colw - 8, n ? h : 5, 5); g.fill();
-    if (n) {
-      g.fillStyle = '#cfd6e4';
-      g.font = `600 20px ${CARD_JP}`;
-      g.textAlign = 'center';
-      g.fillText(String(n), x + colw / 2, y - 10);
-      g.textAlign = 'left';
-    }
+    g.textAlign = 'right';
+    g.fillStyle = '#8a93a6';
+    g.font = `500 19px ${CARD_JP}`;
+    g.fillText('発光率', CARD_W - M - 150, y - 6);
+    g.fillText(id === 'blue' ? '平均pt/周期' : '平均pt/CZ', CARD_W - M - 16, y - 6);
+    g.fillStyle = '#e8ecf3';
+    g.font = `700 26px ${CARD_JP}`;
+    g.fillText(rate, CARD_W - M - 150, y + 22);
+    g.fillText(avg, CARD_W - M - 16, y + 22);
+    g.textAlign = 'left';
   });
-  g.fillStyle = '#6d7688';
-  g.font = `400 19px ${CARD_JP}`;
-  g.fillText('15pt', M, by + bh + 30);
-  g.textAlign = 'right';
-  g.fillText('150pt〜', CARD_W - M, by + bh + 30);
-  g.textAlign = 'left';
 
   g.fillStyle = '#6d7688';
   g.font = `500 22px ${CARD_JP}`;
