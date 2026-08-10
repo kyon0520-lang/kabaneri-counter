@@ -446,6 +446,14 @@
   .winstats td.n{font-variant-numeric:tabular-nums}
   .winstats h3{margin:10px 0 6px;font-size:11px;color:var(--muted);font-weight:600}
   .winstats .winnote{margin:6px 0 0;font-size:10.5px;color:var(--muted);line-height:1.7}
+  .wsum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 0}
+  .wsum div{
+    background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    padding:10px;text-align:center;
+  }
+  .wsum .k{display:block;font-size:10px;color:var(--muted)}
+  .wsum .v{display:block;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+  .wsum .s{display:block;font-size:10px;color:var(--muted)}
   @media (prefers-reduced-motion:reduce){ .winpanel{transition:none} }
   /* ===== 打ちながら書くメモ ===== */
   .memohandle{
@@ -1834,6 +1842,23 @@ function renderWinStats(shown){
 
   const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
   let html = '';
+
+  /* ST確率とCZ確率。状態で分けず、記録した全部を合算する。
+     分母のG数は当選履歴に入れた当選G数の合計。
+     CZの回数はカウンター側の突入回数（無名＋生駒＋銅藍）を使う。 */
+  const totalG = wins.reduce((a, w) => a + w.g, 0);
+  const stN = wins.filter(w => w.bonus !== 'shunjo').length;   // 昇格もSTには入っている
+  const czN = CHARS.reduce((a, c) => a + state[c.id].cz, 0);
+  const rate = (g, n) => n ? '1/' + (g / n).toFixed(1) : '—';
+
+  html += '<div class="wsum">'
+        + `<div><span class="k">ST確率</span><span class="v">${rate(totalG, stN)}</span>`
+        + `<span class="s">${fmt(stN)}回</span></div>`
+        + `<div><span class="k">CZ確率</span><span class="v">${rate(totalG, czN)}</span>`
+        + `<span class="s">${fmt(czN)}回</span></div>`
+        + '</div>'
+        + `<p class="winnote">全状態の合計 ${fmt(totalG)}G で計算しています。`
+        + 'ST確率には昇格（駿→エピ）も含みます。CZ回数はカウンターの突入回数です。</p>';
 
   if (cyc.length) {
     html += `<h3>${WIN_MODES[winMode]}・周期別（CZ当選は含みません）</h3><table><thead><tr>` +
