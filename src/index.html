@@ -416,6 +416,7 @@
   .winstats th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:10px}
   .winstats td.n{font-variant-numeric:tabular-nums}
   .winstats h3{margin:10px 0 6px;font-size:11px;color:var(--muted);font-weight:600}
+  .winstats .winnote{margin:6px 0 0;font-size:10.5px;color:var(--muted);line-height:1.7}
   @media (prefers-reduced-motion:reduce){ .winpanel{transition:none} }
   /* ===== 打ちながら書くメモ ===== */
   .memohandle{
@@ -1789,7 +1790,7 @@ function renderWinStats(shown){
     for (let n = 1; n <= maxC; n++) {
       const hit = cyc.filter(w => w.cycle === n);
       const reached = cyc.filter(w => w.cycle >= n).length;   // n周期に到達した回数
-      const ep = hit.filter(w => w.bonus !== 'shunjo').length;   // 駿→エピも含める
+      const ep = hit.filter(w => w.bonus === 'episode').length;   // 昇格は含めない
       html += `<tr><td>${n}周期</td><td class="n">${hit.length}</td>` +
               `<td class="n">${pct(hit.length, reached)}</td>` +
               `<td class="n">${pct(ep, hit.length)}</td></tr>`;
@@ -1803,16 +1804,19 @@ function renderWinStats(shown){
     ['red', 'green', 'blue'].forEach(c => {
       const hit = cz.filter(w => w.cz === c);
       if (!hit.length) return;
-      const ep = hit.filter(w => w.bonus !== 'shunjo').length;
+      const ep = hit.filter(w => w.bonus === 'episode').length;
       html += `<tr><td>${VIA_CZ[c]}</td><td class="n">${hit.length}</td>` +
               `<td class="n">${pct(ep, hit.length)}</td></tr>`;
     });
     html += '</tbody></table>';
   }
 
-  const epAll = shown.filter(w => w.bonus !== 'shunjo').length;
+  const epAll = shown.filter(w => w.bonus === 'episode').length;
+  const upAll = shown.filter(w => w.bonus === 'both').length;
   html += `<h3>${WIN_MODES[winMode]} ${fmt(shown.length)}件 ／ エピソードB ${pct(epAll, shown.length)}`
         + (wins.length !== shown.length ? `（全状態では ${fmt(wins.length)}件）` : '') + '</h3>';
+  html += `<p class="winnote">エピソードB率に、駿城Bからの昇格（駿→エピ）は含みません`
+        + (upAll ? `。昇格は ${fmt(upAll)}件` : '') + '</p>';
   box.innerHTML = html;
 }
 
