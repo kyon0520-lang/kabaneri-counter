@@ -312,6 +312,63 @@
   .sheet p{margin:0 0 6px;font-size:14px;font-weight:700}
   .sheet .sub{margin:0 0 14px;font-size:11px;color:var(--muted);font-weight:400;line-height:1.6}
   .sheet .acts{display:flex;gap:8px}
+  /* ===== 当選履歴 ===== */
+  .winhandle{
+    position:fixed;left:0;top:38%;z-index:40;
+    background:var(--panel2);color:var(--muted);
+    border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;
+    padding:12px 6px;font-size:11px;line-height:1.25;letter-spacing:.08em;
+    cursor:pointer;font-family:inherit;
+  }
+  .winscrim{position:fixed;inset:0;z-index:44;background:rgba(6,16,28,.5)}
+  .winpanel{
+    position:fixed;top:0;left:0;bottom:0;z-index:45;
+    width:min(92vw,460px);background:var(--panel);
+    border-right:1px solid var(--line);
+    padding:calc(14px + env(safe-area-inset-top)) 14px 16px;
+    display:flex;flex-direction:column;gap:10px;overflow-y:auto;
+    transform:translateX(-100%);transition:transform .26s cubic-bezier(.2,.7,.3,1);
+  }
+  .winpanel.open{transform:none}
+  .winform{display:flex;flex-direction:column;gap:7px}
+  .wlbl{font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
+  .winform input{
+    background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+    color:var(--text);font-family:inherit;font-size:16px;padding:10px 12px;width:100%;
+  }
+  .winform input:focus{outline:none;border-color:#3b82f6}
+  .wchips{display:flex;flex-wrap:wrap;gap:6px}
+  .wchips button{
+    background:var(--panel2);border:1px solid var(--line);border-radius:999px;
+    color:var(--text);font-family:inherit;font-size:12px;padding:8px 12px;cursor:pointer;
+  }
+  .wchips button.on{background:#2f6bd8;border-color:#2f6bd8;color:#fff;font-weight:700}
+  .wchips button.r.on{background:#c1272d;border-color:#c1272d}
+  .wchips button.g.on{background:#17864a;border-color:#17864a}
+  .wchips button.b.on{background:#245fc4;border-color:#245fc4}
+  .winadd{
+    margin-top:8px;background:#2f6bd8;border:1px solid #2f6bd8;color:#fff;
+    border-radius:10px;padding:12px;font-size:14px;font-weight:700;
+    font-family:inherit;cursor:pointer;
+  }
+  .winlist{display:flex;flex-direction:column;gap:5px}
+  .winrow{
+    display:flex;align-items:center;gap:8px;font-size:12px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;
+  }
+  .winrow .no{color:var(--muted);font-size:10px;flex:0 0 1.6em}
+  .winrow .g{font-weight:700;font-variant-numeric:tabular-nums}
+  .winrow .via{flex:1;min-width:0;color:var(--muted)}
+  .winrow .bn{font-size:11px}
+  .winrow .bn.ep{color:#e8c06a;font-weight:700}
+  .winrow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;font-family:inherit}
+  .winempty{font-size:11px;color:var(--muted);padding:6px 2px}
+  .winstats table{width:100%;border-collapse:collapse;font-size:11.5px}
+  .winstats th,.winstats td{border:1px solid var(--line);padding:6px 4px;text-align:center}
+  .winstats th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:10px}
+  .winstats td.n{font-variant-numeric:tabular-nums}
+  .winstats h3{margin:10px 0 6px;font-size:11px;color:var(--muted);font-weight:600}
+  @media (prefers-reduced-motion:reduce){ .winpanel{transition:none} }
   /* ===== 打ちながら書くメモ ===== */
   .memohandle{
     position:fixed;right:0;top:38%;z-index:40;
@@ -575,6 +632,41 @@
   </div>
 </div>
 
+<!-- 当選履歴。右にスワイプか左端のつまみで開く -->
+<div class="winscrim" id="winscrim" hidden></div>
+<aside class="winpanel" id="winpanel" aria-hidden="true">
+  <div class="memohd"><b>当選履歴</b><button class="linkbtn" id="winclose">閉じる</button></div>
+
+  <div class="winform">
+    <label class="wlbl">当選G数</label>
+    <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="300000">
+
+    <label class="wlbl">何で当たったか</label>
+    <div class="wchips" id="wincycle">
+      <button data-cycle="1">1周期</button><button data-cycle="2">2周期</button>
+      <button data-cycle="3">3周期</button><button data-cycle="4">4周期</button>
+      <button data-cycle="5">5周期</button><button data-cycle="6">6周期</button>
+    </div>
+    <div class="wchips" id="wincz">
+      <button data-cz="red" class="r">無名CZ</button>
+      <button data-cz="green" class="g">生駒CZ</button>
+      <button data-cz="blue" class="b">銅藍CZ</button>
+    </div>
+
+    <label class="wlbl">当たったボーナス</label>
+    <div class="wchips" id="winbonus">
+      <button data-bonus="episode">エピソードB</button>
+      <button data-bonus="shunjo">駿城B</button>
+    </div>
+
+    <button class="primary winadd" id="winadd">追加する</button>
+  </div>
+
+  <div class="winlist" id="winlist"></div>
+  <div class="winstats" id="winstats"></div>
+</aside>
+<button class="winhandle" id="winhandle" aria-label="当選履歴を開く">当<br>選</button>
+
 <!-- 打ちながら書くメモ。横スワイプか右端のつまみで開く -->
 <div class="memoscrim" id="memoscrim" hidden></div>
 <aside class="memopanel" id="memopanel" aria-hidden="true">
@@ -632,6 +724,7 @@ let state;
 let czLog = [];      // CZ突入時のポイント記録
 let bell = { n:0, g:0 };   // 下段ベルの回数と現在のG数
 let memo = '';             // 実戦中のメモ。端末内だけに残し、送信はしない
+let wins = [];             // 当選履歴。{g, via:'cycle'|'cz', cycle, cz, bonus}
 // キャラごとの ＋/− モード（起動時は必ず ＋）
 const mode = { red:1, green:1, blue:1 };
 
@@ -673,6 +766,7 @@ function load(){
       bell = { n:Math.max(0, +(raw.bell && raw.bell.n) || 0),
                g:Math.max(0, +(raw.bell && raw.bell.g) || 0) };
       memo = typeof raw.memo === 'string' ? raw.memo.slice(0, 2000) : '';
+      wins = Array.isArray(raw.wins) ? raw.wins.filter(w => w && isFinite(+w.g)).slice(0, 500) : [];
       return;
     }
   } catch(e){}
@@ -680,13 +774,14 @@ function load(){
   czLog = [];
   bell = { n:0, g:0 };
   memo = '';
+  wins = [];
 }
 
 let saveFailed = false;
 
 function save(){
   try {
-    localStorage.setItem(KEY, JSON.stringify({ state, czLog, bell, memo }));
+    localStorage.setItem(KEY, JSON.stringify({ state, czLog, bell, memo, wins }));
   } catch(e) {
     saveFailed = true;
   }
@@ -816,6 +911,7 @@ function doReset(){
   czLog = [];
   bell = { n:0, g:0 };
   memo = '';
+  wins = [];
   document.getElementById('memotext').value = '';
   document.getElementById('games').value = '';
   document.getElementById('bellmode').querySelector('.plus').click();
@@ -1125,6 +1221,7 @@ function buildRecord(){
     setting: null,
     evidence: null,
     memo,            // 端末内だけ。toPayload では送らない
+    wins,            // 当選履歴。いまは端末内だけ（送信は項目を足してから）
     sent: false
   };
 }
@@ -1298,7 +1395,7 @@ document.getElementById('sok').addEventListener('click', () => {
   hist.unshift(rec);
   if (hist.length > 500) hist.length = 500;
   sessionId = newId('s_');            // 次の実戦へ
-  memo = ''; memoText.value = ''; save();
+  memo = ''; memoText.value = ''; wins = []; renderWins(); save();
   saveHist();
   document.getElementById('savemodal').hidden = true;
   renderHist(); renderDist();
@@ -1486,10 +1583,155 @@ memoScrim.addEventListener('click', closeMemo);
     const t = e.changedTouches[0];
     const dx = t.clientX - x0, dy = t.clientY - y0;
     if (Math.abs(dx) < NEED || Math.abs(dx) < Math.abs(dy) * 1.6 || Math.abs(dy) > 70) return;
-    if (dx < -START && !memoPanel.classList.contains('open')) openMemo();
-    if (dx > START && memoPanel.classList.contains('open')) closeMemo();
+    const memoOpen = memoPanel.classList.contains('open');
+    const winOpen = winPanel.classList.contains('open');
+    if (dx < 0) {                       // 左へ
+      if (winOpen) closeWin();
+      else if (!memoOpen) openMemo();
+    } else {                            // 右へ
+      if (memoOpen) closeMemo();
+      else if (!winOpen) openWin();
+    }
   }, { passive: true });
 })();
+
+/* ---------- 当選履歴 ----------
+   当選G数 → 何で当たったか（周期 or CZ）→ ボーナスの種類、の順に選んで足す。
+   周期別の当選率は、当たった記録だけから逆算する。3周期で当たったなら
+   1・2周期は素通りしているので、N周期に到達した回数 = N周期以降で当たった件数。
+   CZ当選は何周期目か記録しないので、周期の分母には入れない。 */
+const winPanel = document.getElementById('winpanel');
+const winScrim = document.getElementById('winscrim');
+let pendCycle = null, pendCz = null, pendBonus = null;
+
+function openWin(){
+  winPanel.classList.add('open');
+  winPanel.setAttribute('aria-hidden', 'false');
+  winScrim.hidden = false;
+}
+function closeWin(){
+  winPanel.classList.remove('open');
+  winPanel.setAttribute('aria-hidden', 'true');
+  winScrim.hidden = true;
+}
+
+const VIA_CZ = { red:'無名CZ', green:'生駒CZ', blue:'銅藍CZ' };
+const BONUS = { episode:'エピソードB', shunjo:'駿城B' };
+
+function pickChips(box, attr, set){
+  document.getElementById(box).addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const v = b.dataset[attr];
+    document.querySelectorAll(`#${box} button`).forEach(x => x.classList.remove('on'));
+    const same = set(v === undefined ? null : v, b);
+    if (!same) b.classList.add('on');
+  });
+}
+// 周期とCZは排他。片方を選ぶともう片方は外す
+pickChips('wincycle', 'cycle', v => {
+  const same = pendCycle === +v; pendCycle = same ? null : +v; pendCz = null;
+  document.querySelectorAll('#wincz button').forEach(x => x.classList.remove('on'));
+  return same;
+});
+pickChips('wincz', 'cz', v => {
+  const same = pendCz === v; pendCz = same ? null : v; pendCycle = null;
+  document.querySelectorAll('#wincycle button').forEach(x => x.classList.remove('on'));
+  return same;
+});
+pickChips('winbonus', 'bonus', v => {
+  const same = pendBonus === v; pendBonus = same ? null : v; return same;
+});
+
+document.getElementById('winadd').addEventListener('click', () => {
+  const el = document.getElementById('wing');
+  const g = Math.floor(+el.value);
+  if (!isFinite(g) || g < 0) { toast('当選G数を入れてください'); return; }
+  if (pendCycle === null && pendCz === null) { toast('何で当たったかを選んでください'); return; }
+  if (!pendBonus) { toast('ボーナスの種類を選んでください'); return; }
+
+  wins.push({
+    g, via: pendCycle !== null ? 'cycle' : 'cz',
+    cycle: pendCycle, cz: pendCz, bonus: pendBonus
+  });
+  if (wins.length > 500) wins.shift();
+  save(); renderWins();
+
+  el.value = '';
+  pendCycle = pendCz = pendBonus = null;
+  winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
+  toast('追加しました');
+});
+
+document.getElementById('winlist').addEventListener('click', e => {
+  const x = e.target.closest('[data-wdel]'); if (!x) return;
+  wins.splice(+x.dataset.wdel, 1);
+  save(); renderWins();
+});
+
+function renderWins(){
+  const list = document.getElementById('winlist');
+  list.innerHTML = wins.length
+    ? wins.map((w, i) => {
+        const via = w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
+        const ep = w.bonus === 'episode';
+        return `<div class="winrow">
+          <span class="no">${i + 1}</span>
+          <span class="g">${fmt(w.g)}G</span>
+          <span class="via">${via}</span>
+          <span class="bn ${ep ? 'ep' : ''}">${BONUS[w.bonus] || ''}</span>
+          <button class="x" data-wdel="${i}" aria-label="削除">×</button>
+        </div>`;
+      }).join('')
+    : '<div class="winempty">まだ当選の記録はありません</div>';
+
+  renderWinStats();
+}
+
+function renderWinStats(){
+  const box = document.getElementById('winstats');
+  const cyc = wins.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= 6);
+  const cz = wins.filter(w => w.via === 'cz');
+
+  if (!wins.length) { box.innerHTML = ''; return; }
+
+  const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
+  let html = '';
+
+  if (cyc.length) {
+    html += '<h3>周期別（CZ当選は含みません）</h3><table><thead><tr>' +
+            '<th>周期</th><th>当選</th><th>当選率</th><th>エピソードB率</th></tr></thead><tbody>';
+    for (let n = 1; n <= 6; n++) {
+      const hit = cyc.filter(w => w.cycle === n);
+      const reached = cyc.filter(w => w.cycle >= n).length;   // n周期に到達した回数
+      const ep = hit.filter(w => w.bonus === 'episode').length;
+      html += `<tr><td>${n}周期</td><td class="n">${hit.length}</td>` +
+              `<td class="n">${pct(hit.length, reached)}</td>` +
+              `<td class="n">${pct(ep, hit.length)}</td></tr>`;
+    }
+    html += '</tbody></table>';
+  }
+
+  if (cz.length) {
+    html += '<h3>CZ当選</h3><table><thead><tr>' +
+            '<th>種類</th><th>当選</th><th>エピソードB率</th></tr></thead><tbody>';
+    ['red', 'green', 'blue'].forEach(c => {
+      const hit = cz.filter(w => w.cz === c);
+      if (!hit.length) return;
+      const ep = hit.filter(w => w.bonus === 'episode').length;
+      html += `<tr><td>${VIA_CZ[c]}</td><td class="n">${hit.length}</td>` +
+              `<td class="n">${pct(ep, hit.length)}</td></tr>`;
+    });
+    html += '</tbody></table>';
+  }
+
+  const epAll = wins.filter(w => w.bonus === 'episode').length;
+  html += `<h3>合計 ${fmt(wins.length)}件 ／ エピソードB ${pct(epAll, wins.length)}</h3>`;
+  box.innerHTML = html;
+}
+
+document.getElementById('winhandle').addEventListener('click', openWin);
+document.getElementById('winclose').addEventListener('click', closeWin);
+winScrim.addEventListener('click', closeWin);
 
 /* ---------- 結果カード ---------- */
 // スマホで見やすい縦長（4:5）。Xのタイムラインでも切り取られない比率
@@ -1794,6 +2036,7 @@ document.getElementById('games').value = bell.g ? bell.g : '';
 render();
 
 // 前回送れなかった分を、起動時に送り直す
+renderWins();
 setTimeout(flushUnsent, 1200);
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
