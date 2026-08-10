@@ -1,0 +1,11 @@
+# Cloudflare Pages の設定。functions/ を動かすための D1 の結び付けをここでする。
+# これが無いと env.DB が空になり、送信が 503 になる。
+
+name = "kabaneri-counter"
+compatibility_date = "2026-08-10"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "minnanoslot"
+database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
