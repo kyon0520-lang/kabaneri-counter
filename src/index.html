@@ -353,6 +353,14 @@
   /* ボーナスは選ぶ前から色で分かるようにする。選択中は輪郭で示す */
   .wchips button[data-bonus="episode"]{background:#2f6bd8;border-color:#2f6bd8;color:#fff;opacity:.55}
   .wchips button[data-bonus="shunjo"]{background:#eef2f8;border-color:#eef2f8;color:#16283f;opacity:.55}
+  .wchips button[data-bonus="both"]{
+    background:none;border-color:#eef2f8;color:inherit;opacity:.55;
+    padding:0;overflow:hidden;display:inline-flex;align-items:stretch;
+  }
+  .wchips button[data-bonus="both"] i,
+  .wchips button[data-bonus="both"] b{font-style:normal;padding:8px 11px;font-size:12px}
+  .wchips button[data-bonus="both"] i{background:#eef2f8;color:#16283f}
+  .wchips button[data-bonus="both"] b{background:#2f6bd8;color:#fff}
   .wchips button[data-bonus].on{
     opacity:1;font-weight:700;
     box-shadow:0 0 0 2px var(--panel), 0 0 0 4px #7fb0ff;
@@ -385,6 +393,11 @@
   }
   .winrow .bn.ep{background:#2f6bd8;color:#fff}          /* エピソードB */
   .winrow .bn.sh{background:#eef2f8;color:#16283f}       /* 駿城B */
+  /* 駿→エピ は白と青のツートン。半分ずつ塗り分ける */
+  .winrow .bn.two{display:inline-flex;padding:0;overflow:hidden}
+  .winrow .bn.two i,.winrow .bn.two b{font-style:normal;padding:4px 7px}
+  .winrow .bn.two i{background:#eef2f8;color:#16283f}
+  .winrow .bn.two b{background:#2f6bd8;color:#fff}
   .winrow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;font-family:inherit}
   .winempty{font-size:11px;color:var(--muted);padding:6px 2px}
   .winstats table{width:100%;border-collapse:collapse;font-size:11.5px}
@@ -688,6 +701,7 @@
     <div class="wchips" id="winbonus">
       <button data-bonus="episode">エピソードB</button>
       <button data-bonus="shunjo" class="sh">駿城B</button>
+      <button data-bonus="both" class="two"><i>駿</i><b>→エピ</b></button>
     </div>
 
     <button class="primary winadd" id="winadd">追加する</button>
@@ -1653,7 +1667,7 @@ function closeWin(){
 }
 
 const VIA_CZ = { red:'無名CZ', green:'生駒CZ', blue:'銅藍CZ' };
-const BONUS = { episode:'エピソードB', shunjo:'駿城B' };
+const BONUS = { episode:'エピソードB', shunjo:'駿城B', both:'駿→エピ' };
 
 function pickChips(box, attr, set){
   document.getElementById(box).addEventListener('click', e => {
@@ -1732,12 +1746,13 @@ function renderWins(){
   list.innerHTML = shown.length
     ? shown.map((w, i) => {
         const via = w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
-        const ep = w.bonus === 'episode';
         return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
-          <span class="bn ${ep ? 'ep' : 'sh'}">${BONUS[w.bonus] || ''}</span>
+          ${w.bonus === 'both'
+            ? '<span class="bn two"><i>駿</i><b>→エピ</b></span>'
+            : `<span class="bn ${w.bonus === 'episode' ? 'ep' : 'sh'}">${BONUS[w.bonus] || ''}</span>`}
           <button class="x" data-wdel="${i}" aria-label="削除">×</button>
         </div>`;
       }).join('')
@@ -1763,7 +1778,7 @@ function renderWinStats(shown){
     for (let n = 1; n <= maxC; n++) {
       const hit = cyc.filter(w => w.cycle === n);
       const reached = cyc.filter(w => w.cycle >= n).length;   // n周期に到達した回数
-      const ep = hit.filter(w => w.bonus === 'episode').length;
+      const ep = hit.filter(w => w.bonus !== 'shunjo').length;   // 駿→エピも含める
       html += `<tr><td>${n}周期</td><td class="n">${hit.length}</td>` +
               `<td class="n">${pct(hit.length, reached)}</td>` +
               `<td class="n">${pct(ep, hit.length)}</td></tr>`;
@@ -1777,14 +1792,14 @@ function renderWinStats(shown){
     ['red', 'green', 'blue'].forEach(c => {
       const hit = cz.filter(w => w.cz === c);
       if (!hit.length) return;
-      const ep = hit.filter(w => w.bonus === 'episode').length;
+      const ep = hit.filter(w => w.bonus !== 'shunjo').length;
       html += `<tr><td>${VIA_CZ[c]}</td><td class="n">${hit.length}</td>` +
               `<td class="n">${pct(ep, hit.length)}</td></tr>`;
     });
     html += '</tbody></table>';
   }
 
-  const epAll = shown.filter(w => w.bonus === 'episode').length;
+  const epAll = shown.filter(w => w.bonus !== 'shunjo').length;
   html += `<h3>${WIN_MODES[winMode]} ${fmt(shown.length)}件 ／ エピソードB ${pct(epAll, shown.length)}`
         + (wins.length !== shown.length ? `（全状態では ${fmt(wins.length)}件）` : '') + '</h3>';
   box.innerHTML = html;
