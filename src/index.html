@@ -239,8 +239,13 @@
   .histpanel.open{display:flex}
   /* 規定pt分布グラフを見ているときは、カウンター側を隠す。
      カードの入れ物は style 属性で display を持っているので !important が要る */
-  body.hide-count main > *:not(#graphpanel):not(#histpanel){display:none !important}
-  body.hide-count .bar{display:none !important}
+  /* 合算値は専用のタブでだけ出す */
+  main > .total{display:none}
+  body.view-total main > *:not(.total){display:none !important}
+  body.view-total main > .total{display:block}
+  body.view-graph main > *:not(#graphpanel){display:none !important}
+  body.view-hist  main > *:not(#histpanel){display:none !important}
+  body.view-total .bar, body.view-graph .bar, body.view-hist .bar{display:none !important}
   /* 履歴だけを出すときは、画面の真ん中に置く */
   body.view-hist main{min-height:72svh;display:flex;flex-direction:column;justify-content:center}
   .histpanel h2{margin:0;font-size:13px;font-weight:700}
@@ -629,6 +634,7 @@
   </div>
   <div class="mtabs" id="maintabs">
     <button data-main="count" class="on">入力</button>
+    <button data-main="total">合算値</button>
     <button data-main="graph">規定pt分布グラフ</button>
   </div>
 </header>
@@ -677,6 +683,22 @@
         <div class="k">CZ 1回あたりの平均ポイント</div>
         <div class="v" id="t-avg">—<em>pt / CZ</em></div>
         <div class="formula">無名・生駒のCZ突入時に記録されたポイントの平均／数え途中の現在のポイントは含みません</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="total">
+    <h2>合計（無名 ＋ 生駒 ＋ 銅藍）</h2>
+    <div class="total-grid">
+      <div class="tbox wide rate">
+        <div class="k">平均発光率</div>
+        <div class="v" id="a-rate">—<em>%</em></div>
+        <div class="formula">3キャラの発光回数 ÷ 出現回数（非発光 ＋ 発光）／ 高確発光は含みません</div>
+      </div>
+      <div class="tbox wide">
+        <div class="k">突入1回あたりの平均ポイント</div>
+        <div class="v" id="a-avg">—<em>pt / 回</em></div>
+        <div class="formula">3キャラの突入時に記録されたポイントの平均／銅藍の周期突入も含みます</div>
       </div>
     </div>
   </section>
@@ -1179,12 +1201,11 @@ function renderDist(){
 let mainView = 'count';
 
 function applyMainView(){
-  const graph = mainView === 'graph', hist = mainView === 'hist';
-  document.getElementById('graphpanel').classList.toggle('open', graph);
-  document.getElementById('histpanel').classList.toggle('open', hist);
-  // グラフと履歴のときはカウンター側を隠し、その画面だけを見せる
-  document.body.classList.toggle('hide-count', graph || hist);
-  document.body.classList.toggle('view-hist', hist);
+  document.getElementById('graphpanel').classList.toggle('open', mainView === 'graph');
+  document.getElementById('histpanel').classList.toggle('open', mainView === 'hist');
+  // 1画面に1つの役割だけを出す
+  ['count', 'total', 'graph', 'hist'].forEach(v =>
+    document.body.classList.toggle('view-' + v, mainView === v));
   document.querySelectorAll('#maintabs button')
     .forEach(b => b.classList.toggle('on', b.dataset.main === mainView));
 }
@@ -1290,6 +1311,17 @@ function render(){
   document.getElementById('t-avg').innerHTML  = tAvg === null
     ? `—<em>pt / CZ</em>`
     : `${tAvg.toFixed(2)}<em>pt / CZ</em>`;
+
+  // 銅藍も入れた3キャラの合算
+  const allIds = CHARS.map(c => c.id);
+  let aNo = 0, aGlow = 0;
+  allIds.forEach(id => { aNo += state[id].no; aGlow += state[id].glow; });
+  const aAppear = aNo + aGlow;
+  document.getElementById('a-rate').innerHTML = aAppear
+    ? `${(aGlow / aAppear * 100).toFixed(1)}<em>%</em>` : `—<em>%</em>`;
+  const aAvg = czAvg(allIds);
+  document.getElementById('a-avg').innerHTML = aAvg === null
+    ? `—<em>pt / 回</em>` : `${aAvg.toFixed(2)}<em>pt / 回</em>`;
 
   renderDist();
   renderBell();
