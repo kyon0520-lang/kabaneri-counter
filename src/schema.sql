@@ -35,3 +35,14 @@ CREATE TABLE IF NOT EXISTS cz_points (
 );
 
 CREATE INDEX IF NOT EXISTS idx_cz_machine ON cz_points(machine, chara);
+
+-- 端末の引き継ぎ用の一時保管。会員登録の代わりに、短命なコードで受け渡す。
+-- 個人情報は持たない。期限を過ぎたものは取り出せず、掃除で消す。
+CREATE TABLE IF NOT EXISTS transfers (
+  code       TEXT PRIMARY KEY,
+  payload    TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  expires_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_transfers_exp ON transfers(expires_at);

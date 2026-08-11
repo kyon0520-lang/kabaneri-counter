@@ -577,6 +577,27 @@
   #cmp .row .v b{font-size:14px}
   #cmp .row .v i{font-style:normal;color:var(--muted);margin-left:8px}
   .sheet.consent ul{margin:6px 0 14px;padding-left:1.2em;font-size:11px;color:var(--muted);line-height:1.7}
+  /* 引き継ぎ */
+  .tract{border-top:1px solid var(--line);padding:14px 0 4px}
+  .tract input{
+    width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+    color:var(--text);font-family:inherit;font-size:18px;letter-spacing:.16em;
+    text-align:center;padding:12px;margin-bottom:8px;
+  }
+  .tract input:focus{outline:none;border-color:#3b82f6}
+  .tract button{
+    width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    color:var(--text);font-family:inherit;font-size:14px;font-weight:700;padding:12px;
+    cursor:pointer;margin-bottom:6px;
+  }
+  .tract button.primary{background:#2f6bd8;border-color:#2f6bd8;color:#fff}
+  .trcode{
+    background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.4);
+    border-radius:10px;padding:14px;text-align:center;margin:4px 0 2px;
+  }
+  .trcode b{display:block;font-size:26px;font-weight:700;letter-spacing:.22em;color:#8fc0ff}
+  .trcode span{display:block;font-size:10.5px;color:var(--muted);margin-top:6px;line-height:1.7}
+  .trnote{border-top:1px solid var(--line);padding-top:12px}
   .sheet .acts button{
     flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;
     font-family:inherit;cursor:pointer;border:1px solid var(--line);
@@ -673,6 +694,7 @@
 <div class="menuscrim" id="menuscrim"></div>
 <nav class="menu" id="menu">
   <button id="histbtn">実戦履歴</button>
+  <button id="trbtn">記録の引き継ぎ</button>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
 </nav>
 
@@ -898,6 +920,31 @@
   <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。みんなの集計には送りません。</p>
 </aside>
 <button class="memohandle" id="memohandle" aria-label="メモを開く">メ<br>モ</button>
+
+<div class="modal" id="trmodal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <h2>記録の引き継ぎ</h2>
+    <p class="sub">機種変更などで、保存した実戦の記録を別の端末に移せます。登録は要りません。</p>
+
+    <div class="tract">
+      <button class="primary" id="trmake">引き継ぎコードを発行</button>
+      <p class="sub">いまの端末の記録を一時的に預けて、コードを出します。</p>
+    </div>
+
+    <div class="trcode" id="trcode" hidden></div>
+
+    <div class="tract">
+      <label class="wlbl"><i>＋</i>コードで受け取る</label>
+      <input id="trinput" type="text" inputmode="latin" autocapitalize="characters"
+             placeholder="例 ABCD-2345" maxlength="12" aria-label="引き継ぎコード">
+      <button id="trtake">この端末に読み込む</button>
+      <p class="sub">いまの端末の記録に、読み込んだぶんを足します。同じ実戦は重ねません。</p>
+    </div>
+
+    <p class="sub trnote">預けた記録は<b>3日で自動的に消えます</b>。メモの中身も一緒に預かるので、店舗名など人に見せたくないことを書いている場合はご注意ください。</p>
+    <div class="acts stack"><button class="ghostish" id="trclose">閉じる</button></div>
+  </div>
+</div>
 
 <div class="modal" id="consentmodal" hidden>
   <div class="sheet consent" role="dialog" aria-modal="true">
@@ -2230,6 +2277,79 @@ function renderWinStats(shown){
 document.getElementById('winhandle').addEventListener('click', openWin);
 document.getElementById('winclose').addEventListener('click', closeWin);
 winScrim.addEventListener('click', closeWin);
+
+/* ---------- 記録の引き継ぎ ----------
+   会員登録の代わりに、短命なコードで別の端末へ移す。
+   預けるのは実戦の記録だけ。数え途中のカウントは移さない。 */
+const trModal = document.getElementById('trmodal');
+
+document.getElementById('trbtn').addEventListener('click', () => {
+  closeMenu();
+  document.getElementById('trcode').hidden = true;
+  document.getElementById('trinput').value = '';
+  trModal.hidden = false;
+});
+document.getElementById('trclose').addEventListener('click', () => { trModal.hidden = true; });
+
+/* 4文字ずつに区切って読みやすくする */
+const prettyCode = c => c.replace(/(.{4})(?=.)/g, '$1-');
+
+document.getElementById('trmake').addEventListener('click', async () => {
+  if (!hist.length) { toast('保存された実戦がありません'); return; }
+  const btn = document.getElementById('trmake');
+  btn.disabled = true; btn.textContent = '発行しています…';
+  try {
+    const res = await fetch('/api/transfer', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ records: hist, machine: 'kabaneri-unato' })
+    });
+    const j = await res.json();
+    if (!j.ok) { toast(j.error || '発行できませんでした'); return; }
+    const box = document.getElementById('trcode');
+    const until = new Date(j.expiresAt);
+    box.innerHTML = `<b>${esc(prettyCode(j.code))}</b>`
+      + `<span>実戦 ${fmt(j.count)}件を預かりました<br>`
+      + `${until.getMonth() + 1}/${until.getDate()} ${String(until.getHours()).padStart(2, '0')}時ごろまで有効です<br>`
+      + `新しい端末で、このコードを入れてください</span>`;
+    box.hidden = false;
+  } catch (e) {
+    toast('通信できませんでした。電波の良い場所でお試しください');
+  } finally {
+    btn.disabled = false; btn.textContent = '引き継ぎコードを発行';
+  }
+});
+
+document.getElementById('trtake').addEventListener('click', async () => {
+  const code = document.getElementById('trinput').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (code.length !== 8) { toast('コードは8文字です'); return; }
+  const btn = document.getElementById('trtake');
+  btn.disabled = true; btn.textContent = '読み込んでいます…';
+  try {
+    const res = await fetch('/api/transfer?code=' + encodeURIComponent(code));
+    const j = await res.json();
+    if (!j.ok) { toast(j.error || '読み込めませんでした'); return; }
+
+    // 同じ実戦は重ねない。日付の新しい順に並べ直す
+    const have = new Set(hist.map(r => r.id));
+    const add = (j.records || []).filter(r => r && r.id && !have.has(r.id));
+    hist = hist.concat(add).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    if (hist.length > 500) hist.length = 500;
+
+    if (!saveHist()) {
+      toast('読み込んだ記録を保存できませんでした');
+      loadHist();
+      return;
+    }
+    renderHist(); renderDist();
+    trModal.hidden = true;
+    toast(add.length ? `${fmt(add.length)}件を読み込みました` : '新しい記録はありませんでした');
+  } catch (e) {
+    toast('通信できませんでした。電波の良い場所でお試しください');
+  } finally {
+    btn.disabled = false; btn.textContent = 'この端末に読み込む';
+  }
+});
 
 /* ---------- 結果カード ---------- */
 // スマホで見やすい縦長（4:5）。Xのタイムラインでも切り取られない比率
