@@ -359,10 +359,6 @@
     color:var(--muted);font-family:inherit;font-size:12.5px;padding:10px 2px;cursor:pointer;
   }
   .wview button.on{color:var(--text);font-weight:700;border-bottom-color:#2f6bd8}
-  .winopen{
-    background:var(--panel2);border:1px dashed var(--line);border-radius:10px;
-    color:var(--text);font-family:inherit;font-size:13px;padding:12px;cursor:pointer;
-  }
   /* 一覧は溜まっても高さを取りすぎないよう、この中でスクロールさせる */
   .winlist{max-height:40vh;overflow-y:auto}
   .winform{display:flex;flex-direction:column;gap:7px}
@@ -728,7 +724,7 @@
   <div class="memohd"><b>当選履歴</b><button class="linkbtn" id="winclose">閉じる</button></div>
 
   <div class="wview" id="winview">
-    <button data-view="log" class="on">記録</button>
+    <button data-view="log" class="on">入力</button>
     <button data-view="list">実戦履歴</button>
     <button data-view="stats">当選率</button>
   </div>
@@ -739,8 +735,6 @@
     <button data-mode="upper">上位後</button>
     <button data-mode="reset">リセット後</button>
   </div>
-
-  <button class="winopen" id="winopen" hidden>＋ 当選を追加</button>
 
   <div class="winform" id="winform">
     <label class="wlbl">当選G数</label>
@@ -1676,12 +1670,9 @@ const winScrim = document.getElementById('winscrim');
 let pendCycle = null, pendCz = null, pendBonus = null;
 let winView = 'log';      // 'log' = 記録 / 'stats' = 当選率
 let bonusLocked = false;  // 最終周期はエピソードB確定なので自動で選ぶ
-let formOpen = true;      // 入力欄を開いているか
-
 function applyWinView(){
   const log = winView === 'log', list = winView === 'list';
-  document.getElementById('winform').hidden = !log || !formOpen;
-  document.getElementById('winopen').hidden = !log || formOpen;
+  document.getElementById('winform').hidden = !log;
   document.getElementById('winlist').hidden = !list;
   document.getElementById('winstats').hidden = winView !== 'stats';
   // 実戦履歴は全状態をまとめて出すので、状態タブは関係ない
@@ -1749,7 +1740,6 @@ document.getElementById('winadd').addEventListener('click', () => {
   bonusLocked = false;
   winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
   syncBonusChoices();
-  formOpen = false; applyWinView();
   toast('追加しました');
 });
 
@@ -1763,11 +1753,6 @@ document.getElementById('winview').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   winView = b.dataset.view;
   applyWinView();
-});
-
-document.getElementById('winopen').addEventListener('click', () => {
-  formOpen = true; applyWinView();
-  document.getElementById('wing').focus();
 });
 
 document.getElementById('wintabs').addEventListener('click', e => {
@@ -1835,7 +1820,6 @@ function renderWins(){
       }).join('')
     : '<div class="winempty">まだ当選の記録はありません</div>';
 
-  if (!shown.length) formOpen = true;
   applyWinView();
   renderWinStats(shown);
 }
