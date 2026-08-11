@@ -190,20 +190,16 @@
   .shot .bar .cur b{color:#e8c06a;font-size:13px}
   .shot .bar .cur i{display:block;font-style:normal;font-size:9px;color:var(--s-muted)}
   .shot .bar .all{color:#e2453c;border-color:rgba(226,69,60,.4);font-size:13px;font-weight:600}
-  .shot .topbtn{
-    display:inline-block;border:1px solid var(--s-line);border-radius:8px;
-    padding:6px 9px;font-size:11px;color:var(--s-muted);background:rgba(31,36,46,.6);
-    position:relative;
-  }
-
   /* 下段ベルのバー（画面写真） */
-  .shot .bellbar{display:flex;gap:8px;align-items:center}
+  .shot .bellbar{display:flex;gap:5px;align-items:center}
   .shot .bellbar .md{position:relative;display:flex;border:1px solid var(--s-line);border-radius:10px;background:var(--s-bg);flex:0 0 auto}
   .shot .bellbar .md i{
-    width:40px;height:34px;display:grid;place-items:center;font-style:normal;
+    width:34px;height:34px;display:grid;place-items:center;font-style:normal;
     font-size:16px;font-weight:700;color:var(--s-muted);
   }
   .shot .bellbar .md i.on{background:#2f6bd8;color:#fff}
+  /* ＋のマスは小さいので、バッジは枠の外へ出す */
+  .shot .bellbar .md .pin{top:-8px;left:-8px;box-shadow:0 0 0 2px var(--s-bg)}
   .shot .bellbar .bb{
     flex:1;min-width:0;border:1px solid rgba(224,178,74,.55);background:var(--s-panel2);
     border-radius:11px;padding:27px 4px 8px;text-align:center;position:relative;
@@ -211,14 +207,14 @@
   .shot .bellbar .bb .l{font-size:10px;font-weight:600;color:#e8c06a;white-space:nowrap}
   .shot .bellbar .bb .v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.25}
   .shot .bellbar .bb .s{font-size:9px;color:var(--s-muted)}
-  .shot .bellbar .gw{flex:0 0 84px;display:flex;flex-direction:column;gap:3px;position:relative;padding-top:26px}
+  .shot .bellbar .gw{flex:0 0 72px;display:flex;flex-direction:column;gap:3px;position:relative;padding-top:26px}
   .shot .bellbar .gw span{font-size:9px;color:var(--s-muted);text-align:center}
   .shot .bellbar .gw div{
     height:30px;border:1px solid rgba(224,178,74,.4);border-radius:9px;background:var(--s-bg);
     display:grid;place-items:center;font-size:14px;font-variant-numeric:tabular-nums;
   }
   .shot .bellbar .rt{
-    flex:0 0 58px;text-align:right;font-variant-numeric:tabular-nums;
+    flex:0 0 54px;text-align:right;font-variant-numeric:tabular-nums;
     font-size:17px;font-weight:800;color:#e8c06a;line-height:1.15;position:relative;padding-top:26px;
   }
   .shot .bellbar .rt em{font-style:normal;font-size:9px;color:var(--s-muted);font-weight:400;display:block}
@@ -231,6 +227,7 @@
     padding:9px 2px;border-bottom:2px solid transparent;margin-bottom:-1px;
   }
   .shot .wv span.on{color:var(--s-text);font-weight:700;border-bottom-color:#2f6bd8}
+  .shot .wv.mt span{font-size:9.5px;padding:9px 1px;white-space:nowrap}
   .shot .wt{
     display:flex;gap:3px;margin-top:11px;position:relative;
     background:var(--s-panel2);border:1px solid var(--s-line);border-radius:10px;padding:4px;
@@ -294,7 +291,6 @@
   }
   /* 枠の外に置いても文字に重ならない場所だけ外出し */
   .shot .mode .pin{top:-9px;left:auto;right:-9px;box-shadow:0 0 0 2px var(--s-bg)}
-  .topbtn .pin{top:-9px;left:-11px;box-shadow:0 0 0 2px var(--s-bg)}
   :root[data-theme="light"] .pin, :root:not([data-theme]) .pin{background:#2f6bd8}
 
   /* ---- 凡例リスト ---- */
@@ -451,7 +447,7 @@
     <p>カウンターは2つあります。開いたときに出る <strong>CZ発光カウンター</strong> と、右にスワイプして開く <strong>当選履歴カウンター</strong> です。どちらも同じ実戦の記録として一緒に保存されます。</p>
 
     <h3>CZ発光カウンター</h3>
-    <p>キャラごとに同じ形のカードが並びます。無名・生駒のカードのあいだに合計欄、いちばん下に銅藍のカードがあります。</p>
+    <p>無名・生駒・銅藍の3枚が、同じ形のカードで縦に並びます。3キャラをまとめた数字は <strong>合算値</strong> のタブにあります。</p>
 
     <div class="shot">
       <div class="card">
@@ -540,8 +536,8 @@
       <li><span class="num">C</span><span class="txt"><b>データカウンターのG数</b><span>台の上のカウンターの数字。<strong>サブ液晶のG数ではありません。</strong>3桁まで。</span></span></li>
       <li><span class="num">D</span><span class="txt"><b>当選契機</b><span>1〜6周期・天井と、無名CZ・生駒CZ・銅藍CZ。何で当たったかを1つ選びます。</span></span></li>
       <li><span class="num">E</span><span class="txt"><b>当たったボーナス</b><span>エピソードB・駿城B・駿→エピ（駿城Bからの昇格）。</span></span></li>
-      <li><span class="num">F</span><span class="txt"><b>追加する</b><span>3つそろうと押せるようになり、1件として記録されます。</span></span></li>
-      <li><span class="num">G</span><span class="txt"><b>この実戦を保存／全リセット</b><span>いちばん下。保存はCZ発光と当選履歴をまとめて1件の実戦にします。全リセットは<strong>両方のカウンターを消します</strong>。</span></span></li>
+      <li><span class="num">F</span><span class="txt"><b>追加する</b><span>1件として記録されます。G数・当選契機・ボーナスのどれかが抜けていると、足りないものを知らせて止まります。</span></span></li>
+      <li><span class="num">G</span><span class="txt"><b>この実戦を保存／全リセット</b><span>いちばん下。CZ発光カウンター側の同じボタンを押すのと同じです。保存は両方をまとめて1件の実戦にし、全リセットは<strong>両方のカウンターを消します</strong>。</span></span></li>
     </ul>
     <p class="cap">画面の中の <b>1</b>・<b>2</b>・<b>3</b> はアプリが出している入力の順番です。</p>
   </section>
@@ -669,7 +665,7 @@
     </div>
     <ul class="legend">
       <li><span class="num">1</span><span class="txt"><b>現在ポイントリセット</b><span>3キャラの現在ポイントを0にして、その分を合計から差し引きます。直後に出る「元に戻す」で取り消せます。</span></span></li>
-      <li><span class="num">2</span><span class="txt"><b>全リセット</b><span>確認画面のあと、すべてのカウントと分布グラフの記録を消します。</span></span></li>
+      <li><span class="num">2</span><span class="txt"><b>全リセット</b><span>確認画面のあと、カウント・分布グラフの記録・下段ベル・G数・<strong>当選履歴・メモ</strong>をまとめて消します。保存済みの実戦は残ります。</span></span></li>
     </ul>
 
     <h3>銅藍の強制周期（150G・300G）</h3>
@@ -697,11 +693,11 @@
   <!-- 6 -->
   <section id="s6">
     <h2><span class="n">6</span>規定pt分布グラフ</h2>
-    <p>画面右上の <strong>規定pt分布グラフ</strong> を押すと開きます。CZ突入を押したときの現在ポイントが、15pt刻みのどの範囲に入ったかを集計した表です。設定判別で使う「規定pt」の振り分けと同じ並びにしてあります。</p>
+    <p>画面のいちばん上、<strong>規定pt分布グラフ</strong> のタブで開きます。CZ突入を押したときの現在ポイントが、15pt刻みのどの範囲に入ったかを集計した表です。設定判別で使う「規定pt」の振り分けと同じ並びにしてあります。</p>
 
     <div class="shot">
-      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-        <span class="topbtn">規定pt分布グラフ<span class="pin">1</span></span>
+      <div class="wv mt" style="margin-bottom:12px">
+        <span>入力</span><span>合算値</span><span class="on">規定pt分布グラフ</span>
       </div>
       <div style="background:var(--s-panel);border:1px solid var(--s-line);border-radius:12px;padding:12px">
         <div style="font-size:12px;font-weight:700;margin-bottom:9px">CZ突入時のポイント分布</div>
@@ -767,16 +763,17 @@
 
     <div class="shot">
       <div class="bellbar">
-        <div class="md"><i class="on">＋</i><i>−</i><span class="pin">1</span></div>
+        <div class="md"><i class="on">＋</i><span class="pin">1</span></div>
         <div class="bb"><div class="l">下段ベル</div><div class="v">128</div><div class="s">回</div><span class="pin">2</span></div>
+        <div class="md"><i>−</i></div>
         <div class="gw"><span>現在のG数</span><div>3456</div><span class="pin">3</span></div>
         <div class="rt">1/27.0<em>確率</em><span class="pin">4</span></div>
       </div>
     </div>
 
     <ul class="legend">
-      <li><span class="num">1</span><span class="txt"><b>＋／− 切り替え</b><span>キャラのカードと同じ仕組みです。−にしてから下段ベルを押すと1つ減ります。</span></span></li>
-      <li><span class="num">2</span><span class="txt"><b>下段ベル</b><span>押すたびに1回。0未満にはなりません。</span></span></li>
+      <li><span class="num">1</span><span class="txt"><b>＋／− 切り替え</b><span>数える場所の<strong>両どなり</strong>に置いてあります。左が＋、右が−。−にしてから下段ベルを押すと1つ減ります。</span></span></li>
+      <li><span class="num">2</span><span class="txt"><b>下段ベル</b><span>押すたびに1回。＋と−にはさまれた真ん中を押します。0未満にはなりません。</span></span></li>
       <li><span class="num">3</span><span class="txt"><b>現在のG数</b><span>台のゲーム数を入力します。数えた区間の総ゲーム数を入れてください。</span></span></li>
       <li><span class="num">4</span><span class="txt"><b>確率</b><span>G数 ÷ 下段ベルの回数。どちらかが0のあいだは「—」のままです。</span></span></li>
     </ul>
@@ -799,7 +796,7 @@
       <b>消えてしまうケース</b><br>
       ブラウザの履歴・サイトデータを削除したとき、プライベートブラウズで開いているとき、ホーム画面のアイコンを削除したときに消えます。別の端末やブラウザにも自動では引き継がれません（<b>記録の引き継ぎ</b>を使えば移せます）。<br><br>
       Safariで開いているだけだと、しばらく使わない期間が続くと自動で消されることがあります。<b>ホーム画面に追加して使うと消えにくくなります。</b><br><br>
-      保存できなかったときは「保存できませんでした」と画面に出ます。そのときは記録が残っていないので、空き容量をあけてからやり直してください。
+      保存に失敗したときは「保存できませんでした。端末の空き容量やプライベートモードをご確認ください」と画面に出ます。そのときは記録が残っていないので、原因を直してからやり直してください。
     </div>
   </section>
 
@@ -809,12 +806,18 @@
     <p>画面下の <strong>この実戦を保存</strong> を押すと、その実戦がまるごと記録に残ります。当選履歴カウンターの入力タブからも押せます。</p>
     <p>保存するときに、判明していれば<strong>設定</strong>と<strong>その根拠</strong>（設定公開／確定演出／推測）を添えられます。分からなければ選ばなくて構いません。</p>
 
+    <div class="note">
+      <b>保存してもカウントは消えません</b><br>
+      保存が終わると <b>結果カードを作る</b> と <b>カウントを0にする</b> が出ます。0にするかは自分で選べるので、同じ台を続けて打つならそのまま数え続けられます。<br><br>
+      ただし<b>当選履歴とメモは、保存した時点で空になります</b>。実戦の記録に移したためで、消えたわけではありません。
+    </div>
+
     <h3>あとから見る</h3>
-    <p>右上のメニューから <strong>実戦履歴</strong> を開きます。行をタップすると、その実戦の<strong>結果カード</strong>と、CZ突入時のポイント分布が出ます。</p>
+    <p>右上のメニューから <strong>実戦履歴</strong> を開きます。行をタップすると、その実戦の<strong>結果カード</strong>と、CZ突入時のポイント分布、書いてあればメモが出ます。</p>
     <p>結果カードには、発光率・平均pt/CZ・総ゲーム数・下段ベル・キャラ別の内訳（それぞれの発光率と平均pt）・当選履歴のまとめが入ります。<strong>シェアする</strong>を押すと画像として保存や投稿ができます。</p>
 
     <h3>消すとき</h3>
-    <p>行を開いて <strong>この実戦を削除</strong> を押します。<strong>全リセット</strong>を押すと、カウントと当選履歴が消えます（保存済みの実戦は残ります）。</p>
+    <p>行を開いて <strong>この実戦を削除</strong> を押します。<strong>全リセット</strong>は数え途中のカウント・当選履歴・メモを消すもので、保存済みの実戦には手をつけません。</p>
     <p class="cap">保存できるのは500件までです。超えると古いものから消えます。1実戦あたり1〜8KB程度なので、500件でも1MBに届きません。</p>
   </section>
 
@@ -822,7 +825,8 @@
   <section id="s10">
     <h2><span class="n">10</span>当選率の出しかた</h2>
     <p>当選履歴カウンターの <strong>当選率</strong> のタブに出ます。入れた記録から自動で計算されます。</p>
-    <p><strong>周期別の当選率</strong>は、当たった記録だけから逆算しています。3周期で当たったなら1・2周期は素通りしているので、「N周期に到達した回数 ＝ N周期以降で当たった件数」として計算します。CZ当選は何周期目か記録しないため、周期別には入りません。天井も同じ理由で入りません。</p>
+    <p><strong>周期別の当選率</strong>は、当たった記録だけから逆算しています。3周期で当たったなら1・2周期は素通りしているので、「N周期に到達した回数 ＝ N周期以降で当たった件数」として計算します。CZ当選は何周期目かを記録しないため、周期別には入りません。天井は周期での当選ではないので、これも入りません。</p>
+    <p><strong>CZ当選</strong>は別の表になり、無名CZ・生駒CZ・銅藍CZごとの当選数とエピソードB率が出ます。記録がある種類だけ並びます。</p>
     <p><strong>エピソードB率</strong>に、駿城Bからの昇格（駿→エピ）は含みません。直撃だけの割合です。</p>
     <p><strong>合算</strong>のタブでは、全状態と、短縮（駆け抜け後・上位後・リセット後）の2つを並べます。ST確率・全ボーナス・CZ確率もここに出ます。</p>
     <div class="formula">
@@ -836,7 +840,8 @@
   <section id="s11">
     <h2><span class="n">11</span>メモ</h2>
     <p>画面を<strong>左にスワイプ</strong>するか、右端の「メモ」のつまみを押すと開きます。台番号やホール、気づいたことをその場で書けます。</p>
-    <p>書いた内容は打つそばから保存され、実戦を保存するとその記録と一緒に残ります。保存すると次の実戦のために空になります。</p>
+    <p>書いた内容は打つそばから保存され、実戦を保存するとその記録と一緒に残ります。保存すると次の実戦のために空になり、あとから実戦履歴の行を開けば読み返せます。</p>
+    <p class="cap">全リセットを押したときも、メモは消えます。</p>
     <div class="note">
       <b>メモは送信しません</b><br>
       店舗名など個人的なことを書く前提なので、みんなの集計には送りません。この端末の中だけに残ります。
