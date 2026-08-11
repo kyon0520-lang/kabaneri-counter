@@ -369,25 +369,27 @@
     <div class="tochd">目次</div>
     <ol>
       <li><a href="#s1"><span class="tn">1</span>画面の見かた</a></li>
-      <li><a href="#s2"><span class="tn">2</span>数え方の流れ</a></li>
-      <li><a href="#s3"><span class="tn">3</span>押すと何が変わるか</a></li>
-      <li><a href="#s4"><span class="tn">4</span>計算のしくみ</a></li>
+      <li><a href="#s2"><span class="tn">2</span>画面の切り替えとメニュー</a></li>
+      <li><a href="#s3"><span class="tn">3</span>CZ発光の数え方</a></li>
+      <li><a href="#s4"><span class="tn">4</span>当選履歴の数え方</a></li>
       <li><a href="#s5"><span class="tn">5</span>特殊な操作</a></li>
       <li><a href="#s6"><span class="tn">6</span>規定pt分布グラフ</a></li>
       <li><a href="#s7"><span class="tn">7</span>下段ベル</a></li>
       <li><a href="#s8"><span class="tn">8</span>データの保存について</a></li>
       <li><a href="#s9"><span class="tn">9</span>実戦履歴と結果カード</a></li>
-      <li><a href="#s10"><span class="tn">10</span>画面の切り替えとメニュー</a></li>
-      <li><a href="#s11"><span class="tn">11</span>当選履歴カウンター</a></li>
-      <li><a href="#s12"><span class="tn">12</span>メモ</a></li>
-      <li><a href="#s13"><span class="tn">13</span>みんなの集計への送信</a></li>
-      <li><a href="#s14"><span class="tn">14</span>記録の引き継ぎ</a></li>
+      <li><a href="#s10"><span class="tn">10</span>当選率の出しかた</a></li>
+      <li><a href="#s11"><span class="tn">11</span>メモ</a></li>
+      <li><a href="#s12"><span class="tn">12</span>みんなの集計への送信</a></li>
+      <li><a href="#s13"><span class="tn">13</span>記録の引き継ぎ</a></li>
     </ol>
   </nav>
 
   <!-- 1 -->
   <section id="s1">
     <h2><span class="n">1</span>画面の見かた</h2>
+    <p>カウンターは2つあります。開いたときに出る <strong>CZ発光カウンター</strong> と、右にスワイプして開く <strong>当選履歴カウンター</strong> です。どちらも同じ実戦の記録として一緒に保存されます。</p>
+
+    <h3>CZ発光カウンター</h3>
     <p>キャラごとに同じ形のカードが並びます。無名・生駒のカードのあいだに合計欄、いちばん下に銅藍のカードがあります。</p>
 
     <div class="shot">
@@ -429,11 +431,37 @@
       <li><span class="num">7</span><span class="txt"><b>発光率</b><span>発光 ÷（非発光＋発光）。高確発光は含みません。</span></span></li>
       <li><span class="num">8</span><span class="txt"><b>平均 pt/CZ</b><span>CZ突入を押したときのポイントの平均。<strong>数え途中の現在のポイントは入りません</strong>ので、突入を押すまで動きません。銅藍は「平均 pt/周期」。</span></span></li>
     </ul>
+
+    <h3>当選履歴カウンター</h3>
+    <p>画面を<strong>右にスワイプ</strong>するか、左端の「当選」のつまみを押すと開きます。当たるたびに1件ずつ足していく画面で、上から順にこう並んでいます。</p>
+    <ul class="legend">
+      <li><span class="num">1</span><span class="txt"><b>入力 ／ 実戦履歴 ／ 当選率</b><span>いちばん上の3つ。<strong>入力</strong>が数える画面、<strong>実戦履歴</strong>が入れた記録の一覧、<strong>当選率</strong>が集計です。</span></span></li>
+      <li><span class="num">2</span><span class="txt"><b>状態のタブ</b><span>通常・駆け抜け後・上位後・リセット後と、集計用の合算。いま打っている状態を選びます。色分けは 通常＝青／駆け抜け後＝黄／上位後＝ピンク／リセット後＝白。</span></span></li>
+      <li><span class="num">3</span><span class="txt"><b>データカウンターのG数</b><span>台の上のカウンターの数字。<strong>サブ液晶のG数ではありません。</strong>3桁まで。</span></span></li>
+      <li><span class="num">4</span><span class="txt"><b>当選契機</b><span>1〜6周期・天井と、無名CZ・生駒CZ・銅藍CZ。何で当たったかを1つ選びます。</span></span></li>
+      <li><span class="num">5</span><span class="txt"><b>当たったボーナス</b><span>エピソードB・駿城B・駿→エピ（駿城Bからの昇格）。</span></span></li>
+      <li><span class="num">6</span><span class="txt"><b>追加する</b><span>3つそろうと押せるようになり、1件として記録されます。</span></span></li>
+      <li><span class="num">7</span><span class="txt"><b>この実戦を保存／全リセット</b><span>いちばん下。保存はCZ発光と当選履歴をまとめて1件の実戦にします。全リセットは<strong>両方のカウンターを消します</strong>。</span></span></li>
+    </ul>
   </section>
 
   <!-- 2 -->
   <section id="s2">
-    <h2><span class="n">2</span>数え方の流れ</h2>
+    <h2><span class="n">2</span>画面の切り替えとメニュー</h2>
+    <p>CZ発光カウンターの上に <strong>入力</strong>・<strong>合算値</strong>・<strong>規定pt分布グラフ</strong> のタブがあります。一度に出るのは1つだけです。</p>
+    <ul class="legend">
+      <li><span class="num">入</span><span class="txt"><b>入力</b><span>キャラごとのカードを押して数える画面。ふだんはここです。</span></span></li>
+      <li><span class="num">合</span><span class="txt"><b>合算値</b><span>平均発光率とCZ 1回あたりの平均ポイント。<strong>無名＋生駒</strong>と、<strong>銅藍も入れた3キャラ</strong>の2つを色を分けて並べます。3キャラのほうは銅藍の周期突入も含むので単位が「pt/回」になります。</span></span></li>
+      <li><span class="num">グ</span><span class="txt"><b>規定pt分布グラフ</b><span>CZ突入時のポイントの分布。</span></span></li>
+    </ul>
+    <p>右上の <strong>三本線のボタン</strong> から、<strong>実戦履歴</strong>・<strong>記録の引き継ぎ</strong>・<strong>取扱説明書</strong>を開けます。</p>
+    <p>当選履歴カウンターは<strong>右にスワイプ</strong>、メモは<strong>左にスワイプ</strong>で開きます。画面の左右の端にあるつまみを押しても開きます。</p>
+    <p class="cap">下段ベルは画面下に固定されています。［＋］［下段ベル］［−］の並びで、真ん中を押して数えます。−を選んでから押すと1つ減ります。</p>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <h2><span class="n">3</span>CZ発光の数え方</h2>
     <div class="flow">
       <div class="step">
         <span class="no">1</span>
@@ -475,56 +503,50 @@
     <p class="cap">「高確発光など」は1回押すと15ptなので、30ptなら2回、60ptなら4回押して合わせます。</p>
   </section>
 
-  <!-- 3 -->
-  <section id="s3">
-    <h2><span class="n">3</span>押すと何が変わるか</h2>
-    <p>このアプリでいちばん間違えやすいのはここです。操作ごとに、どの数字が動いてどれが動かないかの一覧です。</p>
-    <div class="tablewrap">
-      <table>
-        <thead>
-          <tr>
-            <th>操作</th><th>現在pt</th><th>発光率</th><th>平均pt/CZ</th><th>分布グラフ</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th>非発光</th><td class="yes">+1</td><td class="yes">分母+1</td><td class="no">変わらない</td><td class="no">—</td></tr>
-          <tr><th>発光</th><td class="yes">+15</td><td class="yes">分子+1</td><td class="no">変わらない</td><td class="no">—</td></tr>
-          <tr><th>高確発光など</th><td class="yes">+15</td><td class="no">入らない</td><td class="no">変わらない</td><td class="no">—</td></tr>
-          <tr><th>CZ突入 / 周期突入</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="yes">ここで更新</td><td class="yes">1件記録</td></tr>
-          <tr><th>現在ポイントリセット</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="no">そのまま</td><td class="no">そのまま</td></tr>
-          <tr><th>強制周期（銅藍）</th><td class="yes">0に戻る</td><td class="no">そのまま</td><td class="no">そのまま</td><td class="no">記録しない</td></tr>
-          <tr><th>下段ベル</th><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td></tr>
-          <tr><th>全リセット</th><td class="yes">0</td><td class="yes">0</td><td class="yes">0</td><td class="yes">全消去</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="cap">分布グラフに記録されるのは無名・生駒のCZ突入だけです。銅藍の周期突入は入りません。</p>
-  </section>
-
   <!-- 4 -->
   <section id="s4">
-    <h2><span class="n">4</span>計算のしくみ</h2>
+    <h2><span class="n">4</span>当選履歴の数え方</h2>
+    <p>当たったときだけ入れます。3つ選んで「追加する」を押す、これを繰り返すだけです。</p>
+    <div class="flow">
+      <div class="step">
+        <span class="no">1</span>
+        <span class="body"><b>いま打っている状態のタブを選ぶ</b>
+        <span>通常・駆け抜け後・上位後・リセット後。合算は集計を見るためのタブなので、ここでは選びません。</span></span>
+      </div>
+      <div class="arrow">▼</div>
+      <div class="step">
+        <span class="no">2</span>
+        <span class="body"><b>データカウンターのG数を入れる</b>
+        <span>台の上のカウンターの数字です。<strong>サブ液晶のG数ではありません。</strong>3桁まで入ります。</span></span>
+      </div>
+      <div class="arrow">▼</div>
+      <div class="step">
+        <span class="no">3</span>
+        <span class="body"><b>当選契機を選ぶ</b>
+        <span>1〜6周期・天井・無名CZ・生駒CZ・銅藍CZ から1つ。</span></span>
+      </div>
+      <div class="arrow">▼</div>
+      <div class="step">
+        <span class="no">4</span>
+        <span class="body"><b>当たったボーナスを選ぶ</b>
+        <span>エピソードB・駿城B・駿→エピ（駿城Bから昇格）から1つ。</span></span>
+      </div>
+      <div class="arrow">▼</div>
+      <div class="step">
+        <span class="no">5</span>
+        <span class="body"><b>「追加する」を押す</b>
+        <span>1件として記録され、入力欄が空になります。次に当たったら1に戻ります。</span></span>
+      </div>
+    </div>
+    <p class="cap">最終周期（通常は6周期、その他は4周期）と天井はエピソードB確定なので、ボーナスは自動で選ばれ、他の選択肢は出ません。</p>
 
-    <div class="formula">
-      <b>ポイント</b>
-      <code>非発光 ×1 ＋ 発光 ×15 ＋ 高確発光など ×15 － 無効にした分</code>
+    <h3>状態のタブ</h3>
+    <p>上の <strong>通常・駆け抜け後・上位後・リセット後</strong> は、いまどの状態を打っているかです。色で分けてあります（通常＝青／駆け抜け後＝黄／上位後＝ピンク／リセット後＝白）。</p>
+    <div class="note">
+      <b>状態はエピソードBを引くまで変わりません</b><br>
+      そのため、駿城Bを入れたあとは状態のタブが押せなくなります。エピソードB（昇格を含む）を入れると解除され、次の状態を選べます。実戦履歴でも、エピソードBを引いたところで区切って状態を出し直します。
     </div>
-    <div class="formula">
-      <b>発光率</b>
-      <code>発光 ÷（非発光 ＋ 発光）　※高確発光は分子にも分母にも入りません</code>
-    </div>
-    <div class="formula">
-      <b>平均 pt/CZ</b>
-      <code>CZ突入時に記録されたポイントの合計 ÷ その記録の件数</code>
-      <span class="cap">数え途中の現在のポイントは、まだCZに届いていないので入れません。入れると分子だけ増えて、平均が実際より高く出ます。</span>
-    </div>
-
-    <div class="example">
-      <b>例：無名を 非発光10・発光2・高確発光1 数え、CZ突入を 30pt と 25pt の時点で2回押した場合</b>
-      <div class="row"><span>発光率　2 ÷（10＋2）</span><span>16.7%</span></div>
-      <div class="row"><span>平均 pt/CZ　(30 ＋ 25) ÷ 2</span><span>27.50</span></div>
-      <div class="row"><span>このあと数えた分は、次にCZ突入を押すまで平均に入りません</span><span>—</span></div>
-    </div>
+    <p class="cap">駆け抜け後・上位後・リセット後は4周期までです。5・6周期の選択肢は出ません。</p>
   </section>
 
   <!-- 5 -->
@@ -697,42 +719,8 @@
 
   <!-- 10 -->
   <section id="s10">
-    <h2><span class="n">10</span>画面の切り替えとメニュー</h2>
-    <p>画面の上に <strong>入力</strong>・<strong>合算値</strong>・<strong>規定pt分布グラフ</strong> のタブがあります。一度に出るのは1つだけです。</p>
-    <ul class="legend">
-      <li><span class="num">入</span><span class="txt"><b>入力</b><span>キャラごとのカードを押して数える画面。ふだんはここです。</span></span></li>
-      <li><span class="num">合</span><span class="txt"><b>合算値</b><span>平均発光率とCZ 1回あたりの平均ポイント。<strong>無名＋生駒</strong>と、<strong>銅藍も入れた3キャラ</strong>の2つを色を分けて並べます。3キャラのほうは銅藍の周期突入も含むので単位が「pt/回」になります。</span></span></li>
-      <li><span class="num">グ</span><span class="txt"><b>規定pt分布グラフ</b><span>CZ突入時のポイントの分布。</span></span></li>
-    </ul>
-    <p>右上の <strong>三本線のボタン</strong> から、<strong>実戦履歴</strong>・<strong>記録の引き継ぎ</strong>・<strong>取扱説明書</strong>を開けます。</p>
-    <p class="cap">下段ベルは画面下に固定されています。［＋］［下段ベル］［−］の並びで、真ん中を押して数えます。−を選んでから押すと1つ減ります。</p>
-  </section>
-
-  <!-- 11 -->
-  <section id="s11">
-    <h2><span class="n">11</span>当選履歴カウンター</h2>
-    <p>画面を<strong>右にスワイプ</strong>するか、左端の「当選」のつまみを押すと開きます。当選するたびに1件ずつ足していくと、周期ごとの当選率が出ます。</p>
-
-    <h3>入れかた</h3>
-    <div class="flow">
-      <div class="step"><span class="no">1</span><span class="body"><b>データカウンターのG数</b>
-        <span>台の上のカウンターの数字です。<strong>サブ液晶のG数ではありません。</strong>3桁まで。</span></span></div>
-      <div class="step"><span class="no">2</span><span class="body"><b>当選契機</b>
-        <span>1〜6周期・天井・無名CZ・生駒CZ・銅藍CZ から1つ。</span></span></div>
-      <div class="step"><span class="no">3</span><span class="body"><b>当たったボーナス</b>
-        <span>エピソードB・駿城B・駿→エピ（駿城Bから昇格）から1つ。</span></span></div>
-    </div>
-    <p class="cap">最終周期（通常は6周期、その他は4周期）と天井はエピソードB確定なので、ボーナスは自動で選ばれ、他の選択肢は出ません。</p>
-
-    <h3>状態のタブ</h3>
-    <p>上の <strong>通常・駆け抜け後・上位後・リセット後</strong> は、いまどの状態を打っているかです。色で分けてあります（通常＝青／駆け抜け後＝黄／上位後＝ピンク／リセット後＝白）。</p>
-    <div class="note">
-      <b>状態はエピソードBを引くまで変わりません</b><br>
-      そのため、駿城Bを入れたあとは状態のタブが押せなくなります。エピソードB（昇格を含む）を入れると解除され、次の状態を選べます。実戦履歴でも、エピソードBを引いたところで区切って状態を出し直します。
-    </div>
-    <p class="cap">駆け抜け後・上位後・リセット後は4周期までです。5・6周期の選択肢は出ません。</p>
-
-    <h3>当選率</h3>
+    <h2><span class="n">10</span>当選率の出しかた</h2>
+    <p>当選履歴カウンターの <strong>当選率</strong> のタブに出ます。入れた記録から自動で計算されます。</p>
     <p><strong>周期別の当選率</strong>は、当たった記録だけから逆算しています。3周期で当たったなら1・2周期は素通りしているので、「N周期に到達した回数 ＝ N周期以降で当たった件数」として計算します。CZ当選は何周期目か記録しないため、周期別には入りません。天井も同じ理由で入りません。</p>
     <p><strong>エピソードB率</strong>に、駿城Bからの昇格（駿→エピ）は含みません。直撃だけの割合です。</p>
     <p><strong>合算</strong>のタブでは、全状態と、短縮（駆け抜け後・上位後・リセット後）の2つを並べます。ST確率・全ボーナス・CZ確率もここに出ます。</p>
@@ -743,9 +731,9 @@
     </div>
   </section>
 
-  <!-- 12 -->
-  <section id="s12">
-    <h2><span class="n">12</span>メモ</h2>
+  <!-- 11 -->
+  <section id="s11">
+    <h2><span class="n">11</span>メモ</h2>
     <p>画面を<strong>左にスワイプ</strong>するか、右端の「メモ」のつまみを押すと開きます。台番号やホール、気づいたことをその場で書けます。</p>
     <p>書いた内容は打つそばから保存され、実戦を保存するとその記録と一緒に残ります。保存すると次の実戦のために空になります。</p>
     <div class="note">
@@ -754,9 +742,9 @@
     </div>
   </section>
 
-  <!-- 13 -->
-  <section id="s13">
-    <h2><span class="n">13</span>みんなの集計への送信</h2>
+  <!-- 12 -->
+  <section id="s12">
+    <h2><span class="n">12</span>みんなの集計への送信</h2>
     <p>実戦を保存すると、匿名の記録がみんなの集計に送られます。集まった記録は、機種ごとの分布や設定判別に使います。<strong>初回の保存時に一度だけ確認</strong>があり、そこで選んだ内容が以降の既定になります。</p>
     <ul class="legend">
       <li><span class="num">送</span><span class="txt"><b>送るもの</b><span>押した回数、総ゲーム数、下段ベル、CZ突入時のポイント、設定と根拠（選んだ場合のみ）。</span></span></li>
@@ -766,9 +754,9 @@
     <p class="cap">圏外で送れなかったぶんは端末に残り、次に開いたときや電波が戻ったときに送り直します。同じ実戦が二重に登録されることはありません。</p>
   </section>
 
-  <!-- 14 -->
-  <section id="s14">
-    <h2><span class="n">14</span>記録の引き継ぎ</h2>
+  <!-- 13 -->
+  <section id="s13">
+    <h2><span class="n">13</span>記録の引き継ぎ</h2>
     <p>機種変更などで、保存した実戦の記録を別の端末へ移せます。<strong>会員登録もメールも要りません。</strong>右上のメニューから開きます。</p>
     <div class="flow">
       <div class="step"><span class="no">1</span><span class="body"><b>古い端末でコードを発行</b>
