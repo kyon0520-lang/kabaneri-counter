@@ -457,6 +457,14 @@
     border-radius:10px;padding:12px;font-size:14px;font-weight:700;
     font-family:inherit;cursor:pointer;
   }
+  /* カウンター側と同じ操作を、当選履歴からも押せるようにしたもの */
+  .wacts{display:flex;gap:8px;margin-top:14px}
+  .wacts button{
+    flex:1;border-radius:10px;padding:12px 6px;font-size:13px;font-weight:700;
+    font-family:inherit;cursor:pointer;background:transparent;
+  }
+  .wacts .wsave{border:1px solid rgba(47,181,106,.5);color:#7fe0ab}
+  .wacts .wreset{border:1px solid rgba(226,69,60,.5);color:#ff8a82}
   .winlist{display:flex;flex-direction:column;gap:5px}
   .winstats{padding-bottom:8px}
   .winrow{
@@ -870,6 +878,11 @@
     </div>
 
     <button class="primary winadd" id="winadd">追加する</button>
+
+    <div class="wacts">
+      <button class="wsave" id="winsave">この実戦を保存</button>
+      <button class="wreset" id="winreset">全リセット</button>
+    </div>
   </div>
 
   <div class="winlist" id="winlist"></div>
@@ -1951,6 +1964,16 @@ document.getElementById('winadd').addEventListener('click', () => {
   winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
   syncBonusChoices();
   toast('追加しました');
+});
+
+// カウンター側と同じ処理を呼ぶ。パネルは閉じてから開かせる
+document.getElementById('winsave').addEventListener('click', () => {
+  closeWin();
+  document.getElementById('savebtn').click();
+});
+document.getElementById('winreset').addEventListener('click', () => {
+  closeWin();
+  document.getElementById('reset2').click();
 });
 
 document.getElementById('winlist').addEventListener('click', e => {
