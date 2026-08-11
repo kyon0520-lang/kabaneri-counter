@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0d1c2e">
 <title>みんなのスロット｜打ちながら数えるカウンター</title>
-<meta name="description" content="パチスロの実戦カウンター。打ちながら数えて、その場で発光率や平均ポイントが出ます。記録は端末内に残り、実戦ごとの結果カードも作れます。">
+<meta name="description" content="ひとりで数えるより、みんなで数えよう。みんなのスロットは、数えた実戦記録を持ち寄る場所。スロットの設定判別を、みんなのデータで。">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="みんなのスロット">
 <meta property="og:title" content="みんなのスロット">
-<meta property="og:description" content="打ちながら数えるパチスロ実戦カウンター。その場で発光率と平均ポイントが出ます。">
+<meta property="og:description" content="ひとりで数えるより、みんなで数えよう。数えた実戦記録を持ち寄って、スロットの設定判別をみんなのデータで。">
 <meta property="og:url" content="https://minnanoslot.com/">
 <meta property="og:image" content="https://minnanoslot.com/kabaneri-unato/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -34,6 +34,13 @@
   header{display:flex;flex-direction:column;gap:10px}
   h1{margin:0;font-size:26px;font-weight:800;letter-spacing:.02em}
   header p{margin:0;font-size:14px;color:var(--muted);max-width:34em}
+  /* コンセプト。呼びかけ→場所の定義→参加の理由→締めの4行 */
+  .concept{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+  .concept .catch{font-size:19px;font-weight:800;line-height:1.55;color:var(--text)}
+  .concept .body{font-size:14px;color:var(--muted)}
+  .concept .tag{
+    font-size:13px;font-weight:700;color:#7fb0ff;letter-spacing:.04em;margin-top:2px;
+  }
 
   h2{margin:0 0 2px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.12em}
 
@@ -74,7 +81,11 @@
 
   <header>
     <h1>みんなのスロット</h1>
-    <p>打ちながら数えるだけで、その場で発光率や平均ポイントが出るカウンターです。実戦の記録は端末内に残り、結果はカード画像にしてそのまま共有できます。</p>
+    <div class="concept">
+      <p class="catch">ひとりで数えるより、<br>みんなで数えよう。</p>
+      <p class="body">みんなのスロットは、数えた実戦記録を持ち寄る場所。あなたの1台ぶんが、明日の誰かの判別材料になる。</p>
+      <p class="tag">スロットの設定判別を、みんなのデータで。</p>
+    </div>
   </header>
 
   <section>
