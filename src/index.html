@@ -1627,7 +1627,8 @@ function openSaveSheet(){
       const s = state[c.id];
       return `${c.name}: 非発光${fmt(s.no)} / 発光${fmt(s.glow)} / 高確${fmt(s.hi)} / ${c.hit}${fmt(s.cz)}`;
     }).join('<br>') +
-    `<br>CZ突入時のpt: ${czLog.length ? czLog.map(r => fmt(r.pt)).join(', ') : 'なし'}`;
+    `<br>CZ突入時のpt: ${czLog.length ? czLog.map(r => fmt(r.pt)).join(', ') : 'なし'}` +
+    `<br>当選履歴: ${wins.length ? `${fmt(wins.length)}件（合計 ${fmt(wins.reduce((a, w) => a + w.g, 0))}G）` : 'なし'}`;
 
   pendingSetting = null; pendingEvidence = null;
   document.querySelectorAll('#setchips button').forEach(x => x.classList.toggle('on', x.dataset.set === ''));
@@ -2200,7 +2201,7 @@ winScrim.addEventListener('click', closeWin);
 
 /* ---------- 結果カード ---------- */
 // スマホで見やすい縦長（4:5）。Xのタイムラインでも切り取られない比率
-const CARD_W = 1080, CARD_H = 1080;   // 分布の絵は履歴側の表で見せるのでカードには入れない
+const CARD_W = 1080, CARD_H = 1350;   // 当選履歴のぶんを下に足すので縦長に戻す
 const CARD_JP = '-apple-system,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif';
 
 /* 設定バッジ（トロフィーの色に合わせる） */
@@ -2410,6 +2411,73 @@ function buildCard(r){
     g.fillText(avg, CARD_W - M - 16, y + 22);
     g.textAlign = 'left';
   });
+
+  /* ---- 当選履歴 ---- */
+  const ws = r.wins || [];
+  let y = 1010;
+
+  g.fillStyle = '#8a93a6';
+  g.font = `500 24px ${CARD_JP}`;
+  g.fillText('当選履歴', M, y);
+  y += 34;
+
+  if (!ws.length) {
+    g.fillStyle = '#6d7688';
+    g.font = `400 22px ${CARD_JP}`;
+    g.fillText('記録なし', M, y + 22);
+  } else {
+    const totalG = ws.reduce((a, w) => a + w.g, 0);
+    const stN = ws.filter(w => w.bonus !== 'shunjo').length;
+    const rateOf = n => n ? '1/' + Math.round(totalG / n) : '—';
+
+    // 総G数・ST確率・全ボーナスの3枠
+    const bw = (CARD_W - M * 2 - 24) / 3;
+    [['総ゲーム数', fmt(totalG) + 'G', '#e8ecf3'],
+     ['ST確率', rateOf(stN), '#8fc0ff'],
+     ['全ボーナス', rateOf(ws.length), '#e8c06a']].forEach(([k, v, col], i) => {
+      const x = M + i * (bw + 12);
+      g.fillStyle = 'rgba(255,255,255,.04)';
+      g.beginPath(); g.roundRect(x, y, bw, 96, 14); g.fill();
+      g.textAlign = 'center';
+      g.fillStyle = '#8a93a6';
+      g.font = `500 20px ${CARD_JP}`;
+      g.fillText(k, x + bw / 2, y + 34);
+      g.fillStyle = col;
+      g.font = `700 34px ${CARD_JP}`;
+      g.fillText(v, x + bw / 2, y + 76);
+      g.textAlign = 'left';
+    });
+    y += 128;
+
+    // 何で当たったかの内訳
+    const cnt = n => ws.filter(w => w.via === 'cycle' && w.cycle === n).length;
+    const cells = [];
+    for (let n = 1; n <= 6; n++) if (cnt(n)) cells.push([`${n}周期`, cnt(n)]);
+    const ceil = ws.filter(w => w.via === 'ceiling').length;
+    if (ceil) cells.push(['天井', ceil]);
+    const czw = ws.filter(w => w.via === 'cz').length;
+    if (czw) cells.push(['CZ', czw]);
+
+    g.fillStyle = '#8a93a6';
+    g.font = `500 20px ${CARD_JP}`;
+    g.fillText('当選のきっかけ', M, y);
+    y += 14;
+
+    let x = M;
+    cells.forEach(([k, v]) => {
+      const w = 150;
+      if (x + w > CARD_W - M) return;
+      g.fillStyle = 'rgba(255,255,255,.04)';
+      g.beginPath(); g.roundRect(x, y, w - 10, 58, 12); g.fill();
+      g.fillStyle = '#8a93a6';
+      g.font = `500 18px ${CARD_JP}`;
+      g.fillText(k, x + 14, y + 24);
+      g.fillStyle = '#e8ecf3';
+      g.font = `700 22px ${CARD_JP}`;
+      g.fillText(String(v), x + 14, y + 48);
+      x += w;
+    });
+  }
 
   g.fillStyle = '#6d7688';
   g.font = `500 22px ${CARD_JP}`;
