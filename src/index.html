@@ -404,6 +404,10 @@
   .winrow.green .via{color:#5fd398}
   .winrow.blue .via{color:#8fc0ff}
   .winrow .no{color:var(--muted);font-size:10px;flex:0 0 1.6em}
+  .winrow .md{
+    flex:0 0 auto;font-size:9.5px;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:2px 7px;
+  }
   .winrow .g{font-weight:700;font-variant-numeric:tabular-nums}
   .winrow .via{flex:1;min-width:0;color:var(--muted)}
   .winrow .bn{
@@ -710,16 +714,17 @@
 <aside class="winpanel" id="winpanel" aria-hidden="true">
   <div class="memohd"><b>当選履歴</b><button class="linkbtn" id="winclose">閉じる</button></div>
 
+  <div class="wview" id="winview">
+    <button data-view="log" class="on">記録</button>
+    <button data-view="list">実戦履歴</button>
+    <button data-view="stats">当選率</button>
+  </div>
+
   <div class="wtabs" id="wintabs">
     <button data-mode="normal" class="on">通常</button>
     <button data-mode="through">駆け抜け後</button>
     <button data-mode="upper">上位後</button>
     <button data-mode="reset">リセット後</button>
-  </div>
-
-  <div class="wview" id="winview">
-    <button data-view="log" class="on">記録</button>
-    <button data-view="stats">当選率</button>
   </div>
 
   <button class="winopen" id="winopen" hidden>＋ 当選を追加</button>
@@ -1702,11 +1707,13 @@ let bonusLocked = false;  // 最終周期はエピソードB確定なので自�
 let formOpen = true;      // 入力欄を開いているか
 
 function applyWinView(){
-  const log = winView === 'log';
+  const log = winView === 'log', list = winView === 'list';
   document.getElementById('winform').hidden = !log || !formOpen;
   document.getElementById('winopen').hidden = !log || formOpen;
-  document.getElementById('winlist').hidden = !log;
-  document.getElementById('winstats').hidden = log;
+  document.getElementById('winlist').hidden = !list;
+  document.getElementById('winstats').hidden = winView !== 'stats';
+  // 実戦履歴は全状態をまとめて出すので、状態タブは関係ない
+  document.getElementById('wintabs').hidden = list;
   document.querySelectorAll('#winview button')
     .forEach(b => b.classList.toggle('on', b.dataset.view === winView));
 }
@@ -1776,9 +1783,7 @@ document.getElementById('winadd').addEventListener('click', () => {
 
 document.getElementById('winlist').addEventListener('click', e => {
   const x = e.target.closest('[data-wdel]'); if (!x) return;
-  const target = wins.filter(w => (w.mode || 'normal') === winMode)[+x.dataset.wdel];
-  const i = wins.indexOf(target);
-  if (i >= 0) wins.splice(i, 1);
+  wins.splice(+x.dataset.wdel, 1);
   save(); renderWins();
 });
 
@@ -1840,12 +1845,14 @@ function syncCycleChoices(){
 function renderWins(){
   syncCycleChoices();
   const list = document.getElementById('winlist');
-  const shown = wins.filter(w => (w.mode || 'normal') === winMode);   // タブで選んだ状態だけ
-  list.innerHTML = shown.length
-    ? shown.map((w, i) => {
+  const shown = wins.filter(w => (w.mode || 'normal') === winMode);   // 集計は選んだ状態だけ
+  // 実戦履歴は状態で分けず、入れた順に全部出す
+  list.innerHTML = wins.length
+    ? wins.map((w, i) => {
         const via = w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
         return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
+          <span class="md">${WIN_MODES[w.mode || 'normal']}</span>
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
           ${w.bonus === 'both'
@@ -1854,7 +1861,7 @@ function renderWins(){
           <button class="x" data-wdel="${i}" aria-label="削除">×</button>
         </div>`;
       }).join('')
-    : `<div class="winempty">${WIN_MODES[winMode]}の記録はまだありません</div>`;
+    : '<div class="winempty">まだ当選の記録はありません</div>';
 
   if (!shown.length) formOpen = true;
   applyWinView();
