@@ -392,7 +392,7 @@
   .winlist{display:flex;flex-direction:column;gap:5px}
   .winstats{padding-bottom:8px}
   .winrow{
-    display:flex;align-items:center;gap:8px;font-size:12px;
+    display:flex;align-items:center;gap:6px;font-size:12px;
     background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;
   }
   /* CZ当選は種別の文字だけキャラの色にする（枠は付けない） */
@@ -400,14 +400,18 @@
   .winrow.green .via{color:#5fd398}
   .winrow.blue .via{color:#8fc0ff}
   .winrow .no{color:var(--muted);font-size:10px;flex:0 0 1.6em}
-  .winrow .md{
-    flex:0 0 auto;font-size:9.5px;color:var(--muted);
-    border:1px solid var(--line);border-radius:999px;padding:2px 7px;
+  /* 状態の欄。幅を固定して、続きの行は空欄にする（G数と周期を縦に揃えるため） */
+  .winrow .md{flex:0 0 66px}
+  .winrow .md i{
+    font-style:normal;display:inline-block;font-size:9.5px;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:2px 7px;white-space:nowrap;
   }
-  .winrow .g{font-weight:700;font-variant-numeric:tabular-nums}
-  .winrow .via{flex:1;min-width:0;color:var(--muted)}
+  /* G数は右揃えの固定幅にして、続く周期の位置を揃える */
+  .winrow .g{flex:0 0 54px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .winrow .via{flex:0 0 auto;color:var(--muted);white-space:nowrap}
   .winrow .bn{
-    font-size:10.5px;font-weight:700;border-radius:999px;padding:4px 9px;white-space:nowrap;
+    flex:0 0 auto;margin-left:auto;font-size:10.5px;font-weight:700;border-radius:999px;
+    padding:4px 9px;white-space:nowrap;
   }
   .winrow .bn.ep{background:#2f6bd8;color:#fff}          /* エピソードB */
   .winrow .bn.sh{background:#eef2f8;color:#16283f}       /* 駿城B */
@@ -1839,8 +1843,8 @@ function renderWins(){
         const via = w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
         return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
-          ${(w.mode || 'normal') !== ((wins[i - 1] || {}).mode || (i ? 'normal' : null))
-            ? `<span class="md">${WIN_MODES[w.mode || 'normal']}</span>` : ''}
+          <span class="md">${(w.mode || 'normal') !== ((wins[i - 1] || {}).mode || (i ? 'normal' : null))
+            ? `<i>${WIN_MODES[w.mode || 'normal']}</i>` : ''}</span>
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
           ${w.bonus === 'both'
