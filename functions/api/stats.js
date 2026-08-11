@@ -1,5 +1,5 @@
 /**
- * みんなの集計。GET /api/stats?machine=kabaneri-unato
+ * みんなのスロットの集計。GET /api/stats?machine=kabaneri-unato
  *
  * 送信直後の見返りは records.js が返すので、こちらは画面から集計を見るとき用。
  */

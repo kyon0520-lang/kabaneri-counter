@@ -731,7 +731,7 @@
   <section class="histpanel" id="histpanel">
     <h2>実戦履歴<span class="cnt" id="hs-n">0</span></h2>
         <div class="histlist" id="histlist"></div>
-    <p class="note">行をタップすると内訳が開きます。<br>みんなの集計への送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button></p>
+    <p class="note">行をタップすると内訳が開きます。<br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button></p>
   </section>
 
   <!-- カード群をJSで描画 -->
@@ -930,7 +930,7 @@
     <button class="linkbtn" id="memoclose">閉じる</button>
   </div>
   <textarea id="memotext" placeholder="台番号、ホール、気づいたことなど" maxlength="2000"></textarea>
-  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。みんなの集計には送りません。</p>
+  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。みんなのスロットには送りません。</p>
 </aside>
 <button class="memohandle" id="memohandle" aria-label="メモを開く">メ<br>モ</button>
 
@@ -961,7 +961,7 @@
 
 <div class="modal" id="consentmodal" hidden>
   <div class="sheet consent" role="dialog" aria-modal="true">
-    <h2>みんなの集計に加えますか</h2>
+    <h2>みんなのスロットに加わりますか</h2>
     <p class="sub">実戦を保存したとき、匿名の記録を送ります。集まった記録は、機種ごとの分布や設定判別に使います。</p>
     <p class="sub"><b>送るもの</b>：押した回数、総ゲーム数、下段ベル、CZ突入時のポイント、設定と根拠（選んだ場合のみ）</p>
     <p class="sub"><b>送らないもの</b>：名前、位置、店舗、端末を特定できる情報</p>
@@ -1727,7 +1727,7 @@ document.getElementById('sok').addEventListener('click', () => {
   afterSave(rec);
 });
 
-/* ---------- みんなの集計への送信 ----------
+/* ---------- みんなのスロットへの送信 ----------
    保存した瞬間に送る。失敗したら sent:false のまま端末に残し、
    起動時と、圏外から復帰した時に送り直す。
    レコードのIDは端末が採番しているので、二重に届いてもサーバー側で弾かれる。 */
@@ -1856,7 +1856,7 @@ document.getElementById('consentno').addEventListener('click', () => {
 document.getElementById('sendtoggle').addEventListener('click', () => {
   if (sendCfg.consent === true) {
     sendCfg.consent = false; saveSendCfg();
-    toast('みんなの集計への送信をやめました');
+    toast('みんなのスロットへの送信をやめました');
   } else {
     document.getElementById('consentmodal').hidden = false;   // 中身を読んでから決めてもらう
   }
