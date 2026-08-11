@@ -2119,6 +2119,8 @@ function renderWinStats(shown){
   const czN = CHARS.reduce((a, c) => a + state[c.id].cz, 0);
   const rate = (g, n) => n ? '1/' + (g / n).toFixed(1) : '—';
 
+  // ST確率・CZ確率は全状態をまとめた値なので、合算タブでだけ出す
+  if (winMode === 'all') {
   html += '<div class="wsum">'
         + `<div><span class="k">ST確率</span><span class="v">${rate(totalG, stN)}</span>`
         + `<span class="s">${fmt(stN)}回</span></div>`
@@ -2130,6 +2132,7 @@ function renderWinStats(shown){
         + (shown.filter(w => w.via === 'ceiling').length
             ? `天井当選 ${fmt(shown.filter(w => w.via === 'ceiling').length)}件は、下の周期別には入りません。` : '')
         + '</p>';
+  }
 
   if (winMode === 'all') {
     // ①全状態の合算 ②短縮（駆け抜け後・上位後・リセット後）の合算
