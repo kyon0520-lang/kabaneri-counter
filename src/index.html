@@ -401,7 +401,16 @@
   /* 一覧は溜まっても高さを取りすぎないよう、この中でスクロールさせる */
   .winlist{max-height:40vh;overflow-y:auto}
   .winform{display:flex;flex-direction:column;gap:7px}
-  .wlbl{font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
+  /* 見出し。番号を添えて操作の順番が分かるようにする */
+  .wlbl{
+    display:flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:700;color:var(--text);letter-spacing:.04em;margin-top:10px;
+  }
+  .wlbl i{
+    flex:0 0 auto;font-style:normal;width:20px;height:20px;border-radius:50%;
+    background:#2f6bd8;color:#fff;font-size:11px;font-weight:700;
+    display:grid;place-items:center;
+  }
   /* 取り違えやすいので、注意として淡い赤で出す */
   .whint{margin:-2px 0 0;font-size:10px;color:#ff9d96;line-height:1.6}
   .winform input{
@@ -841,11 +850,11 @@
   <p class="wlock" id="wlock" hidden>エピソードBを引くまで状態は変わりません</p>
 
   <div class="winform" id="winform">
-    <label class="wlbl">データカウンターのG数</label>
+    <label class="wlbl"><i>1</i>データカウンターのG数</label>
     <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="999">
     <p class="whint">台の上のカウンターの数字です。サブ液晶のG数ではありません。</p>
 
-    <label class="wlbl">何で当たったか</label>
+    <label class="wlbl"><i>2</i>当選契機</label>
     <div class="wchips" id="wincycle">
       <button data-cycle="1">1周期</button><button data-cycle="2">2周期</button>
       <button data-cycle="3">3周期</button><button data-cycle="4">4周期</button>
@@ -858,7 +867,7 @@
       <button data-cz="blue" class="b">銅藍CZ</button>
     </div>
 
-    <label class="wlbl" id="wblbl">当たったボーナス</label>
+    <label class="wlbl"><i>3</i><span id="wblbl">当たったボーナス</span></label>
     <div class="wchips" id="winbonus">
       <button data-bonus="episode">エピソードB</button>
       <button data-bonus="shunjo" class="sh">駿城B</button>
