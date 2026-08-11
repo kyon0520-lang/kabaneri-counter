@@ -1746,6 +1746,8 @@ pickChips('wincz', 'cz', v => {
   return same;
 });
 pickChips('winbonus', 'bonus', v => {
+  // 最終周期でエピソードB確定のときは、押しても外れないようにする
+  if (bonusLocked) { pendBonus = 'episode'; return false; }
   const same = pendBonus === v; pendBonus = same ? null : v; return same;
 });
 
@@ -1837,7 +1839,8 @@ function renderWins(){
         const via = w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
         return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
-          <span class="md">${WIN_MODES[w.mode || 'normal']}</span>
+          ${(w.mode || 'normal') !== ((wins[i - 1] || {}).mode || (i ? 'normal' : null))
+            ? `<span class="md">${WIN_MODES[w.mode || 'normal']}</span>` : ''}
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
           ${w.bonus === 'both'
