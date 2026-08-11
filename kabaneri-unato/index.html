@@ -510,14 +510,21 @@
   .winstats td.n{font-variant-numeric:tabular-nums}
   .winstats h3{margin:10px 0 6px;font-size:11px;color:var(--muted);font-weight:600}
   .winstats .winnote{margin:6px 0 0;font-size:10.5px;color:var(--muted);line-height:1.7}
-  .wsum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 0}
+  /* 合算値タブの数字と見た目を揃える（大きさ・太さ・色分け） */
+  .wsum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 0}
   .wsum div{
     background:var(--panel2);border:1px solid var(--line);border-radius:10px;
-    padding:10px;text-align:center;
+    padding:10px 6px;text-align:center;
   }
   .wsum .k{display:block;font-size:10px;color:var(--muted)}
-  .wsum .v{display:block;font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
-  .wsum .s{display:block;font-size:10px;color:var(--muted)}
+  .wsum .v{display:block;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px}
+  .wsum .s{display:block;font-size:9px;color:var(--muted);margin-top:2px;line-height:1.5}
+  .wsum .st{background:rgba(47,181,106,.10);border-color:rgba(47,181,106,.35)}
+  .wsum .st .v{color:#7fe0ab}
+  .wsum .bn{background:rgba(232,192,106,.10);border-color:rgba(232,192,106,.35)}
+  .wsum .bn .v{color:#e8c06a}
+  .wsum .cz{background:rgba(59,130,246,.10);border-color:rgba(59,130,246,.35)}
+  .wsum .cz .v{color:#8fc0ff}
   @media (prefers-reduced-motion:reduce){ .winpanel{transition:none} }
   /* ===== 打ちながら書くメモ ===== */
   .memohandle{
@@ -2093,10 +2100,13 @@ function renderWinStats(shown){
 
   // ST確率・CZ確率は全状態をまとめた値なので、合算タブでだけ出す
   if (winMode === 'all') {
+  const bonusN = shown.length;   // 駿城Bも含めた全ボーナス
   html += '<div class="wsum">'
-        + `<div><span class="k">ST確率</span><span class="v">${rate(totalG, stN)}</span>`
+        + `<div class="st"><span class="k">ST確率</span><span class="v">${rate(totalG, stN)}</span>`
         + `<span class="s">${fmt(stN)}回</span></div>`
-        + `<div><span class="k">CZ確率</span><span class="v">${rate(totalG, czN)}</span>`
+        + `<div class="bn"><span class="k">全ボーナス</span><span class="v">${rate(totalG, bonusN)}</span>`
+        + `<span class="s">${fmt(bonusN)}回・駿城B含む</span></div>`
+        + `<div class="cz"><span class="k">CZ確率</span><span class="v">${rate(totalG, czN)}</span>`
         + `<span class="s">${fmt(czN)}回</span></div>`
         + '</div>'
         + `<p class="winnote">エピソードBまでを1区切りとして数えた合計 ${fmt(totalG)}G で計算しています。`
