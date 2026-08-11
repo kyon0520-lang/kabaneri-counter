@@ -357,6 +357,7 @@
   .winlist{max-height:40vh;overflow-y:auto}
   .winform{display:flex;flex-direction:column;gap:7px}
   .wlbl{font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
+  .whint{margin:-2px 0 0;font-size:10px;color:var(--muted);line-height:1.6}
   .winform input{
     background:var(--panel2);border:1px solid var(--line);border-radius:9px;
     color:var(--text);font-family:inherit;font-size:16px;padding:10px 12px;width:100%;
@@ -743,8 +744,9 @@
   <p class="wlock" id="wlock" hidden>エピソードBを引くまで状態は変わりません</p>
 
   <div class="winform" id="winform">
-    <label class="wlbl">当選G数</label>
+    <label class="wlbl">サブ液晶のG数</label>
     <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="999">
+    <p class="whint">駿城Bではリセットされず、エピソードBを引くまで加算され続ける数字です。</p>
 
     <label class="wlbl">何で当たったか</label>
     <div class="wchips" id="wincycle">
@@ -1812,7 +1814,13 @@ document.getElementById('winadd').addEventListener('click', () => {
   const el = document.getElementById('wing');
   const g = Math.floor(+el.value);
   if (!isFinite(g) || g < 0 || el.value === '') { toast('当選G数を入れてください'); return; }
-  if (g > 999) { toast('当選G数は999までです'); return; }
+  if (g > 999) { toast('サブ液晶のG数は999までです'); return; }
+  // エピソードBを引くまで加算され続ける数字なので、前より小さくなることはない
+  const prevW = wins[wins.length - 1];
+  if (prevW && prevW.bonus === 'shunjo' && g < prevW.g) {
+    toast(`前回の${fmt(prevW.g)}Gより小さい数は入れられません`);
+    return;
+  }
   if (pendCycle === null && pendCz === null && !pendCeiling) { toast('何で当たったかを選んでください'); return; }
   if (!pendBonus) { toast('ボーナスの種類を選んでください'); return; }
 
@@ -1926,6 +1934,18 @@ function renderWins(){
   renderWinStats(shown);
 }
 
+/* 総ゲーム数。サブ液晶のG数はエピソードBを引くまで加算され続けるので、
+   各行を足すと二重に数えてしまう。セクションごとに最後の値だけを足す。 */
+function totalGames(list){
+  let sum = 0, lastG = 0, open = false;
+  for (const w of list) {
+    lastG = w.g; open = true;
+    if (w.bonus !== 'shunjo') { sum += w.g; open = false; lastG = 0; }
+  }
+  if (open) sum += lastG;      // まだ続いているセクションの分
+  return sum;
+}
+
 function renderWinStats(shown){
   const box = document.getElementById('winstats');
   const cyc = shown.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= 6);
@@ -1939,7 +1959,7 @@ function renderWinStats(shown){
   /* ST確率とCZ確率。状態で分けず、記録した全部を合算する。
      分母のG数は当選履歴に入れた当選G数の合計。
      CZの回数はカウンター側の突入回数（無名＋生駒＋銅藍）を使う。 */
-  const totalG = wins.reduce((a, w) => a + w.g, 0);
+  const totalG = totalGames(wins);
   const stN = wins.filter(w => w.bonus !== 'shunjo').length;   // 昇格もSTには入っている
   const czN = CHARS.reduce((a, c) => a + state[c.id].cz, 0);
   const rate = (g, n) => n ? '1/' + (g / n).toFixed(1) : '—';
@@ -1950,7 +1970,7 @@ function renderWinStats(shown){
         + `<div><span class="k">CZ確率</span><span class="v">${rate(totalG, czN)}</span>`
         + `<span class="s">${fmt(czN)}回</span></div>`
         + '</div>'
-        + `<p class="winnote">全状態の合計 ${fmt(totalG)}G で計算しています。`
+        + `<p class="winnote">エピソードBまでを1区切りとして数えた合計 ${fmt(totalG)}G で計算しています。`
         + 'ST確率には昇格（駿→エピ）も含みます。CZ回数はカウンターの突入回数です。'
         + (shown.filter(w => w.via === 'ceiling').length
             ? `天井当選 ${fmt(shown.filter(w => w.via === 'ceiling').length)}件は、下の周期別には入りません。` : '')
