@@ -1866,8 +1866,15 @@ function renderWins(){
                   : w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
         return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
-          <span class="md">${(w.mode || 'normal') !== ((wins[i - 1] || {}).mode || (i ? 'normal' : null))
-            ? `<i>${WIN_MODES[w.mode || 'normal']}</i>` : ''}</span>
+          <span class="md">${(() => {
+            // エピソードB（昇格を含む）を引いたところで1区切り。
+            // 次の行からまた状態を出し、どこから仕切り直しか分かるようにする
+            const prev = wins[i - 1];
+            const head = !prev
+              || (prev.bonus !== 'shunjo')
+              || (prev.mode || 'normal') !== (w.mode || 'normal');
+            return head ? `<i>${WIN_MODES[w.mode || 'normal']}</i>` : '';
+          })()}</span>
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
           ${w.bonus === 'both'
