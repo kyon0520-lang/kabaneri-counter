@@ -239,6 +239,8 @@
      カードの入れ物は style 属性で display を持っているので !important が要る */
   body.hide-count main > *:not(#graphpanel):not(#histpanel){display:none !important}
   body.hide-count .bar{display:none !important}
+  /* 履歴だけを出すときは、画面の真ん中に置く */
+  body.view-hist main{min-height:72svh;display:flex;flex-direction:column;justify-content:center}
   .histpanel h2{margin:0;font-size:13px;font-weight:700}
   .histpanel .note{margin:0;font-size:10px;color:var(--muted);line-height:1.6}
   .histpanel h2 .cnt{
@@ -1166,9 +1168,12 @@ function renderDist(){
 let mainView = 'count';
 
 function applyMainView(){
-  const graph = mainView === 'graph';
+  const graph = mainView === 'graph', hist = mainView === 'hist';
   document.getElementById('graphpanel').classList.toggle('open', graph);
-  document.body.classList.toggle('hide-count', graph);
+  document.getElementById('histpanel').classList.toggle('open', hist);
+  // グラフと履歴のときはカウンター側を隠し、その画面だけを見せる
+  document.body.classList.toggle('hide-count', graph || hist);
+  document.body.classList.toggle('view-hist', hist);
   document.querySelectorAll('#maintabs button')
     .forEach(b => b.classList.toggle('on', b.dataset.main === mainView));
 }
@@ -1176,7 +1181,6 @@ function applyMainView(){
 document.getElementById('maintabs').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   mainView = b.dataset.main;
-  document.getElementById('histpanel').classList.remove('open');
   applyMainView();
 });
 
@@ -1477,8 +1481,8 @@ function renderHist(){
 
 document.getElementById('histbtn').addEventListener('click', () => {
   closeMenu();
-  mainView = 'count'; applyMainView();
-  document.getElementById('histpanel').classList.toggle('open');
+  mainView = mainView === 'hist' ? 'count' : 'hist';
+  applyMainView();
   renderHist();
 });
 
