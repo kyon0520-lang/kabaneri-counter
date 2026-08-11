@@ -66,8 +66,10 @@
   }
   .mtabs button.on{color:var(--text);font-weight:700;border-bottom-color:#3b82f6}
 
-  .menuscrim{position:fixed;inset:0;z-index:48;background:rgba(6,16,28,.5)}
-  .menu{
+  .menuscrim{display:none;position:fixed;inset:0;z-index:48;background:rgba(6,16,28,.5)}
+  body.menu-open .menuscrim{display:block}
+  .menu{display:none}
+  body.menu-open .menu{
     position:fixed;z-index:49;top:calc(8px + env(safe-area-inset-top));right:10px;
     background:var(--panel);border:1px solid var(--line);border-radius:12px;
     padding:6px;display:flex;flex-direction:column;min-width:170px;
@@ -365,7 +367,8 @@
     padding:12px 6px;font-size:11px;line-height:1.25;letter-spacing:.08em;
     cursor:pointer;font-family:inherit;
   }
-  .winscrim{position:fixed;inset:0;z-index:44;background:rgba(6,16,28,.5)}
+  .winscrim{display:none;position:fixed;inset:0;z-index:44;background:rgba(6,16,28,.5)}
+  body.win-open .winscrim{display:block}
   .winpanel{
     position:fixed;top:0;left:0;bottom:0;z-index:45;
     width:min(92vw,460px);background:var(--panel);
@@ -513,7 +516,8 @@
     padding:12px 6px;font-size:11px;line-height:1.25;letter-spacing:.08em;
     cursor:pointer;font-family:inherit;
   }
-  .memoscrim{position:fixed;inset:0;z-index:44;background:rgba(6,16,28,.5)}
+  .memoscrim{display:none;position:fixed;inset:0;z-index:44;background:rgba(6,16,28,.5)}
+  body.memo-open .memoscrim{display:block}
   .memopanel{
     position:fixed;top:0;right:0;bottom:0;z-index:45;
     width:min(86vw,420px);background:var(--panel);
@@ -638,8 +642,8 @@
   </div>
 </header>
 
-<div class="menuscrim" id="menuscrim" hidden></div>
-<nav class="menu" id="menu" hidden>
+<div class="menuscrim" id="menuscrim"></div>
+<nav class="menu" id="menu">
   <button id="histbtn">実戦履歴</button>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
 </nav>
@@ -779,7 +783,7 @@
 </div>
 
 <!-- 当選履歴。右にスワイプか左端のつまみで開く -->
-<div class="winscrim" id="winscrim" hidden></div>
+<div class="winscrim" id="winscrim"></div>
 <aside class="winpanel" id="winpanel" aria-hidden="true">
   <div class="memohd"><b>当選履歴</b><button class="linkbtn" id="winclose">閉じる</button></div>
 
@@ -832,7 +836,7 @@
 <button class="winhandle" id="winhandle" aria-label="当選履歴を開く">当<br>選</button>
 
 <!-- 打ちながら書くメモ。横スワイプか右端のつまみで開く -->
-<div class="memoscrim" id="memoscrim" hidden></div>
+<div class="memoscrim" id="memoscrim"></div>
 <aside class="memopanel" id="memopanel" aria-hidden="true">
   <div class="memohd">
     <b>メモ</b>
@@ -1200,15 +1204,15 @@ document.getElementById('maintabs').addEventListener('click', e => {
 const menuEl = document.getElementById('menu');
 const menuScrim = document.getElementById('menuscrim');
 function openMenu(){
-  menuEl.hidden = false; menuScrim.hidden = false;
+  document.body.classList.add('menu-open');
   document.getElementById('menubtn').setAttribute('aria-expanded', 'true');
 }
 function closeMenu(){
-  menuEl.hidden = true; menuScrim.hidden = true;
+  document.body.classList.remove('menu-open');
   document.getElementById('menubtn').setAttribute('aria-expanded', 'false');
 }
 document.getElementById('menubtn').addEventListener('click', () => {
-  menuEl.hidden ? openMenu() : closeMenu();
+  document.body.classList.contains('menu-open') ? closeMenu() : openMenu();
 });
 menuScrim.addEventListener('click', closeMenu);
 document.getElementById('manualbtn').addEventListener('click', closeMenu);
@@ -1713,12 +1717,12 @@ function openMemo(){
   memoText.value = memo;
   memoPanel.classList.add('open');
   memoPanel.setAttribute('aria-hidden', 'false');
-  memoScrim.hidden = false;
+  document.body.classList.add('memo-open');
 }
 function closeMemo(){
   memoPanel.classList.remove('open');
   memoPanel.setAttribute('aria-hidden', 'true');
-  memoScrim.hidden = true;
+  document.body.classList.remove('memo-open');
 }
 
 memoText.addEventListener('input', () => { memo = memoText.value.slice(0, 2000); save(); });
@@ -1809,12 +1813,12 @@ function applyWinView(){
 function openWin(){
   winPanel.classList.add('open');
   winPanel.setAttribute('aria-hidden', 'false');
-  winScrim.hidden = false;
+  document.body.classList.add('win-open');
 }
 function closeWin(){
   winPanel.classList.remove('open');
   winPanel.setAttribute('aria-hidden', 'true');
-  winScrim.hidden = true;
+  document.body.classList.remove('win-open');
 }
 
 const VIA_CZ = { red:'無名CZ', green:'生駒CZ', blue:'銅藍CZ' };
