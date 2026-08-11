@@ -1021,8 +1021,13 @@ let saveFailed = false;
 function save(){
   try {
     localStorage.setItem(KEY, JSON.stringify({ state, czLog, bell, memo, wins, winMode }));
+    saveFailed = false;
   } catch(e) {
-    saveFailed = true;
+    // 押すたびに出すとうるさいので、失敗し始めた1回だけ知らせる
+    if (!saveFailed) {
+      saveFailed = true;
+      toast('カウントを保存できませんでした。端末の空き容量をご確認ください');
+    }
   }
 }
 
@@ -1447,10 +1452,12 @@ function loadHist(){
   } catch(e) { hist = []; sessionId = newId('s_'); }
 }
 
+/* 書けたかどうかを返す。呼ぶ側で失敗を伝えるため */
 function saveHist(){
   try {
     localStorage.setItem(HIST_KEY, JSON.stringify({ records: hist, sessionId }));
-  } catch(e){}
+    return true;
+  } catch(e){ return false; }
 }
 
 /* 保存＝送信できる形。このまま API に送れる */
@@ -1558,8 +1565,14 @@ document.getElementById('histlist').addEventListener('click', e => {
   }
   const del = e.target.closest('[data-del]');
   if (del) {
+    const before = hist;
     hist = hist.filter(r => r.id !== del.dataset.del);
-    saveHist(); renderHist(); renderDist();
+    if (!saveHist()) {
+      hist = before;
+      toast('削除を保存できませんでした');
+      return;
+    }
+    renderHist(); renderDist();
     toast('削除しました');
     return;
   }
@@ -1647,11 +1660,21 @@ document.getElementById('sok').addEventListener('click', () => {
   const rec = buildRecord();
   rec.setting = pendingSetting;
   rec.evidence = pendingSetting ? pendingEvidence : null;
+  const prevSession = sessionId;
   hist.unshift(rec);
   if (hist.length > 500) hist.length = 500;
   sessionId = newId('s_');            // 次の実戦へ
+
+  // 端末に書けなかったときは元に戻して知らせる。
+  // 黙って捨てると「保存した」と思ったまま記録が消える
+  if (!saveHist()) {
+    hist.shift();
+    sessionId = prevSession;
+    toast('保存できませんでした。端末の空き容量やプライベートモードをご確認ください');
+    return;
+  }
+
   memo = ''; memoText.value = ''; wins = []; renderWins(); save();
-  saveHist();
   document.getElementById('savemodal').hidden = true;
   renderHist(); renderDist();
   afterSave(rec);
