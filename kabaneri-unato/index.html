@@ -424,10 +424,15 @@
   .winrow .no{color:var(--muted);font-size:10px;flex:0 0 1.6em}
   /* 状態の欄。幅を固定して、続きの行は空欄にする（G数と周期を縦に揃えるため） */
   .winrow .md{flex:0 0 66px}
+  /* 状態タブと同じ色にして、セクションの切り替わりを色で追えるようにする */
   .winrow .md i{
-    font-style:normal;display:inline-block;font-size:9.5px;color:var(--muted);
-    border:1px solid var(--line);border-radius:999px;padding:2px 7px;white-space:nowrap;
+    font-style:normal;display:inline-block;font-size:9.5px;
+    border-radius:999px;padding:2px 7px;white-space:nowrap;font-weight:700;
   }
+  .winrow .md i[data-mode="normal"]{background:#2f6bd8;color:#fff}
+  .winrow .md i[data-mode="through"]{background:#e8c06a;color:#16283f}
+  .winrow .md i[data-mode="upper"]{background:#e86aa8;color:#fff}
+  .winrow .md i[data-mode="reset"]{background:#eef2f8;color:#16283f}
   /* G数は右揃えの固定幅にして、続く周期の位置を揃える */
   .winrow .g{flex:0 0 44px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
   .winrow .via{flex:0 0 auto;color:var(--muted);white-space:nowrap}
@@ -1877,7 +1882,7 @@ function renderWins(){
             const head = !prev
               || (prev.bonus !== 'shunjo')
               || (prev.mode || 'normal') !== (w.mode || 'normal');
-            return head ? `<i>${WIN_MODES[w.mode || 'normal']}</i>` : '';
+            return head ? `<i data-mode="${w.mode || 'normal'}">${WIN_MODES[w.mode || 'normal']}</i>` : '';
           })()}</span>
           <span class="g">${fmt(w.g)}G</span>
           <span class="via">${via}</span>
