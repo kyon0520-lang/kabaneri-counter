@@ -420,7 +420,7 @@
     border:1px solid var(--line);border-radius:999px;padding:2px 7px;white-space:nowrap;
   }
   /* G数は右揃えの固定幅にして、続く周期の位置を揃える */
-  .winrow .g{flex:0 0 54px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .winrow .g{flex:0 0 44px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
   .winrow .via{flex:0 0 auto;color:var(--muted);white-space:nowrap}
   .winrow .bn{
     flex:0 0 auto;margin-left:auto;font-size:10.5px;font-weight:700;border-radius:999px;
@@ -742,7 +742,7 @@
 
   <div class="winform" id="winform">
     <label class="wlbl">当選G数</label>
-    <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="300000">
+    <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="999">
 
     <label class="wlbl">何で当たったか</label>
     <div class="wchips" id="wincycle">
@@ -1727,10 +1727,16 @@ pickChips('winbonus', 'bonus', v => {
   const same = pendBonus === v; pendBonus = same ? null : v; return same;
 });
 
+// 当選G数は3桁まで（周期の途中なので999Gを超えない）
+document.getElementById('wing').addEventListener('input', e => {
+  if (e.target.value.length > 3) e.target.value = e.target.value.slice(0, 3);
+});
+
 document.getElementById('winadd').addEventListener('click', () => {
   const el = document.getElementById('wing');
   const g = Math.floor(+el.value);
-  if (!isFinite(g) || g < 0) { toast('当選G数を入れてください'); return; }
+  if (!isFinite(g) || g < 0 || el.value === '') { toast('当選G数を入れてください'); return; }
+  if (g > 999) { toast('当選G数は999までです'); return; }
   if (pendCycle === null && pendCz === null) { toast('何で当たったかを選んでください'); return; }
   if (!pendBonus) { toast('ボーナスの種類を選んでください'); return; }
 
