@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0d1c2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="カバネリカウンター">
-<title>カバネリ CZ発光カウンター</title>
+<meta name="apple-mobile-web-app-title" content="海門カウンター">
+<title>カバネリ海門カウンター</title>
 <style>
   :root{
     --bg:#0d1c2e;
@@ -679,7 +679,7 @@
 
 <header>
   <div class="hbar">
-    <h1>カバネリ CZ発光カウンター</h1>
+    <h1>カバネリ海門カウンター</h1>
     <button class="menubtn" id="menubtn" aria-label="メニュー" aria-expanded="false">
       <i></i><i></i><i></i>
     </button>
@@ -2481,7 +2481,7 @@ function buildCard(r){
   // 見出し
   g.fillStyle = '#8a93a6';
   g.font = `500 26px ${CARD_JP}`;
-  g.fillText('カバネリ CZ発光カウンター', M, 96);
+  g.fillText('カバネリ海門カウンター', M, 96);
 
   const d = new Date(r.date);
   g.fillStyle = '#e8ecf3';
@@ -2658,7 +2658,7 @@ async function shareCard(){
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
-        text: 'カバネリ CZ発光カウンターで記録\nhttps://minnanoslot.com/kabaneri-unato/'
+        text: 'カバネリ海門カウンターで記録\nhttps://minnanoslot.com/kabaneri-unato/'
       });
       return;
     }

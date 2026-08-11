@@ -25,12 +25,12 @@ HEAD_ADD = f'''<link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icon-192.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="みんなのスロット">
-<meta property="og:title" content="カバネリ CZ発光カウンター">
+<meta property="og:title" content="カバネリ海門カウンター">
 <meta property="og:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。スマホでそのまま使えます。">
 <meta property="og:url" content="{SITE}">
 <meta property="og:image" content="{SITE}ogp.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="カバネリ CZ発光カウンター">
+<meta name="twitter:title" content="カバネリ海門カウンター">
 <meta name="twitter:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。">
 <meta name="twitter:image" content="{SITE}ogp.png">
 '''
@@ -51,7 +51,7 @@ BEACON = (
     "data-cf-beacon='{\"token\": \"" + BEACON_TOKEN + "\"}'></script>\n"
 )
 
-TITLE = '<title>カバネリ CZ発光カウンター</title>'
+TITLE = '<title>カバネリ海門カウンター</title>'
 ICON_BLOCK_START = '/* ---------- iOS ホーム画面用のアイコンと名前 ---------- */'
 ICON_BLOCK_END = 'setupHomeScreen();\n'
 

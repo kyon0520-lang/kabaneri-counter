@@ -6,21 +6,21 @@
 <meta name="theme-color" content="#0d1c2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="カバネリカウンター">
+<meta name="apple-mobile-web-app-title" content="海門カウンター">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="icon" type="image/png" href="./icon-192.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="みんなのスロット">
-<meta property="og:title" content="カバネリ CZ発光カウンター">
+<meta property="og:title" content="カバネリ海門カウンター">
 <meta property="og:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。スマホでそのまま使えます。">
 <meta property="og:url" content="https://minnanoslot.com/kabaneri-unato/">
 <meta property="og:image" content="https://minnanoslot.com/kabaneri-unato/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="カバネリ CZ発光カウンター">
+<meta name="twitter:title" content="カバネリ海門カウンター">
 <meta name="twitter:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。">
 <meta name="twitter:image" content="https://minnanoslot.com/kabaneri-unato/ogp.png">
-<title>カバネリ CZ発光カウンター</title>
+<title>カバネリ海門カウンター</title>
 <style>
   :root{
     --bg:#0d1c2e;
@@ -692,7 +692,7 @@
 
 <header>
   <div class="hbar">
-    <h1>カバネリ CZ発光カウンター</h1>
+    <h1>カバネリ海門カウンター</h1>
     <button class="menubtn" id="menubtn" aria-label="メニュー" aria-expanded="false">
       <i></i><i></i><i></i>
     </button>
@@ -2453,7 +2453,7 @@ function buildCard(r){
   // 見出し
   g.fillStyle = '#8a93a6';
   g.font = `500 26px ${CARD_JP}`;
-  g.fillText('カバネリ CZ発光カウンター', M, 96);
+  g.fillText('カバネリ海門カウンター', M, 96);
 
   const d = new Date(r.date);
   g.fillStyle = '#e8ecf3';
@@ -2630,7 +2630,7 @@ async function shareCard(){
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
-        text: 'カバネリ CZ発光カウンターで記録\nhttps://minnanoslot.com/kabaneri-unato/'
+        text: 'カバネリ海門カウンターで記録\nhttps://minnanoslot.com/kabaneri-unato/'
       });
       return;
     }

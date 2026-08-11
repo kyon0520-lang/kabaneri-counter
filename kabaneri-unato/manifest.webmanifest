@@ -1,14 +1,14 @@
 {
-  "name": "カバネリ CZ発光カウンター",
-  "short_name": "カバネリカウンター",
-  "description": "スマスロ カバネリのCZ発光・突入回数を数えて、平均発光率とCZ 1回あたりの平均ポイントを出すカウンター。",
+  "name": "カバネリ海門カウンター",
+  "short_name": "海門カウンター",
+  "description": "スマスロ カバネリ 海門決戦を打ちながら数えるカウンター。CZの発光、当選G数と契機、下段ベルまで記録して、発光率・周期別の当選率・ST確率を出します。",
   "lang": "ja",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0d0f14",
-  "theme_color": "#0d0f14",
+  "background_color": "#0d1c2e",
+  "theme_color": "#0d1c2e",
   "icons": [
     {
       "src": "./icon-192.png",

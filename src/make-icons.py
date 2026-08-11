@@ -162,9 +162,9 @@ def ogp():
         d.ellipse((int(x - r), cy - r, int(x + r), cy + r), outline=RING, width=6)
         center(d, (x, cy), ch, mincho(int(r * 1.3)), WHITE)
 
-    center(d, (W / 2, 372), 'カバネリ CZ発光カウンター', mincho(70),
+    center(d, (W / 2, 372), 'カバネリ海門カウンター', mincho(70),
            NAVY, stroke=6, stroke_fill=WHITE, spacing=3)
-    center(d, (W / 2, 462), '非発光 1pt ／ 発光 15pt ／ CZ 1回あたりの平均ptを自動計算',
+    center(d, (W / 2, 462), 'CZの発光・当選G数と契機・下段ベルまで、打ちながら数える',
            gothic6(31), (32, 58, 90))
     d.line([(W * 0.30, 522), (W * 0.70, 522)], fill=WHITE, width=3)
     center(d, (W / 2, 566), 'minnanoslot.com/kabaneri-unato', gothic6(28), (38, 66, 100))
