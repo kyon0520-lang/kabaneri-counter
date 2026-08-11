@@ -53,7 +53,31 @@
     padding:calc(12px + env(safe-area-inset-top)) 16px 10px;
     display:flex;flex-direction:column;gap:9px;
   }
-  header .tools{display:flex;gap:6px}
+  header .hbar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .menubtn{
+    flex:0 0 auto;background:none;border:0;padding:8px 4px;cursor:pointer;
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .menubtn i{display:block;width:20px;height:2px;border-radius:2px;background:var(--text)}
+  .mtabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:0 -16px -10px}
+  .mtabs button{
+    flex:1;background:none;border:0;border-bottom:2px solid transparent;
+    color:var(--muted);font-family:inherit;font-size:12.5px;padding:10px 2px;cursor:pointer;
+  }
+  .mtabs button.on{color:var(--text);font-weight:700;border-bottom-color:#3b82f6}
+
+  .menuscrim{position:fixed;inset:0;z-index:48;background:rgba(6,16,28,.5)}
+  .menu{
+    position:fixed;z-index:49;top:calc(8px + env(safe-area-inset-top));right:10px;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:6px;display:flex;flex-direction:column;min-width:170px;
+    box-shadow:0 12px 32px rgba(0,0,0,.35);
+  }
+  .menu button,.menu a{
+    background:none;border:0;color:var(--text);font-family:inherit;font-size:13.5px;
+    text-align:left;text-decoration:none;padding:12px 12px;border-radius:8px;cursor:pointer;
+  }
+  .menu button:active,.menu a:active{background:var(--panel2)}
   h1{font-size:15px;margin:0;letter-spacing:.02em;flex:1;min-width:0}
   .ghost{
     background:rgba(30,48,73,.6);border:1px solid var(--line);color:var(--muted);
@@ -224,6 +248,10 @@
     border-radius:12px;padding:12px;flex-direction:column;gap:10px;
   }
   .histpanel.open{display:flex}
+  /* 規定pt分布グラフを見ているときは、カウンター側を隠す。
+     カードの入れ物は style 属性で display を持っているので !important が要る */
+  body.hide-count main > *:not(#graphpanel):not(#histpanel){display:none !important}
+  body.hide-count .bar{display:none !important}
   .histpanel h2{margin:0;font-size:13px;font-weight:700}
   .histpanel .note{margin:0;font-size:10px;color:var(--muted);line-height:1.6}
   .histpanel h2 .cnt{
@@ -596,13 +624,23 @@
 <body>
 
 <header>
-  <h1>カバネリ CZ発光カウンター</h1>
-  <div class="tools">
-    <button class="ghost" id="histbtn">履歴</button>
-    <button class="ghost" id="graphbtn">規定pt分布グラフ</button>
-    <a class="ghost" id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
+  <div class="hbar">
+    <h1>カバネリ CZ発光カウンター</h1>
+    <button class="menubtn" id="menubtn" aria-label="メニュー" aria-expanded="false">
+      <i></i><i></i><i></i>
+    </button>
+  </div>
+  <div class="mtabs" id="maintabs">
+    <button data-main="count" class="on">入力</button>
+    <button data-main="graph">規定pt分布グラフ</button>
   </div>
 </header>
+
+<div class="menuscrim" id="menuscrim" hidden></div>
+<nav class="menu" id="menu" hidden>
+  <button id="histbtn">実戦履歴</button>
+  <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
+</nav>
 
 <main>
   <section class="graphpanel" id="graphpanel">
@@ -1137,9 +1175,39 @@ function renderDist(){
   document.getElementById('distn').textContent = `${fmt(total)}回`;
 }
 
-document.getElementById('graphbtn').addEventListener('click', () => {
-  document.getElementById('graphpanel').classList.toggle('open');
+/* 入力と規定pt分布グラフの切り替え。履歴と取説はメニューから開く */
+let mainView = 'count';
+
+function applyMainView(){
+  const graph = mainView === 'graph';
+  document.getElementById('graphpanel').classList.toggle('open', graph);
+  document.body.classList.toggle('hide-count', graph);
+  document.querySelectorAll('#maintabs button')
+    .forEach(b => b.classList.toggle('on', b.dataset.main === mainView));
+}
+
+document.getElementById('maintabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  mainView = b.dataset.main;
+  document.getElementById('histpanel').classList.remove('open');
+  applyMainView();
 });
+
+const menuEl = document.getElementById('menu');
+const menuScrim = document.getElementById('menuscrim');
+function openMenu(){
+  menuEl.hidden = false; menuScrim.hidden = false;
+  document.getElementById('menubtn').setAttribute('aria-expanded', 'true');
+}
+function closeMenu(){
+  menuEl.hidden = true; menuScrim.hidden = true;
+  document.getElementById('menubtn').setAttribute('aria-expanded', 'false');
+}
+document.getElementById('menubtn').addEventListener('click', () => {
+  menuEl.hidden ? openMenu() : closeMenu();
+});
+menuScrim.addEventListener('click', closeMenu);
+document.getElementById('manualbtn').addEventListener('click', closeMenu);
 
 /* 有利区間リセット：現在のポイントを0にして、その分を通算ポイントからも差し引く。
    非発光・発光・高確発光・CZ突入の回数はそのまま残す。 */
@@ -1380,6 +1448,8 @@ function renderHist(){
 }
 
 document.getElementById('histbtn').addEventListener('click', () => {
+  closeMenu();
+  mainView = 'count'; applyMainView();
   document.getElementById('histpanel').classList.toggle('open');
   renderHist();
 });
@@ -2318,6 +2388,7 @@ document.querySelectorAll('#wintabs button')
   .forEach(b => b.classList.toggle('on', b.dataset.mode === winMode));
 renderWins();
 applyWinView();
+applyMainView();
 setTimeout(flushUnsent, 1200);
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
