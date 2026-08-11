@@ -352,6 +352,9 @@
     font-family:inherit;font-size:11.5px;padding:9px 2px;cursor:pointer;white-space:nowrap;
   }
   .wtabs button.on{background:#2f6bd8;color:#fff;font-weight:700}
+  .wtabs button:disabled{opacity:.35;cursor:default}
+  .wtabs button.on:disabled{opacity:.9}
+  .wlock{margin:0;font-size:10.5px;color:var(--muted);line-height:1.6}
   /* 記録と当選率の切り替え */
   .wview{display:flex;gap:0;border-bottom:1px solid var(--line)}
   .wview button{
@@ -741,6 +744,7 @@
     <button data-mode="upper">上位後</button>
     <button data-mode="reset">リセット後</button>
   </div>
+  <p class="wlock" id="wlock" hidden>エピソードBを引くまで状態は変わりません</p>
 
   <div class="winform" id="winform">
     <label class="wlbl">当選G数</label>
@@ -1677,6 +1681,28 @@ const winScrim = document.getElementById('winscrim');
 let pendCycle = null, pendCz = null, pendBonus = null, pendCeiling = false;
 let winView = 'log';      // 'log' = 記録 / 'stats' = 当選率
 let bonusLocked = false;  // 最終周期はエピソードB確定なので自動で選ぶ
+/* 状態はエピソードBを引くまで変わらない。
+   最後の当選が駿城Bなら、そのセクションはまだ続いている。 */
+function sectionMode(){
+  const last = wins[wins.length - 1];
+  return (last && last.bonus === 'shunjo') ? (last.mode || 'normal') : null;
+}
+
+/* 入力中はセクションの状態に固定する（途中で切り替わることはないため） */
+function syncModeLock(){
+  const inSection = sectionMode();
+  const locked = winView === 'log' && inSection !== null;
+  if (locked && winMode !== inSection) {
+    winMode = inSection;
+    renderWins();
+  }
+  document.querySelectorAll('#wintabs button').forEach(b => {
+    b.disabled = locked;
+    b.classList.toggle('on', b.dataset.mode === winMode);
+  });
+  document.getElementById('wlock').hidden = !locked;
+}
+
 function applyWinView(){
   const log = winView === 'log', list = winView === 'list';
   document.getElementById('winform').hidden = !log;
@@ -1684,8 +1710,10 @@ function applyWinView(){
   document.getElementById('winstats').hidden = winView !== 'stats';
   // 実戦履歴は全状態をまとめて出すので、状態タブは関係ない
   document.getElementById('wintabs').hidden = list;
+  document.getElementById('wlock').hidden = list;
   document.querySelectorAll('#winview button')
     .forEach(b => b.classList.toggle('on', b.dataset.view === winView));
+  syncModeLock();
 }
 
 function openWin(){
