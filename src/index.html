@@ -1816,16 +1816,19 @@ document.getElementById('wintabs').addEventListener('click', e => {
   applyWinView();
 });
 
-/* 最終周期（通常は6、その他は4）で当たったならボーナスはエピソードB確定。
+/* 最終周期（通常は6、その他は4）と天井はエピソードB確定。
    誤って駿城Bを選べないよう、選択肢を隠して自動で選んでおく */
 function syncBonusChoices(){
   const max = WIN_MAX_CYCLE[winMode] || 6;
-  const lock = pendCycle === max;
+  // 最終周期と天井はエピソードB確定
+  const lock = pendCycle === max || pendCeiling;
   document.querySelectorAll('#winbonus button').forEach(b => {
     b.hidden = lock && b.dataset.bonus !== 'episode';
   });
-  document.getElementById('wblbl').textContent =
-    lock ? '当たったボーナス（最終周期はエピソードB確定）' : '当たったボーナス';
+  document.getElementById('wblbl').textContent = lock
+    ? (pendCeiling ? '当たったボーナス（天井はエピソードB確定）'
+                   : '当たったボーナス（最終周期はエピソードB確定）')
+    : '当たったボーナス';
 
   if (lock) {
     pendBonus = 'episode';
