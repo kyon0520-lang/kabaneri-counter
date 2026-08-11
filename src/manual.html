@@ -328,6 +328,28 @@
     border-top:1px solid var(--rule);padding-top:20px;
     font-size:12px;color:var(--ink-3);display:flex;flex-direction:column;gap:4px;
   }
+  /* 目次 */
+  .toc{
+    background:var(--card);border:1px solid var(--rule);border-radius:14px;
+    padding:18px 16px;margin:0 0 8px;
+  }
+  .tochd{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:.14em;margin-bottom:10px}
+  .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+  .toc li{border-top:1px solid var(--rule)}
+  .toc li:first-child{border-top:0}
+  .toc a{
+    display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);
+    font-size:14px;font-weight:600;padding:12px 2px;line-height:1.5;
+  }
+  .toc a:active{opacity:.6}
+  .toc .tn{
+    flex:0 0 26px;height:26px;border-radius:8px;display:grid;place-items:center;
+    background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:700;
+  }
+  /* 飛んだ先の見出しが上に張り付かないように */
+  section[id]{scroll-margin-top:16px}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
 </style>
 
 <div class="wrap">
@@ -343,8 +365,28 @@
     </div>
   </header>
 
+  <nav class="toc">
+    <div class="tochd">目次</div>
+    <ol>
+      <li><a href="#s1"><span class="tn">1</span>画面の見かた</a></li>
+      <li><a href="#s2"><span class="tn">2</span>数え方の流れ</a></li>
+      <li><a href="#s3"><span class="tn">3</span>押すと何が変わるか</a></li>
+      <li><a href="#s4"><span class="tn">4</span>計算のしくみ</a></li>
+      <li><a href="#s5"><span class="tn">5</span>特殊な操作</a></li>
+      <li><a href="#s6"><span class="tn">6</span>規定pt分布グラフ</a></li>
+      <li><a href="#s7"><span class="tn">7</span>下段ベル</a></li>
+      <li><a href="#s8"><span class="tn">8</span>データの保存について</a></li>
+      <li><a href="#s9"><span class="tn">9</span>実戦履歴と結果カード</a></li>
+      <li><a href="#s10"><span class="tn">10</span>画面の切り替えとメニュー</a></li>
+      <li><a href="#s11"><span class="tn">11</span>当選履歴カウンター</a></li>
+      <li><a href="#s12"><span class="tn">12</span>メモ</a></li>
+      <li><a href="#s13"><span class="tn">13</span>みんなの集計への送信</a></li>
+      <li><a href="#s14"><span class="tn">14</span>記録の引き継ぎ</a></li>
+    </ol>
+  </nav>
+
   <!-- 1 -->
-  <section>
+  <section id="s1">
     <h2><span class="n">1</span>画面の見かた</h2>
     <p>キャラごとに同じ形のカードが並びます。無名・生駒のカードのあいだに合計欄、いちばん下に銅藍のカードがあります。</p>
 
@@ -390,7 +432,7 @@
   </section>
 
   <!-- 2 -->
-  <section>
+  <section id="s2">
     <h2><span class="n">2</span>数え方の流れ</h2>
     <div class="flow">
       <div class="step">
@@ -434,7 +476,7 @@
   </section>
 
   <!-- 3 -->
-  <section>
+  <section id="s3">
     <h2><span class="n">3</span>押すと何が変わるか</h2>
     <p>このアプリでいちばん間違えやすいのはここです。操作ごとに、どの数字が動いてどれが動かないかの一覧です。</p>
     <div class="tablewrap">
@@ -460,7 +502,7 @@
   </section>
 
   <!-- 4 -->
-  <section>
+  <section id="s4">
     <h2><span class="n">4</span>計算のしくみ</h2>
 
     <div class="formula">
@@ -486,7 +528,7 @@
   </section>
 
   <!-- 5 -->
-  <section>
+  <section id="s5">
     <h2><span class="n">5</span>特殊な操作</h2>
 
     <h3>押し間違えたとき</h3>
@@ -530,7 +572,7 @@
   </section>
 
   <!-- 6 -->
-  <section>
+  <section id="s6">
     <h2><span class="n">6</span>規定pt分布グラフ</h2>
     <p>画面右上の <strong>規定pt分布グラフ</strong> を押すと開きます。CZ突入を押したときの現在ポイントが、15pt刻みのどの範囲に入ったかを集計した表です。設定判別で使う「規定pt」の振り分けと同じ並びにしてあります。</p>
 
@@ -596,7 +638,7 @@
   </section>
 
   <!-- 7 -->
-  <section>
+  <section id="s7">
     <h2><span class="n">7</span>下段ベル</h2>
     <p>画面のいちばん下に固定されている帯です。スクロールしても常に出ているので、実戦中いつでも押せます。ポイントや発光率とは無関係の独立したカウンターです。</p>
 
@@ -627,7 +669,7 @@
   </section>
 
   <!-- 8 -->
-  <section>
+  <section id="s8">
     <h2><span class="n">8</span>データの保存について</h2>
     <p>カウントはボタンを押すたびに、開いている端末のブラウザに自動保存されます。アプリを閉じても、電源を切っても残ります。</p>
     <div class="note">
@@ -639,7 +681,7 @@
   </section>
 
   <!-- 9 -->
-  <section>
+  <section id="s9">
     <h2><span class="n">9</span>実戦履歴と結果カード</h2>
     <p>画面下の <strong>この実戦を保存</strong> を押すと、その実戦がまるごと記録に残ります。当選履歴カウンターの入力タブからも押せます。</p>
     <p>保存するときに、判明していれば<strong>設定</strong>と<strong>その根拠</strong>（設定公開／確定演出／推測）を添えられます。分からなければ選ばなくて構いません。</p>
@@ -654,7 +696,7 @@
   </section>
 
   <!-- 10 -->
-  <section>
+  <section id="s10">
     <h2><span class="n">10</span>画面の切り替えとメニュー</h2>
     <p>画面の上に <strong>入力</strong>・<strong>合算値</strong>・<strong>規定pt分布グラフ</strong> のタブがあります。一度に出るのは1つだけです。</p>
     <ul class="legend">
@@ -667,7 +709,7 @@
   </section>
 
   <!-- 11 -->
-  <section>
+  <section id="s11">
     <h2><span class="n">11</span>当選履歴カウンター</h2>
     <p>画面を<strong>右にスワイプ</strong>するか、左端の「当選」のつまみを押すと開きます。当選するたびに1件ずつ足していくと、周期ごとの当選率が出ます。</p>
 
@@ -702,7 +744,7 @@
   </section>
 
   <!-- 12 -->
-  <section>
+  <section id="s12">
     <h2><span class="n">12</span>メモ</h2>
     <p>画面を<strong>左にスワイプ</strong>するか、右端の「メモ」のつまみを押すと開きます。台番号やホール、気づいたことをその場で書けます。</p>
     <p>書いた内容は打つそばから保存され、実戦を保存するとその記録と一緒に残ります。保存すると次の実戦のために空になります。</p>
@@ -713,7 +755,7 @@
   </section>
 
   <!-- 13 -->
-  <section>
+  <section id="s13">
     <h2><span class="n">13</span>みんなの集計への送信</h2>
     <p>実戦を保存すると、匿名の記録がみんなの集計に送られます。集まった記録は、機種ごとの分布や設定判別に使います。<strong>初回の保存時に一度だけ確認</strong>があり、そこで選んだ内容が以降の既定になります。</p>
     <ul class="legend">
@@ -725,7 +767,7 @@
   </section>
 
   <!-- 14 -->
-  <section>
+  <section id="s14">
     <h2><span class="n">14</span>記録の引き継ぎ</h2>
     <p>機種変更などで、保存した実戦の記録を別の端末へ移せます。<strong>会員登録もメールも要りません。</strong>右上のメニューから開きます。</p>
     <div class="flow">
