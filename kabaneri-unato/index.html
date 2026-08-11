@@ -356,6 +356,7 @@
   .wtabs button[data-mode="through"].on{background:#e8c06a;color:#16283f}
   .wtabs button[data-mode="upper"].on{background:#e86aa8;color:#fff}
   .wtabs button[data-mode="reset"].on{background:#eef2f8;color:#16283f}
+  .wtabs button[data-mode="all"].on{background:#5c6f88;color:#fff}
   .wtabs button:disabled{opacity:.35;cursor:default}
   .wtabs button.on:disabled{opacity:.9}
   .wlock{margin:0;font-size:10.5px;color:var(--muted);line-height:1.6}
@@ -753,6 +754,7 @@
     <button data-mode="through">駆け抜け後</button>
     <button data-mode="upper">上位後</button>
     <button data-mode="reset">リセット後</button>
+    <button data-mode="all" class="allt">合算</button>
   </div>
   <p class="wlock" id="wlock" hidden>エピソードBを引くまで状態は変わりません</p>
 
@@ -893,7 +895,7 @@ function load(){
                g:Math.max(0, +(raw.bell && raw.bell.g) || 0) };
       memo = typeof raw.memo === 'string' ? raw.memo.slice(0, 2000) : '';
       wins = Array.isArray(raw.wins) ? raw.wins.filter(w => w && isFinite(+w.g)).slice(0, 500) : [];
-      winMode = WIN_MODES[raw.winMode] ? raw.winMode : 'normal';
+      winMode = (WIN_MODES[raw.winMode] || raw.winMode === 'all') ? raw.winMode : 'normal';
       return;
     }
   } catch(e){}
@@ -1716,6 +1718,9 @@ function syncModeLock(){
 
 function applyWinView(){
   const log = winView === 'log', list = winView === 'list';
+  // 合算は集計を見るためだけの選択肢。入力タブでは選べない
+  document.querySelector('#wintabs [data-mode="all"]').hidden = log;
+  if (log && winMode === 'all') { winMode = 'normal'; renderWins(); }
   document.getElementById('winform').hidden = !log;
   document.getElementById('winlist').hidden = !list;
   document.getElementById('winstats').hidden = winView !== 'stats';
@@ -1875,7 +1880,9 @@ function syncCycleChoices(){
 function renderWins(){
   syncCycleChoices();
   const list = document.getElementById('winlist');
-  const shown = wins.filter(w => (w.mode || 'normal') === winMode);   // 集計は選んだ状態だけ
+  const shown = winMode === 'all'
+    ? wins
+    : wins.filter(w => (w.mode || 'normal') === winMode);   // 集計は選んだ状態だけ
   // 実戦履歴は状態で分けず、入れた順に全部出す
   list.innerHTML = wins.length
     ? wins.map((w, i) => {
@@ -1918,6 +1925,26 @@ function totalGames(list){
   return sum;
 }
 
+const SHORT_MODES = ['through', 'upper', 'reset'];   // 短縮（4周期まで）
+
+/* 周期別の表。合算では全状態ぶんと短縮ぶんの2つを並べるので処理を分けた */
+function cycleTable(list, maxC, title){
+  const cyc = list.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= maxC);
+  if (!cyc.length) return '';
+  const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
+  let html = `<h3>${title}・周期別（CZ当選は含みません）</h3><table><thead><tr>` +
+             '<th>周期</th><th>当選</th><th>当選率</th><th>エピソードB率</th></tr></thead><tbody>';
+  for (let n = 1; n <= maxC; n++) {
+    const hit = cyc.filter(w => w.cycle === n);
+    const reached = cyc.filter(w => w.cycle >= n).length;   // n周期に到達した回数
+    const ep = hit.filter(w => w.bonus === 'episode').length;   // 昇格は含めない
+    html += `<tr><td>${n}周期</td><td class="n">${hit.length}</td>` +
+            `<td class="n">${pct(hit.length, reached)}</td>` +
+            `<td class="n">${pct(ep, hit.length)}</td></tr>`;
+  }
+  return html + '</tbody></table>';
+}
+
 function renderWinStats(shown){
   const box = document.getElementById('winstats');
   const cyc = shown.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= 6);
@@ -1948,19 +1975,13 @@ function renderWinStats(shown){
             ? `天井当選 ${fmt(shown.filter(w => w.via === 'ceiling').length)}件は、下の周期別には入りません。` : '')
         + '</p>';
 
-  if (cyc.length) {
-    html += `<h3>${WIN_MODES[winMode]}・周期別（CZ当選は含みません）</h3><table><thead><tr>` +
-            '<th>周期</th><th>当選</th><th>当選率</th><th>エピソードB率</th></tr></thead><tbody>';
-    const maxC = WIN_MAX_CYCLE[winMode] || 6;
-    for (let n = 1; n <= maxC; n++) {
-      const hit = cyc.filter(w => w.cycle === n);
-      const reached = cyc.filter(w => w.cycle >= n).length;   // n周期に到達した回数
-      const ep = hit.filter(w => w.bonus === 'episode').length;   // 昇格は含めない
-      html += `<tr><td>${n}周期</td><td class="n">${hit.length}</td>` +
-              `<td class="n">${pct(hit.length, reached)}</td>` +
-              `<td class="n">${pct(ep, hit.length)}</td></tr>`;
-    }
-    html += '</tbody></table>';
+  if (winMode === 'all') {
+    // ①全状態の合算 ②短縮（駆け抜け後・上位後・リセット後）の合算
+    html += cycleTable(wins, 6, '全状態の合算');
+    html += cycleTable(wins.filter(w => SHORT_MODES.includes(w.mode || 'normal')), 4,
+                       '短縮の合算（駆け抜け後・上位後・リセット後）');
+  } else if (cyc.length) {
+    html += cycleTable(shown, WIN_MAX_CYCLE[winMode] || 6, WIN_MODES[winMode]);
   }
 
   if (cz.length) {
@@ -1978,7 +1999,8 @@ function renderWinStats(shown){
 
   const epAll = shown.filter(w => w.bonus === 'episode').length;
   const upAll = shown.filter(w => w.bonus === 'both').length;
-  html += `<h3>${WIN_MODES[winMode]} ${fmt(shown.length)}件 ／ エピソードB ${pct(epAll, shown.length)}`
+  html += `<h3>${winMode === 'all' ? '全状態' : WIN_MODES[winMode]} ${fmt(shown.length)}件`
+        + ` ／ エピソードB ${pct(epAll, shown.length)}`
         + (wins.length !== shown.length ? `（全状態では ${fmt(wins.length)}件）` : '') + '</h3>';
   html += `<p class="winnote">エピソードB率に、駿城Bからの昇格（駿→エピ）は含みません`
         + (upAll ? `。昇格は ${fmt(upAll)}件` : '') + '</p>';
