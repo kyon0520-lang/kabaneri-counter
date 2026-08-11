@@ -587,6 +587,10 @@
   }
   .bell{display:flex;gap:8px;align-items:center;width:100%;max-width:560px}
   .bell .mode{flex:0 0 auto;height:38px}
+  /* 左が＋、右が−。外側の角だけ丸める */
+  .bell .mode .plus{border-radius:10px 0 0 10px}
+  .bell .mode-r .minus{border-radius:0 10px 10px 0}
+  .bell button.cnt{border-radius:0}
   .bell button.cnt{
     flex:1;min-width:0;padding:8px 4px;gap:3px;
     border-color:rgba(224,178,74,.55);
@@ -712,13 +716,16 @@
 
 <div class="bar">
   <div class="bell">
+    <!-- 数える場所を＋と−の間に置く。押し間違いを減らすため -->
     <div class="mode" id="bellmode">
       <button class="plus on" data-mode="1" aria-label="プラス">＋</button>
-      <button class="minus"   data-mode="-1" aria-label="マイナス">−</button>
     </div>
     <button class="cnt" id="bellbtn">
       <span class="lbl">下段ベル</span><span class="num" id="bellnum">0</span><span class="pt">回</span>
     </button>
+    <div class="mode mode-r" id="bellmode2">
+      <button class="minus" data-mode="-1" aria-label="マイナス">−</button>
+    </div>
     <div class="gwrap">
       <span class="glbl">現在のG数</span>
       <input type="number" id="games" inputmode="numeric" min="0" max="99999" step="1" placeholder="0" aria-label="現在のG数">
@@ -1088,7 +1095,7 @@ function doReset(){
   wins = [];
   document.getElementById('memotext').value = '';
   document.getElementById('games').value = '';
-  document.getElementById('bellmode').querySelector('.plus').click();
+  setBellMode(1);
   CHARS.forEach(c => setMode(c.id, 1));
   render(); save();
   toast('カウントをリセットしました');
@@ -1313,14 +1320,19 @@ function renderBell(){
 // カードと同じで、＋/− を選んでから下段ベルを押す
 let bellMode = 1;
 
-document.getElementById('bellmode').addEventListener('click', e => {
-  const b = e.target.closest('button');
-  if (!b) return;
-  bellMode = +b.dataset.mode;
-  const wrap = document.getElementById('bellmode');
-  wrap.querySelector('.plus').classList.toggle('on', bellMode === 1);
-  wrap.querySelector('.minus').classList.toggle('on', bellMode === -1);
+function setBellMode(m){
+  bellMode = m;
+  // ＋と−は下段ベルの左右に分かれているので、両方まとめて塗り分ける
+  document.querySelectorAll('#bellmode .plus, #bellmode2 .minus')
+    .forEach(b => b.classList.toggle('on', +b.dataset.mode === bellMode));
   document.getElementById('bellbtn').classList.toggle('minusmode', bellMode === -1);
+}
+
+['bellmode', 'bellmode2'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (b) setBellMode(+b.dataset.mode);
+  });
 });
 
 document.getElementById('bellbtn').addEventListener('click', () => {
