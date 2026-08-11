@@ -1132,8 +1132,15 @@ function doReset(){
   document.getElementById('games').value = '';
   setBellMode(1);
   CHARS.forEach(c => setMode(c.id, 1));
+  // 当選履歴も空にしたので、開いている画面を描き直す
+  winMode = 'normal';
+  pendCycle = pendCz = pendBonus = null;
+  pendCeiling = false; bonusLocked = false;
+  document.getElementById('wing').value = '';
+  winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
+  renderWins(); applyWinView();
   render(); save();
-  toast('カウントをリセットしました');
+  toast('カウントと当選履歴をリセットしました');
 }
 
 document.getElementById('mok').addEventListener('click', doReset);
