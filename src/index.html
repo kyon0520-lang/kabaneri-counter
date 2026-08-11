@@ -187,6 +187,12 @@
   .tbox.wide .v{color:#8fc0ff}
   .tbox.wide.rate{background:rgba(47,181,106,.10);border-color:rgba(47,181,106,.35)}
   .tbox.wide.rate .v{color:#7fe0ab}
+  /* 銅藍を含めた合算は別の色にして、無名＋生駒と取り違えないようにする */
+  .total.all{border-color:rgba(232,192,106,.35)}
+  .total.all .tbox.wide{background:rgba(167,139,250,.10);border-color:rgba(167,139,250,.35)}
+  .total.all .tbox.wide .v{color:#c4b5fd}
+  .total.all .tbox.wide.rate{background:rgba(232,192,106,.10);border-color:rgba(232,192,106,.35)}
+  .total.all .tbox.wide.rate .v{color:#e8c06a}
   .formula{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5}
 
   /* CZ突入ptの分布パネル */
@@ -687,7 +693,7 @@
     </div>
   </section>
 
-  <section class="total">
+  <section class="total all">
     <h2>合計（無名 ＋ 生駒 ＋ 銅藍）</h2>
     <div class="total-grid">
       <div class="tbox wide rate">
