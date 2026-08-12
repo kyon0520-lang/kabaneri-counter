@@ -8,8 +8,21 @@
   - PWA/OGP のメタタグ
   - サービスワーカーの登録（その場描きアイコンの処理と入れ替え）
   - Cloudflare Web Analytics の計測タグ
+
+SEND_ENABLED を False にすると、みんなのスロットへの送信まわりを
+まるごと外した版を書き出す（原本は触らない）。
+「実戦記録の保存だけ」のカウンターとして先に配りたいときに使う。
+戻すときは True にして、もう一度実行するだけ。
 """
 import os
+import re
+
+# ---- 送信機能を公開版に含めるか ----
+SEND_ENABLED = False
+
+# 原本に置いた印。この間が送信機能で、外すときはここごと消す
+MARKS = [('/* ==SEND:START== */', '/* ==SEND:END== */'),
+         ('<!-- ==SEND:START== -->', '<!-- ==SEND:END== -->')]
 
 BASE = os.path.dirname(os.path.abspath(__file__))       # src/
 PUB = os.path.dirname(BASE)                             # 公開ディレクトリ
@@ -56,8 +69,46 @@ ICON_BLOCK_START = '/* ---------- iOS ホーム画面用のアイコンと名前
 ICON_BLOCK_END = 'setupHomeScreen();\n'
 
 
+def apply_send_flag(html):
+    """印で囲んだ範囲を、含めるなら印だけ外し、含めないなら中身ごと消す"""
+    for start, end in MARKS:
+        if SEND_ENABLED:
+            html = html.replace(start, '').replace(end, '')
+            continue
+        while start in html:
+            i = html.index(start)
+            j = html.index(end, i) + len(end)
+            html = html[:i] + html[j:]
+        assert end not in html, f'{end} が余っています。印の対が合っていません'
+    if not SEND_ENABLED:
+        assert '/api/records' not in html, '送信の呼び出しが残っています'
+    return html
+
+
+def renumber_manual(html):
+    """章を消したあとに、番号・id・目次を振り直す。
+    手で直すと必ずどこか取り残すので、見出しから作り直す"""
+    secs = re.findall(r'<section id="s\d+">\s*<h2><span class="n">\d+</span>(.*?)</h2>', html)
+
+    def sec(m, n=[0]):
+        n[0] += 1
+        return f'<section id="s{n[0]}">\n    <h2><span class="n">{n[0]}</span>'
+    html = re.sub(r'<section id="s\d+">\s*<h2><span class="n">\d+</span>', sec, html)
+
+    items = '\n'.join(
+        f'      <li><a href="#s{i}"><span class="tn">{i}</span>{t}</a></li>'
+        for i, t in enumerate(secs, 1))
+    html = re.sub(r'(<nav class="toc">.*?<ol>\n).*?(\n    </ol>)',
+                  lambda m: m.group(1) + items + m.group(2), html, flags=re.S)
+
+    # 本文中の「◯章」のような参照は使っていない前提。残っていたら気づけるようにする
+    assert '#s0' not in html
+    return html
+
+
 def build_app():
     src = open(SRC, encoding='utf-8').read()
+    src = apply_send_flag(src)
 
     assert TITLE in src, 'title タグが見つかりません'
     out = src.replace(TITLE, HEAD_ADD + TITLE, 1)
@@ -79,6 +130,8 @@ def build_manual():
     if not os.path.exists(MAN_SRC):
         return
     man = open(MAN_SRC, encoding='utf-8').read()
+    man = apply_send_flag(man)
+    man = renumber_manual(man)
     if 'cloudflareinsights' not in man:
         man = man.rstrip() + '\n' + BEACON
     open(MAN_DEST, 'w', encoding='utf-8').write(man)
@@ -88,4 +141,5 @@ def build_manual():
 if __name__ == '__main__':
     build_app()
     build_manual()
+    print(f'送信機能: {"あり" if SEND_ENABLED else "なし（保存のみの版）"}')
     print(f'公開URL: {SITE}')

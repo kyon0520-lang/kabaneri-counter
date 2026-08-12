@@ -731,7 +731,7 @@
   <section class="histpanel" id="histpanel">
     <h2>実戦履歴<span class="cnt" id="hs-n">0</span></h2>
         <div class="histlist" id="histlist"></div>
-    <p class="note">行をタップすると内訳が開きます。<br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button></p>
+    <p class="note">行をタップすると内訳が開きます。</p>
   </section>
 
   <!-- カード群をJSで描画 -->
@@ -855,7 +855,7 @@
   <div class="sheet" role="dialog" aria-modal="true">
     <p>保存しました</p>
     <p class="sub" id="savedsub"></p>
-    <div id="cmp" hidden></div>
+    
     <div class="acts stack">
       <button class="primary" id="mkcard">結果カードを作る</button>
       <button id="clearafter">カウントを0にする</button>
@@ -930,7 +930,7 @@
     <button class="linkbtn" id="memoclose">閉じる</button>
   </div>
   <textarea id="memotext" placeholder="台番号、ホール、気づいたことなど" maxlength="2000"></textarea>
-  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。みんなのスロットには送りません。</p>
+  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。</p>
 </aside>
 <button class="memohandle" id="memohandle" aria-label="メモを開く">メ<br>モ</button>
 
@@ -959,19 +959,7 @@
   </div>
 </div>
 
-<div class="modal" id="consentmodal" hidden>
-  <div class="sheet consent" role="dialog" aria-modal="true">
-    <h2>みんなのスロットに加わりますか</h2>
-    <p class="sub">実戦を保存したとき、匿名の記録を送ります。集まった記録は、機種ごとの分布や設定判別に使います。</p>
-    <p class="sub"><b>送るもの</b>：押した回数、総ゲーム数、下段ベル、CZ突入時のポイント、設定と根拠（選んだ場合のみ）</p>
-    <p class="sub"><b>送らないもの</b>：名前、位置、店舗、端末を特定できる情報</p>
-    <p class="sub">あとから履歴の画面でいつでも止められます。</p>
-    <div class="acts stack">
-      <button class="primary" id="consentyes">参加して保存する</button>
-      <button class="ghostish" id="consentno">送らずに保存する</button>
-    </div>
-  </div>
-</div>
+
 
 <div class="modal" id="cardmodal" hidden>
   <div class="sheet cardsheet" role="dialog" aria-modal="true">
@@ -1526,8 +1514,8 @@ function buildRecord(){
     czPointsBy: czLog.map(r => ({ c:r.c, pt:r.pt })),
     setting: null,
     evidence: null,
-    memo,            // 端末内だけ。toPayload では送らない
-    wins,            // 当選履歴。いまは端末内だけ（送信は項目を足してから）
+    memo,            // 端末内だけに残す
+    wins,            // 当選履歴。端末内だけに残す
     sent: false
   };
 }
@@ -1594,7 +1582,7 @@ function renderHist(){
   }
 
   document.getElementById('hs-n').textContent = `${fmt(hist.length)}件`;
-  renderSendState();
+  
 }
 
 document.getElementById('histbtn').addEventListener('click', () => {
@@ -1728,176 +1716,17 @@ document.getElementById('sok').addEventListener('click', () => {
   afterSave(rec);
 });
 
-/* ---------- みんなのスロットへの送信 ----------
-   保存した瞬間に送る。失敗したら sent:false のまま端末に残し、
-   起動時と、圏外から復帰した時に送り直す。
-   レコードのIDは端末が採番しているので、二重に届いてもサーバー側で弾かれる。 */
-const SEND_KEY = 'kabaneri-send-v1';
-const API_RECORDS = '/api/records';
-const APP_VERSION = 'v22';
 
-let sendCfg = { clientId:null, consent:null };   // consent: null=未確認 / true=送る / false=送らない
-
-function loadSendCfg(){
-  try {
-    const r = JSON.parse(localStorage.getItem(SEND_KEY));
-    if (r && typeof r === 'object') {
-      sendCfg.clientId = typeof r.clientId === 'string' ? r.clientId : null;
-      sendCfg.consent = r.consent === true ? true : (r.consent === false ? false : null);
-    }
-  } catch(e){}
-  if (!sendCfg.clientId) sendCfg.clientId = newId('c_');   // 端末ごとの匿名ID
-  saveSendCfg();
-}
-function saveSendCfg(){
-  try { localStorage.setItem(SEND_KEY, JSON.stringify(sendCfg)); } catch(e){}
-  renderSendState();
-}
-
-function renderSendState(){
-  const el = document.getElementById('sendstate');
-  if (!el) return;
-  // まだ届いていない件数も出す。出しておかないと、送れていないことに気づけない
-  const waiting = hist.filter(r => !r.sent).length;
-  el.textContent = sendCfg.consent === true ? (waiting ? `オン（未送信 ${fmt(waiting)}件）` : 'オン')
-                 : sendCfg.consent === false ? 'オフ' : '未設定';
-}
-
-/* 送る形に整える。lost など端末内だけの値は送らない */
-function toPayload(r){
-  const chars = {};
-  Object.keys(r.chars || {}).forEach(id => {
-    const c = r.chars[id];
-    chars[id] = { no:c.no, glow:c.glow, hi:c.hi, cz:c.cz };
-  });
-  return {
-    id: r.id, clientId: sendCfg.clientId, machine: r.machine,
-    playedAt: r.date, games: r.games, bell: r.bell,
-    chars, czPointsBy: r.czPointsBy || [],
-    setting: r.setting, evidence: r.evidence, appVersion: APP_VERSION
-  };
-}
-
-function markSent(id){
-  const r = hist.find(x => x.id === id);
-  if (r) { r.sent = true; saveHist(); }
-}
-
-/* 1件送る。
-   受理は { ok:true, stats }、内容を弾かれたら { ok:false, reason }、
-   通信できなかったときだけ null（あとで送り直す）。
-   「送れた」と「弾かれた」を呼び出し側で見分けられるようにしている */
-async function sendRecord(r){
-  if (sendCfg.consent !== true) return null;
-  let res;
-  try {
-    res = await fetch(API_RECORDS, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(toPayload(r))
-    });
-  } catch(e) { return null; }          // 圏外など。あとで送り直す
-
-  let j = null;
-  try { j = await res.json(); } catch(e){}
-
-  if (res.ok && j && j.ok) { markSent(r.id); return { ok:true, stats: j.stats || null }; }
-
-  // 内容が悪くて弾かれた分は、送り直しても通らないので溜めない（429だけは残す）
-  if (res.status >= 400 && res.status < 500 && res.status !== 429) {
-    markSent(r.id);
-    return { ok:false, reason: (j && j.error) || `エラー ${res.status}` };
-  }
-  return null;
-}
-
-/* まだ送れていない分を送る。結果を返して、呼び出し側で知らせられるようにする */
-async function flushUnsent(limit = 10){
-  const none = { sent:0, rejected:0, left:0, offline:false };
-  if (sendCfg.consent !== true) return none;
-  if (navigator.onLine === false) return { ...none, offline:true, left:hist.filter(r => !r.sent).length };
-
-  const pend = hist.filter(r => !r.sent).slice(0, limit);
-  let sent = 0, rejected = 0, offline = false;
-  for (const r of pend) {
-    const res = await sendRecord(r);
-    if (res === null) { offline = true; break; }   // 通信が駄目なら、そこで止める
-    if (res.ok) sent++; else rejected++;
-  }
-  return { sent, rejected, offline, left: hist.filter(r => !r.sent).length };
-}
-
-/* 送信を入にした直後に、溜まっていた分を送って結果を伝える。
-   ここで送らないと次に開くまで届かず、動いていないように見えてしまう */
-async function flushAndTell(){
-  const waiting = hist.filter(r => !r.sent).length;
-  if (!waiting) { toast('みんなのスロットへ送信します'); return; }
-
-  toast(`たまっていた ${fmt(waiting)}件を送っています…`);
-  const res = await flushUnsent(30);   // サーバー側の1日の上限は60件
-
-  let msg;
-  if (res.sent && res.rejected) msg = `${fmt(res.sent)}件を送りました（${fmt(res.rejected)}件は受け付けられませんでした）`;
-  else if (res.sent)            msg = `${fmt(res.sent)}件を送りました`;
-  else if (res.rejected)        msg = `${fmt(res.rejected)}件が受け付けられませんでした`;
-  else                          msg = 'いまは送れませんでした。電波が戻ったときに送り直します';
-  if (res.left) msg += `／残り${fmt(res.left)}件は次回`;
-  renderSendState();
-  toast(msg);
-}
-
-function showCompare(stats){
-  const el = document.getElementById('cmp');
-  if (!el) return;
-  if (!stats) { el.hidden = true; return; }
-  const line = (k, you, med, unit) => {
-    if (you == null) return '';
-    const m = med == null ? '—' : med + unit;
-    return `<div class="row"><span class="k">${k}</span>` +
-           `<span class="v"><b>${you}${unit}</b><i>みんな ${m}</i></span></div>`;
-  };
-  el.innerHTML =
-    `<div class="n">送信しました（この機種の記録 ${fmt(stats.n)} 件目）</div>` +
-    line('平均 pt/CZ', stats.avgPt && stats.avgPt.you, stats.avgPt && stats.avgPt.median, '') +
-    line('発光率', stats.glowRate && stats.glowRate.you, stats.glowRate && stats.glowRate.median, '%');
-  el.hidden = false;
-}
 
 /* 保存したあとの流れ。初回だけ送ってよいか聞く */
-let pendingSaved = null;
+
 
 function afterSave(rec){
-  if (sendCfg.consent === null) { pendingSaved = rec; document.getElementById('consentmodal').hidden = false; return; }
-  showCompare(null);
+  
   openSavedSheet(rec);
-  sendRecord(rec).then(res => showCompare(res && res.ok ? res.stats : null)).catch(() => {});
+  
 }
 
-document.getElementById('consentyes').addEventListener('click', () => {
-  sendCfg.consent = true; saveSendCfg();
-  document.getElementById('consentmodal').hidden = true;
-  const r = pendingSaved; pendingSaved = null;
-  if (r) { afterSave(r); return; }
-  // 履歴画面から入にしたとき。溜まっている分をこの場で送る
-  flushAndTell();
-});
-document.getElementById('consentno').addEventListener('click', () => {
-  sendCfg.consent = false; saveSendCfg();
-  document.getElementById('consentmodal').hidden = true;
-  const r = pendingSaved; pendingSaved = null;
-  if (r) afterSave(r);
-});
-
-document.getElementById('sendtoggle').addEventListener('click', () => {
-  if (sendCfg.consent === true) {
-    sendCfg.consent = false; saveSendCfg();
-    toast('みんなのスロットへの送信をやめました');
-  } else {
-    document.getElementById('consentmodal').hidden = false;   // 中身を読んでから決めてもらう
-  }
-});
-
-window.addEventListener('online', () => { flushUnsent().then(renderSendState); });
 
 /* ---------- 打ちながら書くメモ ----------
    画面を左にスワイプすると開く。右端のつまみでも開ける（スワイプに気づかない人向け）。
@@ -2722,7 +2551,7 @@ document.getElementById('clearafter').addEventListener('click', () => {
 /* ---------- 起動 ---------- */
 load();
 loadHist();
-loadSendCfg();
+
 buildCards();
 document.getElementById('games').value = bell.g ? bell.g : '';
 render();
@@ -2733,7 +2562,7 @@ document.querySelectorAll('#wintabs button')
 renderWins();
 applyWinView();
 applyMainView();
-setTimeout(() => flushUnsent().then(renderSendState), 1200);
+
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
 if (!storageWorks()) {

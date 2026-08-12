@@ -718,7 +718,7 @@
   <section class="histpanel" id="histpanel">
     <h2>実戦履歴<span class="cnt" id="hs-n">0</span></h2>
         <div class="histlist" id="histlist"></div>
-    <p class="note">行をタップすると内訳が開きます。<br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button></p>
+    <p class="note">行をタップすると内訳が開きます。<!-- ==SEND:START== --><br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button><!-- ==SEND:END== --></p>
   </section>
 
   <!-- カード群をJSで描画 -->
@@ -842,7 +842,7 @@
   <div class="sheet" role="dialog" aria-modal="true">
     <p>保存しました</p>
     <p class="sub" id="savedsub"></p>
-    <div id="cmp" hidden></div>
+    <!-- ==SEND:START== --><div id="cmp" hidden></div><!-- ==SEND:END== -->
     <div class="acts stack">
       <button class="primary" id="mkcard">結果カードを作る</button>
       <button id="clearafter">カウントを0にする</button>
@@ -917,7 +917,7 @@
     <button class="linkbtn" id="memoclose">閉じる</button>
   </div>
   <textarea id="memotext" placeholder="台番号、ホール、気づいたことなど" maxlength="2000"></textarea>
-  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。みんなのスロットには送りません。</p>
+  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。<!-- ==SEND:START== -->みんなのスロットには送りません。<!-- ==SEND:END== --></p>
 </aside>
 <button class="memohandle" id="memohandle" aria-label="メモを開く">メ<br>モ</button>
 
@@ -946,6 +946,7 @@
   </div>
 </div>
 
+<!-- ==SEND:START== -->
 <div class="modal" id="consentmodal" hidden>
   <div class="sheet consent" role="dialog" aria-modal="true">
     <h2>みんなのスロットに加わりますか</h2>
@@ -959,6 +960,7 @@
     </div>
   </div>
 </div>
+<!-- ==SEND:END== -->
 
 <div class="modal" id="cardmodal" hidden>
   <div class="sheet cardsheet" role="dialog" aria-modal="true">
@@ -1554,8 +1556,8 @@ function buildRecord(){
     czPointsBy: czLog.map(r => ({ c:r.c, pt:r.pt })),
     setting: null,
     evidence: null,
-    memo,            // 端末内だけ。toPayload では送らない
-    wins,            // 当選履歴。いまは端末内だけ（送信は項目を足してから）
+    memo,            // 端末内だけに残す
+    wins,            // 当選履歴。端末内だけに残す
     sent: false
   };
 }
@@ -1622,7 +1624,7 @@ function renderHist(){
   }
 
   document.getElementById('hs-n').textContent = `${fmt(hist.length)}件`;
-  renderSendState();
+  /* ==SEND:START== */ renderSendState(); /* ==SEND:END== */
 }
 
 document.getElementById('histbtn').addEventListener('click', () => {
@@ -1756,6 +1758,7 @@ document.getElementById('sok').addEventListener('click', () => {
   afterSave(rec);
 });
 
+/* ==SEND:START== */
 /* ---------- みんなのスロットへの送信 ----------
    保存した瞬間に送る。失敗したら sent:false のまま端末に残し、
    起動時と、圏外から復帰した時に送り直す。
@@ -1891,15 +1894,24 @@ function showCompare(stats){
   el.hidden = false;
 }
 
+/* ==SEND:END== */
+
 /* 保存したあとの流れ。初回だけ送ってよいか聞く */
+/* ==SEND:START== */
 let pendingSaved = null;
+/* ==SEND:END== */
 
 function afterSave(rec){
+  /* ==SEND:START== */
   if (sendCfg.consent === null) { pendingSaved = rec; document.getElementById('consentmodal').hidden = false; return; }
   showCompare(null);
+  /* ==SEND:END== */
   openSavedSheet(rec);
+  /* ==SEND:START== */
   sendRecord(rec).then(res => showCompare(res && res.ok ? res.stats : null)).catch(() => {});
+  /* ==SEND:END== */
 }
+/* ==SEND:START== */
 
 document.getElementById('consentyes').addEventListener('click', () => {
   sendCfg.consent = true; saveSendCfg();
@@ -1926,6 +1938,7 @@ document.getElementById('sendtoggle').addEventListener('click', () => {
 });
 
 window.addEventListener('online', () => { flushUnsent().then(renderSendState); });
+/* ==SEND:END== */
 
 /* ---------- 打ちながら書くメモ ----------
    画面を左にスワイプすると開く。右端のつまみでも開ける（スワイプに気づかない人向け）。
@@ -2750,7 +2763,9 @@ document.getElementById('clearafter').addEventListener('click', () => {
 /* ---------- 起動 ---------- */
 load();
 loadHist();
+/* ==SEND:START== */
 loadSendCfg();
+/* ==SEND:END== */
 buildCards();
 document.getElementById('games').value = bell.g ? bell.g : '';
 render();
@@ -2761,7 +2776,9 @@ document.querySelectorAll('#wintabs button')
 renderWins();
 applyWinView();
 applyMainView();
+/* ==SEND:START== */
 setTimeout(() => flushUnsent().then(renderSendState), 1200);
+/* ==SEND:END== */
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
 if (!storageWorks()) {
