@@ -19,7 +19,9 @@
 | `src/build-pages.py` | 原本から公開用ファイルを生成する |
 | `src/make-icons.py` | アイコンとOGP画像を書き出す（macOS専用・後述） |
 | `src/icon.html` | 旧アイコン生成ページ。`make-icons.py` に置き換わり、現在は未使用 |
-| `index.html` | サイトのトップページ（機種の一覧）。原本なし、ここを直接編集 |
+| `src/top.html` | **トップページの原本。ここを編集する** |
+| `src/top-mode.py` | トップページを「準備中」と「本編」で切り替える |
+| `index.html` | 生成物。直接編集しない |
 | `kabaneri-unato/index.html` | 生成物。直接編集しない |
 | `kabaneri-unato/manual.html` | 生成物。直接編集しない |
 | `kabaneri-unato/manifest.webmanifest` | アプリ名「カバネリカウンター」・全画面表示・アイコンの設定 |
@@ -44,7 +46,7 @@
 （PWA・OGP・アクセス解析のタグが足されます）。
 
 1. `src/index.html` を編集する
-2. `kabaneri-unato/sw.js` の `const CACHE = 'kabaneri-counter-v21';` の**数字を1つ上げる**
+2. `kabaneri-unato/sw.js` の `const CACHE = 'kabaneri-counter-vNN';` の**数字を1つ上げる**
    ※ここを上げないと、古い画面がキャッシュされたままになります
 3. 生成する
 
@@ -52,7 +54,20 @@
    python3 src/build-pages.py
    ```
 
-トップページ（ルートの `index.html`）だけは原本がないので、そこを直接編集します。
+### トップページ
+
+原本は `src/top.html`。公開される `index.html` は `top-mode.py` が書き出します。
+
+```bash
+python3 src/top-mode.py          # いまどちらか見る
+python3 src/top-mode.py soon     # 準備中の画面にする
+python3 src/top-mode.py full     # 本編に戻す
+```
+
+**いまは準備中（soon）です。** カウンター単体を先に配っているためで、
+本編には「みんなのスロット」の説明と送信機能の記述が残っており、実態と合いません。
+戻すときは、カウンター側の送信機能（`build-pages.py` の `SEND_ENABLED`）と
+合わせて判断してください。
 
 ## 公開のしかた（Cloudflare Pages）
 
@@ -103,6 +118,36 @@ push だけで公開されるようにしたい場合は、ダッシュボード
 python3 -m pip install Pillow
 python3 src/make-icons.py
 ```
+
+## サーバー側（Cloudflare D1 ＋ Pages Functions）
+
+実戦データの受け口と集計を `functions/api/` に置いています。
+
+| ファイル | 役割 |
+|---|---|
+| `functions/api/records.js` | 実戦データを受ける（POST）。検算・重複排除・1日の上限つき |
+| `functions/api/stats.js` | みんなの集計を返す（GET） |
+| `functions/api/transfer.js` | 記録の引き継ぎ。8文字のコードで別端末へ移す。3日で消える |
+| `src/schema.sql` | D1 のテーブル定義 |
+| `wrangler.toml` | D1 の紐づけ（binding は `DB`） |
+
+```bash
+npx wrangler d1 execute minnanoslot --remote --file=src/schema.sql
+```
+
+### 送信機能の入り切り
+
+`src/build-pages.py` の `SEND_ENABLED` で、公開版に含めるかを切り替えます。
+
+```python
+SEND_ENABLED = False   # みんなのスロットへの送信を外した版を書き出す
+```
+
+原本の該当箇所は `==SEND:START==` / `==SEND:END==` の印で囲んであります。
+`False` のときはその中を消して書き出し、取扱説明書の章番号と目次も振り直します。
+消し漏れがあるとビルドが止まります。
+
+**いまは False（保存のみの版）です。** 記録の引き継ぎは送信とは別物なので残しています。
 
 ## アクセス解析
 

@@ -1,4 +1,30 @@
-<!-- 準備中の画面（src/top-mode.py が書き出す。直接編集しない） -->
+#!/usr/bin/env python3
+"""トップページを「準備中」と「本編」で切り替える。
+
+    python3 src/top-mode.py soon   # 準備中の画面にする
+    python3 src/top-mode.py full   # 本編に戻す
+    python3 src/top-mode.py        # いまどちらかを見る
+
+本編の原本は src/top.html。ここだけを編集すること。
+公開される index.html は、このスクリプトが書き出す。
+
+準備中にする理由：カウンター単体を先に配りたいが、
+「みんなのスロット」の説明（実戦データを持ち寄る話）はまだ出せる状態にない。
+本編には送信機能の記述が残っているので、実態とも食い違う。
+"""
+import os
+import sys
+
+BASE = os.path.dirname(os.path.abspath(__file__))       # src/
+PUB = os.path.dirname(BASE)
+FULL = os.path.join(BASE, 'top.html')
+DEST = os.path.join(PUB, 'index.html')
+
+MARK = '<!-- 準備中の画面（src/top-mode.py が書き出す。直接編集しない） -->'
+
+# ロゴマークは本編と同じものを使う。ここだけ別の絵にすると、
+# カウンター側から来た人に別サイトに見える
+SOON = MARK + '''
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -104,3 +130,32 @@
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
 </body>
 </html>
+'''
+
+
+def current_mode():
+    if not os.path.exists(DEST):
+        return '（index.html がありません）'
+    return 'soon' if MARK in open(DEST, encoding='utf-8').read() else 'full'
+
+
+def write(mode):
+    if mode == 'soon':
+        out = SOON
+    else:
+        out = open(FULL, encoding='utf-8').read()
+        assert MARK not in out, 'src/top.html が準備中の画面になっています。原本を確認してください'
+    open(DEST, 'w', encoding='utf-8').write(out)
+    print(f'index.html を書き出しました: {"準備中" if mode == "soon" else "本編"}')
+    print('公開するには: npx wrangler pages deploy . --project-name=kabaneri-counter --branch=main')
+
+
+if __name__ == '__main__':
+    arg = sys.argv[1] if len(sys.argv) > 1 else ''
+    if arg in ('soon', 'full'):
+        write(arg)
+    elif arg:
+        sys.exit('使い方: python3 src/top-mode.py [soon|full]')
+    else:
+        print(f'いまのトップページ: {current_mode()}')
+        print('切り替え: python3 src/top-mode.py soon / full')
