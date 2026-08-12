@@ -872,7 +872,7 @@
   <div class="wview" id="winview">
     <button data-view="log" class="on">入力</button>
     <button data-view="list">実戦履歴</button>
-    <button data-view="stats">当選率</button>
+    <button data-view="stats">周期当選率</button>
   </div>
 
   <div class="wtabs" id="wintabs">
@@ -2027,7 +2027,7 @@ const SHORT_MODES = ['through', 'upper', 'reset'];   // 短縮（4周期まで�
 /* 周期別の表。合算では全状態ぶんと短縮ぶんの2つを並べるので処理を分けた */
 function cycleTable(list, maxC, title){
   const cyc = list.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= maxC);
-  if (!cyc.length) return '';
+  // 0件でも枠だけは出す。何が記録される表なのかを先に見せたいため
   const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
   let html = `<h3>${title}・周期別（CZ当選は含みません）</h3><table><thead><tr>` +
              '<th>周期</th><th>当選</th><th>当選率</th><th>エピソードB率</th></tr></thead><tbody>';
@@ -2046,8 +2046,6 @@ function renderWinStats(shown){
   const box = document.getElementById('winstats');
   const cyc = shown.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= 6);
   const cz = shown.filter(w => w.via === 'cz');
-
-  if (!shown.length) { box.innerHTML = ''; return; }
 
   const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
   let html = '';
@@ -2083,22 +2081,19 @@ function renderWinStats(shown){
     html += cycleTable(wins, 6, '全状態の合算');
     html += cycleTable(wins.filter(w => SHORT_MODES.includes(w.mode || 'normal')), 4,
                        '短縮の合算（駆け抜け後・上位後・リセット後）');
-  } else if (cyc.length) {
+  } else {
     html += cycleTable(shown, WIN_MAX_CYCLE[winMode] || 6, WIN_MODES[winMode]);
   }
 
-  if (cz.length) {
-    html += '<h3>CZ当選</h3><table><thead><tr>' +
-            '<th>種類</th><th>当選</th><th>エピソードB率</th></tr></thead><tbody>';
-    ['red', 'green', 'blue'].forEach(c => {
-      const hit = cz.filter(w => w.cz === c);
-      if (!hit.length) return;
-      const ep = hit.filter(w => w.bonus === 'episode').length;
-      html += `<tr><td>${VIA_CZ[c]}</td><td class="n">${hit.length}</td>` +
-              `<td class="n">${pct(ep, hit.length)}</td></tr>`;
-    });
-    html += '</tbody></table>';
-  }
+  html += '<h3>CZ当選</h3><table><thead><tr>' +
+          '<th>種類</th><th>当選</th><th>エピソードB率</th></tr></thead><tbody>';
+  ['red', 'green', 'blue'].forEach(c => {
+    const hit = cz.filter(w => w.cz === c);
+    const ep = hit.filter(w => w.bonus === 'episode').length;
+    html += `<tr><td>${VIA_CZ[c]}</td><td class="n">${hit.length}</td>` +
+            `<td class="n">${pct(ep, hit.length)}</td></tr>`;
+  });
+  html += '</tbody></table>';
 
   const epAll = shown.filter(w => w.bonus === 'episode').length;
   const upAll = shown.filter(w => w.bonus === 'both').length;
@@ -2107,6 +2102,9 @@ function renderWinStats(shown){
         + (wins.length !== shown.length ? `（全状態では ${fmt(wins.length)}件）` : '') + '</h3>';
   html += `<p class="winnote">エピソードB率に、駿城Bからの昇格（駿→エピ）は含みません`
         + (upAll ? `。昇格は ${fmt(upAll)}件` : '') + '</p>';
+  if (!wins.length) {
+    html += '<p class="winnote">入力のタブで当選を追加すると、ここに数字が入ります。</p>';
+  }
   box.innerHTML = html;
 }
 
