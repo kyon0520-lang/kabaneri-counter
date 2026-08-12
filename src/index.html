@@ -1277,6 +1277,39 @@ function distRowsHtml(pts){
   return html;
 }
 
+/* 当選した周期の分布。規定ptの表と同じ形にして、並べても違和感が出ないようにする。
+   list は当選の配列、maxC は数える周期の上限（通常6・短縮4） */
+function cycleDistHtml(list, maxC){
+  const cyc = list.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= maxC);
+  const total = cyc.length;
+  const counts = [];
+  for (let n = 1; n <= maxC; n++) counts.push(cyc.filter(w => w.cycle === n).length);
+  const pct = n => total ? n / total * 100 : 0;
+  const maxPct = Math.max(...counts.map(pct), 1);
+
+  const rows = counts.map((n, i) => {
+    const cycle = i + 1;
+    // その周期に到達した回数 ＝ その周期以降で当たった件数
+    const reached = cyc.filter(w => w.cycle >= cycle).length;
+    const hitRate = reached ? (n / reached * 100).toFixed(1) + '%' : '—';
+    const p = pct(n);
+    return `<tr class="${n ? 'hit' : ''}">
+      <td>${cycle}周期</td>
+      <td class="range">${hitRate}</td>
+      <td class="dbar"><div class="barwrap">
+        <div class="bartrack"><div class="barfill" style="width:${n ? (p / maxPct * 100).toFixed(1) : 0}%"></div></div>
+        <span class="barpct">${p.toFixed(1)}%</span>
+      </div></td>
+      <td class="cnt">${fmt(n)}</td>
+    </tr>`;
+  }).join('');
+
+  return { total, html: `<div class="distwrap"><table class="dist">
+    <thead><tr><th>周期</th><th>当選率</th><th>振り分け</th><th>当選</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>` };
+}
+
 /* 分布の表をまるごと組み立てる（見出し行つき）。実戦履歴の中で使う */
 function distTableHtml(pts){
   return `<div class="distwrap"><table class="dist">
@@ -1668,9 +1701,20 @@ document.getElementById('histlist').addEventListener('click', e => {
         if (box) {
           // 分布グラフと同じく、銅藍の周期突入は含めない
           const pts = (rec.czPointsBy || []).filter(x => AVG_IDS.includes(x.c)).map(x => x.pt);
-          box.innerHTML = pts.length
+          let html = pts.length
             ? `<div class="hdisth">CZ突入時のポイント分布（${fmt(pts.length)}回）</div>` + distTableHtml(pts)
             : '<div class="hdisth">この実戦では無名・生駒のCZ突入がありません</div>';
+
+          // 当選した周期の分布。通常と短縮で周期の数が違うので分けて出す
+          const ws = rec.wins || [];
+          const normal = cycleDistHtml(ws.filter(w => (w.mode || 'normal') === 'normal'), 6);
+          const short = cycleDistHtml(ws.filter(w => SHORT_MODES.includes(w.mode || 'normal')), 4);
+          if (normal.total) html += `<div class="hdisth">当選した周期・通常（${fmt(normal.total)}回）</div>` + normal.html;
+          if (short.total)  html += `<div class="hdisth">当選した周期・短縮（${fmt(short.total)}回）</div>` + short.html;
+          if (!normal.total && !short.total && ws.length) {
+            html += '<div class="hdisth">周期での当選がありません（CZ・天井のみ）</div>';
+          }
+          box.innerHTML = html;
         }
       }
     }
@@ -2537,6 +2581,47 @@ function buildCard(r){
 
   if (r.setting) drawSettingBadge(g, r.setting, CARD_W - M, 96);
 
+  /* ---- 当選履歴。この実戦で何回当たったかを先に見せる ---- */
+  const ws = r.wins || [];
+  const wTotalG = ws.reduce((a, w) => a + w.g, 0);
+  const wStN = ws.filter(w => w.bonus !== 'shunjo').length;   // 昇格もSTには入る
+  const wRate = n => (n && wTotalG) ? '1/' + Math.round(wTotalG / n) : '—';
+
+  g.fillStyle = '#8a93a6';
+  g.font = `500 24px ${CARD_JP}`;
+  g.fillText('当選履歴', M, 224);
+
+  const ww = (CARD_W - M * 2 - 32) / 3;
+  [['通常G数', ws.length ? fmt(wTotalG) : '—', ws.length ? 'G' : '', '#e8ecf3'],
+   ['ST確率', wRate(wStN), '', '#8fc0ff'],
+   ['全ボーナス', wRate(ws.length), '', '#e8c06a']].forEach(([k, v, u, col], i) => {
+    const x = M + i * (ww + 16), y = 248;
+    g.fillStyle = 'rgba(255,255,255,.045)';
+    g.beginPath(); g.roundRect(x, y, ww, 200, 20); g.fill();
+    g.strokeStyle = 'rgba(255,255,255,.10)'; g.lineWidth = 2; g.stroke();
+
+    g.fillStyle = '#8a93a6';
+    g.font = `500 24px ${CARD_JP}`;
+    g.fillText(k, x + 26, y + 52);
+
+    // 主要な数字と同じ72pxで置き、枠に収まらないときだけ落とす。
+    // 3列なので「1,210G」のような長い値は入りきらないことがある
+    let fs = 72;
+    const room = ww - 52 - (u ? 34 : 0);
+    g.font = `800 ${fs}px ${CARD_JP}`;
+    while (fs > 40 && g.measureText(v).width > room) {
+      fs -= 4; g.font = `800 ${fs}px ${CARD_JP}`;
+    }
+    g.fillStyle = col;
+    g.fillText(v, x + 26, y + 146);
+    if (u) {
+      const w = g.measureText(v).width;
+      g.font = `600 30px ${CARD_JP}`;
+      g.fillStyle = '#8a93a6';
+      g.fillText(u, x + 34 + w, y + 146);
+    }
+  });
+
   // 主要な数字（2×2）
   const cells = [
     { k:'発光率',     v: rate || '—', u: rate ? '%' : '', c:'#7fe0ab' },
@@ -2547,7 +2632,7 @@ function buildCard(r){
   const cw = (CARD_W - M * 2 - 20) / 2, ch = 200;
   cells.forEach((c, i) => {
     const x = M + (i % 2) * (cw + 20);
-    const y = 220 + Math.floor(i / 2) * (ch + 20);
+    const y = 496 + Math.floor(i / 2) * (ch + 20);
     g.fillStyle = 'rgba(255,255,255,.045)';
     g.beginPath(); g.roundRect(x, y, cw, ch, 20); g.fill();
     g.strokeStyle = 'rgba(255,255,255,.10)'; g.lineWidth = 2; g.stroke();
@@ -2570,11 +2655,11 @@ function buildCard(r){
   // キャラ別
   g.fillStyle = '#8a93a6';
   g.font = `500 24px ${CARD_JP}`;
-  g.fillText('キャラ別', M, 712);
+  g.fillText('キャラ別', M, 982);
 
   const marks = [['red','無','#c2201a'], ['green','生','#178c4c'], ['blue','銅','#1d5fd6']];
   marks.forEach(([id, mk, col], i) => {
-    const y = 766 + i * 80;
+    const y = 1036 + i * 80;
     const s = r.chars[id] || { no:0, glow:0, hi:0, cz:0 };
 
     g.fillStyle = 'rgba(255,255,255,.04)';
@@ -2610,73 +2695,6 @@ function buildCard(r){
     g.fillText(avg, CARD_W - M - 16, y + 22);
     g.textAlign = 'left';
   });
-
-  /* ---- 当選履歴 ---- */
-  const ws = r.wins || [];
-  let y = 1010;
-
-  g.fillStyle = '#8a93a6';
-  g.font = `500 24px ${CARD_JP}`;
-  g.fillText('当選履歴', M, y);
-  y += 34;
-
-  if (!ws.length) {
-    g.fillStyle = '#6d7688';
-    g.font = `400 22px ${CARD_JP}`;
-    g.fillText('記録なし', M, y + 22);
-  } else {
-    const totalG = ws.reduce((a, w) => a + w.g, 0);
-    const stN = ws.filter(w => w.bonus !== 'shunjo').length;
-    const rateOf = n => n ? '1/' + Math.round(totalG / n) : '—';
-
-    // 総G数・ST確率・全ボーナスの3枠
-    const bw = (CARD_W - M * 2 - 24) / 3;
-    [['総ゲーム数', fmt(totalG) + 'G', '#e8ecf3'],
-     ['ST確率', rateOf(stN), '#8fc0ff'],
-     ['全ボーナス', rateOf(ws.length), '#e8c06a']].forEach(([k, v, col], i) => {
-      const x = M + i * (bw + 12);
-      g.fillStyle = 'rgba(255,255,255,.04)';
-      g.beginPath(); g.roundRect(x, y, bw, 96, 14); g.fill();
-      g.textAlign = 'center';
-      g.fillStyle = '#8a93a6';
-      g.font = `500 20px ${CARD_JP}`;
-      g.fillText(k, x + bw / 2, y + 34);
-      g.fillStyle = col;
-      g.font = `700 34px ${CARD_JP}`;
-      g.fillText(v, x + bw / 2, y + 76);
-      g.textAlign = 'left';
-    });
-    y += 128;
-
-    // 何で当たったかの内訳
-    const cnt = n => ws.filter(w => w.via === 'cycle' && w.cycle === n).length;
-    const cells = [];
-    for (let n = 1; n <= 6; n++) if (cnt(n)) cells.push([`${n}周期`, cnt(n)]);
-    const ceil = ws.filter(w => w.via === 'ceiling').length;
-    if (ceil) cells.push(['天井', ceil]);
-    const czw = ws.filter(w => w.via === 'cz').length;
-    if (czw) cells.push(['CZ', czw]);
-
-    g.fillStyle = '#8a93a6';
-    g.font = `500 20px ${CARD_JP}`;
-    g.fillText('当選のきっかけ', M, y);
-    y += 14;
-
-    let x = M;
-    cells.forEach(([k, v]) => {
-      const w = 150;
-      if (x + w > CARD_W - M) return;
-      g.fillStyle = 'rgba(255,255,255,.04)';
-      g.beginPath(); g.roundRect(x, y, w - 10, 58, 12); g.fill();
-      g.fillStyle = '#8a93a6';
-      g.font = `500 18px ${CARD_JP}`;
-      g.fillText(k, x + 14, y + 24);
-      g.fillStyle = '#e8ecf3';
-      g.font = `700 22px ${CARD_JP}`;
-      g.fillText(String(v), x + 14, y + 48);
-      x += w;
-    });
-  }
 
   g.fillStyle = '#6d7688';
   g.font = `500 22px ${CARD_JP}`;
