@@ -2766,6 +2766,9 @@ loadSendCfg();
 /* ==SEND:END== */
 buildCards();
 document.getElementById('games').value = bell.g ? bell.g : '';
+// 保存してあるメモを入力欄に戻す。書き戻さないと、開き直したとき
+// 消えたように見えるうえ、次に保存した実戦へ黙って古いメモが付く
+memoText.value = memo;
 render();
 
 // 前回送れなかった分を、起動時に送り直す
