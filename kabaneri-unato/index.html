@@ -1594,6 +1594,7 @@ function renderHist(){
   }
 
   document.getElementById('hs-n').textContent = `${fmt(hist.length)}件`;
+  renderSendState();
 }
 
 document.getElementById('histbtn').addEventListener('click', () => {
@@ -1733,7 +1734,7 @@ document.getElementById('sok').addEventListener('click', () => {
    レコードのIDは端末が採番しているので、二重に届いてもサーバー側で弾かれる。 */
 const SEND_KEY = 'kabaneri-send-v1';
 const API_RECORDS = '/api/records';
-const APP_VERSION = 'v21';
+const APP_VERSION = 'v22';
 
 let sendCfg = { clientId:null, consent:null };   // consent: null=未確認 / true=送る / false=送らない
 
@@ -1756,7 +1757,9 @@ function saveSendCfg(){
 function renderSendState(){
   const el = document.getElementById('sendstate');
   if (!el) return;
-  el.textContent = sendCfg.consent === true ? 'オン'
+  // まだ届いていない件数も出す。出しておかないと、送れていないことに気づけない
+  const waiting = hist.filter(r => !r.sent).length;
+  el.textContent = sendCfg.consent === true ? (waiting ? `オン（未送信 ${fmt(waiting)}件）` : 'オン')
                  : sendCfg.consent === false ? 'オフ' : '未設定';
 }
 
@@ -1780,7 +1783,10 @@ function markSent(id){
   if (r) { r.sent = true; saveHist(); }
 }
 
-/* 1件送る。成功したら、みんなとの比較を返す */
+/* 1件送る。
+   受理は { ok:true, stats }、内容を弾かれたら { ok:false, reason }、
+   通信できなかったときだけ null（あとで送り直す）。
+   「送れた」と「弾かれた」を呼び出し側で見分けられるようにしている */
 async function sendRecord(r){
   if (sendCfg.consent !== true) return null;
   let res;
@@ -1795,22 +1801,49 @@ async function sendRecord(r){
   let j = null;
   try { j = await res.json(); } catch(e){}
 
-  if (res.ok && j && j.ok) { markSent(r.id); return j.stats || null; }
+  if (res.ok && j && j.ok) { markSent(r.id); return { ok:true, stats: j.stats || null }; }
 
   // 内容が悪くて弾かれた分は、送り直しても通らないので溜めない（429だけは残す）
-  if (res.status >= 400 && res.status < 500 && res.status !== 429) markSent(r.id);
+  if (res.status >= 400 && res.status < 500 && res.status !== 429) {
+    markSent(r.id);
+    return { ok:false, reason: (j && j.error) || `エラー ${res.status}` };
+  }
   return null;
 }
 
-/* まだ送れていない分を送る */
-async function flushUnsent(){
-  if (sendCfg.consent !== true) return;
-  if (navigator.onLine === false) return;
-  const pend = hist.filter(r => !r.sent).slice(0, 10);
+/* まだ送れていない分を送る。結果を返して、呼び出し側で知らせられるようにする */
+async function flushUnsent(limit = 10){
+  const none = { sent:0, rejected:0, left:0, offline:false };
+  if (sendCfg.consent !== true) return none;
+  if (navigator.onLine === false) return { ...none, offline:true, left:hist.filter(r => !r.sent).length };
+
+  const pend = hist.filter(r => !r.sent).slice(0, limit);
+  let sent = 0, rejected = 0, offline = false;
   for (const r of pend) {
-    const ok = await sendRecord(r);
-    if (ok === null && !r.sent) break;   // 通信が駄目なら、そこで止める
+    const res = await sendRecord(r);
+    if (res === null) { offline = true; break; }   // 通信が駄目なら、そこで止める
+    if (res.ok) sent++; else rejected++;
   }
+  return { sent, rejected, offline, left: hist.filter(r => !r.sent).length };
+}
+
+/* 送信を入にした直後に、溜まっていた分を送って結果を伝える。
+   ここで送らないと次に開くまで届かず、動いていないように見えてしまう */
+async function flushAndTell(){
+  const waiting = hist.filter(r => !r.sent).length;
+  if (!waiting) { toast('みんなのスロットへ送信します'); return; }
+
+  toast(`たまっていた ${fmt(waiting)}件を送っています…`);
+  const res = await flushUnsent(30);   // サーバー側の1日の上限は60件
+
+  let msg;
+  if (res.sent && res.rejected) msg = `${fmt(res.sent)}件を送りました（${fmt(res.rejected)}件は受け付けられませんでした）`;
+  else if (res.sent)            msg = `${fmt(res.sent)}件を送りました`;
+  else if (res.rejected)        msg = `${fmt(res.rejected)}件が受け付けられませんでした`;
+  else                          msg = 'いまは送れませんでした。電波が戻ったときに送り直します';
+  if (res.left) msg += `／残り${fmt(res.left)}件は次回`;
+  renderSendState();
+  toast(msg);
 }
 
 function showCompare(stats){
@@ -1837,14 +1870,16 @@ function afterSave(rec){
   if (sendCfg.consent === null) { pendingSaved = rec; document.getElementById('consentmodal').hidden = false; return; }
   showCompare(null);
   openSavedSheet(rec);
-  sendRecord(rec).then(showCompare).catch(() => {});
+  sendRecord(rec).then(res => showCompare(res && res.ok ? res.stats : null)).catch(() => {});
 }
 
 document.getElementById('consentyes').addEventListener('click', () => {
   sendCfg.consent = true; saveSendCfg();
   document.getElementById('consentmodal').hidden = true;
   const r = pendingSaved; pendingSaved = null;
-  if (r) afterSave(r);
+  if (r) { afterSave(r); return; }
+  // 履歴画面から入にしたとき。溜まっている分をこの場で送る
+  flushAndTell();
 });
 document.getElementById('consentno').addEventListener('click', () => {
   sendCfg.consent = false; saveSendCfg();
@@ -1862,7 +1897,7 @@ document.getElementById('sendtoggle').addEventListener('click', () => {
   }
 });
 
-window.addEventListener('online', () => { flushUnsent(); });
+window.addEventListener('online', () => { flushUnsent().then(renderSendState); });
 
 /* ---------- 打ちながら書くメモ ----------
    画面を左にスワイプすると開く。右端のつまみでも開ける（スワイプに気づかない人向け）。
@@ -2698,7 +2733,7 @@ document.querySelectorAll('#wintabs button')
 renderWins();
 applyWinView();
 applyMainView();
-setTimeout(flushUnsent, 1200);
+setTimeout(() => flushUnsent().then(renderSendState), 1200);
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
 if (!storageWorks()) {

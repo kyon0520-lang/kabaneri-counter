@@ -1,6 +1,6 @@
 // オフラインでも起動できるようにするサービスワーカー
 // index.html を更新したら CACHE の数字を上げること（古いキャッシュが残るのを防ぐ）
-const CACHE = 'kabaneri-counter-v86';
+const CACHE = 'kabaneri-counter-v87';
 
 const ASSETS = [
   './',
