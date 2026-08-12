@@ -291,18 +291,41 @@
     background:var(--panel2);border:1px solid var(--line);border-radius:10px;
     padding:9px 11px;cursor:pointer;
   }
-  .histrow .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-  .histrow .dt{font-size:12px;font-weight:600}
+  .histrow .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .histrow .dt{font-size:13px;font-weight:600}
   .histrow .tag{
-    font-size:9px;padding:2px 6px;border-radius:999px;flex:0 0 auto;
-    border:1px solid var(--line);color:var(--muted);
+    font-size:13px;font-weight:700;padding:5px 14px;border-radius:999px;flex:0 0 auto;
+    border:1px solid var(--line);color:var(--muted);letter-spacing:.04em;line-height:1.4;
   }
-  .histrow .tag.set{border-color:rgba(47,181,106,.5);color:#7fe0ab}
-  .histrow .fig{
-    display:flex;gap:12px;margin-top:4px;font-size:11px;color:var(--muted);
-    font-variant-numeric:tabular-nums;flex-wrap:wrap;
+  /* 設定ごとの色。結果カードのバッジと同じ配色 */
+  .histrow .tag.s1{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22);color:#aab3c4}
+  .histrow .tag.s2{
+    background:linear-gradient(135deg,#d98d55,#a35a26 50%,#7c3f18);
+    border-color:rgba(255,214,170,.7);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45);
   }
-  .histrow .fig b{color:var(--text);font-weight:700}
+  .histrow .tag.s3{
+    background:linear-gradient(135deg,#f2f5f8,#aeb6c0 45%,#79828e);
+    border-color:rgba(255,255,255,.85);color:#2a3240;
+  }
+  .histrow .tag.s4{
+    background:linear-gradient(135deg,#ffe487,#e8b52f 45%,#a3760f);
+    border-color:rgba(255,236,168,.9);color:#4a3400;
+  }
+  /* 設定5はキリン柄。斑点は円で近づけている */
+  .histrow .tag.s5{
+    background-color:#e8b44a;
+    background-image:
+      radial-gradient(circle at 12% 32%, #8a5320 0 24%, transparent 25%),
+      radial-gradient(circle at 38% 70%, #8a5320 0 22%, transparent 23%),
+      radial-gradient(circle at 63% 28%, #8a5320 0 24%, transparent 25%),
+      radial-gradient(circle at 88% 66%, #8a5320 0 21%, transparent 22%);
+    border-color:rgba(255,236,180,.9);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);
+  }
+  .histrow .tag.s6{
+    background:linear-gradient(90deg,#ff5b5b,#ffa23a 18%,#ffe14d 36%,#5ddb7a 54%,
+               #4aa8ff 72%,#8a6bff 88%,#ff6bd6);
+    border-color:rgba(255,255,255,.9);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);
+  }
   .histrow .detail{
     display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);
     font-size:11px;color:var(--muted);line-height:1.8;font-variant-numeric:tabular-nums;
@@ -1590,21 +1613,12 @@ function renderHist(){
     list.innerHTML = '<div class="histempty">まだ保存された実戦はありません</div>';
   } else {
     list.innerHTML = hist.map(r => {
-      const t = recTotals(r);
-      const appear = t.no + t.glow;
-      const rate = appear ? (t.glow / appear * 100).toFixed(1) + '%' : '—';
-      const avg = t.czN ? (t.ptSum / t.czN).toFixed(1) : '—';
+      // 数字は開いたときの結果カードで見せる。ここは日付と設定だけにする
       const setTag = r.setting
-        ? `<span class="tag set">設定${r.setting}</span>`
+        ? `<span class="tag s${r.setting}">設定${r.setting}</span>`
         : `<span class="tag">設定不明</span>`;
       return `<div class="histrow" data-id="${r.id}">
         <div class="top"><span class="dt">${fmtDate(r.date)}</span>${setTag}</div>
-        <div class="fig">
-          <span>${fmt(r.games)}<b>G</b></span>
-          <span>下段ベル <b>${fmt(r.bell)}</b></span>
-          <span>発光率 <b>${rate}</b></span>
-          <span>平均 <b>${avg}</b>pt/CZ</span>
-        </div>
         <div class="detail">
           ${r.memo ? `<div class="hmemo">${esc(r.memo)}</div>` : ''}
           <img class="hcard" alt="この実戦の結果カード">
