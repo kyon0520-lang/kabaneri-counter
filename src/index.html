@@ -528,8 +528,9 @@
   .wsum .st .v{color:#8fc0ff}
   .wsum .bn{background:rgba(232,192,106,.10);border-color:rgba(232,192,106,.35)}
   .wsum .bn .v{color:#e8c06a}
-  .wsum .cz{background:rgba(59,130,246,.10);border-color:rgba(59,130,246,.35)}
-  .wsum .cz .v{color:#8fc0ff}
+  /* CZ確率だけ緑。ST確率と同じ青だと、隣り合っていて見分けがつかない */
+  .wsum .cz{background:rgba(47,181,106,.10);border-color:rgba(47,181,106,.35)}
+  .wsum .cz .v{color:#7fe0ab}
   @media (prefers-reduced-motion:reduce){ .winpanel{transition:none} }
   /* ===== 打ちながら書くメモ ===== */
   .memohandle{
