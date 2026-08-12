@@ -284,22 +284,34 @@
     font-size:13px;font-weight:700;padding:5px 14px;border-radius:999px;flex:0 0 auto;
     border:1px solid var(--line);color:var(--muted);letter-spacing:.04em;line-height:1.4;
   }
-  /* 設定ごとの色。結果カードのバッジと同じ配色 */
-  .histrow .tag.s1{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22);color:#aab3c4}
-  .histrow .tag.s2{
+  /* 実戦履歴の絞り込み。設定ごとに1つずつ */
+  /* 8つが1行に収まる幅にしている。折り返すと行が2段になって嵩む */
+  .hfilter{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 2px}
+  .hfilter button{
+    background:var(--panel2);border:1px solid var(--line);color:var(--muted);
+    font-family:inherit;font-size:12px;font-weight:700;line-height:1.4;
+    padding:5px 8px;border-radius:999px;cursor:pointer;letter-spacing:.02em;
+    min-width:28px;
+  }
+  .hfilter button.on{background:#2f6bd8;border-color:#2f6bd8;color:#fff}
+  .histempty{padding:18px 4px;text-align:center;font-size:12px;color:var(--muted)}
+
+  /* 設定ごとの色。結果カードのバッジと同じ配色。バッジと絞り込みで共用する */
+  .tag.s1,.hfilter button.on.s1{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22);color:#aab3c4}
+  .tag.s2,.hfilter button.on.s2{
     background:linear-gradient(135deg,#d98d55,#a35a26 50%,#7c3f18);
     border-color:rgba(255,214,170,.7);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45);
   }
-  .histrow .tag.s3{
+  .tag.s3,.hfilter button.on.s3{
     background:linear-gradient(135deg,#f2f5f8,#aeb6c0 45%,#79828e);
     border-color:rgba(255,255,255,.85);color:#2a3240;
   }
-  .histrow .tag.s4{
+  .tag.s4,.hfilter button.on.s4{
     background:linear-gradient(135deg,#ffe487,#e8b52f 45%,#a3760f);
     border-color:rgba(255,236,168,.9);color:#4a3400;
   }
   /* 設定5はキリン柄。斑点は円で近づけている */
-  .histrow .tag.s5{
+  .tag.s5,.hfilter button.on.s5{
     background-color:#e8b44a;
     background-image:
       radial-gradient(circle at 12% 32%, #8a5320 0 24%, transparent 25%),
@@ -308,7 +320,7 @@
       radial-gradient(circle at 88% 66%, #8a5320 0 21%, transparent 22%);
     border-color:rgba(255,236,180,.9);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);
   }
-  .histrow .tag.s6{
+  .tag.s6,.hfilter button.on.s6{
     background:linear-gradient(90deg,#ff5b5b,#ffa23a 18%,#ffe14d 36%,#5ddb7a 54%,
                #4aa8ff 72%,#8a6bff 88%,#ff6bd6);
     border-color:rgba(255,255,255,.9);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);
@@ -741,6 +753,16 @@
 
   <section class="histpanel" id="histpanel">
     <h2>実戦履歴<span class="cnt" id="hs-n">0</span></h2>
+    <div class="hfilter" id="hfilter">
+      <button data-set="all" class="on">すべて</button>
+      <button data-set="6" class="s6">6</button>
+      <button data-set="5" class="s5">5</button>
+      <button data-set="4" class="s4">4</button>
+      <button data-set="3" class="s3">3</button>
+      <button data-set="2" class="s2">2</button>
+      <button data-set="1" class="s1">1</button>
+      <button data-set="none">不明</button>
+    </div>
         <div class="histlist" id="histlist"></div>
     <p class="note">行をタップすると内訳が開きます。<!-- ==SEND:START== --><br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button><!-- ==SEND:END== --></p>
   </section>
@@ -1648,13 +1670,25 @@ const fmtDate = iso => {
   return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 };
 
+/* 実戦履歴の絞り込み。'all' か '1'〜'6' か 'none'（設定を入れていない分） */
+let histFilter = 'all';
+
+function histMatch(r){
+  if (histFilter === 'all') return true;
+  if (histFilter === 'none') return !r.setting;
+  return String(r.setting) === histFilter;
+}
+
 function renderHist(){
   const list = document.getElementById('histlist');
+  const shown = hist.filter(histMatch);
 
   if (!hist.length) {
     list.innerHTML = '<div class="histempty">まだ保存された実戦はありません</div>';
+  } else if (!shown.length) {
+    list.innerHTML = '<div class="histempty">この設定の実戦はまだありません</div>';
   } else {
-    list.innerHTML = hist.map(r => {
+    list.innerHTML = shown.map(r => {
       // 数字は開いたときの結果カードで見せる。ここは日付と設定だけにする
       const setTag = r.setting
         ? `<span class="tag s${r.setting}">設定${r.setting}</span>`
@@ -1671,7 +1705,10 @@ function renderHist(){
     }).join('');
   }
 
-  document.getElementById('hs-n').textContent = `${fmt(hist.length)}件`;
+  // 絞り込み中は「何件中の何件か」を出す。全体の規模が分からなくなるため
+  document.getElementById('hs-n').textContent = histFilter === 'all'
+    ? `${fmt(hist.length)}件`
+    : `${fmt(shown.length)}件 / 全${fmt(hist.length)}件`;
   /* ==SEND:START== */ renderSendState(); /* ==SEND:END== */
 }
 
@@ -1733,6 +1770,13 @@ document.getElementById('histlist').addEventListener('click', e => {
       }
     }
   }
+});
+
+document.getElementById('hfilter').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  histFilter = b.dataset.set;
+  document.querySelectorAll('#hfilter button').forEach(x => x.classList.toggle('on', x === b));
+  renderHist();
 });
 
 /* ---------- 保存シート ---------- */
