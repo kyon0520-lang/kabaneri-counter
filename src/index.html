@@ -67,7 +67,12 @@
     text-align:left;text-decoration:none;padding:12px 12px;border-radius:8px;cursor:pointer;
   }
   .menu button:active,.menu a:active{background:var(--panel2)}
-  h1{font-size:15px;margin:0;letter-spacing:.02em;flex:1;min-width:0}
+  h1{font-size:15px;margin:0;letter-spacing:.02em;min-width:0}
+  /* サイト名。機種名より一段小さく、上に添える */
+  header .site{display:flex;align-items:center;gap:6px;margin:0 0 3px}
+  header .site .mk{width:11px;height:18px;flex:0 0 auto;display:block;color:var(--muted)}
+  header .site span{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em}
+  header .htxt{flex:1;min-width:0}
   .ghost{
     background:rgba(30,48,73,.6);border:1px solid var(--line);color:var(--muted);
     border-radius:8px;padding:8px 10px;font-size:12px;cursor:pointer;
@@ -715,7 +720,37 @@
 
 <header>
   <div class="hbar">
-    <h1>カバネリ海門カウンター</h1>
+    <div class="htxt">
+      <div class="site">
+        <svg class="mk" viewBox="0 0 60 96" aria-hidden="true">
+          <g transform="translate(30,48)">
+            <g transform="translate(0,-34) rotate(-8)" fill="none" stroke="#3b82f6" stroke-width="5" stroke-linecap="round">
+              <path d="M -26 6 A 26 10 0 0 0 26 6"></path>
+              <line x1="-26" y1="0" x2="-26" y2="6"></line>
+              <line x1="26" y1="0" x2="26" y2="6"></line>
+              <ellipse rx="26" ry="10"></ellipse>
+            </g>
+            <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
+              <ellipse rx="22" ry="8"></ellipse>
+              <line x1="-22" y1="0" x2="-22" y2="5"></line><line x1="22" y1="0" x2="22" y2="5"></line>
+              <path d="M -22 5 A 22 8 0 0 0 22 5"></path>
+              <line x1="-24" y1="5" x2="-24" y2="12"></line><line x1="20" y1="5" x2="20" y2="12"></line>
+              <path d="M -24 12 A 22 8 0 0 0 20 12"></path>
+              <line x1="-21" y1="12" x2="-21" y2="18"></line><line x1="23" y1="12" x2="23" y2="18"></line>
+              <path d="M -21 18 A 22 8 0 0 0 23 18"></path>
+              <line x1="-24" y1="18" x2="-24" y2="25"></line><line x1="20" y1="18" x2="20" y2="25"></line>
+              <path d="M -24 25 A 22 8 0 0 0 20 25"></path>
+              <line x1="-22" y1="25" x2="-22" y2="31"></line><line x1="22" y1="25" x2="22" y2="31"></line>
+              <path d="M -22 31 A 22 8 0 0 0 22 31"></path>
+              <line x1="-23" y1="31" x2="-23" y2="36"></line><line x1="21" y1="31" x2="21" y2="36"></line>
+              <path d="M -23 36 A 22 8 0 0 0 21 36"></path>
+            </g>
+          </g>
+        </svg>
+        <span>みんなのスロット</span>
+      </div>
+      <h1>カバネリ海門カウンター</h1>
+    </div>
     <button class="menubtn" id="menubtn" aria-label="メニュー" aria-expanded="false">
       <i></i><i></i><i></i>
     </button>
