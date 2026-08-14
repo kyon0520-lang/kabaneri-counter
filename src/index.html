@@ -1363,7 +1363,7 @@ function distRowsHtml(pts){
 /* 当選した周期の分布。規定ptの表と同じ形にして、並べても違和感が出ないようにする。
    list は当選の配列、maxC は数える周期の上限（通常6・短縮4） */
 function cycleDistHtml(list, maxC){
-  // 到達はCZ・天井を含む全当選から数え、当選は周期到達の分だけを数える
+  // 到達は最後まで消化した周期だけを数える（doneCycles を参照）
   const known = list.filter(w => w.cycle >= 1 && w.cycle <= maxC);
   const hits = known.filter(w => w.via === 'cycle');
   const total = hits.length;
@@ -1374,7 +1374,7 @@ function cycleDistHtml(list, maxC){
 
   const rows = counts.map((n, i) => {
     const cycle = i + 1;
-    const reached = known.filter(w => w.cycle >= cycle).length;
+    const reached = known.filter(w => doneCycles(w) >= cycle).length;
     const hitRate = reached ? (n / reached * 100).toFixed(1) + '%' : '—';
     const p = pct(n);
     return `<tr class="${n ? 'hit' : ''}">
@@ -2373,11 +2373,16 @@ function totalGames(list){
 
 const SHORT_MODES = ['through', 'upper', 'reset'];   // 短縮（4周期まで）
 
+/* その当選までに「最後まで消化した」周期の数。
+   周期到達で当たったなら、その周期は最後まで進んで当たっているので N。
+   CZや天井で当たったなら、その周期は途中で終わっていて抽選を受けていないので N-1。
+   ここを間違えると、受けていない抽選を分母に入れてしまう */
+const doneCycles = w => (w.via === 'cycle' ? w.cycle : w.cycle - 1);
+
 /* 周期別の表。合算では全状態ぶんと短縮ぶんの2つを並べるので処理を分けた */
 function cycleTable(list, maxC, title){
-  /* 到達回数は「その周期以降で当たった全件」。CZや天井で当たった分も、
-     そこまでの周期は通過しているので分母に入れる。
-     当選は「周期に到達して当たった分」だけ。分けないと当選率が実際より高く出る */
+  /* 到達は「その周期を最後まで消化した回数」。
+     3周期のCZで当たった場合、消化したのは1・2周期まで。3周期は抽選を受けていない */
   const known = list.filter(w => w.cycle >= 1 && w.cycle <= maxC);
   // 0件でも枠だけは出す。何が記録される表なのかを先に見せたいため
   const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
@@ -2385,7 +2390,7 @@ function cycleTable(list, maxC, title){
              '<th>周期</th><th>到達</th><th>当選</th><th>当選率</th></tr></thead><tbody>';
   for (let n = 1; n <= maxC; n++) {
     const hit = known.filter(w => w.via === 'cycle' && w.cycle === n);
-    const reached = known.filter(w => w.cycle >= n).length;
+    const reached = known.filter(w => doneCycles(w) >= n).length;
     html += `<tr class="${hit.length ? 'hit' : ''}"><td>${n}周期</td>` +
             `<td class="n">${fmt(reached)}</td>` +
             `<td class="n">${fmt(hit.length)}</td>` +
@@ -2434,8 +2439,9 @@ function renderWinStats(shown){
   } else {
     html += cycleTable(shown, WIN_MAX_CYCLE[winMode] || 6, WIN_MODES[winMode]);
   }
-  html += '<p class="winnote">到達は、その周期まで進んだ回数です。CZや天井で当たった分も'
-        + '通過しているので数えます。当選は、周期に到達して当たった分だけです。</p>';
+  html += '<p class="winnote">到達は、その周期を最後まで消化した回数です。'
+        + 'CZや天井で当たった周期は途中で終わっていて抽選を受けていないので、数えません。'
+        + '（3周期のCZで当たったなら、消化したのは1・2周期）</p>';
 
   html += '<h3>CZ当選</h3><table><thead><tr>' +
           '<th>種類</th><th>当選</th><th>エピソードB率</th></tr></thead><tbody>';
