@@ -970,20 +970,23 @@
     <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="999">
     <p class="whint">台の上のカウンターの数字です。サブ液晶のG数ではありません。</p>
 
-    <label class="wlbl"><i>2</i>当選契機</label>
+    <label class="wlbl"><i>2</i>何周期目だったか</label>
     <div class="wchips" id="wincycle">
       <button data-cycle="1">1周期</button><button data-cycle="2">2周期</button>
       <button data-cycle="3">3周期</button><button data-cycle="4">4周期</button>
       <button data-cycle="5">5周期</button><button data-cycle="6">6周期</button>
-      <button data-cycle="ceiling" class="ceil">天井</button>
-    </div>
-    <div class="wchips" id="wincz">
-      <button data-cz="red" class="r">無名CZ</button>
-      <button data-cz="green" class="g">生駒CZ</button>
-      <button data-cz="blue" class="b">銅藍CZ</button>
     </div>
 
-    <label class="wlbl"><i>3</i><span id="wblbl">当たったボーナス</span></label>
+    <label class="wlbl"><i>3</i>当たったきっかけ</label>
+    <div class="wchips" id="winvia">
+      <button data-via="cycle">周期到達</button>
+      <button data-via="red" class="r">無名CZ</button>
+      <button data-via="green" class="g">生駒CZ</button>
+      <button data-via="blue" class="b">銅藍CZ</button>
+      <button data-via="ceiling" class="ceil">天井</button>
+    </div>
+
+    <label class="wlbl"><i>4</i><span id="wblbl">当たったボーナス</span></label>
     <div class="wchips" id="winbonus">
       <button data-bonus="episode">エピソードB</button>
       <button data-bonus="shunjo" class="sh">駿城B</button>
@@ -1278,8 +1281,8 @@ function doReset(){
   CHARS.forEach(c => setMode(c.id, 1));
   // 当選履歴も空にしたので、開いている画面を描き直す
   winMode = 'normal';
-  pendCycle = pendCz = pendBonus = null;
-  pendCeiling = false; bonusLocked = false;
+  pendCycle = pendVia = pendBonus = null;
+  bonusLocked = false;
   document.getElementById('wing').value = '';
   winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
   renderWins(); applyWinView();
@@ -1359,17 +1362,18 @@ function distRowsHtml(pts){
 /* 当選した周期の分布。規定ptの表と同じ形にして、並べても違和感が出ないようにする。
    list は当選の配列、maxC は数える周期の上限（通常6・短縮4） */
 function cycleDistHtml(list, maxC){
-  const cyc = list.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= maxC);
-  const total = cyc.length;
+  // 到達はCZ・天井を含む全当選から数え、当選は周期到達の分だけを数える
+  const known = list.filter(w => w.cycle >= 1 && w.cycle <= maxC);
+  const hits = known.filter(w => w.via === 'cycle');
+  const total = hits.length;
   const counts = [];
-  for (let n = 1; n <= maxC; n++) counts.push(cyc.filter(w => w.cycle === n).length);
+  for (let n = 1; n <= maxC; n++) counts.push(hits.filter(w => w.cycle === n).length);
   const pct = n => total ? n / total * 100 : 0;
   const maxPct = Math.max(...counts.map(pct), 1);
 
   const rows = counts.map((n, i) => {
     const cycle = i + 1;
-    // その周期に到達した回数 ＝ その周期以降で当たった件数
-    const reached = cyc.filter(w => w.cycle >= cycle).length;
+    const reached = known.filter(w => w.cycle >= cycle).length;
     const hitRate = reached ? (n / reached * 100).toFixed(1) + '%' : '—';
     const p = pct(n);
     return `<tr class="${n ? 'hit' : ''}">
@@ -1929,7 +1933,8 @@ memoScrim.addEventListener('click', closeMemo);
    CZ当選は何周期目か記録しないので、周期の分母には入れない。 */
 const winPanel = document.getElementById('winpanel');
 const winScrim = document.getElementById('winscrim');
-let pendCycle = null, pendCz = null, pendBonus = null, pendCeiling = false;
+/* 入力中の選択。pendVia は 'cycle' | 'red' | 'green' | 'blue' | 'ceiling' */
+let pendCycle = null, pendVia = null, pendBonus = null;
 let winView = 'log';      // 'log' = 記録 / 'stats' = 当選率
 let bonusLocked = false;  // 最終周期はエピソードB確定なので自動で選ぶ
 /* 状態はエピソードBを引くまで変わらない。
@@ -1993,24 +1998,15 @@ function pickChips(box, attr, set){
     if (!same) b.classList.add('on');
   });
 }
-// 周期とCZは排他。片方を選ぶともう片方は外す
+/* 周期ときっかけは別々に選ぶ。CZや天井で当たったときも「何周期目か」を必ず記録する。
+   これがないと、通過した周期が分母から丸ごと落ちて当選率が実際より高く出る */
 pickChips('wincycle', 'cycle', v => {
-  if (v === 'ceiling') {              // 天井は周期ではないので別扱い
-    const same = pendCeiling;
-    pendCeiling = !same; pendCycle = null; pendCz = null;
-    document.querySelectorAll('#wincz button').forEach(x => x.classList.remove('on'));
-    syncBonusChoices();
-    return same;
-  }
   const same = pendCycle === +v; pendCycle = same ? null : +v;
-  pendCz = null; pendCeiling = false;
-  document.querySelectorAll('#wincz button').forEach(x => x.classList.remove('on'));
   syncBonusChoices();
   return same;
 });
-pickChips('wincz', 'cz', v => {
-  const same = pendCz === v; pendCz = same ? null : v; pendCycle = null; pendCeiling = false;
-  document.querySelectorAll('#wincycle button').forEach(x => x.classList.remove('on'));
+pickChips('winvia', 'via', v => {
+  const same = pendVia === v; pendVia = same ? null : v;
   syncBonusChoices();
   return same;
 });
@@ -2030,20 +2026,21 @@ document.getElementById('winadd').addEventListener('click', () => {
   const g = Math.floor(+el.value);
   if (!isFinite(g) || g < 0 || el.value === '') { toast('当選G数を入れてください'); return; }
   if (g > 999) { toast('G数は999までです'); return; }
-  if (pendCycle === null && pendCz === null && !pendCeiling) { toast('何で当たったかを選んでください'); return; }
+  if (pendCycle === null) { toast('何周期目かを選んでください'); return; }
+  if (!pendVia) { toast('当たったきっかけを選んでください'); return; }
   if (!pendBonus) { toast('ボーナスの種類を選んでください'); return; }
 
+  const isCz = pendVia === 'red' || pendVia === 'green' || pendVia === 'blue';
   wins.push({
     g, mode: winMode,
-    via: pendCeiling ? 'ceiling' : (pendCycle !== null ? 'cycle' : 'cz'),
-    cycle: pendCycle, cz: pendCz, bonus: pendBonus
+    via: pendVia === 'cycle' ? 'cycle' : (pendVia === 'ceiling' ? 'ceiling' : 'cz'),
+    cycle: pendCycle, cz: isCz ? pendVia : null, bonus: pendBonus
   });
   if (wins.length > 500) wins.shift();
   save(); renderWins();
 
   el.value = '';
-  pendCycle = pendCz = pendBonus = null;
-  pendCeiling = false;
+  pendCycle = pendVia = pendBonus = null;
   bonusLocked = false;
   winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
   syncBonusChoices();
@@ -2084,14 +2081,15 @@ document.getElementById('wintabs').addEventListener('click', e => {
    誤って駿城Bを選べないよう、選択肢を隠して自動で選んでおく */
 function syncBonusChoices(){
   const max = WIN_MAX_CYCLE[winMode] || 6;
-  // 最終周期と天井はエピソードB確定
-  const lock = pendCycle === max || pendCeiling;
+  // 最終周期に「到達して」当たった場合と、天井だけが確定。
+  // 最終周期中のCZで当たった場合は確定しないので、きっかけまで見る
+  const lock = (pendVia === 'cycle' && pendCycle === max) || pendVia === 'ceiling';
   document.querySelectorAll('#winbonus button').forEach(b => {
     b.hidden = lock && b.dataset.bonus !== 'episode';
   });
   document.getElementById('wblbl').textContent = lock
-    ? (pendCeiling ? '当たったボーナス（天井はエピソードB確定）'
-                   : '当たったボーナス（最終周期はエピソードB確定）')
+    ? (pendVia === 'ceiling' ? '当たったボーナス（天井はエピソードB確定）'
+                             : '当たったボーナス（最終周期の到達はエピソードB確定）')
     : '当たったボーナス';
 
   if (lock) {
@@ -2128,8 +2126,9 @@ function renderWins(){
   // 実戦履歴は状態で分けず、入れた順に全部出す
   list.innerHTML = wins.length
     ? wins.map((w, i) => {
-        const via = w.via === 'ceiling' ? '天井'
-                  : w.via === 'cycle' ? `${w.cycle}周期` : VIA_CZ[w.cz] || 'CZ';
+        // 周期はどの当選にも付くようになったので必ず出し、周期到達以外はきっかけも添える
+        const kind = w.via === 'ceiling' ? '天井' : w.via === 'cz' ? (VIA_CZ[w.cz] || 'CZ') : '';
+        const via = (w.cycle ? `${w.cycle}周期` : '') + (kind ? (w.cycle ? ' ' : '') + kind : '');
         return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
           <span class="md">${(() => {
@@ -2164,25 +2163,27 @@ const SHORT_MODES = ['through', 'upper', 'reset'];   // 短縮（4周期まで�
 
 /* 周期別の表。合算では全状態ぶんと短縮ぶんの2つを並べるので処理を分けた */
 function cycleTable(list, maxC, title){
-  const cyc = list.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= maxC);
+  /* 到達回数は「その周期以降で当たった全件」。CZや天井で当たった分も、
+     そこまでの周期は通過しているので分母に入れる。
+     当選は「周期に到達して当たった分」だけ。分けないと当選率が実際より高く出る */
+  const known = list.filter(w => w.cycle >= 1 && w.cycle <= maxC);
   // 0件でも枠だけは出す。何が記録される表なのかを先に見せたいため
   const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
-  let html = `<h3>${title}・周期別（CZ当選は含みません）</h3><table><thead><tr>` +
-             '<th>周期</th><th>当選</th><th>当選率</th><th>エピソードB率</th></tr></thead><tbody>';
+  let html = `<h3>${title}・周期別</h3><table><thead><tr>` +
+             '<th>周期</th><th>到達</th><th>当選</th><th>当選率</th></tr></thead><tbody>';
   for (let n = 1; n <= maxC; n++) {
-    const hit = cyc.filter(w => w.cycle === n);
-    const reached = cyc.filter(w => w.cycle >= n).length;   // n周期に到達した回数
-    const ep = hit.filter(w => w.bonus === 'episode').length;   // 昇格は含めない
-    html += `<tr><td>${n}周期</td><td class="n">${hit.length}</td>` +
-            `<td class="n">${pct(hit.length, reached)}</td>` +
-            `<td class="n">${pct(ep, hit.length)}</td></tr>`;
+    const hit = known.filter(w => w.via === 'cycle' && w.cycle === n);
+    const reached = known.filter(w => w.cycle >= n).length;
+    html += `<tr class="${hit.length ? 'hit' : ''}"><td>${n}周期</td>` +
+            `<td class="n">${fmt(reached)}</td>` +
+            `<td class="n">${fmt(hit.length)}</td>` +
+            `<td class="n">${pct(hit.length, reached)}</td></tr>`;
   }
   return html + '</tbody></table>';
 }
 
 function renderWinStats(shown){
   const box = document.getElementById('winstats');
-  const cyc = shown.filter(w => w.via === 'cycle' && w.cycle >= 1 && w.cycle <= 6);
   const cz = shown.filter(w => w.via === 'cz');
 
   const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
@@ -2210,8 +2211,6 @@ function renderWinStats(shown){
         + '</div>'
         + `<p class="winnote">当選までのG数を合計した ${fmt(totalG)}G で計算しています。`
         + 'ST確率には昇格（駿→エピ）も含みます。CZ回数は無名・生駒の突入回数で、銅藍の周期突入は含みません。'
-        + (shown.filter(w => w.via === 'ceiling').length
-            ? `天井当選 ${fmt(shown.filter(w => w.via === 'ceiling').length)}件は、下の周期別には入りません。` : '')
         + '</p>';
   }
 
@@ -2223,6 +2222,8 @@ function renderWinStats(shown){
   } else {
     html += cycleTable(shown, WIN_MAX_CYCLE[winMode] || 6, WIN_MODES[winMode]);
   }
+  html += '<p class="winnote">到達は、その周期まで進んだ回数です。CZや天井で当たった分も'
+        + '通過しているので数えます。当選は、周期に到達して当たった分だけです。</p>';
 
   html += '<h3>CZ当選</h3><table><thead><tr>' +
           '<th>種類</th><th>当選</th><th>エピソードB率</th></tr></thead><tbody>';
