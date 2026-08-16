@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>触覚テスト</title>
+<style>
+  :root{
+    --bg:#0b1828; --panel:#16283f; --panel2:#1d3149;
+    --line:#2a405d; --text:#eaf1fb; --muted:#8a93a6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    padding:20px 16px calc(40px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust:100%;
+  }
+  h1{font-size:19px;margin:0 0 6px}
+  .lead{font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 18px}
+  .lead b{color:var(--text)}
+
+  .warn{
+    border:1px solid rgba(224,178,74,.5);background:rgba(224,178,74,.08);
+    border-radius:10px;padding:12px 13px;font-size:12.5px;line-height:1.75;margin-bottom:20px;
+  }
+  .warn b{display:block;color:#e8c06a;margin-bottom:4px;font-size:13px}
+
+  .t{
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;
+    padding:14px;margin-bottom:14px;
+  }
+  .t .no{
+    display:inline-block;background:#2f6bd8;color:#fff;border-radius:6px;
+    font-size:11px;font-weight:700;padding:2px 8px;margin-bottom:8px;
+  }
+  .t h2{font-size:15px;margin:0 0 4px}
+  .t p{font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 12px}
+
+  /* 押す場所 */
+  .pad{
+    position:relative;height:74px;border-radius:11px;
+    background:var(--panel2);border:1px solid var(--line);
+    display:grid;place-items:center;
+    font-size:15px;font-weight:700;color:var(--text);
+    user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;
+    cursor:pointer;font-family:inherit;width:100%;
+  }
+  .pad:active{background:#26405e}
+  .pad .n{font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}
+
+  /* 実際のタップを受ける透明ラベル。これがミソ */
+  .pad label.cover{
+    position:absolute;inset:0;border-radius:11px;
+    display:block;margin:0;
+  }
+
+  /* 見えるスイッチ（基準テスト用） */
+  .swrow{display:flex;align-items:center;gap:12px;padding:8px 2px}
+  .swrow input{width:52px;height:32px;flex:0 0 auto}
+  .swrow span{font-size:13px;color:var(--muted)}
+
+  /* 隠しスイッチ。画面内に置いたまま透明にする */
+  .hidden-sw{
+    position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;
+    pointer-events:none;z-index:-1;
+  }
+
+  .diag{
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;
+    padding:14px;font-size:12px;line-height:1.9;
+  }
+  .diag h2{font-size:14px;margin:0 0 8px}
+  .diag div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:3px 0}
+  .diag div:last-child{border:0}
+  .diag b{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+  .ok{color:#57d992}
+  .ng{color:#ff8078}
+</style>
+</head>
+<body>
+
+<h1>iPhoneの触覚テスト</h1>
+<p class="lead">1〜5を順番に押して、<b>「ポコ」と震えたものがどれか</b>を教えてください。震えたやり方をカウンターに入れます。</p>
+
+<div class="warn">
+  <b>先に確認してください</b>
+  iPhoneの<b>設定 → サウンドと触覚 → システムハプティクス</b>がオフだと、どのやり方でも震えません。オンになっているか見てから試してください。
+</div>
+
+<!-- 1 -->
+<div class="t">
+  <span class="no">1</span>
+  <h2>本物のスイッチを直接さわる</h2>
+  <p>基準のテストです。これが震えないなら、iOSの側で触覚が出ない状態（設定がオフ、またはiOSが古い）ということになります。</p>
+  <div class="swrow">
+    <input type="checkbox" switch id="sw-visible">
+    <span>このスイッチを何回か切り替えてみてください</span>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="t">
+  <span class="no">2</span>
+  <h2>透明のラベルを重ねたボタン</h2>
+  <p>見た目はただのボタンですが、指が触れているのは上に重ねた透明のラベルで、その下でスイッチが切り替わっています。<b>カウンターに入れたいのはこの方式です。</b></p>
+  <div class="pad" id="pad2">
+    <span>ここを押す<span class="n" id="c2">0回</span></span>
+    <label class="cover" for="sw-hidden-a"></label>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="t">
+  <span class="no">3</span>
+  <h2>スイッチではない、ふつうのチェックボックス</h2>
+  <p>2と同じ作りで、下にあるのがスイッチではなくチェックボックスです。念のための比較用です。</p>
+  <div class="pad" id="pad3">
+    <span>ここを押す<span class="n" id="c3">0回</span></span>
+    <label class="cover" for="sw-hidden-b"></label>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="t">
+  <span class="no">4</span>
+  <h2>いま入っているやり方（JavaScriptから切り替える）</h2>
+  <p>指はボタンに触れていて、スイッチはプログラムから切り替えています。<b>おそらくこれが震えなかったものです。</b></p>
+  <button class="pad" id="pad4">
+    <span>ここを押す<span class="n" id="c4">0回</span></span>
+  </button>
+</div>
+
+<!-- 5 -->
+<div class="t">
+  <span class="no">5</span>
+  <h2>バイブレーションAPI</h2>
+  <p>Androidで使っている命令です。iPhoneは対応していないはずなので、たぶん何も起きません。</p>
+  <button class="pad" id="pad5">
+    <span>ここを押す<span class="n" id="c5">0回</span></span>
+  </button>
+</div>
+
+<div class="diag">
+  <h2>この端末の状態</h2>
+  <div><span>バイブレーションAPI</span><b id="d1">—</b></div>
+  <div><span>スイッチ型チェックボックス</span><b id="d2">—</b></div>
+  <div><span>ホーム画面から起動</span><b id="d3">—</b></div>
+  <div><span>端末</span><b id="d4">—</b></div>
+</div>
+
+<!-- 重ねたラベルの相手。画面内に置いたまま透明にする -->
+<input type="checkbox" switch id="sw-hidden-a" class="hidden-sw" tabindex="-1" aria-hidden="true">
+<input type="checkbox"        id="sw-hidden-b" class="hidden-sw" tabindex="-1" aria-hidden="true">
+<input type="checkbox" switch id="sw-hidden-c" class="hidden-sw" tabindex="-1" aria-hidden="true">
+<label for="sw-hidden-c" id="lbl-c" class="hidden-sw" tabindex="-1" aria-hidden="true"></label>
+
+<script>
+const count = {};
+function bump(n){
+  count[n] = (count[n] || 0) + 1;
+  document.getElementById('c' + n).textContent = count[n] + '回';
+}
+
+document.getElementById('pad2').addEventListener('click', () => bump(2));
+document.getElementById('pad3').addEventListener('click', () => bump(3));
+
+// 4: 指はボタン、切り替えはプログラム（＝いまカウンターに入っているやり方）
+document.getElementById('pad4').addEventListener('click', () => {
+  document.getElementById('lbl-c').click();
+  bump(4);
+});
+
+// 5: Vibration API
+document.getElementById('pad5').addEventListener('click', () => {
+  if (navigator.vibrate) navigator.vibrate(20);
+  bump(5);
+});
+
+const yn = (b, y = '対応', n = '非対応') =>
+  `<span class="${b ? 'ok' : 'ng'}">${b ? y : n}</span>`;
+
+document.getElementById('d1').innerHTML = yn('vibrate' in navigator);
+// switch に対応したブラウザは、input に同名のプロパティを持つ
+document.getElementById('d2').innerHTML = yn(
+  'switch' in document.createElement('input'), '効いている', '効いていない');
+document.getElementById('d3').innerHTML = yn(
+  window.navigator.standalone === true ||
+  window.matchMedia('(display-mode: standalone)').matches, 'はい', 'いいえ（ブラウザ）');
+document.getElementById('d4').textContent =
+  (navigator.userAgent.match(/(iPhone|iPad|Android)[^)]*/) || ['不明'])[0];
+</script>
+
+</body>
+</html>

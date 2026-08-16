@@ -119,6 +119,22 @@
   .card.minus button.cnt .pt{visibility:hidden}
 
   .btns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:0 14px 12px}
+
+  /* 数えるボタンと、その上にかぶせる触覚用の透明ラベル。
+     iPhone の触覚は指が直接触れた要素にしか出ないので、
+     ラベルでタップを受けてスイッチを切り替えている。
+     数えられない操作（0からマイナスなど）では .dead を付けて
+     ラベルを通り抜けさせ、震えないようにする */
+  .tapwrap{position:relative;display:grid;min-width:0}
+  .tapwrap > .hap{
+    position:absolute;inset:0;margin:0;border-radius:inherit;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .tapwrap.dead > .hap{pointer-events:none}
+  /* ラベルが上にあるとボタン自身は押された状態にならないので、
+     縮む動きは外側で受ける */
+  .tapwrap:active > button.cnt{transform:scale(.95)}
+
   button.cnt{
     border:1px solid var(--line);background:var(--panel2);color:var(--text);
     border-radius:11px;padding:12px 4px;cursor:pointer;
@@ -700,8 +716,9 @@
   .bell .mode .plus{border-radius:10px 0 0 10px}
   .bell .mode-r .minus{border-radius:0 10px 10px 0}
   .bell button.cnt{border-radius:0}
+  .bell .tapwrap{flex:1;min-width:0}
   .bell button.cnt{
-    flex:1;min-width:0;padding:8px 4px;gap:3px;
+    padding:8px 4px;gap:3px;
     border-color:rgba(224,178,74,.55);
   }
   .bell button.cnt .lbl{color:#e8c06a;font-size:11px;white-space:nowrap}
@@ -887,9 +904,13 @@
     <div class="mode" id="bellmode">
       <button class="plus on" data-mode="1" aria-label="プラス">＋</button>
     </div>
-    <button class="cnt" id="bellbtn">
-      <span class="lbl">下段ベル</span><span class="num" id="bellnum">0</span><span class="pt">回</span>
-    </button>
+    <!-- 透明ラベルで指のタップを受けて震わせる（カードのボタンと同じ作り） -->
+    <div class="tapwrap" id="bellwrap">
+      <button class="cnt" id="bellbtn">
+        <span class="lbl">下段ベル</span><span class="num" id="bellnum">0</span><span class="pt">回</span>
+      </button>
+      <label class="hap" for="hapticsw" aria-hidden="true"></label>
+    </div>
     <div class="mode mode-r" id="bellmode2">
       <button class="minus" data-mode="-1" aria-label="マイナス">−</button>
     </div>
@@ -1087,10 +1108,10 @@
 <!-- iPhone を震わせるための隠しスイッチ。
      iOS は navigator.vibrate に対応していないが、Safari はスイッチ型の
      チェックボックスを切り替えたときだけ「ポコ」という触覚を返す。
-     それを押した合図として借りている。表示すると邪魔なので透明にするが、
-     display:none にすると触覚が鳴らないので画面内に置いたままにする -->
+     数えるボタンに重ねた透明ラベル（.hap）がこのスイッチを相手にしている。
+     表示すると邪魔なので透明にするが、display:none にすると触覚が
+     鳴らなくなるので、画面内に置いたままにすること -->
 <input type="checkbox" switch id="hapticsw" class="haptic" tabindex="-1" aria-hidden="true">
-<label for="hapticsw" id="haptic" class="haptic" aria-hidden="true"></label>
 
 <script>
 const NO_PT = 1, GLOW_PT = 15, HI_PT = 15;   // 高確発光もポイントは発光と同じ（発光率には入れない）
@@ -1196,14 +1217,13 @@ function storageWorks(){
 
 /* ---------- 押した合図（フラッシュ＋触覚） ---------- */
 
-const hapticLabel = document.getElementById('haptic');
-
-/* 数えられたときだけ震わせる。
-   Android は Vibration API、iOS は非対応なので、
-   Safari がスイッチの切り替えで返す触覚を代わりに借りる */
+/* Android は Vibration API で震わせる。
+   iOS は対応していないので、数えるボタンに重ねた透明のラベル
+   （.hap）が指のタップを直接受けて震える。Safari の触覚は
+   「人が実際に触れた要素」にしか出ないので、ここから呼んでも鳴らない。
+   仕組みは buildCards の .tapwrap を参照 */
 function buzz(){
-  if (navigator.vibrate) { navigator.vibrate(12); return; }
-  try { hapticLabel.click(); } catch(e) {}
+  if (navigator.vibrate) navigator.vibrate(12);
 }
 
 /* 枠を一瞬光らせる。連打しても頭から出し直すため、
@@ -1221,7 +1241,30 @@ function tapOk(el){
   buzz();
 }
 
+/* マイナスなのに0のボタンは、押しても数えられない。
+   触覚だけ返ると「入った」と勘違いさせるので、
+   重ねたラベルを通り抜けさせて震えないようにする */
+function syncDead(id){
+  const card = document.querySelector(`.card[data-id="${id}"]`);
+  if (!card) return;
+  const minus = mode[id] === -1;
+  ['no', 'glow', 'hi', 'cz'].forEach(k => {
+    const w = card.querySelector(`button.cnt.${k}`).closest('.tapwrap');
+    w.classList.toggle('dead', minus && state[id][k] === 0);
+  });
+}
+
 function buildCards(){
+  /* 数えるボタンは、透明のラベルをかぶせた状態で置く。
+     指が触れるのはラベルのほうで、その下で隠しスイッチが切り替わり、
+     iPhone が「ポコ」と震える。押した合図はこのラベル頼みなので、
+     ボタンを直に置き換えないこと */
+  const tap = (inner, dead = '') => `
+        <div class="tapwrap${dead}">
+          ${inner}
+          <label class="hap" for="hapticsw" aria-hidden="true"></label>
+        </div>`;
+
   const cardHtml = c => `
     <section class="card ${c.cls}" data-id="${c.id}">
       <div class="card-head">
@@ -1233,21 +1276,21 @@ function buildCards(){
         </div>
       </div>
       <div class="btns">
-        <button class="cnt no"   data-type="no">
+        ${tap(`<button class="cnt no"   data-type="no">
           <span class="lbl">非発光</span><span class="num" data-v="no">0</span><span class="pt">+${NO_PT}pt</span>
-        </button>
-        <button class="cnt glow" data-type="glow">
+        </button>`)}
+        ${tap(`<button class="cnt glow" data-type="glow">
           <span class="lbl">発光</span><span class="num" data-v="glow">0</span><span class="pt">+${GLOW_PT}pt</span>
-        </button>
-        <button class="cnt hi" data-type="hi">
+        </button>`)}
+        ${tap(`<button class="cnt hi" data-type="hi">
           <span class="lbl">高確発光など</span><span class="num" data-v="hi">0</span><span class="pt">+${HI_PT}pt</span>
-        </button>
-        <button class="cnt cz"   data-type="cz">
+        </button>`)}
+        ${tap(`<button class="cnt cz"   data-type="cz">
           <span class="lbl">${c.hit}</span><span class="num" data-v="cz">0</span><span class="pt">回</span>
-        </button>
-        ${c.force ? `<button class="cnt force">
+        </button>`)}
+        ${c.force ? tap(`<button class="cnt force">
           <span class="lbl">強制周期</span><span class="pt">150,300G</span>
-        </button>` : ''}
+        </button>`) : ''}
       </div>
       <div class="now">
         <div class="k">現在のポイント
@@ -1276,11 +1319,16 @@ function buildCards(){
       const modeBtn = e.target.closest('.mode button');
       if (modeBtn) { setMode(id, +modeBtn.dataset.mode); return; }
 
-      // 強制周期：現在のポイントだけ無効にする（回数・発光率はそのまま）
-      if (e.target.closest('button.force')) { dropPoints([id]); tapOk(card); return; }
+      // 触覚用のラベルが上に乗っているので、押されたのがラベルでも
+      // 下のボタンを取り出せるようにする
+      const wrap = e.target.closest('.tapwrap');
+      const btn = wrap ? wrap.querySelector('button.cnt') : e.target.closest('button.cnt');
+      if (!btn) return;
 
-      const btn = e.target.closest('button.cnt');
-      if (btn) add(id, btn.dataset.type);
+      // 強制周期：現在のポイントだけ無効にする（回数・発光率はそのまま）
+      if (btn.classList.contains('force')) { dropPoints([id]); tapOk(card); return; }
+
+      add(id, btn.dataset.type);
     });
   });
 }
@@ -1291,6 +1339,7 @@ function setMode(id, m){
   card.classList.toggle('minus', m === -1);
   card.querySelector('.mode .plus').classList.toggle('on', m === 1);
   card.querySelector('.mode .minus').classList.toggle('on', m === -1);
+  syncDead(id);
 }
 
 function add(id, type){
@@ -1571,6 +1620,8 @@ function render(){
     const a = czAvg([c.id]);
     set('avg', a === null ? '—' : a.toFixed(2));
 
+    syncDead(c.id);
+
     if (AVG_IDS.includes(c.id)) {
       T.no += s.no; T.glow += s.glow;
     }
@@ -1604,6 +1655,9 @@ function render(){
 /* 下段ベル：回数とG数から確率を出す（1/◯◯.◯） */
 function renderBell(){
   document.getElementById('bellnum').textContent = fmt(bell.n);
+  // カードと同じで、0からマイナスは押しても数えられないので震わせない
+  document.getElementById('bellwrap')
+    .classList.toggle('dead', bellMode === -1 && bell.n === 0);
   const el = document.getElementById('bellrate');
   el.innerHTML = (bell.n > 0 && bell.g > 0)
     ? `1/${(bell.g / bell.n).toFixed(1)}<em>確率</em>`
@@ -1619,6 +1673,7 @@ function setBellMode(m){
   document.querySelectorAll('#bellmode .plus, #bellmode2 .minus')
     .forEach(b => b.classList.toggle('on', +b.dataset.mode === bellMode));
   document.getElementById('bellbtn').classList.toggle('minusmode', bellMode === -1);
+  renderBell();
 }
 
 ['bellmode', 'bellmode2'].forEach(id => {
@@ -1628,7 +1683,7 @@ function setBellMode(m){
   });
 });
 
-document.getElementById('bellbtn').addEventListener('click', () => {
+document.getElementById('bellwrap').addEventListener('click', () => {
   const next = bell.n + bellMode;
   if (next < 0) return;
   bell.n = next;
