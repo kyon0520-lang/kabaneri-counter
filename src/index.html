@@ -147,6 +147,30 @@
   button.cnt.force .lbl{font-size:11px;color:#cfd6e4}
   button.cnt.force .pt{font-size:9px}
 
+  /* 押せたときのフラッシュ。
+     ホールでは手元を見ずに数えるので、入ったかどうかを色で返す。
+     数えられなかったとき（0からマイナスなど）は光らせない */
+  .card, #bellbtn{position:relative}
+  .card::after, #bellbtn::after{
+    content:'';position:absolute;inset:0;border-radius:inherit;
+    pointer-events:none;opacity:0;
+    background:rgba(var(--fl),.20);
+    box-shadow:inset 0 0 0 2px rgba(var(--fl),.85), inset 0 0 24px rgba(var(--fl),.45);
+  }
+  .card.flash::after, #bellbtn.flash::after{animation:tapflash .26s ease-out}
+  @keyframes tapflash{from{opacity:1}to{opacity:0}}
+  .card.red{--fl:226,69,60}
+  .card.green{--fl:47,181,106}
+  .card.blue{--fl:59,130,246}
+  #bellbtn{--fl:224,178,74}
+  @media (prefers-reduced-motion: reduce){
+    .card.flash::after, #bellbtn.flash::after{animation-duration:.12s}
+  }
+  .haptic{
+    position:fixed;top:0;left:0;width:1px;height:1px;
+    opacity:0;pointer-events:none;z-index:-1;
+  }
+
   /* 現在のポイント（突入ボタンで0に戻る） */
   .now{
     display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -1060,6 +1084,14 @@
 
 <div class="toast" id="toast" hidden></div>
 
+<!-- iPhone を震わせるための隠しスイッチ。
+     iOS は navigator.vibrate に対応していないが、Safari はスイッチ型の
+     チェックボックスを切り替えたときだけ「ポコ」という触覚を返す。
+     それを押した合図として借りている。表示すると邪魔なので透明にするが、
+     display:none にすると触覚が鳴らないので画面内に置いたままにする -->
+<input type="checkbox" switch id="hapticsw" class="haptic" tabindex="-1" aria-hidden="true">
+<label for="hapticsw" id="haptic" class="haptic" aria-hidden="true"></label>
+
 <script>
 const NO_PT = 1, GLOW_PT = 15, HI_PT = 15;   // 高確発光もポイントは発光と同じ（発光率には入れない）
 
@@ -1162,6 +1194,33 @@ function storageWorks(){
   } catch(e) { return false; }
 }
 
+/* ---------- 押した合図（フラッシュ＋触覚） ---------- */
+
+const hapticLabel = document.getElementById('haptic');
+
+/* 数えられたときだけ震わせる。
+   Android は Vibration API、iOS は非対応なので、
+   Safari がスイッチの切り替えで返す触覚を代わりに借りる */
+function buzz(){
+  if (navigator.vibrate) { navigator.vibrate(12); return; }
+  try { hapticLabel.click(); } catch(e) {}
+}
+
+/* 枠を一瞬光らせる。連打しても頭から出し直すため、
+   いったんクラスを外してから付け直す */
+function flash(el){
+  if (!el) return;
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+}
+
+/* 押せたことを、目と手の両方に返す */
+function tapOk(el){
+  flash(el);
+  buzz();
+}
+
 function buildCards(){
   const cardHtml = c => `
     <section class="card ${c.cls}" data-id="${c.id}">
@@ -1218,7 +1277,7 @@ function buildCards(){
       if (modeBtn) { setMode(id, +modeBtn.dataset.mode); return; }
 
       // 強制周期：現在のポイントだけ無効にする（回数・発光率はそのまま）
-      if (e.target.closest('button.force')) { dropPoints([id]); return; }
+      if (e.target.closest('button.force')) { dropPoints([id]); tapOk(card); return; }
 
       const btn = e.target.closest('button.cnt');
       if (btn) add(id, btn.dataset.type);
@@ -1260,7 +1319,7 @@ function add(id, type){
     s[cur] = Math.max(0, s[cur] + d);
   }
 
-  if (navigator.vibrate) navigator.vibrate(12);
+  tapOk(document.querySelector(`.card[data-id="${id}"]`));
   render(); save();
 }
 
@@ -1573,7 +1632,7 @@ document.getElementById('bellbtn').addEventListener('click', () => {
   const next = bell.n + bellMode;
   if (next < 0) return;
   bell.n = next;
-  if (navigator.vibrate) navigator.vibrate(12);
+  tapOk(document.getElementById('bellbtn'));
   renderBell(); save();
 });
 
