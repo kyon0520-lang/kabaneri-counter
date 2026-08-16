@@ -449,7 +449,8 @@
   body.win-open .winscrim{display:block}
   .winpanel{
     position:fixed;top:0;left:0;bottom:0;z-index:45;
-    width:min(92vw,460px);background:var(--panel);
+    /* 当選履歴の1行に収める情報が多いので、画面をほぼ使い切る */
+    width:min(96vw,460px);background:var(--panel);
     border-right:1px solid var(--line);
     padding:calc(14px + env(safe-area-inset-top)) 14px 16px;
     display:flex;flex-direction:column;gap:10px;overflow-y:auto;
@@ -544,17 +545,21 @@
   .wacts .wreset{border:1px solid rgba(226,69,60,.5);color:#ff8a82}
   .winlist{display:flex;flex-direction:column;gap:5px}
   .winstats{padding-bottom:8px}
+  /* 列幅を決めたグリッドにする。中身の長さで押し出されると
+     ボーナスと×の位置が行ごとにずれ、幅が足りない行では×が
+     画面の外へ出て押せなくなる。伸び縮みするのは周期の欄だけ */
   .winrow{
-    display:flex;align-items:center;gap:6px;font-size:12px;
+    display:grid;grid-template-columns:auto 66px 46px minmax(0,1fr) 78px 16px;
+    align-items:center;gap:4px;font-size:12px;
     background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;
   }
   /* CZ当選は種別の文字だけキャラの色にする（枠は付けない） */
   .winrow.red .via{color:#ff8a82}
   .winrow.green .via{color:#5fd398}
   .winrow.blue .via{color:#8fc0ff}
-  .winrow .no{color:var(--muted);font-size:10px;flex:0 0 1.6em}
-  /* 状態の欄。幅を固定して、続きの行は空欄にする（G数と周期を縦に揃えるため） */
-  .winrow .md{flex:0 0 66px}
+  .winrow .no{color:var(--muted);font-size:10px}
+  /* 状態の欄。続きの行は空欄にして、G数と周期の位置を揃える */
+  .winrow .md{min-width:0}
   /* 状態タブと同じ色にして、セクションの切り替わりを色で追えるようにする */
   .winrow .md i{
     font-style:normal;display:inline-block;font-size:9.5px;
@@ -564,19 +569,25 @@
   .winrow .md i[data-mode="through"]{background:#e8c06a;color:#16283f}
   .winrow .md i[data-mode="upper"]{background:#e86aa8;color:#fff}
   .winrow .md i[data-mode="reset"]{background:#eef2f8;color:#16283f}
-  /* G数は右揃えの固定幅にして、続く周期の位置を揃える */
-  .winrow .g{flex:0 0 44px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
-  .winrow .via{flex:0 0 auto;color:var(--muted);white-space:nowrap}
+  /* G数は右揃えにして、続く周期の位置を揃える */
+  .winrow .g{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  /* 周期ときっかけ。ここだけが幅に合わせて縮む。
+     狭い画面では末尾を省略して、右のボーナスと×を守る */
+  .winrow .via{
+    color:var(--muted);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;
+  }
+  /* どの種類でも同じ幅にして、上下の行で左右の端を揃える */
   .winrow .bn{
-    flex:0 0 auto;margin-left:auto;font-size:10.5px;font-weight:700;border-radius:999px;
-    padding:4px 9px;white-space:nowrap;
+    font-size:10.5px;font-weight:700;border-radius:999px;
+    padding:4px 6px;white-space:nowrap;text-align:center;
   }
   .winrow .bn.ep{background:#2f6bd8;color:#fff}          /* エピソードB */
   .winrow .bn.sh{background:#eef2f8;color:#16283f}       /* 駿城B */
   /* 駿→エピ は白と青のツートン。左右をきっちり半分にし、矢印は境目に重ねる */
   .winrow .bn.two{
     position:relative;display:grid;grid-template-columns:1fr 1fr;
-    padding:0;overflow:hidden;min-width:84px;
+    padding:0;overflow:hidden;
   }
   .winrow .bn.two i,.winrow .bn.two b{font-style:normal;padding:4px 0;text-align:center}
   .winrow .bn.two i{background:#eef2f8;color:#16283f}
@@ -587,7 +598,12 @@
     width:1.35em;height:1.35em;display:grid;place-items:center;
     font-size:.92em;line-height:1;pointer-events:none;
   }
-  .winrow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;font-family:inherit}
+  .winrow .x{
+    position:relative;background:none;border:0;padding:0;
+    color:var(--muted);cursor:pointer;font-size:14px;font-family:inherit;
+  }
+  /* 見た目は小さいままで、指で押せる範囲だけ広げる */
+  .winrow .x::after{content:'';position:absolute;inset:-9px -8px}
   .winempty{font-size:11px;color:var(--muted);padding:6px 2px}
   .winstats table{width:100%;border-collapse:collapse;font-size:11.5px}
   .winstats th,.winstats td{border:1px solid var(--line);padding:6px 4px;text-align:center}
@@ -2313,6 +2329,9 @@ function closeWin(){
 }
 
 const VIA_CZ = { red:'無名CZ', green:'生駒CZ', blue:'銅藍CZ' };
+/* 一覧は1行に収める幅がないので、キャラはカードのアイコンと同じ一文字にする。
+   文字色もキャラの色なので、略しても取り違えない */
+const VIA_CZ_SHORT = { red:'無CZ', green:'生CZ', blue:'銅CZ' };
 const BONUS = { episode:'エピソードB', shunjo:'駿城B', both:'駿→エピ' };
 
 function pickChips(box, attr, set){
@@ -2453,7 +2472,7 @@ function renderWins(){
   list.innerHTML = wins.length
     ? wins.map((w, i) => {
         // 周期はどの当選にも付くようになったので必ず出し、周期到達以外はきっかけも添える
-        const kind = w.via === 'ceiling' ? '天井' : w.via === 'cz' ? (VIA_CZ[w.cz] || 'CZ') : '';
+        const kind = w.via === 'ceiling' ? '天井' : w.via === 'cz' ? (VIA_CZ_SHORT[w.cz] || 'CZ') : '';
         const via = (w.cycle ? `${w.cycle}周期` : '') + (kind ? (w.cycle ? ' ' : '') + kind : '');
         return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
           <span class="no">${i + 1}</span>
