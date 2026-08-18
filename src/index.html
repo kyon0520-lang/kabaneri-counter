@@ -164,17 +164,19 @@
   button.cnt.force .pt{font-size:9px}
 
   /* 押せたときのフラッシュ。
-     ホールでは手元を見ずに数えるので、入ったかどうかを色で返す。
+     ホールは明るく、手元を見ずに数えるので、はっきり色を乗せる。
      数えられなかったとき（0からマイナスなど）は光らせない */
   .card, #bellbtn{position:relative}
   .card::after, #bellbtn::after{
     content:'';position:absolute;inset:0;border-radius:inherit;
     pointer-events:none;opacity:0;
-    background:rgba(var(--fl),.20);
-    box-shadow:inset 0 0 0 2px rgba(var(--fl),.85), inset 0 0 24px rgba(var(--fl),.45);
+    background:rgba(var(--fl),.5);
+    box-shadow:inset 0 0 0 3px rgb(var(--fl)), inset 0 0 34px 6px rgba(var(--fl),.65);
   }
-  .card.flash::after, #bellbtn.flash::after{animation:tapflash .26s ease-out}
-  @keyframes tapflash{from{opacity:1}to{opacity:0}}
+  .card.flash::after, #bellbtn.flash::after{animation:tapflash .3s ease-out}
+  /* すぐ消え始めると視界の端では気づけないので、
+     一番明るいところを少し保ってから引く */
+  @keyframes tapflash{0%{opacity:1}45%{opacity:1}100%{opacity:0}}
   .card.red{--fl:226,69,60}
   .card.green{--fl:47,181,106}
   .card.blue{--fl:59,130,246}
