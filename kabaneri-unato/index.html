@@ -439,6 +439,51 @@
 
   /* 確認ダイアログ（ブラウザの confirm を使わない） */
   #cardmodal{padding:10px}
+  /* ホーム画面への追加案内（iPhoneのSafariで初回だけ） */
+  .a2hs{
+    position:fixed;inset:0;z-index:60;background:var(--bg);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:calc(28px + env(safe-area-inset-top)) 20px calc(28px + env(safe-area-inset-bottom));
+  }
+  .a2hs[hidden]{display:none}
+  .a2hs-in{max-width:400px;margin:0 auto;position:relative}
+  .a2hs-x{
+    position:absolute;top:-8px;right:-6px;background:none;border:0;
+    color:var(--muted);font-size:22px;line-height:1;padding:6px 10px;
+    cursor:pointer;font-family:inherit;
+  }
+  .a2hs h2{font-size:21px;line-height:1.45;margin:0 0 16px;letter-spacing:.01em}
+  /* 理由を先に置く。手順だけ出しても、なぜ必要かが分からないと閉じられる */
+  .a2hs-why{
+    border:1px solid rgba(224,178,74,.45);background:rgba(224,178,74,.08);
+    border-radius:11px;padding:13px 14px;margin-bottom:20px;
+    font-size:12.5px;line-height:1.85;color:var(--text);
+  }
+  .a2hs-why b{display:block;color:#e8c06a;font-size:13px;margin-bottom:5px;line-height:1.6}
+  .a2hs-steps{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:12px}
+  .a2hs-steps li{display:flex;align-items:flex-start;gap:11px;font-size:13.5px;line-height:1.7}
+  .a2hs-steps .n{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;margin-top:1px;
+    background:#2f6bd8;color:#fff;font-size:12px;font-weight:700;
+    display:grid;place-items:center;
+  }
+  .a2hs-steps b{font-weight:700}
+  /* 共有ボタンの絵。文字で「共有ボタン」と書くより、形で探すほうが速い */
+  .a2hs-ic{
+    display:inline-grid;place-items:center;vertical-align:-5px;
+    width:22px;height:22px;border-radius:5px;background:var(--panel2);
+    border:1px solid var(--line);margin:0 2px;
+  }
+  .a2hs-ic svg{width:13px;height:13px;fill:none;stroke:#6aa8ff;stroke-width:1.8;
+               stroke-linecap:round;stroke-linejoin:round}
+  .a2hs-ok{
+    width:100%;background:#2f6bd8;border:1px solid #2f6bd8;color:#fff;
+    border-radius:11px;padding:14px;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;
+  }
+  .a2hs-note{margin:12px 0 0;font-size:11.5px;color:var(--muted);line-height:1.9}
+  .a2hs-note b{color:var(--text)}
+
   .modal{
     position:fixed;inset:0;z-index:50;padding:24px;
     background:rgba(6,16,28,.72);backdrop-filter:blur(3px);
@@ -1117,6 +1162,27 @@
       <button class="primary" id="cardshare">シェアする</button>
       <button class="ghostish" id="cardclose">閉じる</button>
     </div>
+  </div>
+</div>
+
+<!-- iPhone の Safari で初めて開いたときだけ出す案内。
+     Safari とホーム画面アプリでは保存先が分かれるので、
+     記録を保存しはじめる前に気づいてもらう -->
+<div class="a2hs" id="a2hs" hidden>
+  <div class="a2hs-in" role="dialog" aria-modal="true" aria-labelledby="a2hstitle">
+    <button class="a2hs-x" id="a2hsx" aria-label="閉じる">×</button>
+
+    <h2 id="a2hstitle">先にホーム画面へ<br>追加してください</h2>
+
+    <div class="a2hs-why">
+      <b>Safariで保存した記録は、ホーム画面のアプリからは見えません</b>
+      同じiPhoneの同じサイトでも、<strong>Safariとホーム画面のアプリでは保存先が別々</strong>になります。あとから追加すると、それまでの実戦の記録が見当たらなくなります。先に追加しておけば、この行き違いは起きません。
+    </div>
+
+    <ol class="a2hs-steps" id="a2hssteps"></ol>
+
+    <button class="a2hs-ok" id="a2hsok">わかりました</button>
+    <p class="a2hs-note">数えるだけならこのままでも使えます。保存した記録があとから見えなくなるだけです。<span id="a2hstr" hidden>すでに保存した記録は、メニューの<b>「記録の引き継ぎ」</b>で移せます。</span></p>
   </div>
 </div>
 
@@ -2801,6 +2867,58 @@ document.getElementById('clearafter').addEventListener('click', () => {
   toast('カウントを0にしました');
 });
 
+/* ---------- ホーム画面への追加案内 ---------- */
+/* iOSは Safari とホーム画面アプリで localStorage が完全に別物になる。
+   同じ端末・同じURLなので利用者はまず気づけず、あとから追加した人は
+   それまでの記録が消えたように見える。保存を始める前に一度だけ知らせる。
+   Androidにはこの分裂がないので出さない（用が無いのに全画面を挟まない） */
+const A2HS_KEY = 'kabaneri-a2hs-v1';
+
+function isStandalone(){
+  return window.navigator.standalone === true
+      || window.matchMedia('(display-mode: standalone)').matches;
+}
+
+function isIOS(){
+  const ua = navigator.userAgent;
+  // iPadOS 13以降はMacと名乗るので、タッチの有無で見分ける
+  return /iPhone|iPad|iPod/.test(ua)
+      || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+}
+
+function showA2hs(){
+  const ua = navigator.userAgent;
+  // iOSの他ブラウザは共有シートの中身が違うので、Safariで開くほうへ寄せる
+  const safari = !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  const share = `<span class="a2hs-ic"><svg viewBox="0 0 24 24">
+      <path d="M12 3v12M12 3l-4 4M12 3l4 4"/>
+      <path d="M5 12v8h14v-8"/></svg></span>`;
+
+  const steps = safari
+    ? [`画面の下にある共有ボタン ${share} を押す`,
+       '出てきた一覧を下にたどって<b>「ホーム画面に追加」</b>を選ぶ',
+       '右上の<b>「追加」</b>を押す',
+       '<b>ホーム画面のアイコンから開く</b>。以降はこちらで数えます']
+    : ['このページを<b>Safariで開き直す</b>',
+       `画面の下の共有ボタン ${share} から<b>「ホーム画面に追加」</b>を選ぶ`,
+       '<b>ホーム画面のアイコンから開く</b>。以降はこちらで数えます'];
+
+  document.getElementById('a2hssteps').innerHTML =
+    steps.map((s, i) => `<li><span class="n">${i + 1}</span><span>${s}</span></li>`).join('');
+
+  // すでに保存した実戦がある人には、移す手段があることも伝える
+  document.getElementById('a2hstr').hidden = hist.length === 0;
+  document.getElementById('a2hs').hidden = false;
+}
+
+function closeA2hs(){
+  document.getElementById('a2hs').hidden = true;
+  try { localStorage.setItem(A2HS_KEY, '1'); } catch(e) {}
+}
+
+document.getElementById('a2hsok').addEventListener('click', closeA2hs);
+document.getElementById('a2hsx').addEventListener('click', closeA2hs);
+
 /* ---------- 起動 ---------- */
 load();
 loadHist();
@@ -2818,6 +2936,11 @@ document.querySelectorAll('#wintabs button')
 renderWins();
 applyWinView();
 applyMainView();
+
+// 記録を読み込んでから判定する（保存済みの件数で文面が変わるため）
+if (isIOS() && !isStandalone() && storageWorks() && !localStorage.getItem(A2HS_KEY)) {
+  showA2hs();
+}
 
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
