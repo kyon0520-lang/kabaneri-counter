@@ -79,7 +79,12 @@ export async function onRequestPost({ request, env }) {
   // DEV_LOGIN を明示的に立てたときだけ、リンクをそのまま返す。
   // 立てたままだと誰でも他人になりすませるので、本番では絶対に設定しない
   if (!r.sent && env.DEV_LOGIN === '1') {
-    return json({ ok: true, sent: false, devLink: link, note: 'DEV_LOGIN が有効です' });
+    // 設定を詰めている間だけ、送れなかった理由も返す。
+    // DEV_LOGIN を外せば一緒に出なくなる
+    return json({
+      ok: true, sent: false, devLink: link,
+      note: 'DEV_LOGIN が有効です', reason: r.reason, detail: r.detail,
+    });
   }
   if (!r.sent) {
     return json({ ok: false, error: 'メールを送れませんでした。時間をおいてお試しください' }, 502);

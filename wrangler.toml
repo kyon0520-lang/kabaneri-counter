@@ -29,3 +29,7 @@ database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
 # 本番（env.production）には絶対に入れないこと。Resend を設定したら消す。
 [env.preview.vars]
 DEV_LOGIN = "1"
+# ドメイン認証をする前でも送れる、Resend が用意している差出人。
+# ただし届く先は Resend に登録した本人のアドレスだけ。
+# ほかの人に届けるには minnanoslot.com のDNS認証（SPF/DKIM）が要る。
+MAIL_FROM = "みんなのスロット <onboarding@resend.dev>"
