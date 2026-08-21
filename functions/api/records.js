@@ -6,6 +6,7 @@
  */
 
 import { currentUser } from './_auth.js';
+import { bumpStats, freshStats } from './_stats.js';
 
 const MACHINES = {
   'kabaneri-unato': {
@@ -100,15 +101,6 @@ function derive(r) {
   };
 }
 
-/** 中央値。SQLite に中央値が無いので、並べて真ん中を1件取る */
-async function median(db, machine, col) {
-  const q = `SELECT ${col} AS v FROM records WHERE machine = ? AND ${col} IS NOT NULL
-             ORDER BY ${col}
-             LIMIT 1 OFFSET (SELECT COUNT(*) / 2 FROM records WHERE machine = ? AND ${col} IS NOT NULL)`;
-  const row = await db.prepare(q).bind(machine, machine).first();
-  return row ? row.v : null;
-}
-
 export async function onRequestPost({ request, env }) {
   if (!env.DB) return json({ ok: false, error: 'サーバー側の設定が未完了です' }, 503);
 
@@ -168,16 +160,28 @@ export async function onRequestPost({ request, env }) {
     await db.batch(r.czPointsBy.map((p) => stmt.bind(r.id, r.machine, p.c, p.pt)));
   }
 
-  const total = await db.prepare('SELECT COUNT(*) AS n FROM records WHERE machine = ?')
-    .bind(r.machine).first();
+  // 新しく入った分だけ数え上げる。全件を数え直さない
+  if (isNew) {
+    await bumpStats(db, {
+      machine: r.machine,
+      clientId: r.clientId,
+      games: r.games,
+      // 分布に使うのは無名・生駒の突入だけ（銅藍の周期は混ぜない）
+      czRows: r.czPointsBy.filter((p) => p.c === 'red' || p.c === 'green').length,
+    });
+  }
+
+  // 貯めてある集計を返す。中央値は少し前のもので構わない
+  // （「みんなの平均」の見せ方に、1件ぶんの差は効いてこない）
+  const s = await freshStats(db, r.machine);
 
   return json({
     ok: true,
     duplicate: !isNew,
     stats: {
-      n: total ? total.n : 0,
-      avgPt: { you: d.avgPt, median: await median(db, r.machine, 'avg_pt') },
-      glowRate: { you: d.glowRate, median: await median(db, r.machine, 'glow_rate') },
+      n: s.records,
+      avgPt: { you: d.avgPt, median: s.avgPtMedian },
+      glowRate: { you: d.glowRate, median: s.glowRateMedian },
     },
   });
 }
