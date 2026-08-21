@@ -9,3 +9,15 @@ pages_build_output_dir = "."
 binding = "DB"
 database_name = "minnanoslot"
 database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
+
+# 本番以外のブランチにデプロイしたとき（試用URL）にも同じDBを使う。
+# Pages はブランチごとに preview 環境になり、ここが無いと env.DB が空になる。
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "minnanoslot"
+database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "minnanoslot"
+database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
