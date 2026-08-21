@@ -379,9 +379,10 @@ function compareHtml(){
     </tr>`;
   }
   return `<h2 class="sec">設定別の比較<span>申告した設定ごと</span></h2>
-    <div class="warn"><b>件数が少ないうちは、差が出ても偶然です。</b>
-      判別に使えるようになるのは、設定ごとに何十件と貯まってからです。
-      いまは「どれだけ貯まったか」を見る表として使ってください。</div>
+    <div class="warn"><b>件数が少ないうちの差は、設定の違いとは限りません。</b>
+      同じ設定でも、実戦ごとに数字はぶれます。判別に使えるようになるのは、
+      設定ごとに何十件と貯まってからです。いまは「どれだけ貯まったか」を
+      見る表として使ってください。</div>
     <table class="cmp"><thead><tr>
       <th>設定</th><th>実戦</th><th>G数</th><th>発光率</th><th>平均pt/CZ</th><th>1周期当選率</th>
     </tr></thead><tbody>${rows}</tbody></table>`;
