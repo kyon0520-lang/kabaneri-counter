@@ -6,26 +6,31 @@ import {
   cookieHeader, newId, randomToken, addDays, SESSION_DAYS, CONSENT_VERSION,
 } from '../_auth.js';
 
-function back(origin, status) {
-  return `${origin}/kabaneri-unato/?login=${status}`;
+function back(origin, status, next) {
+  // 戻り先はここでもう一度確かめる。リンクの中身は書き換えられうるので、
+  // 同じサイトのパス以外はカウンターに戻す（外への踏み台にしない）
+  const safe = typeof next === 'string' && /^\/[A-Za-z0-9/_\-.]*$/.test(next)
+    ? next : '/kabaneri-unato/';
+  return `${origin}${safe}?login=${status}`;
 }
 
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
   const origin = url.origin;
-  if (!env.DB) return Response.redirect(back(origin, 'error'), 302);
+  if (!env.DB) return Response.redirect(back(origin, 'error', ''), 302);
 
   const token = url.searchParams.get('t') || '';
+  const next = url.searchParams.get('next') || '';
   const db = env.DB;
 
   const row = await db.prepare(
     `SELECT email, expires_at, used_at FROM login_tokens WHERE token = ?`
   ).bind(token).first();
 
-  if (!row) return Response.redirect(back(origin, 'invalid'), 302);
-  if (row.used_at) return Response.redirect(back(origin, 'used'), 302);
+  if (!row) return Response.redirect(back(origin, 'invalid', next), 302);
+  if (row.used_at) return Response.redirect(back(origin, 'used', next), 302);
   if (Date.parse(row.expires_at) < Date.now()) {
-    return Response.redirect(back(origin, 'expired'), 302);
+    return Response.redirect(back(origin, 'expired', next), 302);
   }
 
   const now = new Date().toISOString();
@@ -50,7 +55,7 @@ export async function onRequestGet({ request, env }) {
   return new Response(null, {
     status: 302,
     headers: {
-      location: back(origin, 'ok'),
+      location: back(origin, 'ok', next),
       'set-cookie': cookieHeader(session, SESSION_DAYS * 24 * 3600),
     },
   });

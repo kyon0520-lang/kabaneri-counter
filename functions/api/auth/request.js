@@ -71,7 +71,11 @@ export async function onRequestPost({ request, env }) {
   ).bind(token, email, new Date().toISOString(), addMinutes(LOGIN_TTL_MIN)).run();
 
   const origin = new URL(request.url).origin;
-  const link = `${origin}/api/auth/verify?t=${token}`;
+  // 戻り先。外のサイトへ飛ばされないよう、同じサイトのパスだけ受け付ける
+  const next = typeof body.next === 'string' && /^\/[A-Za-z0-9/_\-.]*$/.test(body.next)
+    ? body.next : '';
+  const link = `${origin}/api/auth/verify?t=${token}`
+    + (next ? `&next=${encodeURIComponent(next)}` : '');
 
   const r = await sendMail(env, email, link);
 
