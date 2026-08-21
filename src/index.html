@@ -2502,9 +2502,20 @@ async function pullRecords(){
 
   if (!saveHist()) { toast('端末に書き込めませんでした'); return; }
   renderHist(); renderDist();
-  toast(add.length
-    ? `${fmt(add.length)}件を読み出しました（預かり ${fmt(j.count)}件）`
-    : `新しい記録はありません（預かり ${fmt(j.count)}件）`);
+
+  // 読み出した結果が見えないと、動いたのかどうか分からない。
+  // 何か増えたときは履歴の画面を開いて示す
+  if (add.length) {
+    mainView = 'hist';
+    applyMainView();
+    toast(`${fmt(add.length)}件を読み出しました（預かり ${fmt(j.count)}件）`);
+    return;
+  }
+  // 増えなかったのは失敗ではなく、すでに全部この端末にあるということ。
+  // 「ありません」だけだと読み出せなかったように読めるので言い分ける
+  toast(j.count
+    ? `この端末はすべて読み出し済みです（預かり ${fmt(j.count)}件）`
+    : 'まだ預かっている記録はありません');
 }
 
 document.getElementById('pullbtn').addEventListener('click', () => { closeMenu(); pullRecords(); });
