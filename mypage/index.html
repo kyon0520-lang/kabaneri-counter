@@ -54,6 +54,37 @@
   .tile .sub{font-size:11px;color:var(--ink-3);margin-top:2px}
   .tile.mine .v{color:var(--accent)}
 
+  /* 設定での絞り込み */
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .chips button{
+    background:#fff;border:1px solid var(--line);color:var(--ink-2);
+    border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:700;
+    font-family:inherit;cursor:pointer;
+  }
+  .chips button .n{font-weight:400;color:var(--ink-3);margin-left:5px;font-size:11px}
+  .chips button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .chips button.on .n{color:rgba(255,255,255,.7)}
+  /* 設定ごとの色は一覧のバッジと合わせる */
+  .chips button.on.c6{background:#c1272d;border-color:#c1272d}
+  .chips button.on.c5{background:#b26b00;border-color:#b26b00}
+  .chips button.on.c4{background:#8a6d00;border-color:#8a6d00}
+  .chips button.on.c3{background:#1f7a44;border-color:#1f7a44}
+  .chips button.on.c2{background:#2456a6;border-color:#2456a6}
+  .chips button.on.c1{background:#5c6270;border-color:#5c6270}
+
+  /* 設定を横に並べて比べる表。判別の土台になる */
+  .cmp td.set{font-weight:800}
+  .cmp td.set span{
+    display:inline-block;border-radius:999px;padding:2px 8px;font-size:11.5px;
+    background:var(--panel);border:1px solid var(--line);white-space:nowrap;
+  }
+  .cmp td.set{padding-right:0}
+  .cmp .thin{font-size:11px;color:var(--ink-3);font-weight:400}
+  .warn{
+    background:#fff8e6;border:1px solid #f0e0b4;border-radius:11px;
+    padding:11px 13px;font-size:12px;line-height:1.85;color:var(--ink-2);margin:0 0 14px;
+  }
+
   h2.sec{
     font-size:14px;margin:30px 0 12px;padding-top:18px;
     border-top:1px solid var(--line);letter-spacing:.02em;
@@ -291,9 +322,128 @@ function recordRow(r){
   </div>`;
 }
 
+const SET_LABEL = (k) => (k === 'none' ? '設定不明' : `設定${k}`);
+
+let allRecords = [];
+let allStats = null;
+let filter = 'all';
+
+const settingKey = (r) => (r.setting ? String(r.setting) : 'none');
+
+function filtered(){
+  return filter === 'all' ? allRecords : allRecords.filter(r => settingKey(r) === filter);
+}
+
+/* どの設定が何件あるか。無い設定のチップは出さない */
+function counts(){
+  const c = {};
+  for (const r of allRecords) {
+    const k = settingKey(r);
+    c[k] = (c[k] || 0) + 1;
+  }
+  return c;
+}
+
+function chipsHtml(){
+  const c = counts();
+  const keys = ['6', '5', '4', '3', '2', '1'].filter(k => c[k]).concat(c.none ? ['none'] : []);
+  if (!keys.length) return '';
+  const one = (k, label, n, cls) =>
+    `<button data-f="${k}" class="${filter === k ? 'on ' + cls : ''}">${label}<span class="n">${fmt(n)}</span></button>`;
+  return '<div class="chips" id="chips">'
+    + one('all', 'すべて', allRecords.length, '')
+    + keys.map(k => one(k, SET_LABEL(k), c[k], k === 'none' ? '' : 'c' + k)).join('')
+    + '</div>';
+}
+
+/* 設定を縦に並べて比べる表。設定判別は、ここに差が出るかどうかから始まる */
+function compareHtml(){
+  const c = counts();
+  const keys = ['6', '5', '4', '3', '2', '1'].filter(k => c[k]).concat(c.none ? ['none'] : []);
+  if (keys.length < 2) return '';
+
+  let rows = '';
+  for (const k of keys) {
+    const s = summarize(allRecords.filter(r => settingKey(r) === k));
+    const cyc = s.wins.filter(w => w.cycle);
+    // 1周期の当選率。判別で最初に効いてくる値
+    const reached = cyc.filter(w => doneCycles(w) >= 1).length;
+    const hit = cyc.filter(w => w.via === 'cycle' && w.cycle === 1).length;
+    rows += `<tr>
+      <td class="set"><span class="tag ${k === 'none' ? '' : 's' + k}">${SET_LABEL(k)}</span></td>
+      <td>${fmt(s.n)}</td>
+      <td>${fmt(s.games)}</td>
+      <td>${s.glowRate == null ? '—' : s.glowRate.toFixed(1) + '%'}</td>
+      <td>${s.avgPt == null ? '—' : s.avgPt.toFixed(2)}</td>
+      <td>${reached ? (hit / reached * 100).toFixed(1) + '%' : '—'}</td>
+    </tr>`;
+  }
+  return `<h2 class="sec">設定別の比較<span>申告した設定ごと</span></h2>
+    <div class="warn"><b>件数が少ないうちは、差が出ても偶然です。</b>
+      判別に使えるようになるのは、設定ごとに何十件と貯まってからです。
+      いまは「どれだけ貯まったか」を見る表として使ってください。</div>
+    <table class="cmp"><thead><tr>
+      <th>設定</th><th>実戦</th><th>G数</th><th>発光率</th><th>平均pt/CZ</th><th>1周期当選率</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function render(){
+  const recs = filtered();
+  const s = summarize(recs);
+  const isAll = filter === 'all';
+
+  const cmp = (mine, med, unit, digits) => {
+    if (mine == null) return '<div class="sub">—</div>';
+    if (med == null) return '<div class="sub">みんな —</div>';
+    const diff = mine - med;
+    return `<div class="sub">みんな ${med.toFixed(digits)}${unit}（${diff >= 0 ? '+' : ''}${diff.toFixed(digits)}）</div>`;
+  };
+
+  const head = isAll ? '' : `<h2 class="sec" style="border:0;padding-top:0;margin-top:0">${SET_LABEL(filter)}の集計<span>${fmt(s.n)}件</span></h2>`;
+
+  $('app').innerHTML = chipsHtml() + head + `
+    <div class="tiles">
+      <div class="tile"><div class="k">実戦</div><div class="v">${fmt(s.n)}<em>件</em></div></div>
+      <div class="tile"><div class="k">総ゲーム数</div><div class="v">${fmt(s.games)}<em>G</em></div></div>
+      <div class="tile mine"><div class="k">発光率</div>
+        <div class="v">${s.glowRate == null ? '—' : s.glowRate.toFixed(1)}<em>%</em></div>
+        ${cmp(s.glowRate, allStats && allStats.glowRateMedian, '%', 1)}</div>
+      <div class="tile mine"><div class="k">平均 pt/CZ</div>
+        <div class="v">${s.avgPt == null ? '—' : s.avgPt.toFixed(2)}</div>
+        ${cmp(s.avgPt, allStats && allStats.avgPtMedian, '', 2)}</div>
+      <div class="tile"><div class="k">下段ベル</div>
+        <div class="v">${s.bellRate == null ? '—' : '1/' + s.bellRate.toFixed(1)}</div>
+        <div class="sub">${fmt(s.bell)}回</div></div>
+      <div class="tile"><div class="k">CZ突入</div><div class="v">${fmt(s.cz)}<em>回</em></div>
+        <div class="sub">無名・生駒</div></div>
+    </div>
+
+    ${isAll ? compareHtml() : ''}
+
+    ${s.wins.length ? `<h2 class="sec">周期当選率<span>${isAll ? '全実戦の合算' : SET_LABEL(filter) + 'の合算'}</span></h2>${cycleTable(s.wins)}` : ''}
+    ${s.pts.length ? `<h2 class="sec">CZ突入時のポイント分布<span>${fmt(s.pts.length)}件</span></h2>${distTable(s.dist, s.pts.length)}` : ''}
+
+    <h2 class="sec">実戦${!isAll ? `<span>${SET_LABEL(filter)}のみ</span>` : ''}</h2>
+    ${recs.length ? recs.map(recordRow).join('') : '<div class="msg">この設定の記録はありません。</div>'}
+  `;
+}
+
+/* 貼り替えても効くように、外側で1度だけ受ける */
+$('app').addEventListener('click', (e) => {
+  const chip = e.target.closest('#chips button');
+  if (chip) {
+    filter = chip.dataset.f;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  const rec = e.target.closest('.rec');
+  if (rec) rec.classList.toggle('open');
+});
+
 async function load(){
   msg('読み込んでいます…');
-  let j, all = null;
+  let j;
   try {
     const r = await fetch('/api/myrecords?machine=kabaneri-unato', { credentials: 'same-origin' });
     j = await r.json();
@@ -303,7 +453,7 @@ async function load(){
   // みんなの中央値。並べて出すと、自分の値が高いのか低いのかが分かる
   try {
     const r = await fetch('/api/stats?machine=kabaneri-unato');
-    all = await r.json();
+    allStats = await r.json();
   } catch(e) {}
 
   msg('');
@@ -315,44 +465,10 @@ async function load(){
     return;
   }
 
-  const s = summarize(j.records);
-  const cmp = (mine, med, unit, digits) => {
-    if (mine == null) return '<div class="sub">—</div>';
-    if (med == null) return '<div class="sub">みんな —</div>';
-    const diff = mine - med;
-    const sign = diff >= 0 ? '+' : '';
-    return `<div class="sub">みんな ${med.toFixed(digits)}${unit}（${sign}${diff.toFixed(digits)}）</div>`;
-  };
-
-  $('app').innerHTML = `
-    <div class="tiles">
-      <div class="tile"><div class="k">実戦</div><div class="v">${fmt(s.n)}<em>件</em></div></div>
-      <div class="tile"><div class="k">総ゲーム数</div><div class="v">${fmt(s.games)}<em>G</em></div></div>
-      <div class="tile mine"><div class="k">発光率</div>
-        <div class="v">${s.glowRate == null ? '—' : s.glowRate.toFixed(1)}<em>%</em></div>
-        ${cmp(s.glowRate, all && all.glowRateMedian, '%', 1)}</div>
-      <div class="tile mine"><div class="k">平均 pt/CZ</div>
-        <div class="v">${s.avgPt == null ? '—' : s.avgPt.toFixed(2)}</div>
-        ${cmp(s.avgPt, all && all.avgPtMedian, '', 2)}</div>
-      <div class="tile"><div class="k">下段ベル</div>
-        <div class="v">${s.bellRate == null ? '—' : '1/' + s.bellRate.toFixed(1)}</div>
-        <div class="sub">${fmt(s.bell)}回</div></div>
-      <div class="tile"><div class="k">CZ突入</div><div class="v">${fmt(s.cz)}<em>回</em></div>
-        <div class="sub">無名・生駒</div></div>
-    </div>
-
-    ${s.wins.length ? `<h2 class="sec">周期当選率<span>全実戦の合算</span></h2>${cycleTable(s.wins)}` : ''}
-    ${s.pts.length ? `<h2 class="sec">CZ突入時のポイント分布<span>${fmt(s.pts.length)}件</span></h2>${distTable(s.dist, s.pts.length)}` : ''}
-
-    <h2 class="sec">実戦${j.truncated ? '<span>新しい500件まで</span>' : ''}</h2>
-    ${j.records.map(recordRow).join('')}
-  `;
+  allRecords = j.records;
+  if (j.truncated) msg('新しい500件までを表示しています');
+  render();
   show('app', true);
-
-  $('app').addEventListener('click', (e) => {
-    const rec = e.target.closest('.rec');
-    if (rec) rec.classList.toggle('open');
-  });
 }
 
 boot();
