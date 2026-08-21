@@ -21,3 +21,11 @@ database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
 binding = "DB"
 database_name = "minnanoslot"
 database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
+
+# 試用URL（プレビュー）だけの確認用フラグ。
+# メール基盤を用意する前に、ログインの流れを通しで試すためのもの。
+# これが有効な間は、確認メールの代わりにログインリンクがその場で返る＝
+# アドレスを知っていれば誰でもその人になれる。
+# 本番（env.production）には絶対に入れないこと。Resend を設定したら消す。
+[env.preview.vars]
+DEV_LOGIN = "1"

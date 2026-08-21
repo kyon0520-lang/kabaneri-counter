@@ -5,6 +5,8 @@
  * レコードのIDは端末が採番しているので、再送で二重に届いても INSERT OR IGNORE で弾ける。
  */
 
+import { currentUser } from './_auth.js';
+
 const MACHINES = {
   'kabaneri-unato': {
     chars: ['red', 'green', 'blue'],
@@ -137,17 +139,26 @@ export async function onRequestPost({ request, env }) {
   const d = derive(r);
   const now = new Date().toISOString();
 
+  // ログインしている人の記録として結び付ける。端末IDだけだと
+  // 機種変更やブラウザの違いで別人になり、あとから読み出せない
+  const user = await currentUser(request, db);
+
   const ins = await db.prepare(
     `INSERT OR IGNORE INTO records
        (id, client_id, machine, played_at, received_at, games, bell,
-        setting, evidence, avg_pt, glow_rate, payload, app_version)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        setting, evidence, avg_pt, glow_rate, payload, app_version,
+        user_id, memo, wins)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(
     r.id, r.clientId, r.machine, new Date(r.playedAt).toISOString(), now,
     r.games, r.bell,
     r.setting ?? null, r.evidence ?? null,
     d.avgPt, d.glowRate,
-    JSON.stringify(r.chars), r.appVersion ?? null
+    JSON.stringify(r.chars), r.appVersion ?? null,
+    user ? user.id : null,
+    // メモは読み出しのために預かるだけ。集計には一切使わない
+    typeof r.memo === 'string' ? r.memo.slice(0, 2000) : null,
+    Array.isArray(r.wins) ? JSON.stringify(r.wins) : null
   ).run();
 
   const isNew = ins.meta && ins.meta.changes > 0;

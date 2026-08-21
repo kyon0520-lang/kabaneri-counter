@@ -67,6 +67,13 @@
     text-align:left;text-decoration:none;padding:12px 12px;border-radius:8px;cursor:pointer;
   }
   .menu button:active,.menu a:active{background:var(--panel2)}
+  /* ==SEND:START== */
+  /* メニューに出す参加状態。文字だけだと見落とすので色を付ける */
+  .menu .mstate{
+    display:block;font-size:10.5px;margin-top:3px;color:var(--muted);font-weight:700;
+  }
+  .menu .mstate.on{color:#7fe0ab}
+  /* ==SEND:END== */
   h1{font-size:15px;margin:0;letter-spacing:.02em;min-width:0}
   /* サイト名。機種名より一段小さく、上に添える */
   header .site{display:flex;align-items:center;gap:6px;margin:0 0 3px}
@@ -471,6 +478,32 @@
   .a2hs-note{margin:12px 0 0;font-size:11.5px;color:var(--muted);line-height:1.9}
   .a2hs-note b{color:var(--text)}
 
+  /* ==SEND:START== */
+  /* 参加（メール登録）まわり */
+  .sheet.join .lead{font-size:12.5px;color:var(--muted);line-height:1.85;margin:0 0 12px}
+  .sheet.join .give{
+    border:1px solid var(--line);background:var(--panel2);border-radius:10px;
+    padding:11px 12px;margin:0 0 12px;font-size:11.5px;line-height:1.9;color:var(--muted);
+  }
+  .sheet.join .give b{color:var(--text);display:block;margin-bottom:2px}
+  .sheet.join input[type="email"]{
+    width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    color:var(--text);font-family:inherit;font-size:16px;padding:12px;margin-bottom:10px;
+  }
+  .sheet.join input[type="email"]:focus{outline:none;border-color:#3b82f6}
+  .sheet.join .sent{
+    border:1px solid rgba(47,181,106,.5);background:rgba(47,181,106,.1);
+    border-radius:10px;padding:12px;font-size:12.5px;line-height:1.9;margin:0 0 12px;
+  }
+  .sheet.join .sent b{color:#7fe0ab}
+  .sheet.join .who{font-size:12.5px;line-height:1.8;margin:0 0 12px}
+  .sheet.join .who b{color:#7fe0ab}
+  .sheet.join .danger{
+    background:none;border:0;color:#ff8a82;font-size:11.5px;
+    font-family:inherit;padding:8px 0;cursor:pointer;text-decoration:underline;
+  }
+  /* ==SEND:END== */
+
   .modal{
     position:fixed;inset:0;z-index:50;padding:24px;
     background:rgba(6,16,28,.72);backdrop-filter:blur(3px);
@@ -869,6 +902,10 @@
 <div class="menuscrim" id="menuscrim"></div>
 <nav class="menu" id="menu">
   <button id="histbtn">実戦履歴</button>
+  <!-- ==SEND:START== -->
+  <button id="pullbtn">実戦履歴を読み出す</button>
+  <button id="acctbtn">みんなのスロット<span class="mstate" id="acctstate">未参加</span></button>
+  <!-- ==SEND:END== -->
   <button id="trbtn">記録の引き継ぎ</button>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
 </nav>
@@ -1139,17 +1176,61 @@
 </div>
 
 <!-- ==SEND:START== -->
-<div class="modal" id="consentmodal" hidden>
-  <div class="sheet consent" role="dialog" aria-modal="true">
-    <h2>みんなのスロットに加わりますか</h2>
-    <p class="sub">実戦を保存したとき、匿名の記録を送ります。集まった記録は、機種ごとの分布や設定判別に使います。</p>
-    <p class="sub"><b>送るもの</b>：押した回数、総ゲーム数、下段ベル、CZ突入時のポイント、設定と根拠（選んだ場合のみ）</p>
-    <p class="sub"><b>送らないもの</b>：名前、位置、店舗、端末を特定できる情報</p>
-    <p class="sub">あとから履歴の画面でいつでも止められます。</p>
-    <div class="acts stack">
-      <button class="primary" id="consentyes">参加して保存する</button>
-      <button class="ghostish" id="consentno">送らずに保存する</button>
+<!-- 参加（メール登録）。数えるのは登録不要、保存だけ登録制。
+     パスワードは持たず、届いたリンクを押せた人を本人とみなす -->
+<div class="modal" id="joinmodal" hidden>
+  <div class="sheet join" role="dialog" aria-modal="true">
+
+    <!-- まだ参加していないとき -->
+    <div id="joinform">
+      <h2>実戦を保存するには参加が必要です</h2>
+      <p class="lead">記録はみんなのスロットに預かります。<b>端末を変えても、Safariとホーム画面アプリの間でも、同じ記録を読み出せます。</b>数えるだけなら参加は要りません。</p>
+
+      <div class="give">
+        <b>預かるもの</b>押した回数、総ゲーム数、下段ベル、CZ突入時のポイント、当選履歴、メモ、設定と根拠（選んだ場合のみ）
+      </div>
+      <div class="give">
+        <b>みんなの集計に使うもの</b>上のうち<strong>メモを除いた部分</strong>を、統計と設定判別に使い、サイト上で統計値として公開します。メモは読み出しのために預かるだけで、集計には使いません
+      </div>
+      <div class="give">
+        <b>使わないもの</b>名前、位置、店舗、端末を特定できる情報。メールアドレスはログインにだけ使い、公開しません
+      </div>
+
+      <label class="wlbl" for="joinemail"><i>＠</i>メールアドレス</label>
+      <input type="email" id="joinemail" inputmode="email" autocomplete="email"
+             autocapitalize="off" spellcheck="false" placeholder="you@example.com">
+      <p class="lead">届いたリンクを押すだけでログインします。パスワードはありません。</p>
+
+      <div class="acts stack">
+        <button class="primary" id="joinsend">確認メールを送る</button>
+        <button class="ghostish" id="joincancel">やめる</button>
+      </div>
+      <p class="lead"><a href="/privacy.html" target="_blank" rel="noopener">個人情報の扱いについて</a></p>
     </div>
+
+    <!-- メールを送ったあと -->
+    <div id="joinsent" hidden>
+      <h2>メールを送りました</h2>
+      <div class="sent"><b id="joinaddr">—</b> にログイン用のリンクを送りました。<br>そのリンクを押すと参加が完了し、この画面に戻ってきます。</div>
+      <p class="lead">30分で使えなくなります。届かないときは迷惑メールをご確認ください。</p>
+      <div class="acts stack">
+        <button class="ghostish" id="joinback">別のアドレスにする</button>
+        <button class="ghostish" id="joinclose">閉じる</button>
+      </div>
+    </div>
+
+    <!-- 参加済み -->
+    <div id="joinme" hidden>
+      <h2>みんなのスロット</h2>
+      <p class="who">参加中：<b id="meemail">—</b><br><span class="sub">預かっている実戦　<b id="mecount">0</b> 件</span></p>
+      <div class="acts stack">
+        <button class="primary" id="mepull">実戦履歴を読み出す</button>
+        <button class="ghostish" id="melogout">この端末からログアウト</button>
+        <button class="ghostish" id="meclose">閉じる</button>
+      </div>
+      <button class="danger" id="medelete">アカウントと記録をすべて削除する</button>
+    </div>
+
   </div>
 </div>
 <!-- ==SEND:END== -->
@@ -1186,6 +1267,18 @@
     <p class="a2hs-note">数えるだけならこのままでも使えます。保存した記録があとから見えなくなるだけです。<span id="a2hstr" hidden>すでに保存した記録は、メニューの<b>「記録の引き継ぎ」</b>で移せます。</span></p>
   </div>
 </div>
+
+<!-- ==SEND:START== -->
+<div class="modal" id="askmodal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <p id="asktext">—</p>
+    <div class="acts">
+      <button id="askno">やめる</button>
+      <button class="primary" id="askyes">実行する</button>
+    </div>
+  </div>
+</div>
+<!-- ==SEND:END== -->
 
 <div class="toast" id="toast" hidden></div>
 
@@ -2049,7 +2142,13 @@ function openSaveSheet(){
   document.getElementById('savemodal').hidden = false;
 }
 
-document.getElementById('savebtn').addEventListener('click', openSaveSheet);
+document.getElementById('savebtn').addEventListener('click', () => {
+  /* ==SEND:START== */
+  // 保存はみんなのスロットに預ける形なので、参加していないとできない
+  if (!me) { openJoin(); return; }
+  /* ==SEND:END== */
+  openSaveSheet();
+});
 document.getElementById('scancel').addEventListener('click', () => {
   document.getElementById('savemodal').hidden = true;
 });
@@ -2130,8 +2229,9 @@ function renderSendState(){
   if (!el) return;
   // まだ届いていない件数も出す。出しておかないと、送れていないことに気づけない
   const waiting = hist.filter(r => !r.sent).length;
-  el.textContent = sendCfg.consent === true ? (waiting ? `オン（未送信 ${fmt(waiting)}件）` : 'オン')
-                 : sendCfg.consent === false ? 'オフ' : '未設定';
+  el.textContent = !me ? '未参加'
+                 : waiting ? `参加中（未送信 ${fmt(waiting)}件）`
+                 : `参加中（${me.email}）`;
 }
 
 /* 送る形に整える。lost など端末内だけの値は送らない */
@@ -2145,6 +2245,8 @@ function toPayload(r){
     id: r.id, clientId: sendCfg.clientId, machine: r.machine,
     playedAt: r.date, games: r.games, bell: r.bell,
     chars, czPointsBy: r.czPointsBy || [],
+    // 読み出しのために預ける。メモは集計には使わない（参加画面に明記）
+    memo: r.memo || '', wins: r.wins || [],
     setting: r.setting, evidence: r.evidence, appVersion: APP_VERSION
   };
 }
@@ -2159,11 +2261,14 @@ function markSent(id){
    通信できなかったときだけ null（あとで送り直す）。
    「送れた」と「弾かれた」を呼び出し側で見分けられるようにしている */
 async function sendRecord(r){
-  if (sendCfg.consent !== true) return null;
+  // 参加していない人は保存自体ができないので、ここに来るのは参加者だけ。
+  // ログアウト直後などのために、念のため見る
+  if (!me) return null;
   let res;
   try {
     res = await fetch(API_RECORDS, {
       method: 'POST',
+      credentials: 'same-origin',      // 誰の記録かはCookieで伝える
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(toPayload(r))
     });
@@ -2185,7 +2290,7 @@ async function sendRecord(r){
 /* まだ送れていない分を送る。結果を返して、呼び出し側で知らせられるようにする */
 async function flushUnsent(limit = 10){
   const none = { sent:0, rejected:0, left:0, offline:false };
-  if (sendCfg.consent !== true) return none;
+  if (!me) return none;
   if (navigator.onLine === false) return { ...none, offline:true, left:hist.filter(r => !r.sent).length };
 
   const pend = hist.filter(r => !r.sent).slice(0, limit);
@@ -2243,7 +2348,6 @@ let pendingSaved = null;
 
 function afterSave(rec){
   /* ==SEND:START== */
-  if (sendCfg.consent === null) { pendingSaved = rec; document.getElementById('consentmodal').hidden = false; return; }
   showCompare(null);
   /* ==SEND:END== */
   openSavedSheet(rec);
@@ -2253,29 +2357,176 @@ function afterSave(rec){
 }
 /* ==SEND:START== */
 
-document.getElementById('consentyes').addEventListener('click', () => {
-  sendCfg.consent = true; saveSendCfg();
-  document.getElementById('consentmodal').hidden = true;
-  const r = pendingSaved; pendingSaved = null;
-  if (r) { afterSave(r); return; }
-  // 履歴画面から入にしたとき。溜まっている分をこの場で送る
-  flushAndTell();
+/* ---------- 参加（メール登録） ----------
+   数えるのは登録不要。保存だけ登録制。
+   記録はサーバーに預かるので、端末が変わっても
+   Safariとホーム画面アプリの間でも、同じものを読み出せる。 */
+
+/* 取り消せない操作の確認。confirm は公開ページで無視されるので自前で持つ */
+let askAction = null;
+function askConfirm(text, action){
+  document.getElementById('asktext').textContent = text;
+  askAction = action;
+  document.getElementById('askmodal').hidden = false;
+}
+document.getElementById('askno').addEventListener('click', () => {
+  askAction = null;
+  document.getElementById('askmodal').hidden = true;
 });
-document.getElementById('consentno').addEventListener('click', () => {
-  sendCfg.consent = false; saveSendCfg();
-  document.getElementById('consentmodal').hidden = true;
-  const r = pendingSaved; pendingSaved = null;
-  if (r) afterSave(r);
+document.getElementById('askyes').addEventListener('click', () => {
+  const a = askAction; askAction = null;
+  document.getElementById('askmodal').hidden = true;
+  if (a) a();
 });
 
-document.getElementById('sendtoggle').addEventListener('click', () => {
-  if (sendCfg.consent === true) {
-    sendCfg.consent = false; saveSendCfg();
-    toast('みんなのスロットへの送信をやめました');
+let me = null;                       // { email, records } | null
+const joinModal = document.getElementById('joinmodal');
+
+function joinView(name){
+  ['joinform', 'joinsent', 'joinme'].forEach(id => {
+    document.getElementById(id).hidden = (id !== name);
+  });
+  joinModal.hidden = false;
+}
+
+function openJoin(){
+  if (me) {
+    document.getElementById('meemail').textContent = me.email;
+    document.getElementById('mecount').textContent = fmt(me.records || 0);
+    joinView('joinme');
   } else {
-    document.getElementById('consentmodal').hidden = false;   // 中身を読んでから決めてもらう
+    joinView('joinform');
+  }
+}
+const closeJoin = () => { joinModal.hidden = true; };
+
+/* 参加状態は、メニューと履歴画面の両方に出す。
+   保存を押してから断られるより、先に分かるほうがいい */
+function renderMe(){
+  const chip = document.getElementById('acctstate');
+  if (chip) {
+    chip.textContent = me ? '参加中' : '未参加';
+    chip.classList.toggle('on', !!me);
+  }
+  const st = document.getElementById('sendstate');
+  if (st) st.textContent = me ? `参加中（${me.email}）` : '未参加';
+}
+
+async function loadMe(){
+  try {
+    const res = await fetch('/api/auth/me', { credentials: 'same-origin' });
+    const j = await res.json();
+    me = (j && j.user) || null;
+  } catch(e) { me = null; }
+  renderMe();
+}
+
+document.getElementById('joinsend').addEventListener('click', async () => {
+  const el = document.getElementById('joinemail');
+  const email = el.value.trim();
+  if (!/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(email)) {
+    toast('メールアドレスを確認してください');
+    return;
+  }
+  const btn = document.getElementById('joinsend');
+  btn.disabled = true; btn.textContent = '送信中…';
+  try {
+    const res = await fetch('/api/auth/request', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const j = await res.json();
+    if (!j.ok) { toast(j.error || '送信できませんでした'); return; }
+    document.getElementById('joinaddr').textContent = email;
+    joinView('joinsent');
+    // メール基盤を用意する前の確認用。DEV_LOGIN を立てたときだけ返ってくる
+    if (j.devLink) location.href = j.devLink;
+  } catch(e) {
+    toast('通信できませんでした');
+  } finally {
+    btn.disabled = false; btn.textContent = '確認メールを送る';
   }
 });
+
+document.getElementById('joincancel').addEventListener('click', () => {
+  closeJoin();
+  // 保存しようとして止まっていた分は、参加しない限り保存できない
+  if (pendingSaved) { pendingSaved = null; toast('参加すると保存できます'); }
+});
+document.getElementById('joinclose').addEventListener('click', closeJoin);
+document.getElementById('joinback').addEventListener('click', () => joinView('joinform'));
+document.getElementById('meclose').addEventListener('click', closeJoin);
+document.getElementById('acctbtn').addEventListener('click', () => { closeMenu(); openJoin(); });
+
+document.getElementById('melogout').addEventListener('click', async () => {
+  await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
+  me = null; renderMe(); closeJoin();
+  toast('ログアウトしました。端末に残っている記録はそのままです');
+});
+
+document.getElementById('medelete').addEventListener('click', () => {
+  // 戻せないので、confirm ではなく自前の確認を挟む（サンドボックスで confirm が無視されるため）
+  askConfirm(
+    'アカウントと、預かっている実戦の記録をすべて削除します。元には戻せません。',
+    async () => {
+      const res = await fetch('/api/account/delete', { method: 'POST', credentials: 'same-origin' });
+      const j = await res.json().catch(() => null);
+      if (j && j.ok) {
+        me = null; renderMe(); closeJoin();
+        toast(`削除しました（実戦 ${fmt(j.deleted || 0)} 件）`);
+      } else {
+        toast('削除できませんでした');
+      }
+    });
+});
+
+/* ---------- サーバーから読み出す ---------- */
+
+async function pullRecords(){
+  if (!me) { openJoin(); return; }
+  toast('読み出しています…');
+  let j;
+  try {
+    const res = await fetch('/api/myrecords?machine=kabaneri-unato', { credentials: 'same-origin' });
+    j = await res.json();
+  } catch(e) { toast('通信できませんでした'); return; }
+  if (!j.ok) { toast(j.error || '読み出せませんでした'); return; }
+
+  // 端末にある分と混ぜる。同じ実戦は重ねない（idが一致するものは残す）
+  const have = new Set(hist.map(r => r.id));
+  const add = j.records.filter(r => !have.has(r.id));
+  hist = add.concat(hist);
+  hist.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+  if (hist.length > 500) hist.length = 500;
+
+  if (!saveHist()) { toast('端末に書き込めませんでした'); return; }
+  renderHist(); renderDist();
+  toast(add.length
+    ? `${fmt(add.length)}件を読み出しました（預かり ${fmt(j.count)}件）`
+    : `新しい記録はありません（預かり ${fmt(j.count)}件）`);
+}
+
+document.getElementById('pullbtn').addEventListener('click', () => { closeMenu(); pullRecords(); });
+document.getElementById('mepull').addEventListener('click', () => { closeJoin(); pullRecords(); });
+
+document.getElementById('sendtoggle').addEventListener('click', openJoin);
+
+/* メールのリンクから戻ってきたとき */
+(function(){
+  const q = new URLSearchParams(location.search).get('login');
+  if (!q) return;
+  history.replaceState(null, '', location.pathname);
+  const msg = {
+    ok: '参加しました。実戦を保存すると預かります',
+    expired: 'リンクの有効期限が切れています。もう一度お試しください',
+    used: 'このリンクは使用済みです。もう一度お試しください',
+    invalid: 'リンクが正しくありません',
+    error: 'ログインできませんでした',
+  }[q];
+  if (msg) setTimeout(() => toast(msg), 400);
+  if (q === 'ok') setTimeout(() => { loadMe().then(pullRecords); }, 300);
+})();
 
 window.addEventListener('online', () => { flushUnsent().then(renderSendState); });
 /* ==SEND:END== */
@@ -3156,7 +3407,11 @@ if (isIOS() && !isStandalone() && storageWorks() && !localStorage.getItem(A2HS_K
   showA2hs();
 }
 /* ==SEND:START== */
-setTimeout(() => flushUnsent().then(renderSendState), 1200);
+// 参加しているかを先に確かめてから、溜まっている分を送り直す
+loadMe().then(() => {
+  renderSendState();
+  return flushUnsent();
+}).then(renderSendState).catch(() => {});
 /* ==SEND:END== */
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる

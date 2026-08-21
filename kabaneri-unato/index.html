@@ -80,6 +80,7 @@
     text-align:left;text-decoration:none;padding:12px 12px;border-radius:8px;cursor:pointer;
   }
   .menu button:active,.menu a:active{background:var(--panel2)}
+  
   h1{font-size:15px;margin:0;letter-spacing:.02em;min-width:0}
   /* サイト名。機種名より一段小さく、上に添える */
   header .site{display:flex;align-items:center;gap:6px;margin:0 0 3px}
@@ -484,6 +485,8 @@
   .a2hs-note{margin:12px 0 0;font-size:11.5px;color:var(--muted);line-height:1.9}
   .a2hs-note b{color:var(--text)}
 
+  
+
   .modal{
     position:fixed;inset:0;z-index:50;padding:24px;
     background:rgba(6,16,28,.72);backdrop-filter:blur(3px);
@@ -882,6 +885,7 @@
 <div class="menuscrim" id="menuscrim"></div>
 <nav class="menu" id="menu">
   <button id="histbtn">実戦履歴</button>
+  
   <button id="trbtn">記録の引き継ぎ</button>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
 </nav>
@@ -1185,6 +1189,8 @@
     <p class="a2hs-note">数えるだけならこのままでも使えます。保存した記録があとから見えなくなるだけです。<span id="a2hstr" hidden>すでに保存した記録は、メニューの<b>「記録の引き継ぎ」</b>で移せます。</span></p>
   </div>
 </div>
+
+
 
 <div class="toast" id="toast" hidden></div>
 
@@ -2007,7 +2013,10 @@ function openSaveSheet(){
   document.getElementById('savemodal').hidden = false;
 }
 
-document.getElementById('savebtn').addEventListener('click', openSaveSheet);
+document.getElementById('savebtn').addEventListener('click', () => {
+  
+  openSaveSheet();
+});
 document.getElementById('scancel').addEventListener('click', () => {
   document.getElementById('savemodal').hidden = true;
 });
