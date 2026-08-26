@@ -82,6 +82,7 @@ if os.path.exists(_cpath):
                 if 'machine' in st: r['machine'] = st['machine']
                 if 'chain' in st: r['chain'] = st['chain']
                 if 'category' in st: r['category'] = st['category']
+                if 'kind' in st: r['kind'] = st['kind']
                 r['corrected'] = c.get('note', '')
                 _applied += 1
     _miss = len(_corr) - _applied
@@ -119,11 +120,12 @@ _alias = {_n(k): v for k, v in canon.items()}
 _KIND = [
     (3, r'\d{1,2}[:：]\d{2}|\d+分(投稿|ポスト)|投稿時間|ポスト時間|分投稿|分ポスト'),
     (2, r'^\d{1,2}/\d{1,2}|の日$|記念日|誕生日|キャラ誕|BD$|周年|の記念'),
-    (4, r'来店|感謝祭|ファン感|イベント|合同|取材'),
+    (4, r'来店|感謝祭|ファン感|イベント|取材'),
     (1, r'（画像）|\(画像\)|画像|写真|枚目'),
 ]
-def kind(ch):
-    head = ch[0] if ch else ''
+def kind(rec):
+    if 'kind' in rec: return rec['kind']      # corrections.json による上書き
+    head = rec['chain'][0] if rec['chain'] else ''
     for k, p in _KIND:
         if re.search(p, head): return k
     return 0
@@ -138,7 +140,7 @@ for r in out:
     rows.append([ai[r['articleUrl']], mi[r['machine']], ch,
                  res.get('plus'), res.get('total'), res.get('avg'),
                  0 if r['category'] == '機種' else 1,
-                 kind(r['chain'])])
+                 kind(r)])
 # 機種名の読み・別名（検索用）
 _rd = {}
 _rpath = B + '/data/readings.json'
