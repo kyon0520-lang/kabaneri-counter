@@ -51,8 +51,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
 .mtabs::-webkit-scrollbar{display:none}
 .mtabs button{
   flex:1 0 auto;background:none;border:0;border-bottom:2px solid transparent;
-  color:var(--sub);font-family:inherit;font-size:11.5px;letter-spacing:-.02em;
-  padding:11px 7px;cursor:pointer;white-space:nowrap;transition:color .13s}
+  color:var(--sub);font-family:inherit;font-size:12.5px;
+  padding:11px 6px;cursor:pointer;white-space:nowrap;transition:color .13s}
 .mtabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--accent)}
 .mtabs button b{font-weight:700;font-size:11px;margin-left:4px;color:var(--accent)}
 .mtabs button.on b{color:var(--accent)}
@@ -211,12 +211,13 @@ function card(r,q){
   </div>`;
 }
 
-function tabCounts(all){
+function tabCounts(all, searching){
   document.querySelectorAll('#tabs button').forEach(b=>{
     const k=+b.dataset.k, n=all.filter(r=>inTab(r,k)).length;
     b.classList.toggle('on', k===tab);
-    b.classList.toggle('zero', n===0);
-    b.querySelector('b').textContent = n || '';
+    // 0件の淡色は検索中だけ。検索前に全部淡くすると読めなくなる
+    b.classList.toggle('zero', searching && n===0);
+    b.querySelector('b').textContent = searching ? (n || '') : '';
   });
 }
 
@@ -228,8 +229,7 @@ function render(){
 
   if(!q){
     sel=null; chips.innerHTML=''; cnt.innerHTML='';
-    tabCounts([]);
-    document.querySelectorAll('#tabs button b').forEach(b=>b.textContent='');
+    tabCounts([], false);
     const top=[...DB.recs].filter(r=>inTab(r,tab))
       .sort((a,b)=> DB.articles[b[0]][0] > DB.articles[a[0]][0] ? 1:-1).slice(0,12);
     const lead = {2:'日付や記念日にちなんだ示唆です。月や日が同じ回を見ると傾向が掴めます。',
@@ -242,7 +242,7 @@ function render(){
   }
 
   const all=search(q);
-  tabCounts(all);
+  tabCounts(all, true);
   let hits=all.filter(r=>inTab(r,tab));
   const byM={};
   hits.forEach(r=>{ const m=DB.machines[r[1]]; byM[m]=(byM[m]||0)+1; });
