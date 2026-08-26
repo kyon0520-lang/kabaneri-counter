@@ -119,6 +119,10 @@
     padding:0 .06em;
   }
   .hero .lead{margin:22px 0 0;color:var(--ink-2);font-size:14.5px;max-width:30em}
+  /* 2文のあいだを空ける。折り返しでできた行の切れ目と、
+     文の切れ目が同じ見え方だと、どこで話が変わるのか分からない */
+  .hero .lead span{display:block}
+  .hero .lead span + span{margin-top:.85em}
   .hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 0;align-items:center}
   .hero .sub{font-size:12px;color:var(--ink-3);margin:14px 0 0}
 
@@ -316,7 +320,7 @@
   <div class="wrap hero-grid">
     <div class="hero-txt">
       <h1 class="rv">スロットの設定判別を、<br><span class="mark">みんなのデータで。</span></h1>
-      <p class="lead rv">みんなのスロットは、カウントした実戦データを持ち寄る場所です。<br>あなたのデータが、明日の誰かの判別材料に。</p>
+      <p class="lead rv"><span>みんなのスロットは、カウントした実戦データを持ち寄る場所です。</span><span>あなたのデータが、明日の誰かの判別材料に。</span></p>
       <div class="actions rv"><a class="btn lg accent" href="./kabaneri-unato/">カウンターを開く</a></div>
       <p class="sub rv">登録なしで、すぐ数えられます</p>
     </div>
