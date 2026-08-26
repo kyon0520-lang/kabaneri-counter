@@ -49,6 +49,50 @@
   /* 積んだメダルと、加わる一枚。線の色は文字に追従させる */
   .logo .mk{width:22px;height:35px;flex:0 0 auto;display:block;color:var(--ink)}
   .markdefs{position:absolute;width:0;height:0;overflow:hidden}
+
+  /* ヘッダーのメニュー。
+     以前はここに「はじめる」を置いていたが、本文の「カウンターを開く」と
+     同じ行き先で重複していたので、行き先の一覧に変えた */
+  .navbtn{
+    display:none;background:none;border:0;padding:10px 6px;cursor:pointer;
+    flex-direction:column;gap:5px;width:40px;align-items:flex-end;
+  }
+  .navbtn span{display:block;height:2px;width:20px;background:var(--ink);border-radius:2px;
+               transition:transform .22s,opacity .18s}
+  .navbtn span:nth-child(2){width:14px}
+  body.nav-open .navbtn span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  body.nav-open .navbtn span:nth-child(2){opacity:0}
+  body.nav-open .navbtn span:nth-child(3){width:20px;transform:translateY(-7px) rotate(-45deg)}
+
+  .topnav{display:flex;align-items:center;gap:22px}
+  .topnav a{
+    text-decoration:none;color:var(--ink-2);font-size:13px;font-weight:600;
+    letter-spacing:.03em;white-space:nowrap;
+  }
+  @media (hover:hover){.topnav a:hover{color:var(--ink)}}
+  .topnav a.go{
+    background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;font-weight:700;
+  }
+  @media (hover:hover){.topnav a.go:hover{opacity:.85;color:#fff}}
+
+  /* 幅が足りなくなったら畳む。4つ並べると機種名が入らない */
+  @media (max-width:760px){
+    .navbtn{display:flex}
+    .topnav{
+      position:absolute;top:60px;right:12px;left:12px;
+      flex-direction:column;align-items:stretch;gap:0;
+      background:var(--bg);border:1px solid var(--line);border-radius:14px;
+      padding:6px;box-shadow:0 14px 34px rgba(20,26,38,.14);
+      opacity:0;visibility:hidden;transform:translateY(-6px);
+      transition:opacity .18s,transform .18s,visibility .18s;
+    }
+    body.nav-open .topnav{opacity:1;visibility:visible;transform:none}
+    .topnav a{padding:14px 14px;font-size:14.5px;border-radius:9px}
+    .topnav a.go{margin-top:4px;text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .topnav,.navbtn span{transition:none}
+  }
   .btn{
     display:inline-flex;align-items:center;gap:8px;text-decoration:none;
     background:var(--ink);color:#fff;font-weight:700;font-size:13px;
@@ -255,7 +299,15 @@
 <header>
   <div class="wrap bar">
     <div class="logo"><svg class="mk" viewBox="0 0 60 96" aria-hidden="true"><use href="#mk"></use></svg>みんなのスロット</div>
-    <a class="btn" href="./kabaneri-unato/">はじめる</a>
+    <button class="navbtn" id="navbtn" aria-label="メニュー" aria-expanded="false" aria-controls="topnav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="topnav" id="topnav">
+      <a href="#concept">コンセプト</a>
+      <a href="#machines">対応機種</a>
+      <a href="#join">参加のしかた</a>
+      <a class="go" href="./kabaneri-unato/">カウンターを開く</a>
+    </nav>
   </div>
 </header>
 
@@ -419,6 +471,27 @@
 </footer>
 
 <script>
+/* ヘッダーのメニュー。狭い画面だけ畳む */
+(function () {
+  var btn = document.getElementById('navbtn');
+  var nav = document.getElementById('topnav');
+  if (!btn || !nav) return;
+  function set(open) {
+    document.body.classList.toggle('nav-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    set(!document.body.classList.contains('nav-open'));
+  });
+  // 行き先を選んだら閉じる。同じページ内の移動なので開いたままだと邪魔になる
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#topnav') && !e.target.closest('#navbtn')) set(false);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+})();
+
 (function () {
   var items = document.querySelectorAll('.rv');
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
