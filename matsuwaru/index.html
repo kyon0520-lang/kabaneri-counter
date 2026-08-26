@@ -95,7 +95,10 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
   background:#fff;border-radius:12px;font:inherit;font-size:14px;color:var(--accent);cursor:pointer}
 .foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
   font-size:11px;color:var(--sub);line-height:1.8}
-.foot a{color:var(--sub)}
+.foot p{margin:0 0 7px}
+.foot p:last-child{margin-bottom:0}
+.foot .src{font-size:12px;color:var(--ink);font-weight:600}
+.foot a{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -125,9 +128,11 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
   <div class="chips" id="chips"></div>
   <div id="results"></div>
   <div class="foot">
-    データは<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a>の記事から作成しています。
-    各件の「記事を見る」から出典をご確認ください。<br>
-    <span id="gen"></span>
+    <p class="src">出典：<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a></p>
+    <p>本サイトは同ブログの記事をもとに、示唆と機種の対応を検索できる形にまとめたものです。
+    連想の考察を含む記事内容の著作権は同ブログに帰属します。
+    各件の「記事を見る」から元記事をご確認ください。</p>
+    <p id="gen"></p>
   </div>
 </main>
 
