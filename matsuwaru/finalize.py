@@ -69,6 +69,24 @@ for r in recs:
     else:
         x['category']='機種'; x['machine']=canon.get(m,m)
     out.append(x)
+
+# --- 手動修正の適用（data/corrections.json） ---
+_cpath = B + '/data/corrections.json'
+if os.path.exists(_cpath):
+    _corr = json.load(open(_cpath, encoding='utf-8')).get('records', [])
+    _applied = 0
+    for c in _corr:
+        m, st = c['match'], c['set']
+        for r in out:
+            if r['targetDate'] == m['date'] and '→'.join(r['chain']) == m['raw']:
+                if 'machine' in st: r['machine'] = st['machine']
+                if 'chain' in st: r['chain'] = st['chain']
+                if 'category' in st: r['category'] = st['category']
+                r['corrected'] = c.get('note', '')
+                _applied += 1
+    _miss = len(_corr) - _applied
+    print('手動修正: %d件を適用%s' % (_applied, '（%d件は対象が見つからず未適用）' % _miss if _miss else ''))
+
 for i,x in enumerate(out): x['id']='%s-%03d'%(x['targetDate'],i)
 
 json.dump(out,open(B+'/data/matsuwaru.json','w'),ensure_ascii=False,indent=1)
