@@ -153,16 +153,28 @@ fetch('data/index.json').then(r=>r.json()).then(d=>{
 // 機種以外を指す示唆（末尾・設置台数など）は種類によらず末尾タブへ集約する
 const inTab=(r,k)=> k===5 ? r[6]===1 : (r[6]===0 && TABS[k].includes(r[7]));
 
+// 数字だけで検索したとき、他の数字の一部（1080円の1、11年目の1）を拾わないようにする。
+// 丸数字は正規化済みなので「5」で「アナザー末尾⑤」に当たる。
+function digitIn(tok, n){
+  for(let i = tok.indexOf(n); i !== -1; i = tok.indexOf(n, i + 1)){
+    const b = tok[i-1] || '', a = tok[i+n.length] || '';
+    if(!/[0-9]/.test(b) && !/[0-9]/.test(a)) return true;
+  }
+  return false;
+}
+
 function search(q){
   const n=N(q); if(!n) return [];
+  const num = /^[0-9]+$/.test(n);
+  const has = (tok)=> num ? digitIn(tok,n) : tok.includes(n);
   const out=[];
   for(const r of DB.recs){
     const t=r[8]; let sc=0;
     if(t[0]===n) sc=4;
     else if(t.includes(n)) sc=3;
-    else if(t[0].includes(n)) sc=2;
-    else if(t.some(x=>x.includes(n))) sc=1;
-    else if(DB.mkeys[r[1]].some(k=>k.includes(n))) sc=1;
+    else if(has(t[0])) sc=2;
+    else if(t.some(x=>has(x))) sc=1;
+    else if(DB.mkeys[r[1]].some(k=>has(k))) sc=1;
     if(sc) out.push([sc,r]);
   }
   out.sort((a,b)=> b[0]-a[0] || (DB.articles[b[1][0]][0] > DB.articles[a[1][0]][0] ? 1 : -1));

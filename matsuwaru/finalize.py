@@ -65,7 +65,8 @@ for r in recs:
         continue
     x=dict(r)
     if NON.search(m):
-        x['category']='末尾・設置・記念日など'; x['machine']=m
+        # 機種以外の見出しにも名寄せを適用する（全角/半角の揺れなど）
+        x['category']='末尾・設置・記念日など'; x['machine']=canon.get(m, clean(m) if clean(m) in cnt else m)
     else:
         x['category']='機種'; x['machine']=canon.get(m,m)
     out.append(x)
