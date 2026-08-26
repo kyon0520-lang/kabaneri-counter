@@ -103,7 +103,7 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
     <h1>まつわるチェッカー</h1>
     <span>マルハン新宿東宝ビル店</span>
   </div>
-  <p class="lede">店長ポストの示唆から、過去の全台系機種を引きます。</p>
+  <p class="lede">店長ポストに出てきた単語や画像から、過去に全台系になった機種を引きます。機種名を入れれば逆引きもできます。</p>
   <div class="searchbox">
     <input id="q" type="search" enterkeyhint="search" autocomplete="off"
            placeholder="示唆のことばを入れる（例：日清）">
@@ -210,9 +210,8 @@ function render(){
     const lead = {2:'日付や記念日にちなんだ示唆です。月や日が同じ回を見ると傾向が掴めます。',
                   3:'本文ではなく、ポストされた時刻そのものが示唆になっていたものです。',
                   4:'来店取材やイベントにちなんだ示唆です。'}[tab];
-    res.innerHTML=`<div class="empty">
-        <p class="big">示唆のことばを入れてください</p>${lead?`<p>${lead}</p>`:''}</div>
-      <p class="hintlabel">この種類の直近のまつわる</p>`+ top.map(r=>card(r,'')).join('');
+    res.innerHTML = (lead ? `<div class="empty"><p>${lead}</p></div>` : '')
+      + `<p class="hintlabel">この種類の直近のまつわる</p>` + top.map(r=>card(r,'')).join('');
     return;
   }
 
