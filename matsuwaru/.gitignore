@@ -1,2 +1,9 @@
 cache/
 urls.txt
+# 以下は raw.json から再生成できる中間・派生物（毎日書き換わるので履歴に入れない）
+data/records.json
+data/matsuwaru.json
+data/matsuwaru.csv
+data/aliases_proposed.json
+data/review.csv
+data/machine_variants.txt

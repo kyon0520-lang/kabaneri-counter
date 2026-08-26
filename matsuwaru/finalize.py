@@ -3,7 +3,7 @@ import json, re, csv, collections, unicodedata
 from datetime import date
 import os
 B=os.path.dirname(os.path.abspath(__file__))
-raw=json.load(open(B+'/raw.json')); recs=json.load(open(B+'/data/matsuwaru.json'))
+raw=json.load(open(B+'/raw.json')); recs=json.load(open(B+'/data/records.json'))  # build.py の出力（名寄せ前）
 dec=json.load(open(B+'/data/decisions.json'))
 cnt=collections.Counter(r['machine'] for r in recs)
 
@@ -84,3 +84,30 @@ print('機種数: %d種（見出し231種から名寄せ）'%len(set(r['machine'
 print('示唆ワード ユニーク: %d語'%len(set(r['keyword'] for r in mm)))
 top=collections.Counter(r['machine'] for r in mm).most_common(8)
 print('件数上位:', ', '.join('%s(%d)'%(m,c) for m,c in top))
+
+# --- 検索用の軽量インデックス（ページが読むのはこれ） ---
+arts, ai = [], {}
+for r in sorted(out, key=lambda x: x['targetDate']):
+    k = r['articleUrl']
+    if k not in ai:
+        ai[k] = len(arts); arts.append([r['targetDate'], k, r['tweetUrl'] or ''])
+mi, mnames = {}, []
+for r in out:
+    if r['machine'] not in mi:
+        mi[r['machine']] = len(mnames); mnames.append(r['machine'])
+def _n(x): return re.sub(r'[\s\u3000]+','',unicodedata.normalize('NFKC',x or '')).lower()
+_alias = {_n(k): v for k, v in canon.items()}
+rows, trimmed = [], 0
+for r in out:
+    res = r.get('result') or {}
+    ch = list(r['chain'])
+    # 連想の終点が機種名そのもの（旧表記含む）なら、表示側で機種名を足すので落とす
+    while len(ch) > 1 and (_n(ch[-1]) == _n(r['machine']) or _alias.get(_n(ch[-1])) == r['machine']):
+        ch.pop(); trimmed += 1
+    rows.append([ai[r['articleUrl']], mi[r['machine']], ch,
+                 res.get('plus'), res.get('total'), res.get('avg'),
+                 0 if r['category'] == '機種' else 1])
+idx = {'generated': __import__('datetime').date.today().isoformat(),
+       'machines': mnames, 'articles': arts, 'recs': rows}
+json.dump(idx, open(B + '/data/index.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+print('検索インデックス: %d件 / %.0fKB（終点の重複を%d件整理）' % (len(rows), os.path.getsize(B + '/data/index.json')/1024, trimmed))

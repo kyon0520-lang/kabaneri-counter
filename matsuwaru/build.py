@@ -27,16 +27,7 @@ for art in d:
             'articleUrl': art['articleUrl'],
             'tweetUrl': art['tweetUrl'],
         })
-json.dump(recs,open(B+'/data/matsuwaru.json','w'),ensure_ascii=False,indent=1)
-
-with open(B+'/data/matsuwaru.csv','w',newline='',encoding='utf-8-sig') as f:
-    w=csv.writer(f)
-    w.writerow(['対象日','ポスト日','機種','示唆ワード','連想経路','プラス台数','設置台数','平均差枚','実績照合','記事URL','ポストURL'])
-    for r in recs:
-        res=r['result'] or {}
-        w.writerow([r['targetDate'],r['postDate'],r['machine'],r['keyword'],'→'.join(r['chain']),
-                    res.get('plus',''),res.get('total',''),res.get('avg',''),
-                    'OK' if r['confirmed'] else '',r['articleUrl'],r['tweetUrl'] or ''])
+json.dump(recs,open(B+'/data/records.json','w'),ensure_ascii=False,indent=1)
 
 # 機種名の表記ゆれ候補（正規化前に人が確認するリスト）
 c=collections.Counter(r['machine'] for r in recs)
