@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+"""毎朝の更新。raw.json を正本にして、未取得の記事だけを取得・追記する。
+   異常時は終了コード1で落とす（GitHub Actions の失敗通知を出すため）。"""
+import urllib.request, re, os, sys, json, time, subprocess
+from datetime import date, timedelta
+from lib import parse_html
+
+B = os.path.dirname(os.path.abspath(__file__))
+UA = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) matsuwaru-checker/personal'}
+SINCE = '2026-02-22'          # エンドウ店長就任以降のみ
+BLOG = 'https://sloslo-blog.hatenablog.com'
+MAX_GAP = 2                   # ブログは毎日更新。これ以上空いたら異常
+
+def get(u):
+    return urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=30).read().decode('utf-8', 'replace')
+
+def die(msg):
+    print('::error::' + msg); sys.exit(1)
+
+raw = json.load(open(B + '/raw.json', encoding='utf-8')) if os.path.exists(B + '/raw.json') else []
+have = {a['articleUrl'] for a in raw}
+
+# --- 1) サイトマップから最新URLを取得（直近2ヶ月分で十分） ---
+try:
+    idx = get(BLOG + '/sitemap.xml')
+    maps = [m.replace('&amp;', '&') for m in re.findall(r'<loc>(.*?)</loc>', idx) if 'periodical' in m][:2]
+    urls = set()
+    for m in maps:
+        urls |= {u for u in re.findall(r'<loc>(.*?)</loc>', get(m)) if '/entry/' in u}
+        time.sleep(0.5)
+except Exception as e:
+    die('サイトマップの取得に失敗: %s' % e)
+urls = sorted(u for u in urls if u.split('/entry/')[1][:10].replace('/', '-') >= SINCE)
+if not urls:
+    die('サイトマップから記事URLが取れなかった（書式変更の可能性）')
+
+# --- 2) 未取得の記事だけ取得して解析 ---
+new = [u for u in urls if u not in have]
+print('既存 %d件 / 新着 %d件' % (len(raw), len(new)))
+added = []
+for u in new:
+    ent = u.split('/entry/')[1].replace('/', '-')
+    try:
+        a = parse_html(get(u), ent)
+    except Exception as e:
+        die('記事の解析に失敗 %s: %s' % (u, e))
+    if not a['assoc']:
+        die('連想が1件も取れなかった %s（記事の書式が変わった可能性）' % u)
+    added.append(a); raw.append(a)
+    print('  追加: %s  連想%d件 / 全系%d機種' % (a['targetDate'], len(a['assoc']), len(a['results'])))
+    time.sleep(1.0)
+
+raw.sort(key=lambda a: a['articleDate'])
+json.dump(raw, open(B + '/raw.json', 'w'), ensure_ascii=False, indent=1)
+
+# --- 3) 鮮度チェック：最新記事が古すぎたら異常 ---
+latest = max(a['articleDate'] for a in raw)
+y, m, d = map(int, latest.split('-'))
+gap = (date.today() - date(y, m, d)).days
+if gap > MAX_GAP:
+    die('最新記事が%d日前(%s)。ブログの更新停止か取得失敗の可能性' % (gap, latest))
+
+# --- 4) データ生成 → 名寄せ ---
+for s in ('build.py', 'finalize.py'):
+    r = subprocess.run([sys.executable, os.path.join(B, s)], capture_output=True, text=True)
+    if r.returncode:
+        print(r.stderr); die('%s が失敗' % s)
+    print(r.stdout.strip().split('\n')[-1])
+print('OK  最新記事: %s (%d日前)' % (latest, gap))
