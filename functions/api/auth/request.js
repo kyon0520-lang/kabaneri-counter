@@ -24,24 +24,35 @@ function mailHtml(link) {
 }
 
 async function sendMail(env, to, link) {
-  const key = env.RESEND_API_KEY;
-  const from = env.MAIL_FROM || 'みんなのスロット <login@minnanoslot.com>';
+  // 貼り付けのときに改行や空白が混ざることがある。そのままヘッダーに入れると
+  // 不正な値になって fetch が例外を投げ、502 のまま原因が分からなくなる
+  const key = (env.RESEND_API_KEY || '').trim();
+  const from = (env.MAIL_FROM || 'みんなのスロット <login@send.minnanoslot.com>').trim();
   if (!key) return { sent: false, reason: 'no-key' };
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      authorization: `Bearer ${key}`,
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      from, to: [to], subject: SUBJECT,
-      html: mailHtml(link),
-      text: `みんなのスロットにログインします。\n${link}\n\nこのリンクは${LOGIN_TTL_MIN}分で使えなくなります。`,
-    }),
-  });
+  let res;
+  try {
+    res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${key}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        from, to: [to], subject: SUBJECT,
+        html: mailHtml(link),
+        text: `みんなのスロットにログインします。\n${link}\n\nこのリンクは${LOGIN_TTL_MIN}分で使えなくなります。`,
+      }),
+    });
+  } catch (e) {
+    // 落ちたままにすると、利用者には素の502が見える。理由を残して普通に返す
+    return { sent: false, reason: 'fetch-failed', detail: String(e && e.message || e) };
+  }
+
   if (!res.ok) {
-    return { sent: false, reason: `resend-${res.status}`, detail: await res.text() };
+    let detail = '';
+    try { detail = await res.text(); } catch (e) {}
+    return { sent: false, reason: `resend-${res.status}`, detail };
   }
   return { sent: true };
 }
@@ -91,7 +102,10 @@ export async function onRequestPost({ request, env }) {
     });
   }
   if (!r.sent) {
-    return json({ ok: false, error: 'メールを送れませんでした。時間をおいてお試しください' }, 502);
+    return json({
+      ok: false, error: 'メールを送れませんでした。時間をおいてお試しください',
+      reason: r.reason,
+    });
   }
   return json({ ok: true, sent: true });
 }

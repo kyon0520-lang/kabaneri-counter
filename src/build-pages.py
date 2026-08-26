@@ -18,7 +18,7 @@ import os
 import re
 
 # ---- 送信機能を公開版に含めるか ----
-SEND_ENABLED = False
+SEND_ENABLED = True
 
 # 原本に置いた印。この間が送信機能で、外すときはここごと消す
 MARKS = [('/* ==SEND:START== */', '/* ==SEND:END== */'),
