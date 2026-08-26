@@ -59,8 +59,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
 #tabs button[data-k="0"]{--c:#3b82f6}   /* 本文・画像 = 青 */
 #tabs button[data-k="2"]{--c:#8b5cf6}   /* 日付・記念日 = 紫 */
 #tabs button[data-k="3"]{--c:#0d9488}   /* 投稿時刻 = 青緑 */
-#tabs button[data-k="4"]{--c:#e11d48}   /* 来店 = ローズ */
-#tabs button[data-k="5"]{--c:#15803d}   /* 末尾系 = 緑 */
+#tabs button[data-k="4"]{--c:#f43f5e}   /* 来店 = ローズ（淡め） */
+#tabs button[data-k="5"]{--c:#eab308}   /* 末尾系 = 黄（文字は濃紺） */
 .mtabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--c)}
 .mtabs button b{font-weight:700;font-size:11px;margin-left:4px;color:var(--c)}
 .mtabs button.on b{color:var(--c)}
@@ -79,7 +79,7 @@ main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
   padding:7px 13px;font-size:13px;color:var(--ink);cursor:pointer;
   font-family:inherit;transition:.13s}
 .chip:hover{border-color:var(--cat);color:var(--cat)}
-.chip.on{background:var(--cat);border-color:var(--cat);color:#fff}
+.chip.on{background:var(--cat);border-color:var(--cat);color:var(--cat-ink)}
 .chip b{font-weight:700;margin-left:5px;opacity:.65;font-size:12px}
 .chip.on b{opacity:.85}
 
@@ -89,7 +89,7 @@ main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
 .node{font-size:15px;padding:3px 9px;border-radius:8px;background:var(--bg-soft);
   color:var(--ink);max-width:100%;white-space:normal;overflow-wrap:anywhere}
 .node.hit{background:rgba(250,204,21,.22);color:#ffe08a;font-weight:700}
-.node.goal{background:var(--cat);color:#fff;font-weight:700}
+.node.goal{background:var(--cat);color:var(--cat-ink);font-weight:700}
 .node.goal.other{background:#45597a;color:#dbe7f5}
 .arw{color:#52698a;font-size:13px;flex-shrink:0}
 .meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;
@@ -217,8 +217,14 @@ const N = s => s.normalize('NFKC').toLowerCase().replace(/[\s　]/g,'')
 // タブ = 示唆の出どころ。0番は本文(0)と画像(1)をまとめて扱う
 const TABS = {0:[0,1], 2:[2], 3:[3], 4:[4]};
 // 種類ごとの色。タブを切り替えると結果の機種チップまで連動して変わる
-const CATCOLOR = {0:'#3b82f6', 2:'#8b5cf6', 3:'#0d9488', 4:'#e11d48', 5:'#15803d'};
-const applyCat = () => document.documentElement.style.setProperty('--cat', CATCOLOR[tab]);
+// [背景色, その上の文字色]。黄色は白文字だと読めないので濃紺にする
+const CATCOLOR = {0:['#3b82f6','#fff'], 2:['#8b5cf6','#fff'], 3:['#0d9488','#fff'],
+                  4:['#f43f5e','#fff'], 5:['#eab308','#0d1c2e']};
+const applyCat = () => {
+  const [bg, ink] = CATCOLOR[tab];
+  document.documentElement.style.setProperty('--cat', bg);
+  document.documentElement.style.setProperty('--cat-ink', ink);
+};
 let DB=null, sel=null, shown=30, tab=0;
 
 fetch('data/index.json').then(r=>r.json()).then(d=>{
