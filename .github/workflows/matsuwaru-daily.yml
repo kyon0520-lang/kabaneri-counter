@@ -23,6 +23,15 @@ jobs:
         working-directory: matsuwaru
         run: python3 sync.py
 
+      # 手動実行のときだけ認証情報を確認する（本番には触らない読み取り専用コマンド）
+      - name: Cloudflare 接続確認
+        if: github.event_name == 'workflow_dispatch'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages project list
+
       - name: 変更をコミット
         id: commit
         run: |
