@@ -57,10 +57,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
   color:var(--sub);font-family:inherit;font-size:12.5px;
   padding:11px 6px;cursor:pointer;white-space:nowrap;transition:color .13s}
 #tabs button[data-k="0"]{--c:#3b82f6}   /* 本文・画像 = 青 */
-#tabs button[data-k="2"]{--c:#8b5cf6}   /* 日付・記念日 = 紫 */
+#tabs button[data-k="2"]{--c:#eab308}   /* 日付・記念日 = 黄（文字は濃紺） */
 #tabs button[data-k="3"]{--c:#0d9488}   /* 投稿時刻 = 青緑 */
 #tabs button[data-k="4"]{--c:#f43f5e}   /* 来店 = ローズ（淡め） */
-#tabs button[data-k="5"]{--c:#eab308}   /* 末尾系 = 黄（文字は濃紺） */
+#tabs button[data-k="5"]{--c:#8b5cf6}   /* 末尾系 = 紫 */
 .mtabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--c)}
 .mtabs button b{font-weight:700;font-size:11px;margin-left:4px;color:var(--c)}
 .mtabs button.on b{color:var(--c)}
@@ -218,8 +218,8 @@ const N = s => s.normalize('NFKC').toLowerCase().replace(/[\s　]/g,'')
 const TABS = {0:[0,1], 2:[2], 3:[3], 4:[4]};
 // 種類ごとの色。タブを切り替えると結果の機種チップまで連動して変わる
 // [背景色, その上の文字色]。黄色は白文字だと読めないので濃紺にする
-const CATCOLOR = {0:['#3b82f6','#fff'], 2:['#8b5cf6','#fff'], 3:['#0d9488','#fff'],
-                  4:['#f43f5e','#fff'], 5:['#eab308','#0d1c2e']};
+const CATCOLOR = {0:['#3b82f6','#fff'], 2:['#eab308','#0d1c2e'], 3:['#0d9488','#fff'],
+                  4:['#f43f5e','#fff'], 5:['#8b5cf6','#fff']};
 const applyCat = () => {
   const [bg, ink] = CATCOLOR[tab];
   document.documentElement.style.setProperty('--cat', bg);
