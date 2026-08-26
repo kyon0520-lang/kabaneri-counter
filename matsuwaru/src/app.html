@@ -96,7 +96,11 @@ main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
 .empty p{margin:0 0 6px;font-size:14px}
 .empty .big{font-size:15px;color:var(--ink);font-weight:600;margin-bottom:14px}
 .empty .big:last-child{margin-bottom:0}
-.intro{font-size:12.5px;color:var(--sub);margin:0 0 20px;line-height:1.7}
+.tip{border-left:3px solid var(--accent);background:rgba(59,130,246,.07);
+  border-radius:0 12px 12px 0;padding:13px 15px;margin:0 0 20px}
+.tip p{margin:0}
+.tip .hd{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.55;margin-bottom:5px}
+.tip .bd{font-size:12px;color:var(--sub);line-height:1.7}
 .hintlabel{font-size:12px;color:var(--sub);margin:22px 0 8px}
 .more{display:block;width:100%;padding:13px;margin-top:6px;border:1px solid var(--line);
   background:var(--panel);border-radius:12px;font:inherit;font-size:14px;color:var(--accent);cursor:pointer}
@@ -267,12 +271,20 @@ function render(){
     tabCounts([], false);
     const top=[...DB.recs].filter(r=>inTab(r,tab))
       .sort((a,b)=> DB.articles[b[0]][0] > DB.articles[a[0]][0] ? 1:-1).slice(0,12);
-    const lead = {0:'店長ポストに出てきた単語や画像から、過去に全台系になった機種を検索します。機種名を入れれば逆引きもできます。',
-                  2:'日付や記念日にちなんだ示唆です。月や日が同じ回を見ると傾向が掴めます。',
-                  3:'本文ではなく、ポストされた時刻そのものが示唆になっていたものです。',
-                  4:'来店取材やイベントにちなんだ示唆です。',
-                  5:'アナザー末尾や末尾ゾロ目のほか、設置台数やバラエティなど、機種以外を指した示唆をまとめています。'}[tab];
-    res.innerHTML = (lead ? `<p class="intro">${lead}</p>` : '')
+    // [要点(太字), 補足] の2段。1文目に視線の入口を作る
+    const lead = {
+      0:['店長ポストに出てきた単語や画像から、過去に全台系になった機種を調べられます。',
+         '「会議」「日清」のように、ポストの中の言葉を入れてください。機種名からの逆引きもできます。'],
+      2:['日付や記念日にちなんだ示唆です。',
+         '月や日が同じ回を並べて見ると、繰り返し使われる型が掴めます。'],
+      3:['ポストされた時刻そのものが示唆になっていたものです。',
+         '本文のことばでは引けないため、ここにまとめています。'],
+      4:['来店取材やイベントにちなんだ示唆です。',
+         'ファン感謝祭など、繰り返し使われている型があります。'],
+      5:['機種ではなく、末尾や設置台数を指した示唆です。',
+         'アナザー末尾・末尾ゾロ目のほか、設置台数やバラエティも含みます。']
+    }[tab];
+    res.innerHTML = (lead ? `<div class="tip"><p class="hd">${lead[0]}</p><p class="bd">${lead[1]}</p></div>` : '')
       + `<p class="hintlabel">この種類の直近のまつわる</p>` + top.map(r=>card(r,'')).join('');
     return;
   }
