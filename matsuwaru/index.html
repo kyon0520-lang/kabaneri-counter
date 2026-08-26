@@ -113,7 +113,8 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
     <button data-k="0" class="on">本文・画像<b></b></button>
     <button data-k="2">日付・記念日<b></b></button>
     <button data-k="3">投稿時刻<b></b></button>
-    <button data-k="4">来店・イベント<b></b></button>
+    <button data-k="4">来店<b></b></button>
+    <button data-k="5">末尾・設置<b></b></button>
   </div>
 </div>
 
@@ -147,7 +148,8 @@ fetch('data/index.json').then(r=>r.json()).then(d=>{
     '<div class="empty"><p class="big">データを読み込めませんでした</p><p>通信環境をご確認ください。</p></div>';
 });
 
-const inTab=(r,k)=>TABS[k].includes(r[7]);
+// 機種以外を指す示唆（末尾・設置台数など）は種類によらず末尾タブへ集約する
+const inTab=(r,k)=> k===5 ? r[6]===1 : (r[6]===0 && TABS[k].includes(r[7]));
 
 function search(q){
   const n=N(q); if(!n) return [];
@@ -211,7 +213,8 @@ function render(){
       .sort((a,b)=> DB.articles[b[0]][0] > DB.articles[a[0]][0] ? 1:-1).slice(0,12);
     const lead = {2:'日付や記念日にちなんだ示唆です。月や日が同じ回を見ると傾向が掴めます。',
                   3:'本文ではなく、ポストされた時刻そのものが示唆になっていたものです。',
-                  4:'来店取材やイベントにちなんだ示唆です。'}[tab];
+                  4:'来店取材やイベントにちなんだ示唆です。',
+                  5:'機種ではなく、アナザー末尾や設置台数を指した示唆です。'}[tab];
     res.innerHTML = (lead ? `<div class="empty"><p>${lead}</p></div>` : '')
       + `<p class="hintlabel">この種類の直近のまつわる</p>` + top.map(r=>card(r,'')).join('');
     return;
@@ -232,8 +235,8 @@ function render(){
 
   if(sel) hits=hits.filter(r=>DB.machines[r[1]]===sel);
   if(!hits.length){
-    const other=[0,2,3,4].filter(k=>k!==tab && all.some(r=>inTab(r,k)));
-    const NAMES={0:'本文・画像',2:'日付・記念日',3:'投稿時刻',4:'来店・イベント'};
+    const other=[0,2,3,4,5].filter(k=>k!==tab && all.some(r=>inTab(r,k)));
+    const NAMES={0:'本文・画像',2:'日付・記念日',3:'投稿時刻',4:'来店',5:'末尾・設置'};
     res.innerHTML = other.length
       ? `<div class="empty"><p class="big">この種類には見つかりません</p>
          <p>「${esc(q)}」は ${other.map(k=>NAMES[k]).join('・')} にあります。<br>
