@@ -5,10 +5,18 @@ import urllib.request, re, os, sys, json, time, subprocess
 from datetime import date, timedelta
 from lib import parse_html
 
-B = os.path.dirname(os.path.abspath(__file__))
+import sys, os, json as _json
+import os as _os
+_ROOT = _os.path.dirname(_os.path.abspath(__file__))
+STORE = sys.argv[1] if len(sys.argv) > 1 else 'toho'
+_cfg = [s for s in _json.load(open(_ROOT + '/stores.json', encoding='utf-8'))['stores'] if s['id'] == STORE]
+if not _cfg: raise SystemExit('stores.json に店舗 "%s" がありません' % STORE)
+CONF = _cfg[0]
+B = _os.path.join(_ROOT, STORE)
+CACHE = _os.path.join(_ROOT, 'cache', STORE)
 UA = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) matsuwaru-checker/personal'}
-SINCE = '2026-02-22'          # エンドウ店長就任以降のみ
-BLOG = 'https://sloslo-blog.hatenablog.com'
+SINCE = CONF['since']        # 示唆の癖が変わる区切り（stores.json）
+BLOG = CONF['blogUrl'].rstrip('/')
 MAX_GAP = 2                   # ブログは毎日更新。これ以上空いたら異常
 
 def get(u):
@@ -36,7 +44,7 @@ if not urls:
 
 # --- 2) 未取得の記事だけ取得して解析 ---
 new = [u for u in urls if u not in have]
-print('既存 %d件 / 新着 %d件' % (len(raw), len(new)))
+print('[%s] 既存 %d件 / 新着 %d件' % (STORE, len(raw), len(new)))
 added = []
 for u in new:
     ent = u.split('/entry/')[1].replace('/', '-')
@@ -62,7 +70,7 @@ if gap > MAX_GAP:
 
 # --- 4) データ生成 → 名寄せ ---
 for s in ('build.py', 'finalize.py'):
-    r = subprocess.run([sys.executable, os.path.join(B, s)], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, os.path.join(_ROOT, s), STORE], capture_output=True, text=True)
     if r.returncode:
         print(r.stderr); die('%s が失敗' % s)
     print(r.stdout.strip().split('\n')[-1])

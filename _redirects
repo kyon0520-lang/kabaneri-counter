@@ -10,3 +10,7 @@
 /kabaneri/icon-192.png     /kabaneri-unato/icon-192.png     301
 /kabaneri/icon-512.png     /kabaneri-unato/icon-512.png     301
 /kabaneri/apple-touch-icon.png  /kabaneri-unato/apple-touch-icon.png  301
+
+# まつわるチェッカーを店舗別に分けた（2026-08-26）。旧URLは新宿東宝へ
+/matsuwaru/src/*   /matsuwaru/                       301
+/matsuwaru/data/*  /matsuwaru/toho/data/:splat        301

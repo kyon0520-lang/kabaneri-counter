@@ -19,9 +19,17 @@ jobs:
           python-version: '3.12'
 
       # 新着記事の取得〜名寄せまで。異常時はここで落ちて失敗通知が飛ぶ
+      # stores.json に定義された全店舗をまわす。1店舗でも失敗したらワークフローを失敗させる
       - name: 新着を取り込む
         working-directory: matsuwaru
-        run: python3 sync.py
+        run: |
+          ids=$(python3 -c "import json;print(' '.join(s['id'] for s in json.load(open('stores.json'))['stores']))")
+          for id in $ids; do
+            echo "::group::$id"
+            python3 sync.py "$id" || exit 1
+            echo "::endgroup::"
+          done
+          python3 src/build-pages.py
 
       # 手動実行のときだけ認証情報を確認する（本番には触らない読み取り専用コマンド）
       - name: Cloudflare 接続確認
@@ -35,13 +43,13 @@ jobs:
       - name: 変更をコミット
         id: commit
         run: |
-          if git diff --quiet -- matsuwaru/raw.json matsuwaru/data; then
+          if git diff --quiet -- matsuwaru; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "新着なし。コミットもデプロイもしない"
           else
             git config user.name  "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add matsuwaru/raw.json matsuwaru/data
+            git add matsuwaru
             git commit -m "まつわるデータ更新 $(date -u +%Y-%m-%d)"
             git push
             echo "changed=true" >> "$GITHUB_OUTPUT"

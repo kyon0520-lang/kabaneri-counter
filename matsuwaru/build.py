@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 import json, csv, re, unicodedata, collections, os
-import os
-B=os.path.dirname(os.path.abspath(__file__))
+import sys, os, json as _json
+import os as _os
+_ROOT = _os.path.dirname(_os.path.abspath(__file__))
+STORE = sys.argv[1] if len(sys.argv) > 1 else 'toho'
+_cfg = [s for s in _json.load(open(_ROOT + '/stores.json', encoding='utf-8'))['stores'] if s['id'] == STORE]
+if not _cfg: raise SystemExit('stores.json に店舗 "%s" がありません' % STORE)
+CONF = _cfg[0]
+B = _os.path.join(_ROOT, STORE)
+CACHE = _os.path.join(_ROOT, 'cache', STORE)
 d=json.load(open(B+'/raw.json'))
 os.makedirs(B+'/data',exist_ok=True)
 

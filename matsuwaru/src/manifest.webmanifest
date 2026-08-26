@@ -1,0 +1,30 @@
+{
+  "name": "{{TITLE}}｜みんなのスロット",
+  "short_name": "全台系まつわる",
+  "description": "{{STORE}}の店長ポストの示唆から、過去に全台系になった機種を逆引きします。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1c2e",
+  "theme_color": "#0d1c2e",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

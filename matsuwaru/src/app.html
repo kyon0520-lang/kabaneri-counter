@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d1c2e">
+<title>{{TITLE}}｜みんなのスロット</title>
+<meta name="description" content="{{STORE}}の店長ポストの示唆から、過去に全台系になった機種を逆引きします。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="全台系まつわる">
+<style>
+:root{
+  --gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,
+           "Segoe UI","Noto Sans JP",sans-serif;
+  --bg:#0d1c2e; --panel:#16283f; --bg-soft:#1e3049;
+  --ink:#e6f0fa; --sub:#93aac4; --line:#2c4560;
+  --accent:#3b82f6; --accent-soft:rgba(59,130,246,.22);
+  --red:#e2453c; --green:#2fb56a;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-bottom:env(safe-area-inset-bottom)}
+
+/* ---- ヘッダー / 検索 ---- */
+.top{position:sticky;top:0;z-index:20;background:rgba(13,28,46,.94);
+  backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);
+  padding:calc(env(safe-area-inset-top) + 14px) 16px 12px}
+.site{display:flex;align-items:center;gap:6px;margin:0 0 3px;text-decoration:none}
+.site span{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.08em}
+.site .mk{width:11px;height:18px;flex:0 0 auto;display:block;color:var(--sub)}
+.brand{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 8px;margin-bottom:5px}
+.lede{margin:0 0 11px;font-size:12.5px;color:var(--sub);line-height:1.5}
+.brand h1{font-size:17px;margin:0;letter-spacing:.02em;white-space:nowrap}
+.brand span{font-size:11px;color:var(--sub)}
+.searchbox{position:relative}
+.searchbox input{width:100%;font:inherit;font-size:17px;padding:14px 44px 14px 18px;
+  border:1.5px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);
+  outline:none;transition:border-color .15s,box-shadow .15s}
+.searchbox input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.searchbox input::placeholder{color:#6f87a5}
+.clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  width:32px;height:32px;border:0;border-radius:50%;background:transparent;
+  color:var(--sub);font-size:19px;cursor:pointer;display:none}
+.clear.on{display:block}
+
+/* ---- 種類タブ（カウンターと同じ作り） ---- */
+.mtabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:12px -16px -12px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mtabs::-webkit-scrollbar{display:none}
+.mtabs button{
+  flex:1 0 auto;background:none;border:0;border-bottom:2px solid transparent;
+  color:var(--sub);font-family:inherit;font-size:12.5px;
+  padding:11px 6px;cursor:pointer;white-space:nowrap;transition:color .13s}
+.mtabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--accent)}
+.mtabs button b{font-weight:700;font-size:11px;margin-left:4px;color:var(--accent)}
+.mtabs button.on b{color:var(--accent)}
+.mtabs button.zero{color:#4a5f7c}
+.mtabs button.zero b{display:none}
+
+/* ---- 本文 ---- */
+main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
+.count{font-size:13px;color:var(--sub);margin:0 2px 14px}
+.count b{color:var(--ink);font-size:22px;font-weight:700;letter-spacing:-.01em}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;
+  padding:7px 13px;font-size:13px;color:var(--ink);cursor:pointer;
+  font-family:inherit;transition:.13s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip b{font-weight:700;margin-left:5px;opacity:.65;font-size:12px}
+.chip.on b{opacity:.85}
+
+.card{border:1px solid var(--line);border-radius:16px;background:var(--panel);
+  padding:15px 16px;margin-bottom:11px}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:5px 4px;margin-bottom:11px}
+.node{font-size:15px;padding:3px 9px;border-radius:8px;background:var(--bg-soft);
+  color:var(--ink);max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.node.hit{background:rgba(250,204,21,.22);color:#ffe08a;font-weight:700}
+.node.goal{background:var(--accent);color:#fff;font-weight:700}
+.node.goal.other{background:#45597a;color:#dbe7f5}
+.arw{color:#52698a;font-size:13px;flex-shrink:0}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  font-size:12px;color:var(--sub);border-top:1px dashed var(--line);padding-top:9px}
+.meta .dt{font-weight:600;color:var(--ink)}
+.meta a{margin-left:auto;color:var(--accent);text-decoration:none}
+.meta a:hover{text-decoration:underline}
+
+.empty{text-align:center;padding:30px 20px 24px;color:var(--sub)}
+.empty p{margin:0 0 6px;font-size:14px}
+.empty .big{font-size:15px;color:var(--ink);font-weight:600;margin-bottom:14px}
+.empty .big:last-child{margin-bottom:0}
+.hintlabel{font-size:12px;color:var(--sub);margin:22px 0 8px}
+.more{display:block;width:100%;padding:13px;margin-top:6px;border:1px solid var(--line);
+  background:var(--panel);border-radius:12px;font:inherit;font-size:14px;color:var(--accent);cursor:pointer}
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+  font-size:11px;color:var(--sub);line-height:1.8}
+.foot p{margin:0 0 7px}
+.foot p:last-child{margin-bottom:0}
+.foot .src{font-size:12px;color:var(--ink);font-weight:600}
+.foot a{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="site" href="/">
+      <svg class="mk" viewBox="0 0 60 96" aria-hidden="true">
+      <g transform="translate(30,48)">
+      <g transform="translate(0,-34) rotate(-8)" fill="none" stroke="#3b82f6" stroke-width="5" stroke-linecap="round">
+      <path d="M -26 6 A 26 10 0 0 0 26 6"></path>
+      <line x1="-26" y1="0" x2="-26" y2="6"></line>
+      <line x1="26" y1="0" x2="26" y2="6"></line>
+      <ellipse rx="26" ry="10"></ellipse>
+      </g>
+      <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
+      <ellipse rx="22" ry="8"></ellipse>
+      <line x1="-22" y1="0" x2="-22" y2="5"></line><line x1="22" y1="0" x2="22" y2="5"></line>
+      <path d="M -22 5 A 22 8 0 0 0 22 5"></path>
+      <line x1="-24" y1="5" x2="-24" y2="12"></line><line x1="20" y1="5" x2="20" y2="12"></line>
+      <path d="M -24 12 A 22 8 0 0 0 20 12"></path>
+      <line x1="-21" y1="12" x2="-21" y2="18"></line><line x1="23" y1="12" x2="23" y2="18"></line>
+      <path d="M -21 18 A 22 8 0 0 0 23 18"></path>
+      <line x1="-24" y1="18" x2="-24" y2="25"></line><line x1="20" y1="18" x2="20" y2="25"></line>
+      <path d="M -24 25 A 22 8 0 0 0 20 25"></path>
+      <line x1="-22" y1="25" x2="-22" y2="31"></line><line x1="22" y1="25" x2="22" y2="31"></line>
+      <path d="M -22 31 A 22 8 0 0 0 22 31"></path>
+      <line x1="-23" y1="31" x2="-23" y2="36"></line><line x1="21" y1="31" x2="21" y2="36"></line>
+      <path d="M -23 36 A 22 8 0 0 0 21 36"></path>
+      </g>
+      </g>
+      </svg>
+    <span>みんなのスロット</span>
+  </a>
+  <div class="brand">
+    <h1>{{TITLE}}</h1>
+    <span>{{LABEL}}</span>
+  </div>
+  <p class="lede">店長ポストに出てきた単語や画像から、過去に全台系になった機種を引きます。機種名を入れれば逆引きもできます。</p>
+  <div class="searchbox">
+    <input id="q" type="search" enterkeyhint="search" autocomplete="off"
+           placeholder="示唆のことばを入れる（例：{{EXAMPLE}}）">
+    <button class="clear" id="clear" aria-label="消す">×</button>
+  </div>
+  <div class="mtabs" id="tabs">
+    <button data-k="0" class="on">本文・画像<b></b></button>
+    <button data-k="2">日付・記念日<b></b></button>
+    <button data-k="3">投稿時刻<b></b></button>
+    <button data-k="4">来店<b></b></button>
+    <button data-k="5">末尾系<b></b></button>
+  </div>
+</div>
+
+<main>
+  <p class="count" id="count"></p>
+  <div class="chips" id="chips"></div>
+  <div id="results"></div>
+  <div class="foot">
+    <p class="src">出典：<a href="{{BLOGURL}}" target="_blank" rel="noopener">{{BLOGNAME}}</a></p>
+    <p>本ページは同ブログの記事をもとに、{{STORE}}の示唆と機種の対応を検索できる形にまとめたものです。
+    連想の考察を含む記事内容の著作権は同ブログに帰属します。
+    各件の「記事を見る」から元記事をご確認ください。</p>
+    <p>{{SINCENOTE}}</p>
+    <p id="gen"></p>
+  </div>
+</main>
+
+<script>
+const N = s => s.normalize('NFKC').toLowerCase().replace(/[\s　]/g,'')
+                 .replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60));
+// タブ = 示唆の出どころ。0番は本文(0)と画像(1)をまとめて扱う
+const TABS = {0:[0,1], 2:[2], 3:[3], 4:[4]};
+let DB=null, sel=null, shown=30, tab=0;
+
+fetch('data/index.json').then(r=>r.json()).then(d=>{
+  DB=d;
+  DB.recs.forEach(r=>{ r.push(r[2].map(N)); });      // r[8] = 正規化済みトークン
+  // 機種名＋読み・別名を正規化して検索対象に（カナで「ToLOVEる」などを引けるように）
+  DB.mkeys = DB.machines.map((m,i)=>[m, ...((DB.readings||[])[i]||[])].map(N));
+  document.getElementById('gen').textContent='最終更新 '+d.generated+'／'+d.recs.length+'件';
+  render();
+}).catch(()=>{
+  document.getElementById('results').innerHTML=
+    '<div class="empty"><p class="big">データを読み込めませんでした</p><p>通信環境をご確認ください。</p></div>';
+});
+
+// 機種以外を指す示唆（末尾・設置台数など）は種類によらず末尾タブへ集約する
+const inTab=(r,k)=> k===5 ? r[6]===1 : (r[6]===0 && TABS[k].includes(r[7]));
+
+// 数字だけで検索したとき、他の数字の一部（1080円の1、11年目の1）を拾わないようにする。
+// 丸数字は正規化済みなので「5」で「アナザー末尾⑤」に当たる。
+function digitIn(tok, n){
+  for(let i = tok.indexOf(n); i !== -1; i = tok.indexOf(n, i + 1)){
+    const b = tok[i-1] || '', a = tok[i+n.length] || '';
+    if(!/[0-9]/.test(b) && !/[0-9]/.test(a)) return true;
+  }
+  return false;
+}
+
+function search(q){
+  const n=N(q); if(!n) return [];
+  const num = /^[0-9]+$/.test(n);
+  const has = (tok)=> num ? digitIn(tok,n) : tok.includes(n);
+  const out=[];
+  for(const r of DB.recs){
+    const t=r[8]; let sc=0;
+    if(t[0]===n) sc=4;
+    else if(t.includes(n)) sc=3;
+    else if(has(t[0])) sc=2;
+    else if(t.some(x=>has(x))) sc=1;
+    else if(DB.mkeys[r[1]].some(k=>has(k))) sc=1;
+    if(sc) out.push([sc,r]);
+  }
+  out.sort((a,b)=> b[0]-a[0] || (DB.articles[b[1][0]][0] > DB.articles[a[1][0]][0] ? 1 : -1));
+  return out.map(x=>x[1]);
+}
+
+function chainHTML(r,q){
+  const n=N(q||''), mach=DB.machines[r[1]], parts=[];
+  r[2].forEach((node,i)=>{
+    const hit = n && N(node).includes(n);
+    parts.push(`<span class="node${hit?' hit':''}">${esc(node)}</span>`);
+  });
+  // 連想の最後が機種名でなければ、機種名を終点として継ぎ足す
+  if(N(r[2][r[2].length-1])!==N(mach))
+    parts.push(`<span class="node goal${r[6]?' other':''}">${esc(mach)}</span>`);
+  else
+    parts[parts.length-1]=`<span class="node goal${r[6]?' other':''}">${esc(mach)}</span>`;
+  return parts.join('<span class="arw">→</span>');
+}
+
+function card(r,q){
+  const a=DB.articles[r[0]];
+  return `<div class="card">
+    <div class="chain">${chainHTML(r,q)}</div>
+    <div class="meta"><span class="dt">${a[0]}</span>
+      <a href="${a[1]}" target="_blank" rel="noopener">記事を見る</a></div>
+  </div>`;
+}
+
+function tabCounts(all, searching){
+  document.querySelectorAll('#tabs button').forEach(b=>{
+    const k=+b.dataset.k, n=all.filter(r=>inTab(r,k)).length;
+    b.classList.toggle('on', k===tab);
+    // 0件の淡色は検索中だけ。検索前に全部淡くすると読めなくなる
+    b.classList.toggle('zero', searching && n===0);
+    b.querySelector('b').textContent = searching ? (n || '') : '';
+  });
+}
+
+function render(){
+  const q=document.getElementById('q').value.trim();
+  const cnt=document.getElementById('count'), chips=document.getElementById('chips'),
+        res=document.getElementById('results');
+  document.getElementById('clear').classList.toggle('on', !!q);
+
+  if(!q){
+    sel=null; chips.innerHTML=''; cnt.innerHTML='';
+    tabCounts([], false);
+    const top=[...DB.recs].filter(r=>inTab(r,tab))
+      .sort((a,b)=> DB.articles[b[0]][0] > DB.articles[a[0]][0] ? 1:-1).slice(0,12);
+    const lead = {2:'日付や記念日にちなんだ示唆です。月や日が同じ回を見ると傾向が掴めます。',
+                  3:'本文ではなく、ポストされた時刻そのものが示唆になっていたものです。',
+                  4:'来店取材やイベントにちなんだ示唆です。',
+                  5:'アナザー末尾や末尾ゾロ目のほか、設置台数やバラエティなど、機種以外を指した示唆をまとめています。'}[tab];
+    res.innerHTML = (lead ? `<div class="empty"><p>${lead}</p></div>` : '')
+      + `<p class="hintlabel">この種類の直近のまつわる</p>` + top.map(r=>card(r,'')).join('');
+    return;
+  }
+
+  const all=search(q);
+  tabCounts(all, true);
+  let hits=all.filter(r=>inTab(r,tab));
+  const byM={};
+  hits.forEach(r=>{ const m=DB.machines[r[1]]; byM[m]=(byM[m]||0)+1; });
+  const ms=Object.entries(byM).sort((a,b)=>b[1]-a[1]);
+
+  cnt.innerHTML = hits.length
+    ? `<b>${hits.length}</b> 件 ／ ${ms.length} 機種`
+    : '';
+  chips.innerHTML = ms.map(([m,c])=>
+    `<button class="chip${sel===m?' on':''}" data-m="${esc(m)}">${esc(m)}<b>${c}</b></button>`).join('');
+
+  if(sel) hits=hits.filter(r=>DB.machines[r[1]]===sel);
+  if(!hits.length){
+    const other=[0,2,3,4,5].filter(k=>k!==tab && all.some(r=>inTab(r,k)));
+    const NAMES={0:'本文・画像',2:'日付・記念日',3:'投稿時刻',4:'来店',5:'末尾系'};
+    res.innerHTML = other.length
+      ? `<div class="empty"><p class="big">この種類には見つかりません</p>
+         <p>「${esc(q)}」は ${other.map(k=>NAMES[k]).join('・')} にあります。<br>
+         上のタブを切り替えてください。</p></div>`
+      : `<div class="empty"><p class="big">「${esc(q)}」の実績はありません</p>
+         <p>まだ使われていない示唆か、別の言い方かもしれません。<br>
+         短い語（例：「鶴」）で引くと見つかることがあります。</p></div>`;
+    return;
+  }
+  res.innerHTML = hits.slice(0,shown).map(r=>card(r,q)).join('')
+    + (hits.length>shown ? `<button class="more" id="more">残り${hits.length-shown}件を表示</button>` : '');
+}
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+document.getElementById('q').addEventListener('input',()=>{sel=null;shown=30;render();});
+document.getElementById('clear').addEventListener('click',()=>{
+  const i=document.getElementById('q'); i.value=''; sel=null; shown=30; render(); i.focus();
+});
+document.addEventListener('click',e=>{
+  const tb=e.target.closest('#tabs button');
+  if(tb){ tab=+tb.dataset.k; sel=null; shown=30; render();
+          window.scrollTo({top:0,behavior:'smooth'}); return; }
+  const c=e.target.closest('.chip');
+  if(c){ const m=c.dataset.m; sel = (sel===m? null : m); shown=30; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+  if(e.target.id==='more'){ shown+=50; render(); }
+});
+
+if('serviceWorker' in navigator)
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

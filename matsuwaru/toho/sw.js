@@ -1,7 +1,7 @@
 // 同一オリジンのGETは「まず通信、ダメならキャッシュ」。
 // これにより更新が即反映され、圏外・電波が弱い店内ではキャッシュで動く。
 // （キャッシュ優先にすると版数の上げ忘れで古い画面が出続けるため、この方式にしている）
-const CACHE = 'matsuwaru-v2';
+const CACHE = 'matsuwaru-toho-v3';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
                 './icon-192.png', './icon-512.png', './data/index.json'];
 
