@@ -116,7 +116,7 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
     <button data-k="2">日付・記念日<b></b></button>
     <button data-k="3">投稿時刻<b></b></button>
     <button data-k="4">来店<b></b></button>
-    <button data-k="5">アナザー末尾<b></b></button>
+    <button data-k="5">末尾系<b></b></button>
   </div>
 </div>
 
@@ -216,7 +216,7 @@ function render(){
     const lead = {2:'日付や記念日にちなんだ示唆です。月や日が同じ回を見ると傾向が掴めます。',
                   3:'本文ではなく、ポストされた時刻そのものが示唆になっていたものです。',
                   4:'来店取材やイベントにちなんだ示唆です。',
-                  5:'アナザー末尾のほか、設置台数やバラエティなど、機種以外を指した示唆をまとめています。'}[tab];
+                  5:'アナザー末尾や末尾ゾロ目のほか、設置台数やバラエティなど、機種以外を指した示唆をまとめています。'}[tab];
     res.innerHTML = (lead ? `<div class="empty"><p>${lead}</p></div>` : '')
       + `<p class="hintlabel">この種類の直近のまつわる</p>` + top.map(r=>card(r,'')).join('');
     return;
@@ -238,7 +238,7 @@ function render(){
   if(sel) hits=hits.filter(r=>DB.machines[r[1]]===sel);
   if(!hits.length){
     const other=[0,2,3,4,5].filter(k=>k!==tab && all.some(r=>inTab(r,k)));
-    const NAMES={0:'本文・画像',2:'日付・記念日',3:'投稿時刻',4:'来店',5:'アナザー末尾'};
+    const NAMES={0:'本文・画像',2:'日付・記念日',3:'投稿時刻',4:'来店',5:'末尾系'};
     res.innerHTML = other.length
       ? `<div class="empty"><p class="big">この種類には見つかりません</p>
          <p>「${esc(q)}」は ${other.map(k=>NAMES[k]).join('・')} にあります。<br>
