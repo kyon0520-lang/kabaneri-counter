@@ -110,6 +110,30 @@ main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
 .foot p:last-child{margin-bottom:0}
 .foot .src{font-size:12px;color:var(--ink);font-weight:600}
 .foot a{color:var(--accent)}
+/* ===== メモ（右端のつまみ、または左スワイプで開く） ===== */
+.memohandle{position:fixed;right:0;top:38%;z-index:40;
+  background:var(--bg-soft);color:var(--sub);
+  border:1px solid var(--line);border-right:0;border-radius:10px 0 0 10px;
+  padding:12px 6px;font-size:11px;line-height:1.25;letter-spacing:.08em;
+  cursor:pointer;font-family:inherit}
+.memoscrim{display:none;position:fixed;inset:0;z-index:44;background:rgba(6,16,28,.5)}
+body.memo-open .memoscrim{display:block}
+.memopanel{position:fixed;top:0;right:0;bottom:0;z-index:45;
+  width:min(86vw,420px);background:var(--panel);border-left:1px solid var(--line);
+  padding:calc(14px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;gap:10px;
+  transform:translateX(100%);transition:transform .26s cubic-bezier(.2,.7,.3,1)}
+.memopanel.open{transform:none}
+.memohd{display:flex;align-items:center;justify-content:space-between}
+.memohd b{font-size:14px}
+.memopanel textarea{flex:1;min-height:40vh;resize:none;
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;
+  color:var(--ink);font-family:inherit;font-size:16px;line-height:1.8;padding:12px}
+.memopanel textarea:focus{outline:none;border-color:var(--accent)}
+.memonote{margin:0;font-size:10.5px;color:var(--sub);line-height:1.7}
+.linkbtn{background:none;border:0;color:var(--accent);font:inherit;font-size:13px;
+  cursor:pointer;padding:4px}
+@media (prefers-reduced-motion:reduce){.memopanel{transition:none}}
 </style>
 </head>
 <body>
@@ -171,6 +195,15 @@ main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
     <p id="gen"></p>
   </div>
 </main>
+
+<!-- メモ。右端のつまみか、左スワイプで開く -->
+<div class="memoscrim" id="memoscrim"></div>
+<aside class="memopanel" id="memopanel" aria-hidden="true">
+  <div class="memohd"><b>メモ</b><button class="linkbtn" id="memoclose">閉じる</button></div>
+  <textarea id="memotext" placeholder="今日の示唆、狙う台、気づいたことなど" maxlength="2000"></textarea>
+  <p class="memonote">この端末の中だけに残ります。どこにも送信しません。</p>
+</aside>
+<button class="memohandle" id="memohandle" aria-label="メモを開く">メ<br>モ</button>
 
 <script>
 const N = s => s.normalize('NFKC').toLowerCase().replace(/[\s　]/g,'')
@@ -333,6 +366,38 @@ document.addEventListener('click',e=>{
   if(c){ const m=c.dataset.m; sel = (sel===m? null : m); shown=30; render(); window.scrollTo({top:0,behavior:'smooth'}); }
   if(e.target.id==='more'){ shown+=50; render(); }
 });
+
+/* ===== メモ。端末内だけに残し、どこにも送らない ===== */
+(function(){
+  const KEY='matsuwaru-memo-{{ID}}';
+  const panel=document.getElementById('memopanel'),
+        text=document.getElementById('memotext'),
+        scrim=document.getElementById('memoscrim');
+  try{ text.value=localStorage.getItem(KEY)||''; }catch(e){}
+  const open=()=>{panel.classList.add('open');panel.setAttribute('aria-hidden','false');
+                  document.body.classList.add('memo-open');};
+  const close=()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true');
+                   document.body.classList.remove('memo-open');};
+  text.addEventListener('input',()=>{ try{ localStorage.setItem(KEY,text.value.slice(0,2000)); }catch(e){} });
+  document.getElementById('memohandle').addEventListener('click',open);
+  document.getElementById('memoclose').addEventListener('click',close);
+  scrim.addEventListener('click',close);
+
+  // 横スワイプ。縦スクロールやタブバーの横スクロールと分けるため、
+  // 横の動きが縦より十分大きいときだけ反応させる
+  let x0=0,y0=0,track=false; const NEED=60;
+  document.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1){track=false;return;}
+    if(e.target.closest('input, textarea, .mtabs')){track=false;return;}
+    x0=e.touches[0].clientX; y0=e.touches[0].clientY; track=true;
+  },{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(!track) return; track=false;
+    const t=e.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0;
+    if(Math.abs(dx)<NEED || Math.abs(dx)<Math.abs(dy)*1.6 || Math.abs(dy)>70) return;
+    if(dx<0) open(); else close();
+  },{passive:true});
+})();
 
 if('serviceWorker' in navigator)
   navigator.serviceWorker.register('sw.js').catch(()=>{});
