@@ -139,8 +139,17 @@ for r in out:
                  res.get('plus'), res.get('total'), res.get('avg'),
                  0 if r['category'] == '機種' else 1,
                  kind(r['chain'])])
+# 機種名の読み・別名（検索用）
+_rd = {}
+_rpath = B + '/data/readings.json'
+if os.path.exists(_rpath):
+    _rd = json.load(open(_rpath, encoding='utf-8')).get('readings', {})
+    _unknown = [m for m in _rd if m not in mi]
+    if _unknown: print('  読みの対象が見つからない機種: ' + ', '.join(_unknown))
+readings = [_rd.get(m, []) for m in mnames]
+
 idx = {'generated': __import__('datetime').date.today().isoformat(),
-       'machines': mnames, 'articles': arts, 'recs': rows}
+       'machines': mnames, 'readings': readings, 'articles': arts, 'recs': rows}
 json.dump(idx, open(B + '/data/index.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 import collections as _c
 _kc = _c.Counter(r[7] for r in rows)
