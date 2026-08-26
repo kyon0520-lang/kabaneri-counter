@@ -79,5 +79,6 @@ if ('serviceWorker' in navigator) {
   if (window.caches) caches.keys().then(ks => ks.forEach(k => { if (k === 'matsuwaru-v1' || k === 'matsuwaru-v2') caches.delete(k); })).catch(()=>{});
 }
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
 </body>
 </html>
