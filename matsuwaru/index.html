@@ -68,8 +68,6 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
 .meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;
   font-size:12px;color:var(--sub);border-top:1px dashed var(--line);padding-top:9px}
 .meta .dt{font-weight:600;color:var(--ink)}
-.units{color:var(--green);font-weight:600}
-.units.minus{color:var(--red)}
 .meta a{margin-left:auto;color:var(--accent);text-decoration:none}
 .meta a:hover{text-decoration:underline}
 
@@ -155,14 +153,10 @@ function chainHTML(r,q){
 }
 
 function card(r,q){
-  const a=DB.articles[r[0]], [plus,total,avg]=[r[3],r[4],r[5]];
-  let units='';
-  if(total!=null) units=`<span class="units${plus<0?' minus':''}">${plus}/${total}台</span>`;
-  let sa='';
-  if(avg!=null) sa=`<span class="units${avg<0?' minus':''}">平均${avg>0?'+':''}${avg.toLocaleString()}枚</span>`;
+  const a=DB.articles[r[0]];
   return `<div class="card">
     <div class="chain">${chainHTML(r,q)}</div>
-    <div class="meta"><span class="dt">${a[0]}</span>${units}${sa}
+    <div class="meta"><span class="dt">${a[0]}</span>
       <a href="${a[1]}" target="_blank" rel="noopener">記事を見る</a></div>
   </div>`;
 }
