@@ -42,6 +42,18 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
   color:var(--sub);font-size:19px;cursor:pointer;display:none}
 .clear.on{display:block}
 
+/* ---- 種類タブ（カウンターと同じ作り） ---- */
+.mtabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:12px -16px -12px}
+.mtabs button{
+  flex:1 1 0;min-width:0;background:none;border:0;border-bottom:2px solid transparent;
+  color:var(--sub);font-family:inherit;font-size:11.5px;letter-spacing:-.02em;
+  padding:11px 1px;cursor:pointer;white-space:nowrap;transition:color .13s}
+.mtabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--accent)}
+.mtabs button b{font-weight:700;font-size:11px;margin-left:4px;color:var(--accent)}
+.mtabs button.on b{color:var(--accent)}
+.mtabs button.zero{color:#c3c9d4}
+.mtabs button.zero b{display:none}
+
 /* ---- 本文 ---- */
 main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
 .count{font-size:13px;color:var(--sub);margin:0 2px 14px}
@@ -60,7 +72,7 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
   padding:15px 16px;margin-bottom:11px}
 .chain{display:flex;flex-wrap:wrap;align-items:center;gap:5px 4px;margin-bottom:11px}
 .node{font-size:15px;padding:3px 9px;border-radius:8px;background:var(--bg-soft);
-  color:var(--ink);white-space:nowrap}
+  color:var(--ink);max-width:100%;white-space:normal;overflow-wrap:anywhere}
 .node.hit{background:#fff3c4;font-weight:700}
 .node.goal{background:var(--accent);color:#fff;font-weight:700}
 .node.goal.other{background:#8b93a1}
@@ -94,6 +106,12 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
            placeholder="示唆のことばを入れる（例：日清）">
     <button class="clear" id="clear" aria-label="消す">×</button>
   </div>
+  <div class="mtabs" id="tabs">
+    <button data-k="0" class="on">本文・画像<b></b></button>
+    <button data-k="2">日付・記念日<b></b></button>
+    <button data-k="3">投稿時刻<b></b></button>
+    <button data-k="4">来店・イベント<b></b></button>
+  </div>
 </div>
 
 <main>
@@ -110,11 +128,13 @@ main{max-width:680px;margin:0 auto;padding:18px 16px 60px}
 <script>
 const N = s => s.normalize('NFKC').toLowerCase().replace(/[\s　]/g,'')
                  .replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60));
-let DB=null, sel=null, shown=30;
+// タブ = 示唆の出どころ。0番は本文(0)と画像(1)をまとめて扱う
+const TABS = {0:[0,1], 2:[2], 3:[3], 4:[4]};
+let DB=null, sel=null, shown=30, tab=0;
 
 fetch('data/index.json').then(r=>r.json()).then(d=>{
   DB=d;
-  DB.recs.forEach(r=>{ r.push(r[2].map(N)); });      // r[7] = 正規化済みトークン
+  DB.recs.forEach(r=>{ r.push(r[2].map(N)); });      // r[8] = 正規化済みトークン
   document.getElementById('gen').textContent='最終更新 '+d.generated+'／'+d.recs.length+'件';
   render();
 }).catch(()=>{
@@ -122,11 +142,13 @@ fetch('data/index.json').then(r=>r.json()).then(d=>{
     '<div class="empty"><p class="big">データを読み込めませんでした</p><p>通信環境をご確認ください。</p></div>';
 });
 
+const inTab=(r,k)=>TABS[k].includes(r[7]);
+
 function search(q){
   const n=N(q); if(!n) return [];
   const out=[];
   for(const r of DB.recs){
-    const t=r[7]; let sc=0;
+    const t=r[8]; let sc=0;
     if(t[0]===n) sc=4;
     else if(t.includes(n)) sc=3;
     else if(t[0].includes(n)) sc=2;
@@ -161,6 +183,15 @@ function card(r,q){
   </div>`;
 }
 
+function tabCounts(all){
+  document.querySelectorAll('#tabs button').forEach(b=>{
+    const k=+b.dataset.k, n=all.filter(r=>inTab(r,k)).length;
+    b.classList.toggle('on', k===tab);
+    b.classList.toggle('zero', n===0);
+    b.querySelector('b').textContent = n || '';
+  });
+}
+
 function render(){
   const q=document.getElementById('q').value.trim();
   const cnt=document.getElementById('count'), chips=document.getElementById('chips'),
@@ -169,15 +200,24 @@ function render(){
 
   if(!q){
     sel=null; chips.innerHTML=''; cnt.innerHTML='';
-    const top=[...DB.recs].sort((a,b)=> DB.articles[b[0]][0] > DB.articles[a[0]][0] ? 1:-1).slice(0,12);
+    tabCounts([]);
+    document.querySelectorAll('#tabs button b').forEach(b=>b.textContent='');
+    const top=[...DB.recs].filter(r=>inTab(r,tab))
+      .sort((a,b)=> DB.articles[b[0]][0] > DB.articles[a[0]][0] ? 1:-1).slice(0,12);
+    const lead = tab===0
+      ? '店長ポストに出てきた単語や画像から、過去に全台系になった機種を引きます。'
+      : (tab===2 ? '日付や記念日にちなんだ示唆です。月や日が同じ回を見ると傾向が掴めます。'
+      : (tab===3 ? '本文ではなく、ポストされた時刻そのものが示唆になっていたものです。'
+                 : '来店取材やイベントにちなんだ示唆です。'));
     res.innerHTML=`<div class="empty">
-        <p class="big">示唆のことばを入れてください</p>
-        <p>店長ポストに出てきた単語から、過去に全台系になった機種を引きます。</p></div>
-      <p class="hintlabel">直近のまつわる</p>`+ top.map(r=>card(r,'')).join('');
+        <p class="big">示唆のことばを入れてください</p><p>${lead}</p></div>
+      <p class="hintlabel">この種類の直近のまつわる</p>`+ top.map(r=>card(r,'')).join('');
     return;
   }
 
-  let hits=search(q);
+  const all=search(q);
+  tabCounts(all);
+  let hits=all.filter(r=>inTab(r,tab));
   const byM={};
   hits.forEach(r=>{ const m=DB.machines[r[1]]; byM[m]=(byM[m]||0)+1; });
   const ms=Object.entries(byM).sort((a,b)=>b[1]-a[1]);
@@ -190,9 +230,15 @@ function render(){
 
   if(sel) hits=hits.filter(r=>DB.machines[r[1]]===sel);
   if(!hits.length){
-    res.innerHTML=`<div class="empty"><p class="big">「${esc(q)}」の実績はありません</p>
-      <p>まだ使われていない示唆か、別の言い方かもしれません。<br>
-      短い語（例：「鶴」）で引くと見つかることがあります。</p></div>`;
+    const other=[0,2,3,4].filter(k=>k!==tab && all.some(r=>inTab(r,k)));
+    const NAMES={0:'本文・画像',2:'日付・記念日',3:'投稿時刻',4:'来店・イベント'};
+    res.innerHTML = other.length
+      ? `<div class="empty"><p class="big">この種類には見つかりません</p>
+         <p>「${esc(q)}」は ${other.map(k=>NAMES[k]).join('・')} にあります。<br>
+         上のタブを切り替えてください。</p></div>`
+      : `<div class="empty"><p class="big">「${esc(q)}」の実績はありません</p>
+         <p>まだ使われていない示唆か、別の言い方かもしれません。<br>
+         短い語（例：「鶴」）で引くと見つかることがあります。</p></div>`;
     return;
   }
   res.innerHTML = hits.slice(0,shown).map(r=>card(r,q)).join('')
@@ -206,6 +252,9 @@ document.getElementById('clear').addEventListener('click',()=>{
   const i=document.getElementById('q'); i.value=''; sel=null; shown=30; render(); i.focus();
 });
 document.addEventListener('click',e=>{
+  const tb=e.target.closest('#tabs button');
+  if(tb){ tab=+tb.dataset.k; sel=null; shown=30; render();
+          window.scrollTo({top:0,behavior:'smooth'}); return; }
   const c=e.target.closest('.chip');
   if(c){ const m=c.dataset.m; sel = (sel===m? null : m); shown=30; render(); window.scrollTo({top:0,behavior:'smooth'}); }
   if(e.target.id==='more'){ shown+=50; render(); }

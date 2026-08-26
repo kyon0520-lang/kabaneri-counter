@@ -115,6 +115,19 @@ for r in out:
         mi[r['machine']] = len(mnames); mnames.append(r['machine'])
 def _n(x): return re.sub(r'[\s\u3000]+','',unicodedata.normalize('NFKC',x or '')).lower()
 _alias = {_n(k): v for k, v in canon.items()}
+# 示唆の出どころで分類（0=本文のことば 1=画像 2=日付・記念日 3=投稿時刻 4=来店・イベント）
+_KIND = [
+    (3, r'\d{1,2}[:：]\d{2}|\d+分(投稿|ポスト)|投稿時間|ポスト時間|分投稿|分ポスト'),
+    (2, r'^\d{1,2}/\d{1,2}|の日$|記念日|誕生日|キャラ誕|BD$|周年|の記念'),
+    (4, r'来店|感謝祭|ファン感|イベント|合同|取材'),
+    (1, r'（画像）|\(画像\)|画像|写真|枚目'),
+]
+def kind(ch):
+    head = ch[0] if ch else ''
+    for k, p in _KIND:
+        if re.search(p, head): return k
+    return 0
+
 rows, trimmed = [], 0
 for r in out:
     res = r.get('result') or {}
@@ -124,8 +137,13 @@ for r in out:
         ch.pop(); trimmed += 1
     rows.append([ai[r['articleUrl']], mi[r['machine']], ch,
                  res.get('plus'), res.get('total'), res.get('avg'),
-                 0 if r['category'] == '機種' else 1])
+                 0 if r['category'] == '機種' else 1,
+                 kind(r['chain'])])
 idx = {'generated': __import__('datetime').date.today().isoformat(),
        'machines': mnames, 'articles': arts, 'recs': rows}
 json.dump(idx, open(B + '/data/index.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+import collections as _c
+_kc = _c.Counter(r[7] for r in rows)
+_kn = {0:'本文', 1:'画像', 2:'日付・記念日', 3:'投稿時刻', 4:'来店・イベント'}
 print('検索インデックス: %d件 / %.0fKB（終点の重複を%d件整理）' % (len(rows), os.path.getsize(B + '/data/index.json')/1024, trimmed))
+print('  内訳: ' + ' / '.join('%s%d' % (_kn[k], _kc[k]) for k in sorted(_kc)))
