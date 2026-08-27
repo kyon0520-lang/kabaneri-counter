@@ -2,7 +2,7 @@
 """毎朝の更新。raw.json を正本にして、未取得の記事だけを取得・追記する。
    異常時は終了コード1で落とす（GitHub Actions の失敗通知を出すため）。"""
 import urllib.request, re, os, sys, json, time, subprocess
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime, timezone
 from lib import parse_html
 
 import sys, os, json as _json
@@ -64,7 +64,10 @@ json.dump(raw, open(B + '/raw.json', 'w'), ensure_ascii=False, indent=1)
 # --- 3) 鮮度チェック：最新記事が古すぎたら異常 ---
 latest = max(a['articleDate'] for a in raw)
 y, m, d = map(int, latest.split('-'))
-gap = (date.today() - date(y, m, d)).days
+# 実行環境はUTCなので、日本時間の「今日」で比べる
+# （9時JST＝0時UTCだと、UTCの日付が前日になり判定がずれるため）
+today_jst = datetime.now(timezone(timedelta(hours=9))).date()
+gap = (today_jst - date(y, m, d)).days
 if gap > MAX_GAP:
     die('最新記事が%d日前(%s)。ブログの更新停止か取得失敗の可能性' % (gap, latest))
 
