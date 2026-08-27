@@ -210,7 +210,7 @@ function render(D){
   // 端末標準の選択（縦にスクロールできる）を使う
   const grp = (name, items) => items.length
     ? `<optgroup label="${name}">` + items.map(([k,label,p])=>
-        `<option value="${esc(k)}"${k===picked?' selected':''}>${k==='d'+dg?'● ':''}${esc(label)}　${p.days}${p.dates?'回':'日'}</option>`
+        `<option value="${esc(k)}"${k===picked?' selected':''}>${k==='d'+dg?'● ':''}${esc(label)}</option>`
       ).join('') + `</optgroup>` : '';
   h += `<h2>イベントを選ぶ</h2>`;
   h += `<div class="pickbox"><select id="picker" aria-label="イベントを選ぶ">`
