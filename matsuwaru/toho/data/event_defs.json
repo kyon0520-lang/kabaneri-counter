@@ -1,32 +1,236 @@
 {
   "_説明": "イベントの定義。表示順はこのファイルの順番。sub は名前の横に出す補足。match で対象日を決める（digit=日付の末尾／day=その日／monthend=月末最終日／irregular=記事から検出）。",
   "◯のつく日": [
-    { "key": "d0",  "label": "0のつく日",   "sub": "大都、ハナハナ",                 "match": { "digit": [0] } },
-    { "key": "d2",  "label": "2のつく日",   "sub": "にゃっぴー",                    "match": { "digit": [2] } },
-    { "key": "d39", "label": "3・9のつく日", "sub": "3台並び",                      "match": { "digit": [3, 9] } },
-    { "key": "d4",  "label": "4のつく日",   "sub": "モンキー、VVV、からくり、かぐや", "match": { "digit": [4] } },
-    { "key": "d5",  "label": "5のつく日",   "sub": "ノーマル",                      "match": { "digit": [5] } },
-    { "key": "d6",  "label": "6のつく日",   "sub": "末尾",                          "match": { "digit": [6] } },
-    { "key": "d7",  "label": "7のつく日",   "sub": "マルハンの日",                   "match": { "digit": [7] } },
-    { "key": "d8",  "label": "8のつく日",   "sub": "ばちばちくん",                   "match": { "digit": [8] } }
+    {
+      "key": "d0",
+      "label": "0のつく日",
+      "sub": "大都、ハナハナ",
+      "match": {
+        "digit": [
+          0
+        ]
+      }
+    },
+    {
+      "key": "d2",
+      "label": "2のつく日",
+      "sub": "にゃっぴー",
+      "match": {
+        "digit": [
+          2
+        ]
+      }
+    },
+    {
+      "key": "d3",
+      "label": "3のつく日",
+      "sub": "3台並び",
+      "match": {
+        "digit": [
+          3
+        ]
+      }
+    },
+    {
+      "key": "d4",
+      "label": "4のつく日",
+      "sub": "モンキー、VVV、からくり、かぐや",
+      "match": {
+        "digit": [
+          4
+        ]
+      }
+    },
+    {
+      "key": "d5",
+      "label": "5のつく日",
+      "sub": "ノーマル",
+      "match": {
+        "digit": [
+          5
+        ]
+      }
+    },
+    {
+      "key": "d6",
+      "label": "6のつく日",
+      "sub": "末尾",
+      "match": {
+        "digit": [
+          6
+        ]
+      }
+    },
+    {
+      "key": "d7",
+      "label": "7のつく日",
+      "sub": "マルハンの日",
+      "match": {
+        "digit": [
+          7
+        ]
+      }
+    },
+    {
+      "key": "d8",
+      "label": "8のつく日",
+      "sub": "ばちばちくん",
+      "match": {
+        "digit": [
+          8
+        ]
+      }
+    },
+    {
+      "key": "d9",
+      "label": "9のつく日",
+      "sub": "3台並び",
+      "match": {
+        "digit": [
+          9
+        ]
+      }
+    }
   ],
   "特別な日": [
-    { "key": "s1",  "label": "東京大戦",   "sub": "毎月1日",     "match": { "day": [1] } },
-    { "key": "s2",  "label": "ママ誕生日", "sub": "毎月2日",     "match": { "day": [2] } },
-    { "key": "s11", "label": "ゾロ目の日", "sub": "11日・22日",  "match": { "day": [11, 22] } },
-    { "key": "w21", "label": "21-27WEEK 21日", "sub": "店長就任日",   "match": { "day": [21] } },
-    { "key": "w22", "label": "21-27WEEK 22日", "sub": "末尾ゾロ目",   "match": { "day": [22] } },
-    { "key": "w23", "label": "21-27WEEK 23日", "sub": "やばたにえん", "match": { "day": [23] } },
-    { "key": "w24", "label": "21-27WEEK 24日", "sub": "月イチ周年日", "match": { "day": [24] } },
-    { "key": "w25", "label": "21-27WEEK 25日", "sub": "ノーマル全般", "match": { "day": [25] } },
-    { "key": "w26", "label": "21-27WEEK 26日", "sub": "末尾",         "match": { "day": [26] } },
-    { "key": "w27", "label": "21-27WEEK 27日", "sub": "7の付く日",    "match": { "day": [27] } },
-    { "key": "sme", "label": "月末最終日", "sub": "",            "match": { "monthend": true } }
+    {
+      "key": "s1",
+      "label": "東京大戦",
+      "sub": "毎月1日",
+      "match": {
+        "day": [
+          1
+        ]
+      }
+    },
+    {
+      "key": "s2",
+      "label": "ママ誕生日",
+      "sub": "毎月2日",
+      "match": {
+        "day": [
+          2
+        ]
+      }
+    },
+    {
+      "key": "s11",
+      "label": "ゾロ目の日",
+      "sub": "11日・22日",
+      "match": {
+        "day": [
+          11,
+          22
+        ]
+      }
+    },
+    {
+      "key": "w21",
+      "label": "21-27WEEK 21日",
+      "sub": "店長就任日",
+      "match": {
+        "day": [
+          21
+        ]
+      }
+    },
+    {
+      "key": "w22",
+      "label": "21-27WEEK 22日",
+      "sub": "末尾ゾロ目",
+      "match": {
+        "day": [
+          22
+        ]
+      }
+    },
+    {
+      "key": "w23",
+      "label": "21-27WEEK 23日",
+      "sub": "やばたにえん",
+      "match": {
+        "day": [
+          23
+        ]
+      }
+    },
+    {
+      "key": "w24",
+      "label": "21-27WEEK 24日",
+      "sub": "月イチ周年日",
+      "match": {
+        "day": [
+          24
+        ]
+      }
+    },
+    {
+      "key": "w25",
+      "label": "21-27WEEK 25日",
+      "sub": "ノーマル全般",
+      "match": {
+        "day": [
+          25
+        ]
+      }
+    },
+    {
+      "key": "w26",
+      "label": "21-27WEEK 26日",
+      "sub": "末尾",
+      "match": {
+        "day": [
+          26
+        ]
+      }
+    },
+    {
+      "key": "w27",
+      "label": "21-27WEEK 27日",
+      "sub": "7の付く日",
+      "match": {
+        "day": [
+          27
+        ]
+      }
+    },
+    {
+      "key": "sme",
+      "label": "月末最終日",
+      "sub": "",
+      "match": {
+        "monthend": true
+      }
+    }
   ],
   "不定期イベント": [
-    { "key": "iyaba", "label": "やばたにえん",   "match": { "irregular": "やばたにえん" } },
-    { "key": "iaka",  "label": "あかまる取材",   "match": { "irregular": "あかまる取材" } },
-    { "key": "iegu",  "label": "エグち",         "match": { "irregular": "エグち" } },
-    { "key": "idan",  "label": "ダンち",         "match": { "irregular": "ダンち" } }
+    {
+      "key": "iyaba",
+      "label": "やばたにえん",
+      "match": {
+        "irregular": "やばたにえん"
+      }
+    },
+    {
+      "key": "iaka",
+      "label": "あかまる取材",
+      "match": {
+        "irregular": "あかまる取材"
+      }
+    },
+    {
+      "key": "iegu",
+      "label": "エグち",
+      "match": {
+        "irregular": "エグち"
+      }
+    },
+    {
+      "key": "idan",
+      "label": "ダンち",
+      "match": {
+        "irregular": "ダンち"
+      }
+    }
   ]
 }
