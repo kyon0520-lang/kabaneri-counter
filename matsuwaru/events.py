@@ -53,7 +53,14 @@ fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.p
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
 ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
 
-def cn(m): return canon.get(m, m)
+# 「モンキーV（青）」「防振り ※1台稼働停止中」のような但し書き付きの表記があり、
+# そのままだと機種として拾えず台数を取りこぼす。落としてから名寄せし直す。
+_ANN = re.compile(r'[（(][^）)]*[）)]|※.*$')
+def cn(m):
+    c = canon.get(m, m)
+    if c in MACHINES: return c
+    s = _ANN.sub('', m).strip()
+    return canon.get(s, s)
 def d2(s):
     y, m, dd = map(int, s.split('-')); return date(y, m, dd)
 
