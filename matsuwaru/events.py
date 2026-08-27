@@ -20,7 +20,7 @@ canon = _json.load(open(B + '/data/canon.json', encoding='utf-8'))
 MACHINES = set(_json.load(open(B + '/data/machines.json', encoding='utf-8')))
 
 # 現行ラインナップ（店舗公式の設置機種ページ）。撤去済みを「まだ来ていない」から外す
-LINEUP, INSTALLED = None, None
+LINEUP, INSTALLED, UNITS = None, None, {}
 _lp = B + '/data/lineup.json'
 if _os.path.exists(_lp):
     LINEUP = _json.load(open(_lp, encoding='utf-8'))
@@ -32,16 +32,20 @@ if _os.path.exists(_lp):
     import unicodedata as _ud
     def _n(x):
         return re.sub(r'[\s\u3000/／・~〜\-!！?？:：\.]', '', _ud.normalize('NFKC', x).lower())
-    _hall = [_n(nm) for nm, _ in LINEUP['slots']]
-    def _installed(m):
-        if m in _out: return False
+    _hall = [(_n(nm), u) for nm, u in LINEUP['slots']]
+    def _match(m):
+        """(設置しているか, 台数) を返す"""
+        if m in _out: return False, 0
         # 詳しい名前から先に当てる（からくり2 が からくり より先に決まるように）
         cand = _only[m] if m in _only else [m] + _read.get(m, [])
         for k in sorted(set(cand), key=len, reverse=True):
             if len(_n(k)) < 2: continue
-            if any(_n(k) in h for h in _hall): return True
-        return False
-    INSTALLED = {m for m in MACHINES if _installed(m)}
+            hit = [u for h, u in _hall if _n(k) in h]
+            if hit: return True, sum(hit)
+        return False, 0
+    _mt = {m: _match(m) for m in MACHINES}
+    INSTALLED = {m for m, (ok, _) in _mt.items() if ok}
+    UNITS = {m: u for m, (ok, u) in _mt.items() if ok}
 fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.path.exists(B + '/data/event_fixes.json') else {}
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
 ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
@@ -95,7 +99,7 @@ def profile(dates, label):
         # 倍率は表示していないが、並びの補助として持っておく
         mul = round(rate / b, 1) if (b and k >= 2 and n >= 3) else 0
         rows.append([m, k, round(rate * 100), mul])
-    rows.sort(key=lambda r: (-r[1], -base[r[0]]))
+    rows.sort(key=lambda r: (-r[1], -UNITS.get(r[0], 0), -base[r[0]]))
     return {'label': label, 'days': n, 'small': n < 3, 'top': rows[:8]}
 
 # --- 定義ファイルに従ってイベントを組み立てる（表示順もこの順） ---
