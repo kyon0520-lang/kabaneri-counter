@@ -26,13 +26,15 @@ if _os.path.exists(_lp):
     LINEUP = _json.load(open(_lp, encoding='utf-8'))
     _rj = _json.load(open(B + '/data/readings.json', encoding='utf-8'))
     _read = _rj['readings']
-    # 読みが広すぎて別機種を掴む機種は、照合専用の名前だけを使う
-    _only = {k: v for k, v in _rj.get('ラインナップ照合', {}).items() if not k.startswith('_')}
+    _adj = _rj.get('ラインナップ照合', {})
+    _out = set(_adj.get('対象外', []))     # 現行にないと分かっている機種
+    _only = _adj.get('限定', {})           # 照合にこの名前だけを使う機種
     import unicodedata as _ud
     def _n(x):
         return re.sub(r'[\s\u3000/／・~〜\-!！?？:：\.]', '', _ud.normalize('NFKC', x).lower())
     _hall = [_n(nm) for nm, _ in LINEUP['slots']]
     def _installed(m):
+        if m in _out: return False
         # 詳しい名前から先に当てる（からくり2 が からくり より先に決まるように）
         cand = _only[m] if m in _only else [m] + _read.get(m, [])
         for k in sorted(set(cand), key=len, reverse=True):
