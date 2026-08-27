@@ -54,18 +54,13 @@ h2:first-of-type{margin-top:4px}
 .m.hi em{color:var(--hot)}
 .m.mid{background:rgba(234,179,8,.14)}
 .m.mid em{color:var(--warm)}
-.picker{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
-  margin:0 -20px 14px;padding:2px 20px 4px}
-.picker::-webkit-scrollbar{display:none}
-.pick{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);border-radius:999px;
-  padding:8px 14px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;
-  white-space:nowrap;transition:.13s}
-.pick b{font-weight:700;font-size:11px;color:var(--sub);margin-left:5px}
-.pick.on{background:var(--accent);border-color:var(--accent);color:#fff}
-.pick.on b{color:rgba(255,255,255,.8)}
-.pick.today::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;
-  background:var(--hot);margin-right:6px;vertical-align:1px}
-.pick.on.today::before{background:#fff}
+.pickbox{position:relative;margin:0 0 14px}
+.pickbox select{width:100%;font:inherit;font-size:15px;padding:14px 42px 14px 16px;
+  border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);
+  appearance:none;-webkit-appearance:none;outline:none;cursor:pointer}
+.pickbox select:focus{border-color:var(--accent)}
+.pickbox::after{content:'▾';position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  color:var(--sub);pointer-events:none;font-size:15px}
 .detail .dhd{margin-bottom:8px}
 .rowlist{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
 .row{display:block;padding:12px 16px;border-bottom:1px solid var(--line)}
@@ -170,7 +165,6 @@ function detail(p){
 function drawPicked(){
   const list = pickerList(DB);
   const cur = list.find(x=>x[0]===picked) || list[0];
-  document.querySelectorAll('.pick').forEach(b=>b.classList.toggle('on', b.dataset.k===cur[0]));
   document.getElementById('detail').innerHTML = detail(cur[2]);
 }
 
@@ -187,10 +181,17 @@ function render(D){
   // 明日のイベントを最初から選んでおく
   const dg = tomo.getDate()%10;
   picked = (list.find(x=>x[0]==='d'+dg) || list[0])[0];
+  // 端末標準の選択（縦にスクロールできる）を使う
+  const grp = (name, items) => items.length
+    ? `<optgroup label="${name}">` + items.map(([k,label,p])=>
+        `<option value="${esc(k)}"${k===picked?' selected':''}>${k==='d'+dg?'● ':''}${esc(label)}（過去${p.days}${p.dates?'回':'日'}）</option>`
+      ).join('') + `</optgroup>` : '';
   h += `<h2>イベントを選ぶ</h2>`;
-  h += `<div class="picker" id="picker">` + list.map(([k,label,p])=>
-      `<button class="pick${k==='d'+dg?' today':''}" data-k="${esc(k)}">${esc(label)}<b>${p.days}</b></button>`
-    ).join('') + `</div>`;
+  h += `<div class="pickbox"><select id="picker" aria-label="イベントを選ぶ">`
+     + grp('◯のつく日', list.filter(x=>x[0][0]==='d'))
+     + grp('特別な日',   list.filter(x=>x[0][0]==='s'))
+     + grp('不定期イベント', list.filter(x=>x[0][0]==='i'))
+     + `</select></div>`;
   h += `<div id="detail"></div>`;
 
   const t = D.thisMonth;
@@ -212,13 +213,8 @@ function render(D){
     集計は実際に全台系が行われた日で行っています。<br>最終更新 ${D.generated}</div>`;
   document.getElementById('main').innerHTML = h;
   drawPicked();
-  // 選んであるものが画面内に来るように寄せる
-  const on = document.querySelector('.pick.on');
-  if(on) on.scrollIntoView({inline:'center', block:'nearest'});
-  document.getElementById('picker').addEventListener('click', e=>{
-    const b = e.target.closest('.pick'); if(!b) return;
-    picked = b.dataset.k; drawPicked();
-    b.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+  document.getElementById('picker').addEventListener('change', e=>{
+    picked = e.target.value; drawPicked();
   });
 }
 </script>
