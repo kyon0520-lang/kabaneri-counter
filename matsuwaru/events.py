@@ -21,6 +21,7 @@ MACHINES = set(_json.load(open(B + '/data/machines.json', encoding='utf-8')))
 
 # 現行ラインナップ（店舗公式の設置機種ページ）。撤去済みを「まだ来ていない」から外す
 LINEUP, INSTALLED, UNITS = None, None, {}
+UHIST = {}   # 日付 → {機種: その日の台数}
 _lp = B + '/data/lineup.json'
 if _os.path.exists(_lp):
     LINEUP = _json.load(open(_lp, encoding='utf-8'))
@@ -68,7 +69,28 @@ for a in raw:
     ms = {m for m in ms if m in MACHINES}
     if not ms: continue
     days[t] = sorted(ms)
+    # その日の台数（入れ替えで変わるので、現在の設置台数ではなく実施当日の値を使う）
+    u = {}
+    for r in a['results']:
+        m = cn(r['machine'])
+        if m in MACHINES and r.get('total'): u[m] = r['total']
+    for x in a['assoc']:
+        if not x.get('machine'): continue
+        m = cn(x['machine']); res = x.get('result') or {}
+        if m in MACHINES and res.get('total'): u.setdefault(m, res['total'])
+    UHIST[t] = u
 alldays = sorted(days)
+
+# 台数が載っていない日は、その機種の直近の記録で埋める（入れ替えは月曜なので近い日ほど確か）
+_seen = collections.defaultdict(list)
+for _t in alldays:
+    for _m, _u in UHIST.get(_t, {}).items(): _seen[_m].append((_t, _u))
+def units_on(d, m):
+    v = UHIST.get(d, {}).get(m)
+    if v: return v
+    rec = _seen.get(m)
+    if rec: return min(rec, key=lambda x: abs((d2(x[0]) - d2(d)).days))[1]
+    return UNITS.get(m)   # ブログに一度も台数が出ていない機種は現在の設置台数で代用
 
 # --- 不定期イベント（対象日ベース。誤検出は event_fixes.json で直す） ---
 irr = collections.defaultdict(list)
@@ -240,7 +262,7 @@ def size_profile(dates):
         n += 1; picked += len(ms)
         seen = set()
         for m in ms:
-            u = UNITS.get(m)
+            u = units_on(d, m)
             if u is None: continue
             seen.add('big' if u >= 20 else ('mid' if u >= 10 else 'small'))
             us.append(u)
