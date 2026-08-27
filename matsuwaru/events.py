@@ -148,12 +148,30 @@ for _g, _items in DEFS.items():
         IRR_DATES[_it['key']] = sorted(_ds)
         _replaced |= set(_ds)
 
-def match_dates(mt, key):
+# グループの優先順位（先にあるほど強い）。上位グループのイベントがある日は
+# 下位グループのイベントは走っていないので、その日を母数から外す。
+# 例：23日は21-27WEEK（やばたにえん）なので3のつく日には数えない。
+PRIO = DEFS.get('_優先順位') or ['不定期イベント', '特別な日', '◯のつく日']
+_claimed = {}
+for _g in PRIO:
+    _ds = set()
+    for _it in DEFS.get(_g, []):
+        _ds |= (set(IRR_DATES.get(_it['key'], [])) if 'irregular' in _it['match']
+                else set(rule_dates(_it['match'])))
+    _claimed[_g] = _ds
+
+def outranked(group):
+    up = set()
+    for g in PRIO:
+        if g == group: break
+        up |= _claimed.get(g, set())
+    return up
+
+def match_dates(mt, key, group):
     if 'irregular' in mt:
         ds = list(IRR_DATES.get(key, []))
     else:
-        # 不定期イベントに置き換わった日は定例から外す
-        ds = [d for d in rule_dates(mt) if d not in _replaced]
+        ds = [d for d in rule_dates(mt) if d not in outranked(group)]
     # 店長ポストで判明した日は、その日に指定されたイベントだけを残す／足す
     ds = [d for d in ds if key in SCHED.get(d, {key})]
     ds += [d for d, ks in SCHED.items() if key in ks and d in alldays and d not in ds]
@@ -163,14 +181,14 @@ events = []
 for group, items in DEFS.items():
     if group.startswith('_'): continue
     for it in items:
-        ds = match_dates(it['match'], it['key'])
+        ds = match_dates(it['match'], it['key'], group)
         p = profile(ds, it['label'])
         if not p: continue
         p.update({'g': group, 'key': it['key'], 'sub': it.get('sub', ''),
                   'match': it['match']})
         if 'irregular' in it['match']: p['dates'] = ds
         events.append(p)
-print('   不定期による置き換え %d日' % len(_replaced))
+print('   不定期による置き換え %d日' % len(_claimed.get('不定期イベント', ())))
 
 # --- 今月の実施状況 ---
 today = datetime.now(timezone(timedelta(hours=9))).date()

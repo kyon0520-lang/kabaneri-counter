@@ -200,7 +200,7 @@ function render(D){
      + [...new Set(D.events.map(p=>p.g))].map(g=>grp(g, D.events.filter(p=>p.g===g))).join('')
      + `</select></div>`;
   h += `<div id="detail"></div>`;
-  h += `<p class="note">そのイベントの日のうち、何回・何割で全系になったかです。過去${D.totalDays}日ぶんの実績から出しています。取材などの不定期イベントが入った日は定例イベントが動かないため、その日は◯のつく日などの集計から外しています。</p>`;
+  h += `<p class="note">そのイベントの日のうち、何回・何割で全系になったかです。過去${D.totalDays}日ぶんの実績から出しています。同じ日に複数当てはまる場合は、細かいほうのイベントだけを数えています。取材などの不定期イベントが入った日と、21-27WEEK・月末最終日にあたる日は、◯のつく日の集計には含めていません。</p>`;
 
   const t = D.thisMonth;
   h += `<h2>${t.month.replace('-','年')}月の実施状況</h2>`;
