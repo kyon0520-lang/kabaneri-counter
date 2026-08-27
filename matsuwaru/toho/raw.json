@@ -30482,5 +30482,137 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/08/27/075754",
+  "articleDate": "2026-08-27",
+  "targetDate": "2026-08-26",
+  "postDate": "2026-08-25",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2092212935636734336",
+  "title": "8月26日のマルハン新宿東宝ビルまとめ✏️鉄板の末尾への仕掛けと全系仕掛け！",
+  "results": [
+   {
+    "machine": "末尾⑥",
+    "plus": 47,
+    "total": 67,
+    "avg": 2807
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 2167
+   },
+   {
+    "machine": "やじきた",
+    "plus": 6,
+    "total": 7,
+    "avg": 3257
+   },
+   {
+    "machine": "アレックス",
+    "plus": 4,
+    "total": 4,
+    "avg": 2450
+   },
+   {
+    "machine": "ドッチ",
+    "plus": 2,
+    "total": 2,
+    "avg": 3900
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "トンカツ６切れ",
+    "chain": [
+     "トンカツ６切れ",
+     "6台機種"
+    ],
+    "raw": "トンカツ６切れ→6台機種",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 2167
+    }
+   },
+   {
+    "machine": "やじきた",
+    "matched": true,
+    "keyword": "上野へ",
+    "chain": [
+     "上野へ",
+     "道中記"
+    ],
+    "raw": "上野へ→道中記",
+    "result": {
+     "plus": 6,
+     "total": 7,
+     "avg": 3257
+    }
+   },
+   {
+    "machine": "アレックス",
+    "matched": true,
+    "keyword": "羽根物",
+    "chain": [
+     "羽根物",
+     "羽",
+     "鳥"
+    ],
+    "raw": "羽根物→羽→鳥",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 2450
+    }
+   },
+   {
+    "machine": "ドッチ",
+    "matched": true,
+    "keyword": "上野",
+    "chain": [
+     "上野",
+     "動物園",
+     "アニマルドッチ"
+    ],
+    "raw": "上野→動物園→アニマルドッチ",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 3900
+    }
+   },
+   {
+    "machine": "ドッチ",
+    "matched": true,
+    "keyword": "つけもの",
+    "chain": [
+     "つけもの",
+     "けもの"
+    ],
+    "raw": "つけもの→けもの",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 3900
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "まんぷく",
+    "chain": [
+     "まんぷく",
+     "ﾌﾟｸｩ"
+    ],
+    "raw": "まんぷく→ﾌﾟｸｩ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
