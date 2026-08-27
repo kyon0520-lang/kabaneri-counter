@@ -49,7 +49,14 @@ added = []
 for u in new:
     ent = u.split('/entry/')[1].replace('/', '-')
     try:
-        a = parse_html(get(u), ent)
+        src = get(u)
+        # 全再構築（parse.py）できるようキャッシュにも残す
+        try:
+            os.makedirs(CACHE, exist_ok=True)
+            open(os.path.join(CACHE, ent + '.html'), 'w', encoding='utf-8').write(src)
+        except Exception:
+            pass
+        a = parse_html(src, ent)
     except Exception as e:
         die('記事の解析に失敗 %s: %s' % (u, e))
     if not a['assoc']:
@@ -72,7 +79,7 @@ if gap > MAX_GAP:
     die('最新記事が%d日前(%s)。ブログの更新停止か取得失敗の可能性' % (gap, latest))
 
 # --- 4) データ生成 → 名寄せ ---
-for s in ('build.py', 'finalize.py'):
+for s in ('build.py', 'finalize.py', 'events.py'):
     r = subprocess.run([sys.executable, os.path.join(_ROOT, s), STORE], capture_output=True, text=True)
     if r.returncode:
         print(r.stderr); die('%s が失敗' % s)

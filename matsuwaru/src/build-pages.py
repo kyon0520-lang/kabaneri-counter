@@ -9,6 +9,7 @@ SRC = os.path.join(B, 'src')
 cfg = json.load(open(os.path.join(B, 'stores.json'), encoding='utf-8'))['stores']
 
 app = open(os.path.join(SRC, 'app.html'), encoding='utf-8').read()
+evp = open(os.path.join(SRC, 'events.html'), encoding='utf-8').read()
 man = open(os.path.join(SRC, 'manifest.webmanifest'), encoding='utf-8').read()
 sw  = open(os.path.join(SRC, 'sw.js'), encoding='utf-8').read()
 
@@ -21,6 +22,7 @@ for s in cfg:
     d = os.path.join(B, s['id'])
     os.makedirs(os.path.join(d, 'data'), exist_ok=True)
     open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(fill(app, s))
+    open(os.path.join(d, 'events.html'), 'w', encoding='utf-8').write(fill(evp, s))
     open(os.path.join(d, 'manifest.webmanifest'), 'w', encoding='utf-8').write(fill(man, s))
     open(os.path.join(d, 'sw.js'), 'w', encoding='utf-8').write(fill(sw, s))
     for ic in os.listdir(os.path.join(SRC, 'icons')):

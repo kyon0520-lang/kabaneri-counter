@@ -15,6 +15,15 @@ def totext(s):
     title = re.search(r'<title>(.*?)</title>', s, re.S)
     return (title.group(1) if title else ''), (tw[0] if tw else None), lines
 
+# 不定期イベントの検出。記事タイトルと本文から拾う
+IRREGULAR = [
+    ('あかまる取材', r'あかまる取材|あかまる来店|アカマル取材'),
+    ('ダンち',      r'ダンち|ダンチ'),
+    ('エグち',      r'エグち|エグチ'),
+    ('やばたにえん', r'やばたにえん'),
+    ('東京大戦',    r'東京大戦'),
+]
+
 ARROW = '[→➡👉⇒]'
 DAIS  = re.compile(r'^([+\-]?\d+)/(\d+)台')
 AVG   = re.compile(r'平均\s*([+\-]?[\d,]+)\s*枚')
@@ -107,7 +116,10 @@ def parse_html(src, ent):
         r = results.get(norm(a['machine'])) if a['machine'] else None
         a['result'] = {k: r[k] for k in ('plus', 'total', 'avg')} if r else None
 
-    return {'articleUrl': 'https://sloslo-blog.hatenablog.com/entry/' + ent.replace('-', '/', 3).replace('-', '/'),
+    flat = title + ' ' + ' '.join(lines)
+    events = [n for n, pat in IRREGULAR if re.search(pat, flat)]
+
+    return {'events': events, 'articleUrl': 'https://sloslo-blog.hatenablog.com/entry/' + ent.replace('-', '/', 3).replace('-', '/'),
             'articleDate': article_date, 'targetDate': target, 'postDate': post_date,
             'tenchou': tenchou, 'tweetUrl': tweet_url, 'title': title.split(' - ')[0],
             'results': [results[k] for k in order], 'assoc': assoc, 'unassigned': unknown}

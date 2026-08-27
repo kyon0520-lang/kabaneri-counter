@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d1c2e">
+<title>イベント傾向｜{{TITLE}}</title>
+<meta name="description" content="{{STORE}}のイベント別の機種傾向と、今月の実施状況。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+:root{
+  --gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,
+           "Segoe UI","Noto Sans JP",sans-serif;
+  --bg:#0d1c2e; --panel:#16283f; --bg-soft:#1e3049;
+  --ink:#e6f0fa; --sub:#93aac4; --line:#2c4560;
+  --accent:#3b82f6; --accent-soft:rgba(59,130,246,.22);
+  --hot:#f43f5e; --warm:#eab308;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
+  line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom)}
+.top{position:sticky;top:0;z-index:20;background:rgba(13,28,46,.94);
+  backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);
+  padding:calc(env(safe-area-inset-top) + 14px) 20px 12px}
+.site{display:flex;align-items:center;gap:6px;margin:0 0 3px;text-decoration:none}
+.site span{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.08em}
+.site .mk{width:11px;height:18px;flex:0 0 auto;display:block;color:var(--sub)}
+.ttl{font-size:18px;margin:0 0 12px;letter-spacing:.02em;line-height:1.35}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent);
+  background:var(--accent-soft);border-radius:999px;padding:3px 9px;margin-left:8px;vertical-align:2px}
+.back{display:inline-block;font-size:13px;color:var(--accent);text-decoration:none}
+main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
+h2{font-size:13px;color:var(--sub);margin:28px 0 10px;font-weight:700;letter-spacing:.04em}
+h2:first-of-type{margin-top:4px}
+.card{border:1px solid var(--line);border-radius:16px;background:var(--panel);
+  padding:15px 16px;margin-bottom:11px}
+.day{border-left:3px solid var(--accent)}
+.day.tomorrow{border-left-color:var(--hot)}
+.dhd{display:flex;align-items:baseline;gap:9px;margin-bottom:3px}
+.dhd b{font-size:16px}
+.dhd .tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent)}
+.day.tomorrow .dhd .tag{background:rgba(244,63,94,.18);color:var(--hot)}
+.evname{font-size:13px;color:var(--ink);margin:0 0 9px}
+.evname i{font-style:normal;color:var(--sub)}
+.ms{display:flex;flex-wrap:wrap;gap:6px}
+.m{display:inline-flex;align-items:baseline;gap:5px;background:var(--bg-soft);
+  border-radius:999px;padding:5px 11px;font-size:13px;white-space:nowrap}
+.m em{font-style:normal;font-size:11px;color:var(--sub)}
+.m.hi{background:rgba(244,63,94,.16)}
+.m.hi em{color:var(--hot)}
+.m.mid{background:rgba(234,179,8,.14)}
+.m.mid em{color:var(--warm)}
+.rowlist{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
+.row{display:block;padding:12px 16px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .rh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+.row .rh b{font-size:14px}
+.row .rh span{font-size:11px;color:var(--sub);white-space:nowrap}
+.note{font-size:11.5px;color:var(--sub);line-height:1.7;margin:0 0 14px}
+.dates{font-size:11px;color:var(--sub);margin:6px 0 0}
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+  font-size:11px;color:var(--sub);line-height:1.8}
+.foot a{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="site" href="/">
+    <svg class="mk" viewBox="0 0 60 96" aria-hidden="true">
+      <g transform="translate(30,48)">
+        <g transform="translate(0,-34) rotate(-8)" fill="none" stroke="#3b82f6" stroke-width="5" stroke-linecap="round">
+          <path d="M -26 6 A 26 10 0 0 0 26 6"></path>
+          <line x1="-26" y1="0" x2="-26" y2="6"></line>
+          <line x1="26" y1="0" x2="26" y2="6"></line>
+          <ellipse rx="26" ry="10"></ellipse>
+        </g>
+        <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
+          <ellipse rx="22" ry="8"></ellipse>
+          <line x1="-22" y1="0" x2="-22" y2="5"></line><line x1="22" y1="0" x2="22" y2="5"></line>
+          <path d="M -22 5 A 22 8 0 0 0 22 5"></path>
+          <line x1="-24" y1="5" x2="-24" y2="12"></line><line x1="20" y1="5" x2="20" y2="12"></line>
+          <path d="M -24 12 A 22 8 0 0 0 20 12"></path>
+        </g>
+      </g>
+    </svg>
+    <span>みんなのスロット</span>
+  </a>
+  <h1 class="ttl">イベント傾向<span class="badge">{{LABEL}}</span></h1>
+  <a class="back" href="./">← 示唆から検索する</a>
+</div>
+
+<main id="main"><p class="note">読み込み中…</p></main>
+
+<script>
+const J = (a,b)=>a+'月'+b+'日';
+const WD = ['日','月','火','水','木','金','土'];
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+fetch('data/events.json').then(r=>r.json()).then(render).catch(()=>{
+  document.getElementById('main').innerHTML='<p class="note">データを読み込めませんでした。</p>';
+});
+
+// 何倍かで色を変える。3倍以上＝強い、2倍以上＝やや強い
+function mchip([m,k,rate,mul]){
+  const cls = mul>=3 ? ' hi' : (mul>=2 ? ' mid' : '');
+  return `<span class="m${cls}">${esc(m)}<em>${rate}%${mul>=2?' ×'+mul:''}</em></span>`;
+}
+
+function dayCard(d, when, D){
+  const dg = d.getDate()%10, day = d.getDate(), mo = d.getMonth()+1;
+  const hits = [];
+  if(D.byDigit[dg]) hits.push(D.byDigit[dg]);
+  for(const [k,v] of Object.entries(D.special)){
+    if(k==='21-27WEEK' && day>=21 && day<=27) hits.push(v);
+    if(k==='ゾロ目の日' && (String(day).length===2 && String(day)[0]===String(day)[1] || mo===day)) hits.push(v);
+    if(k==='月末最終日' && new Date(d.getFullYear(),mo,0).getDate()===day) hits.push(v);
+    if(k==='1日' && day===1) hits.push(v);
+  }
+  const names = hits.map(h=>h.label).join('・') || '特に該当なし';
+  // 同じ機種が複数イベントに出たら、倍率の高いほうを採る
+  const best = {};
+  hits.forEach(h=>h.top.forEach(r=>{ if(!best[r[0]] || r[3]>best[r[0]][3]) best[r[0]]=r; }));
+  const ms = Object.values(best).sort((a,b)=>b[3]-a[3]||b[2]-a[2]).slice(0,8);
+  return `<div class="card day${when==='明日'?' tomorrow':''}">
+    <div class="dhd"><b>${J(mo,day)}（${WD[d.getDay()]}）</b><span class="tag">${when}</span></div>
+    <p class="evname">${esc(names)}${hits.length?` <i>／ 過去${hits.map(h=>h.days).join('・')}日ぶん</i>`:''}</p>
+    ${ms.length?`<div class="ms">${ms.map(mchip).join('')}</div>`:'<p class="note" style="margin:0">実績がまだありません。</p>'}
+  </div>`;
+}
+
+function render(D){
+  const now = new Date(Date.now()+9*3600*1000 - new Date().getTimezoneOffset()*-60000);
+  const today = new Date(); const tomo = new Date(); tomo.setDate(tomo.getDate()+1);
+  let h = '';
+
+  h += `<h2>この日のイベント</h2>`;
+  h += dayCard(tomo,'明日',D) + dayCard(today,'今日',D);
+  h += `<p class="note">数字はその日に全系になった割合と、普段の何倍かです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
+
+  const ir = Object.values(D.irregular).sort((a,b)=>b.days-a.days);
+  if(ir.length){
+    h += `<h2>不定期イベント</h2><div class="rowlist">`;
+    h += ir.map(p=>`<div class="row">
+        <div class="rh"><b>${esc(p.label)}</b><span>過去${p.days}回</span></div>
+        <div class="ms">${p.top.slice(0,6).map(mchip).join('')}</div>
+        <p class="dates">${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}${p.small?'　※回数が少なく、傾向とまでは言えません':''}</p>
+      </div>`).join('') + `</div>`;
+    h += `<p class="note">開催日は記事の記述から拾っています。前日の店長ポストに「#あかまる取材」のように予告が入ることがあります。</p>`;
+  }
+
+  h += `<h2>◯のつく日</h2><div class="rowlist">`;
+  for(let i=0;i<10;i++){
+    const p = D.byDigit[i]; if(!p) continue;
+    h += `<div class="row"><div class="rh"><b>${i}のつく日</b><span>過去${p.days}日</span></div>
+      <div class="ms">${p.top.slice(0,5).map(mchip).join('')}</div></div>`;
+  }
+  h += `</div>`;
+
+  const t = D.thisMonth;
+  h += `<h2>${t.month.replace('-','年')}月の実施状況</h2>`;
+  h += `<div class="card"><div class="rh" style="display:flex;justify-content:space-between"><b>実施済み ${t.done.length}機種</b></div>
+     <div class="ms" style="margin-top:8px">${t.done.map(([m,n])=>`<span class="m">${esc(m)}<em>${n}回</em></span>`).join('')}</div></div>`;
+  if(t.notYet.length){
+    h += `<div class="card"><b>今月まだ来ていない（よく来る機種のみ）</b><div class="rowlist" style="border:0;background:none;margin-top:8px">`;
+    h += t.notYet.slice(0,20).map(([m,avg,sd,gap,last])=>{
+      const steady = avg && sd && sd < avg*0.6;
+      return `<div class="row" style="padding:9px 0"><div class="rh"><b style="font-size:13.5px">${esc(m)}</b>
+        <span>${last.slice(5).replace('-','/')}から${gap}日</span></div>
+        <span class="m${steady?' mid':''}" style="font-size:12px">平均${avg}日おき<em>ばらつき±${sd}日${steady?' 安定':''}</em></span></div>`;
+    }).join('') + `</div></div>`;
+    h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。</p>`;
+  }
+
+  h += `<div class="foot">出典：<a href="{{BLOGURL}}" target="_blank" rel="noopener">{{BLOGNAME}}</a><br>
+    集計は実際に全台系が行われた日で行っています。<br>最終更新 ${D.generated}</div>`;
+  document.getElementById('main').innerHTML = h;
+}
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
+</body>
+</html>
