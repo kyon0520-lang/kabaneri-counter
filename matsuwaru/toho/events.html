@@ -172,6 +172,26 @@ function applies(p, d){
 }
 const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
+// 傾向をひとことで。全体との差が何ポイント離れているかだけで文を組み立てる
+const SZL = {big:'多台数（20台以上）', mid:'中台数（10〜19台）', small:'小台数（9台以下）'};
+function sizeText(z, all){
+  const d = {big:z.big-all.big, mid:z.mid-all.mid, small:z.small-all.small};
+  const ks = ['big','mid','small'].sort((a,b)=>d[b]-d[a]);
+  const hi = ks[0], lo = ks[2];
+  const out = [];
+  if(d[hi] >= 10)     out.push(`${SZL[hi]}が、他の日に比べてはっきり選ばれやすい日です。`);
+  else if(d[hi] >= 5) out.push(`${SZL[hi]}が、他の日よりやや選ばれやすい日です。`);
+  else                out.push('台数の偏りは小さく、全体と近い出方をしています。');
+  if(d[hi] >= 5){
+    if(z.big === 0 && z.n >= 20) out.push('20台以上の機種は、これまで一度も選ばれていません。');
+    else if(d[lo] <= -8) out.push(`逆に${SZL[lo]}は少なめです。`);
+  }
+  const dp = z.perDay - all.perDay;
+  if(dp >= 2)         out.push('1日に選ばれる機種数も多い日です。');
+  else if(dp <= -1.5) out.push('1日に選ばれる機種数は少なめです。');
+  return out.join('');
+}
+
 // 台数の傾向。全体との差で読むもの（全系の8割は9台以下なので、割合そのものは効かない）
 function sizeBlock(z, all){
   if(!z) return '';
@@ -182,7 +202,7 @@ function sizeBlock(z, all){
       <span class="bar"><u style="width:${Math.max(v,1)}%"></u></span>
       <span class="sv">${v}%${delta}</span></div>`;
   };
-  return `<div class="sec">傾向</div><div class="sizeb">
+  return `<div class="sec">傾向</div><p class="ov">${sizeText(z, all)}</p><div class="sizeb">
     ${row('多台数','20台〜', z.big, all.big)}
     ${row('中台数','10〜19台', z.mid, all.mid)}
     ${row('小台数','〜9台', z.small, all.small)}
