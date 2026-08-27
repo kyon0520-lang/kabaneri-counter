@@ -43,12 +43,15 @@ h2:first-of-type{margin-top:4px}
   background:var(--accent-soft);color:var(--accent);flex:0 0 auto;white-space:nowrap}
 .ov{font-size:12.5px;color:var(--sub);margin:8px 0 0;line-height:1.75}
 .sec{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;margin:14px 0 8px}
-.sizeb .sr{display:grid;grid-template-columns:88px 1fr 66px;align-items:center;gap:10px;margin-bottom:7px}
+.sizeb{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 10px}
+.sizeb .sr{display:contents}
 .sizeb .sl{font-size:12px;color:var(--ink);white-space:nowrap}
 .sizeb .sl i{font-style:normal;color:var(--sub);font-size:10.5px;margin-left:4px}
 .sizeb .bar{height:7px;border-radius:99px;background:var(--bg-soft);overflow:hidden}
 .sizeb .bar u{display:block;height:100%;background:var(--accent);text-decoration:none}
-.sizeb .sv{font-size:12px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.sizeb .sv{font-size:12px;font-weight:700;text-align:right;white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+.sizeb .sv em.cnt{font-weight:400;font-size:10.5px;color:var(--sub);margin:0 6px 0 0}
 .sizeb .sv em{font-style:normal;font-weight:700;font-size:10.5px;margin-left:4px}
 .sizeb .sv em.up{color:#4ade80}
 .sizeb .sv em.dn{color:var(--sub)}
@@ -195,20 +198,21 @@ function sizeText(z, all){
 // 台数の傾向。全体との差で読むもの（全系の8割は9台以下なので、割合そのものは効かない）
 function sizeBlock(z, all){
   if(!z) return '';
-  const row = (name, note, v, base) => {
+  const row = (name, note, v, base, k) => {
     const d = v - base;
     const delta = d === 0 ? '' : `<em class="${d>0?'up':'dn'}">${d>0?'+':''}${d}</em>`;
     return `<div class="sr"><span class="sl">${name}<i>${note}</i></span>
       <span class="bar"><u style="width:${Math.max(v,1)}%"></u></span>
-      <span class="sv">${v}%${delta}</span></div>`;
+      <span class="sv"><em class="cnt">${k}/${z.n}回</em>${v}%${delta}</span></div>`;
   };
-  return `<div class="sec">傾向</div><p class="ov">${sizeText(z, all)}</p><div class="sizeb">
-    ${row('多台数','20台〜', z.big, all.big)}
-    ${row('中台数','10〜19台', z.mid, all.mid)}
-    ${row('小台数','〜9台', z.small, all.small)}
-    <p class="dates">1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
-      <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>
-  </div>`;
+  return `<div class="sec">傾向</div><p class="ov">${sizeText(z, all)}</p>
+  <div class="sizeb">
+    ${row('多台数','20台〜', z.big, all.big, z.bigN)}
+    ${row('中台数','10〜19台', z.mid, all.mid, z.midN)}
+    ${row('小台数','〜9台', z.small, all.small, z.smallN)}
+  </div>
+  <p class="dates">1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
+    <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>`;
 }
 
 function detail(p){

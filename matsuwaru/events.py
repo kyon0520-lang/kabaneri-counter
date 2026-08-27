@@ -243,6 +243,7 @@ def size_profile(dates):
     return {'n': n, 'unknown': picked - n,
             'big': round(100 * c['big'] / n), 'mid': round(100 * c['mid'] / n),
             'small': round(100 * c['small'] / n),
+            'bigN': c['big'], 'midN': c['mid'], 'smallN': c['small'],
             'avg': round(sum(us) / len(us), 1),
             'perDay': round(picked / len(dates), 1)}
 
