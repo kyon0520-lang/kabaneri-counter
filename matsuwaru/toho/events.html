@@ -220,7 +220,7 @@ function render(D){
         <span>${last.slice(5).replace('-','/')}から${gap}日</span></div>
         <span class="m${steady?' mid':''}" style="font-size:12px">平均${avg}日おき<em>ばらつき±${sd}日${steady?' 安定':''}</em></span></div>`;
     }).join('') + `</div></div>`;
-    const lu = t.lineup ? `現在の設置機種${t.lineup.machines}機種（${t.lineup.fetched}時点）と照らし合わせ、撤去済みの機種は除いています。` : '';
+    const lu = t.lineup ? `現在の設置機種${t.lineup.machines}機種（${t.lineup.fetched}時点・毎週の入れ替え後に更新）と照らし合わせ、撤去済みの機種は除いています。` : '';
     h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}</p>`;
   }
 
