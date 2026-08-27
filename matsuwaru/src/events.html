@@ -47,6 +47,7 @@ h2:first-of-type{margin-top:4px}
 .m{display:inline-flex;align-items:baseline;gap:5px;background:var(--bg-soft);
   border-radius:999px;padding:5px 11px;font-size:13px;white-space:nowrap}
 .m em{font-style:normal;font-size:11px;color:var(--sub)}
+.m b{font-weight:700;font-variant-numeric:tabular-nums}
 .m i{font-style:normal;font-size:10.5px;font-weight:700;margin-right:6px;
   padding:1px 6px;border-radius:999px;background:rgba(255,255,255,.14);color:var(--ink)}
 .m.r1{background:rgba(234,179,8,.18)}
@@ -129,12 +130,14 @@ function ranked(top){
   let rank = 0, prev = null;
   return top.map((r,i)=>{ if(r[1] !== prev){ rank = i+1; prev = r[1]; } return [r, rank]; });
 }
-function mchip([m,k,rate,mul], rank){
+// 機種名 → 過去○/▲回 → ％ の順。分母がないと％の重みが伝わらないため
+function mchip([m,k,rate,mul], rank, days){
   const cls = rank<=3 ? ' r'+rank : '';
   const badge = rank<=3 ? `<i>${rank}位</i>` : '';
-  return `<span class="m${cls}">${badge}${esc(m)} ${rate}%<em>過去${k}回</em></span>`;
+  return `<span class="m${cls}">${badge}${esc(m)}<em>過去${k}/${days}回</em><b>${rate}%</b></span>`;
 }
-const chips = (top, rank=true) => ranked(top).map(([r,n])=>mchip(r, rank?n:99)).join('');
+const chips = (top, rank=true, days=0) =>
+  ranked(top).map(([r,n])=>mchip(r, rank?n:99, days)).join('');
 
 
 let DB=null, picked=null;
@@ -159,7 +162,7 @@ const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
 function detail(p){
   const ms = p.top.length
-    ? `<div class="ms">${chips(p.top, !p.small)}</div>`
+    ? `<div class="ms">${chips(p.top, !p.small, p.days)}</div>`
     : '<p class="note" style="margin:0">実績がまだありません。</p>';
   const dates = p.dates ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
   const warn = p.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
