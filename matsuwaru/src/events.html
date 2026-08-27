@@ -50,8 +50,17 @@ h2:first-of-type{margin-top:4px}
 .m{display:inline-flex;align-items:baseline;gap:5px;background:var(--bg-soft);
   border-radius:999px;padding:5px 11px;font-size:13px;white-space:nowrap}
 .m em{font-style:normal;font-size:11px;color:var(--sub)}
-.m.hi{background:rgba(244,63,94,.16)}
-.m.hi em{color:var(--hot)}
+.m i{font-style:normal;font-size:10.5px;font-weight:700;margin-right:6px;
+  padding:1px 6px;border-radius:999px;background:rgba(255,255,255,.14);color:var(--ink)}
+.m.r1{background:rgba(234,179,8,.18)}
+.m.r1 i{background:#eab308;color:#0d1c2e}
+.m.r1 em{color:#f5d97a}
+.m.r2{background:rgba(203,213,225,.13)}
+.m.r2 i{background:#cbd5e1;color:#0d1c2e}
+.m.r2 em{color:#cbd5e1}
+.m.r3{background:rgba(217,119,6,.16)}
+.m.r3 i{background:#d97706;color:#fff}
+.m.r3 em{color:#e0a76a}
 .m.mid{background:rgba(234,179,8,.14)}
 .m.mid em{color:var(--warm)}
 .pickbox{position:relative;margin:0 0 14px}
@@ -113,11 +122,18 @@ fetch('data/events.json').then(r=>r.json()).then(render).catch(()=>{
   document.getElementById('main').innerHTML='<p class="note">データを読み込めませんでした。</p>';
 });
 
-// 割合で色を変える。40%以上＝強い、25%以上＝やや強い
-function mchip([m,k,rate,mul]){
-  const cls = rate>=40 ? ' hi' : (rate>=25 ? ' mid' : '');
-  return `<span class="m${cls}">${esc(m)} ${rate}%<em>過去${k}回</em></span>`;
+// 回数の多い順に順位を付ける。同じ回数なら同じ順位にする
+// （22%が5機種並ぶような場面で、順位だけ違うと誤解を招くため）
+function ranked(top){
+  let rank = 0, prev = null;
+  return top.map((r,i)=>{ if(r[1] !== prev){ rank = i+1; prev = r[1]; } return [r, rank]; });
 }
+function mchip([m,k,rate,mul], rank){
+  const cls = rank<=3 ? ' r'+rank : '';
+  const badge = rank<=3 ? `<i>${rank}位</i>` : '';
+  return `<span class="m${cls}">${badge}${esc(m)} ${rate}%<em>過去${k}回</em></span>`;
+}
+const chips = top => ranked(top).map(([r,rank])=>mchip(r,rank)).join('');
 
 function dayCard(d, when, D){
   const dg = d.getDate()%10, day = d.getDate(), mo = d.getMonth()+1;
@@ -137,7 +153,7 @@ function dayCard(d, when, D){
   return `<div class="card day${when==='明日'?' tomorrow':''}">
     <div class="dhd"><b>${J(mo,day)}（${WD[d.getDay()]}）</b><span class="tag">${when}</span></div>
     <p class="evname">${esc(names)}${hits.length?` <i>／ 過去${hits.map(h=>h.days).join('・')}日ぶん</i>`:''}</p>
-    ${ms.length?`<div class="ms">${ms.map(mchip).join('')}</div>`:'<p class="note" style="margin:0">実績がまだありません。</p>'}
+    ${ms.length?`<div class="ms">${chips(ms)}</div>`:'<p class="note" style="margin:0">実績がまだありません。</p>'}
   </div>`;
 }
 
@@ -157,7 +173,7 @@ function pickerList(D){
 
 function detail(p){
   const ms = p.top.length
-    ? `<div class="ms">${p.top.map(mchip).join('')}</div>`
+    ? `<div class="ms">${chips(p.top)}</div>`
     : '<p class="note" style="margin:0">実績がまだありません。</p>';
   const dates = p.dates ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
   const warn = p.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
