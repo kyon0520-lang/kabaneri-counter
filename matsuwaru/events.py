@@ -87,11 +87,19 @@ for dg in range(10):
 special = {}
 for key, sel in [
     ('ゾロ目の日', lambda d: d[-2:] in ('11','22') or int(d[5:7]) == int(d[-2:])),
-    ('21-27WEEK', lambda d: 21 <= int(d[-2:]) <= 27),
     ('月末最終日', lambda d: (d2(d) + timedelta(days=1)).day == 1),
     ('1日',        lambda d: int(d[-2:]) == 1),
 ]:
     p = profile([d for d in alldays if sel(d)], key)
+    if p: special[key] = p
+
+# --- 21-27WEEK は日ごとに内容が違うので分ける（内訳は event_fixes.json）---
+WEEKSUB = fixes.get('21-27WEEKの内訳', {})
+for dd in range(21, 28):
+    sub = WEEKSUB.get(str(dd))
+    key = '21-27WEEK %d日' % dd
+    p = profile([d for d in alldays if int(d[-2:]) == dd],
+                key + ('・%s' % sub if sub else ''))
     if p: special[key] = p
 
 # --- 不定期イベント ---

@@ -124,7 +124,7 @@ function dayCard(d, when, D){
   const hits = [];
   if(D.byDigit[dg]) hits.push(D.byDigit[dg]);
   for(const [k,v] of Object.entries(D.special)){
-    if(k==='21-27WEEK' && day>=21 && day<=27) hits.push(v);
+    if(k===`21-27WEEK ${day}日`) hits.push(v);
     if(k==='ゾロ目の日' && (String(day).length===2 && String(day)[0]===String(day)[1] || mo===day)) hits.push(v);
     if(k==='月末最終日' && new Date(d.getFullYear(),mo,0).getDate()===day) hits.push(v);
     if(k==='1日' && day===1) hits.push(v);
@@ -146,7 +146,11 @@ let DB=null, picked=null;
 function pickerList(D){
   const out=[];
   for(let i=0;i<10;i++) if(D.byDigit[i]) out.push(['d'+i, i+'のつく日', D.byDigit[i]]);
-  for(const k of ['ゾロ目の日','21-27WEEK','月末最終日']) if(D.special[k]) out.push(['s'+k, k, D.special[k]]);
+  // 「1日」は東京大戦とほぼ同じ日なので選択肢には出さない（カードの判定には使う）
+  for(const [k,v] of Object.entries(D.special)){
+    if(k==='1日') continue;
+    out.push(['s'+k, v.label || k, v]);
+  }
   for(const [k,v] of Object.entries(D.irregular)) out.push(['i'+k, k, v]);
   return out;
 }
@@ -190,7 +194,7 @@ function render(D){
   // 端末標準の選択（縦にスクロールできる）を使う
   const grp = (name, items) => items.length
     ? `<optgroup label="${name}">` + items.map(([k,label,p])=>
-        `<option value="${esc(k)}"${k===picked?' selected':''}>${k==='d'+dg?'● ':''}${esc(label)}（過去${p.days}${p.dates?'回':'日'}）</option>`
+        `<option value="${esc(k)}"${k===picked?' selected':''}>${k==='d'+dg?'● ':''}${esc(label)}　${p.days}${p.dates?'回':'日'}</option>`
       ).join('') + `</optgroup>` : '';
   h += `<h2>イベントを選ぶ</h2>`;
   h += `<div class="pickbox"><select id="picker" aria-label="イベントを選ぶ">`
