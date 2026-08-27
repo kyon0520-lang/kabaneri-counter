@@ -126,6 +126,14 @@ def rule_dates(mt):
         return [d for d in alldays if lastday(d)]
     return []
 
+_rule_dates = rule_dates
+def rule_dates(mt):
+    ds = set(_rule_dates(mt))
+    # 定例日から外れた開催もこのイベントに合流させる（やばたにえんの23日以外など）
+    if mt.get('irregularAlso'):
+        ds |= set(irr.get(mt['irregularAlso'], [])) & set(alldays)
+    return sorted(ds)
+
 # 不定期イベントの日は定例イベントが走っていない（上乗せではなく置き換え）ので、
 # その日を定例イベントの母数から外す。
 # ただし「やばたにえん＝23日」のように定例としても組んであるものは、
