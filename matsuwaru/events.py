@@ -112,21 +112,48 @@ if os.path.exists(_sp):
     SCHED = {d: set(v) for d, v in _json.load(open(_sp, encoding='utf-8')).items()
              if not d.startswith('_')}
 
-def match_dates(mt, key):
+def rule_dates(mt):
+    """日付ルールだけで出した該当日（不定期イベントによる置き換えは考えない）"""
     if 'digit' in mt:
-        ds = [d for d in alldays if int(d[-2:]) % 10 in mt['digit']]
-    elif 'day' in mt:
-        ds = [d for d in alldays if int(d[-2:]) in mt['day']]
-    elif mt.get('monthend'):
-        ds = [d for d in alldays if lastday(d)]
-    elif 'irregular' in mt:
-        ds = list(irr.get(mt['irregular'], []))
+        return [d for d in alldays if int(d[-2:]) % 10 in mt['digit']]
+    if 'day' in mt:
+        return [d for d in alldays if int(d[-2:]) in mt['day']]
+    if mt.get('monthend'):
+        return [d for d in alldays if lastday(d)]
+    return []
+
+# 不定期イベントの日は定例イベントが走っていない（上乗せではなく置き換え）ので、
+# その日を定例イベントの母数から外す。
+# ただし「やばたにえん＝23日」のように定例としても組んであるものは、
+# その定例の日に当たる分は置き換えではないため除外に数えない（scheduled で指定）。
+IRR_DATES = {}      # イベントkey → 置き換えが起きた日
+_replaced = set()   # 置き換えが起きた日の集合
+for _g, _items in DEFS.items():
+    if _g.startswith('_'): continue
+    for _it in _items:
+        if 'irregular' not in _it['match']: continue
+        _ds = [d for d in irr.get(_it['match']['irregular'], []) if d in alldays]
+        _sch = _it.get('scheduled')
+        if _sch:
+            _sd = set()
+            for _g2, _i2 in DEFS.items():
+                if _g2.startswith('_'): continue
+                for _x in _i2:
+                    if _x['key'] == _sch: _sd = set(rule_dates(_x['match']))
+            _ds = [d for d in _ds if d not in _sd]
+        IRR_DATES[_it['key']] = sorted(_ds)
+        _replaced |= set(_ds)
+
+def match_dates(mt, key):
+    if 'irregular' in mt:
+        ds = list(IRR_DATES.get(key, []))
     else:
-        return []
-    # 上書きのある日は、その日に指定されたイベントだけを残す／足す
+        # 不定期イベントに置き換わった日は定例から外す
+        ds = [d for d in rule_dates(mt) if d not in _replaced]
+    # 店長ポストで判明した日は、その日に指定されたイベントだけを残す／足す
     ds = [d for d in ds if key in SCHED.get(d, {key})]
     ds += [d for d, ks in SCHED.items() if key in ks and d in alldays and d not in ds]
-    return sorted(ds)
+    return sorted(set(ds))
 
 events = []
 for group, items in DEFS.items():
@@ -139,6 +166,7 @@ for group, items in DEFS.items():
                   'match': it['match']})
         if 'irregular' in it['match']: p['dates'] = ds
         events.append(p)
+print('   不定期による置き換え %d日' % len(_replaced))
 
 # --- 今月の実施状況 ---
 today = datetime.now(timezone(timedelta(hours=9))).date()
