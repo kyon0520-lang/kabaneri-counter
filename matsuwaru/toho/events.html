@@ -54,6 +54,19 @@ h2:first-of-type{margin-top:4px}
 .m.hi em{color:var(--hot)}
 .m.mid{background:rgba(234,179,8,.14)}
 .m.mid em{color:var(--warm)}
+.picker{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
+  margin:0 -20px 14px;padding:2px 20px 4px}
+.picker::-webkit-scrollbar{display:none}
+.pick{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);border-radius:999px;
+  padding:8px 14px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;
+  white-space:nowrap;transition:.13s}
+.pick b{font-weight:700;font-size:11px;color:var(--sub);margin-left:5px}
+.pick.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pick.on b{color:rgba(255,255,255,.8)}
+.pick.today::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--hot);margin-right:6px;vertical-align:1px}
+.pick.on.today::before{background:#fff}
+.detail .dhd{margin-bottom:8px}
 .rowlist{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
 .row{display:block;padding:12px 16px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0}
@@ -133,8 +146,36 @@ function dayCard(d, when, D){
   </div>`;
 }
 
+let DB=null, picked=null;
+
+function pickerList(D){
+  const out=[];
+  for(let i=0;i<10;i++) if(D.byDigit[i]) out.push(['d'+i, i+'のつく日', D.byDigit[i]]);
+  for(const k of ['ゾロ目の日','21-27WEEK','月末最終日']) if(D.special[k]) out.push(['s'+k, k, D.special[k]]);
+  for(const [k,v] of Object.entries(D.irregular)) out.push(['i'+k, k, v]);
+  return out;
+}
+
+function detail(p){
+  const ms = p.top.length
+    ? `<div class="ms">${p.top.map(mchip).join('')}</div>`
+    : '<p class="note" style="margin:0">実績がまだありません。</p>';
+  const dates = p.dates ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
+  const warn = p.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
+  return `<div class="card detail">
+    <div class="dhd"><b>${esc(p.label)}</b><span class="tag">過去${p.days}${p.dates?'回':'日'}</span></div>
+    ${ms}${dates}${warn}</div>`;
+}
+
+function drawPicked(){
+  const list = pickerList(DB);
+  const cur = list.find(x=>x[0]===picked) || list[0];
+  document.querySelectorAll('.pick').forEach(b=>b.classList.toggle('on', b.dataset.k===cur[0]));
+  document.getElementById('detail').innerHTML = detail(cur[2]);
+}
+
 function render(D){
-  const now = new Date(Date.now()+9*3600*1000 - new Date().getTimezoneOffset()*-60000);
+  DB = D;
   const today = new Date(); const tomo = new Date(); tomo.setDate(tomo.getDate()+1);
   let h = '';
 
@@ -142,28 +183,19 @@ function render(D){
   h += dayCard(tomo,'明日',D) + dayCard(today,'今日',D);
   h += `<p class="note">数字はその日に全系になった割合と、普段の何倍かです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
 
-  const ir = Object.values(D.irregular).sort((a,b)=>b.days-a.days);
-  if(ir.length){
-    h += `<h2>不定期イベント</h2><div class="rowlist">`;
-    h += ir.map(p=>`<div class="row">
-        <div class="rh"><b>${esc(p.label)}</b><span>過去${p.days}回</span></div>
-        <div class="ms">${p.top.slice(0,6).map(mchip).join('')}</div>
-        <p class="dates">${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}${p.small?'　※回数が少なく、傾向とまでは言えません':''}</p>
-      </div>`).join('') + `</div>`;
-    h += `<p class="note">開催日は記事の記述から拾っています。前日の店長ポストに「#あかまる取材」のように予告が入ることがあります。</p>`;
-  }
-
-  h += `<h2>◯のつく日</h2><div class="rowlist">`;
-  for(let i=0;i<10;i++){
-    const p = D.byDigit[i]; if(!p) continue;
-    h += `<div class="row"><div class="rh"><b>${i}のつく日</b><span>過去${p.days}日</span></div>
-      <div class="ms">${p.top.slice(0,5).map(mchip).join('')}</div></div>`;
-  }
-  h += `</div>`;
+  const list = pickerList(D);
+  // 明日のイベントを最初から選んでおく
+  const dg = tomo.getDate()%10;
+  picked = (list.find(x=>x[0]==='d'+dg) || list[0])[0];
+  h += `<h2>イベントを選ぶ</h2>`;
+  h += `<div class="picker" id="picker">` + list.map(([k,label,p])=>
+      `<button class="pick${k==='d'+dg?' today':''}" data-k="${esc(k)}">${esc(label)}<b>${p.days}</b></button>`
+    ).join('') + `</div>`;
+  h += `<div id="detail"></div>`;
 
   const t = D.thisMonth;
   h += `<h2>${t.month.replace('-','年')}月の実施状況</h2>`;
-  h += `<div class="card"><div class="rh" style="display:flex;justify-content:space-between"><b>実施済み ${t.done.length}機種</b></div>
+  h += `<div class="card"><b>実施済み ${t.done.length}機種</b>
      <div class="ms" style="margin-top:8px">${t.done.map(([m,n])=>`<span class="m">${esc(m)}<em>${n}回</em></span>`).join('')}</div></div>`;
   if(t.notYet.length){
     h += `<div class="card"><b>今月まだ来ていない（よく来る機種のみ）</b><div class="rowlist" style="border:0;background:none;margin-top:8px">`;
@@ -179,6 +211,15 @@ function render(D){
   h += `<div class="foot">出典：<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a><br>
     集計は実際に全台系が行われた日で行っています。<br>最終更新 ${D.generated}</div>`;
   document.getElementById('main').innerHTML = h;
+  drawPicked();
+  // 選んであるものが画面内に来るように寄せる
+  const on = document.querySelector('.pick.on');
+  if(on) on.scrollIntoView({inline:'center', block:'nearest'});
+  document.getElementById('picker').addEventListener('click', e=>{
+    const b = e.target.closest('.pick'); if(!b) return;
+    picked = b.dataset.k; drawPicked();
+    b.scrollIntoView({inline:'center', block:'nearest', behavior:'smooth'});
+  });
 }
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
