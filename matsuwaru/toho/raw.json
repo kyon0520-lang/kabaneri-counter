@@ -25552,6 +25552,16 @@
    {
     "machine": "アナザー末尾②",
     "matched": false,
+    "keyword": "2日連続パンチョ",
+    "chain": [
+     "2日連続パンチョ"
+    ],
+    "raw": "→2日連続パンチョ",
+    "result": null
+   },
+   {
+    "machine": "アナザー末尾②",
+    "matched": false,
     "keyword": "カニクリームコロッケ",
     "chain": [
      "カニクリームコロッケ",

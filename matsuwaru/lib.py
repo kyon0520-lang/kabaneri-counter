@@ -99,8 +99,12 @@ def parse_html(src, ent):
                               'keyword': l, 'chain': [l], 'raw': l0})
             continue
         if re.search(ARROW, l):
+            # 行頭がいきなり矢印で始まる記事がある（「→2日連続パンチョ」など）。
+            # 分解すると先頭が空になり1要素だけ残るので、単独の示唆ワードとして拾う。
             chain = [c.strip() for c in re.split(ARROW, l) if c.strip()]
-            if len(chain) < 2 or len(l) > 200:
+            if not chain or len(l) > 200:
+                continue
+            if len(chain) < 2 and not re.match(r'^\s*' + ARROW, l):
                 continue
             k = norm(cur) if cur else None
             rec = {'machine': cur, 'matched': bool(k and k in results),
