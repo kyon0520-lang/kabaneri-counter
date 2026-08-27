@@ -37,15 +37,10 @@ h2{font-size:13px;color:var(--sub);margin:28px 0 10px;font-weight:700;letter-spa
 h2:first-of-type{margin-top:4px}
 .card{border:1px solid var(--line);border-radius:16px;background:var(--panel);
   padding:15px 16px;margin-bottom:11px}
-.day{border-left:3px solid var(--accent)}
-.day.tomorrow{border-left-color:var(--hot)}
 .dhd{display:flex;align-items:baseline;gap:9px;margin-bottom:3px}
 .dhd b{font-size:16px}
 .dhd .tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;
   background:var(--accent-soft);color:var(--accent)}
-.day.tomorrow .dhd .tag{background:rgba(244,63,94,.18);color:var(--hot)}
-/* 日付ルールではなく店長ポストで確定した日 */
-.dhd .tag.conf,.day.tomorrow .dhd .tag.conf{background:rgba(16,185,129,.16);color:#4ade80}
 .evname{font-size:13px;color:var(--ink);margin:0 0 9px}
 .evname i{font-style:normal;color:var(--sub)}
 .ms{display:flex;flex-wrap:wrap;gap:6px}
@@ -122,8 +117,6 @@ h2:first-of-type{margin-top:4px}
 <main id="main"><p class="note">読み込み中…</p></main>
 
 <script>
-const J = (a,b)=>a+'月'+b+'日';
-const WD = ['日','月','火','水','木','金','土'];
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 fetch('data/events.json').then(r=>r.json()).then(render).catch(()=>{
@@ -143,21 +136,6 @@ function mchip([m,k,rate,mul], rank){
 }
 const chips = (top, rank=true) => ranked(top).map(([r,n])=>mchip(r, rank?n:99)).join('');
 
-function dayCard(d, when, D){
-  const day = d.getDate(), mo = d.getMonth()+1;
-  const hits = D.events.filter(p=>applies(p,d));
-  const names = hits.map(fullLabel).join('・') || '特に該当なし';
-  // 同じ機種が複数イベントに出たら、割合の高いほうを採る
-  const best = {};
-  hits.forEach(h=>h.top.forEach(r=>{ if(!best[r[0]] || r[2]>best[r[0]][2]) best[r[0]]=r; }));
-  const ms = Object.values(best).sort((a,b)=>b[2]-a[2]||b[1]-a[1]).slice(0,8);
-  return `<div class="card day${when==='明日'?' tomorrow':''}">
-    <div class="dhd"><b>${J(mo,day)}（${WD[d.getDay()]}）</b><span class="tag">${when}</span>${override(d)?'<span class="tag conf">店長ポスト</span>':''}</div>
-    <p class="evname">${esc(names)}${hits.length?` <i>／ 過去${hits.map(h=>h.days).join('・')}日ぶん</i>`:''}</p>
-    ${ms.length?`<div class="ms">${chips(ms, !hits.every(h=>h.small))}</div>`:'<p class="note" style="margin:0">実績がまだありません。</p>'}
-    ${hits.length&&hits.every(h=>h.small)?'<p class="dates" style="margin:9px 0 0">※開催回数が少なく、傾向とまでは言えません。</p>':''}
-  </div>`;
-}
 
 let DB=null, picked=null;
 
@@ -206,10 +184,6 @@ function render(D){
   const when = afterPost ? '明日' : '今日';
   let h = '';
 
-  h += `<h2>${when}のイベント</h2>`;
-  h += dayCard(target, when, D);
-  h += `<p class="note">そのイベントの日のうち、何回・何割で全系になったかです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
-
   // 対象日に当てはまるものを最初から選んでおく
   const hit = D.events.find(p=>applies(p,target));
   picked = (hit || D.events[0]).key;
@@ -223,6 +197,7 @@ function render(D){
      + [...new Set(D.events.map(p=>p.g))].map(g=>grp(g, D.events.filter(p=>p.g===g))).join('')
      + `</select></div>`;
   h += `<div id="detail"></div>`;
+  h += `<p class="note">そのイベントの日のうち、何回・何割で全系になったかです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
 
   const t = D.thisMonth;
   h += `<h2>${t.month.replace('-','年')}月の実施状況</h2>`;
