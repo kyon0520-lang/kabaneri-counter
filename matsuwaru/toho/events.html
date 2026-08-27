@@ -170,16 +170,22 @@ function drawPicked(){
 
 function render(D){
   DB = D;
-  const today = new Date(); const tomo = new Date(); tomo.setDate(tomo.getDate()+1);
+  // 示唆のポストは20:30ごろ。それ以降は翌営業日が対象になり、
+  // 日付をまたぐと同じ日が「今日」に変わる（対象の日は変わらない）
+  const now = new Date();
+  const afterPost = now.getHours()*60 + now.getMinutes() >= 20*60 + 30;
+  const target = new Date(now);
+  if (afterPost) target.setDate(target.getDate() + 1);
+  const when = afterPost ? '明日' : '今日';
   let h = '';
 
-  h += `<h2>この日のイベント</h2>`;
-  h += dayCard(tomo,'明日',D) + dayCard(today,'今日',D);
+  h += `<h2>${when}のイベント</h2>`;
+  h += dayCard(target, when, D);
   h += `<p class="note">数字はその日に全系になった割合と、普段の何倍かです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
 
   const list = pickerList(D);
   // 明日のイベントを最初から選んでおく
-  const dg = tomo.getDate()%10;
+  const dg = target.getDate()%10;
   picked = (list.find(x=>x[0]==='d'+dg) || list[0])[0];
   // 端末標準の選択（縦にスクロールできる）を使う
   const grp = (name, items) => items.length
