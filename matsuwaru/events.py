@@ -58,7 +58,7 @@ for ms in days.values():
     for m in ms: base[m] += 1
 
 def profile(dates, label):
-    """その日付群でよく来る機種を、全体との比を添えて返す"""
+    """その日付群でよく来る機種を、回数の多い順に返す"""
     ds = [d for d in dates if d in days]
     n = len(ds)
     if not n: return None
@@ -68,44 +68,40 @@ def profile(dates, label):
     rows = []
     for m, k in c.items():
         rate, b = k / n, base[m] / tot
-        # 倍率は、その機種が2回以上出ていて、かつ開催3日以上のときだけ出す。
-        # 1回だけの機種は50%×88倍のような無意味な数字になるため。
+        # 倍率は表示していないが、並びの補助として持っておく
         mul = round(rate / b, 1) if (b and k >= 2 and n >= 3) else 0
         rows.append([m, k, round(rate * 100), mul])
-    # 回数 → 全体での多さ の順に並べる（表示と同じ基準にする）
     rows.sort(key=lambda r: (-r[1], -base[r[0]]))
     return {'label': label, 'days': n, 'small': n < 3, 'top': rows[:8]}
 
-# --- 末尾ごと（◯のつく日）---
-bydigit = {}
-for dg in range(10):
-    p = profile([d for d in alldays if int(d[-2:]) % 10 == dg], '%dのつく日' % dg)
-    if p: bydigit[str(dg)] = p
+# --- 定義ファイルに従ってイベントを組み立てる（表示順もこの順） ---
+DEFS = _json.load(open(B + '/data/event_defs.json', encoding='utf-8'))
 
-# --- 特殊な日 ---
-special = {}
-for key, sel in [
-    ('ゾロ目の日', lambda d: d[-2:] in ('11','22') or int(d[5:7]) == int(d[-2:])),
-    ('月末最終日', lambda d: (d2(d) + timedelta(days=1)).day == 1),
-    ('1日',        lambda d: int(d[-2:]) == 1),
-]:
-    p = profile([d for d in alldays if sel(d)], key)
-    if p: special[key] = p
+def lastday(d):
+    return (d2(d) + timedelta(days=1)).day == 1
 
-# --- 21-27WEEK は日ごとに内容が違うので分ける（内訳は event_fixes.json）---
-WEEKSUB = fixes.get('21-27WEEKの内訳', {})
-for dd in range(21, 28):
-    sub = WEEKSUB.get(str(dd))
-    key = '21-27WEEK %d日' % dd
-    p = profile([d for d in alldays if int(d[-2:]) == dd],
-                key + ('・%s' % sub if sub else ''))
-    if p: special[key] = p
+def match_dates(mt):
+    if 'digit' in mt:
+        return [d for d in alldays if int(d[-2:]) % 10 in mt['digit']]
+    if 'day' in mt:
+        return [d for d in alldays if int(d[-2:]) in mt['day']]
+    if mt.get('monthend'):
+        return [d for d in alldays if lastday(d)]
+    if 'irregular' in mt:
+        return irr.get(mt['irregular'], [])
+    return []
 
-# --- 不定期イベント ---
-irregular = {}
-for e, ds in irr.items():
-    p = profile(ds, e)
-    if p: p['dates'] = ds; irregular[e] = p
+events = []
+for group, items in DEFS.items():
+    if group.startswith('_'): continue
+    for it in items:
+        ds = match_dates(it['match'])
+        p = profile(ds, it['label'])
+        if not p: continue
+        p.update({'g': group, 'key': it['key'], 'sub': it.get('sub', ''),
+                  'match': it['match']})
+        if 'irregular' in it['match']: p['dates'] = ds
+        events.append(p)
 
 # --- 今月の実施状況 ---
 today = datetime.now(timezone(timedelta(hours=9))).date()
@@ -133,11 +129,11 @@ thismonth = {
 }
 
 out = {'generated': today.isoformat(), 'totalDays': tot,
-       'byDigit': bydigit, 'special': special, 'irregular': irregular,
-       'thisMonth': thismonth}
+       'events': events, 'thisMonth': thismonth}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
-print('イベント集計: 対象%d日 / 不定期%d種 / 今月実施%d機種・未実施%d機種 (%.0fKB)' % (
-    tot, len(irregular), len(thismonth['done']), len(notyet),
+print('イベント集計: 対象%d日 / イベント%d件 / 今月実施%d機種・未実施%d機種 (%.0fKB)' % (
+    tot, len(events), len(thismonth['done']), len(notyet),
     os.path.getsize(B + '/data/events.json') / 1024))
-for e, p in irregular.items():
-    print('   %-12s %d回  %s' % (e, p['days'], ', '.join(p['dates'])))
+for p in events:
+    tail = ('  ' + '・'.join(x[5:] for x in p['dates'])) if p.get('dates') else ''
+    print('   [%s] %-18s %2d日%s' % (p['g'][:4], p['label'] + (' ' + p['sub'] if p['sub'] else ''), p['days'], tail))

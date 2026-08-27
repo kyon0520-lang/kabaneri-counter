@@ -136,17 +136,10 @@ function mchip([m,k,rate,mul], rank){
 const chips = top => ranked(top).map(([r,rank])=>mchip(r,rank)).join('');
 
 function dayCard(d, when, D){
-  const dg = d.getDate()%10, day = d.getDate(), mo = d.getMonth()+1;
-  const hits = [];
-  if(D.byDigit[dg]) hits.push(D.byDigit[dg]);
-  for(const [k,v] of Object.entries(D.special)){
-    if(k===`21-27WEEK ${day}日`) hits.push(v);
-    if(k==='ゾロ目の日' && (String(day).length===2 && String(day)[0]===String(day)[1] || mo===day)) hits.push(v);
-    if(k==='月末最終日' && new Date(d.getFullYear(),mo,0).getDate()===day) hits.push(v);
-    if(k==='1日' && day===1) hits.push(v);
-  }
-  const names = hits.map(h=>h.label).join('・') || '特に該当なし';
-  // 同じ機種が複数イベントに出たら、倍率の高いほうを採る
+  const day = d.getDate(), mo = d.getMonth()+1;
+  const hits = D.events.filter(p=>applies(p,d));
+  const names = hits.map(fullLabel).join('・') || '特に該当なし';
+  // 同じ機種が複数イベントに出たら、割合の高いほうを採る
   const best = {};
   hits.forEach(h=>h.top.forEach(r=>{ if(!best[r[0]] || r[2]>best[r[0]][2]) best[r[0]]=r; }));
   const ms = Object.values(best).sort((a,b)=>b[2]-a[2]||b[1]-a[1]).slice(0,8);
@@ -159,17 +152,16 @@ function dayCard(d, when, D){
 
 let DB=null, picked=null;
 
-function pickerList(D){
-  const out=[];
-  for(let i=0;i<10;i++) if(D.byDigit[i]) out.push(['d'+i, i+'のつく日', D.byDigit[i]]);
-  // 「1日」は東京大戦とほぼ同じ日なので選択肢には出さない（カードの判定には使う）
-  for(const [k,v] of Object.entries(D.special)){
-    if(k==='1日') continue;
-    out.push(['s'+k, v.label || k, v]);
-  }
-  for(const [k,v] of Object.entries(D.irregular)) out.push(['i'+k, k, v]);
-  return out;
+// その日に当てはまるイベントかどうか
+function applies(p, d){
+  const m = p.match, day = d.getDate();
+  if(m.digit) return m.digit.includes(day%10);
+  if(m.day) return m.day.includes(day);
+  if(m.monthend) return new Date(d.getFullYear(), d.getMonth()+1, 0).getDate() === day;
+  if(m.irregular) return false;   // 不定期は日付から判定できない
+  return false;
 }
+const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
 function detail(p){
   const ms = p.top.length
@@ -178,14 +170,13 @@ function detail(p){
   const dates = p.dates ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
   const warn = p.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
   return `<div class="card detail">
-    <div class="dhd"><b>${esc(p.label)}</b><span class="tag">過去${p.days}${p.dates?'回':'日'}</span></div>
+    <div class="dhd"><b>${esc(fullLabel(p))}</b><span class="tag">過去${p.days}${p.dates?'回':'日'}</span></div>
     ${ms}${dates}${warn}</div>`;
 }
 
 function drawPicked(){
-  const list = pickerList(DB);
-  const cur = list.find(x=>x[0]===picked) || list[0];
-  document.getElementById('detail').innerHTML = detail(cur[2]);
+  const cur = DB.events.find(x=>x.key===picked) || DB.events[0];
+  document.getElementById('detail').innerHTML = detail(cur);
 }
 
 function render(D){
@@ -203,20 +194,17 @@ function render(D){
   h += dayCard(target, when, D);
   h += `<p class="note">そのイベントの日のうち、何回・何割で全系になったかです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
 
-  const list = pickerList(D);
-  // 明日のイベントを最初から選んでおく
-  const dg = target.getDate()%10;
-  picked = (list.find(x=>x[0]==='d'+dg) || list[0])[0];
+  // 対象日に当てはまるものを最初から選んでおく
+  const hit = D.events.find(p=>applies(p,target));
+  picked = (hit || D.events[0]).key;
   // 端末標準の選択（縦にスクロールできる）を使う
   const grp = (name, items) => items.length
-    ? `<optgroup label="${name}">` + items.map(([k,label,p])=>
-        `<option value="${esc(k)}"${k===picked?' selected':''}>${k==='d'+dg?'● ':''}${esc(label)}</option>`
+    ? `<optgroup label="${name}">` + items.map(p=>
+        `<option value="${esc(p.key)}"${p.key===picked?' selected':''}>${applies(p,target)?'● ':''}${esc(fullLabel(p))}</option>`
       ).join('') + `</optgroup>` : '';
   h += `<h2>イベントを選ぶ</h2>`;
   h += `<div class="pickbox"><select id="picker" aria-label="イベントを選ぶ">`
-     + grp('◯のつく日', list.filter(x=>x[0][0]==='d'))
-     + grp('特別な日',   list.filter(x=>x[0][0]==='s'))
-     + grp('不定期イベント', list.filter(x=>x[0][0]==='i'))
+     + [...new Set(D.events.map(p=>p.g))].map(g=>grp(g, D.events.filter(p=>p.g===g))).join('')
      + `</select></div>`;
   h += `<div id="detail"></div>`;
 
