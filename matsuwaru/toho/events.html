@@ -40,7 +40,19 @@ h2:first-of-type{margin-top:4px}
 .dhd{display:flex;align-items:baseline;gap:9px;margin-bottom:3px}
 .dhd b{font-size:16px}
 .dhd .tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;
-  background:var(--accent-soft);color:var(--accent)}
+  background:var(--accent-soft);color:var(--accent);flex:0 0 auto;white-space:nowrap}
+.ov{font-size:12.5px;color:var(--sub);margin:8px 0 0;line-height:1.75}
+.sec{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;margin:14px 0 8px}
+.sizeb .sr{display:grid;grid-template-columns:88px 1fr 66px;align-items:center;gap:10px;margin-bottom:7px}
+.sizeb .sl{font-size:12px;color:var(--ink);white-space:nowrap}
+.sizeb .sl i{font-style:normal;color:var(--sub);font-size:10.5px;margin-left:4px}
+.sizeb .bar{height:7px;border-radius:99px;background:var(--bg-soft);overflow:hidden}
+.sizeb .bar u{display:block;height:100%;background:var(--accent);text-decoration:none}
+.sizeb .sv{font-size:12px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.sizeb .sv em{font-style:normal;font-weight:700;font-size:10.5px;margin-left:4px}
+.sizeb .sv em.up{color:#4ade80}
+.sizeb .sv em.dn{color:var(--sub)}
+.sizeb .sub2{color:var(--sub);opacity:.75}
 .evname{font-size:13px;color:var(--ink);margin:0 0 9px}
 .evname i{font-style:normal;color:var(--sub)}
 .ms{display:flex;flex-wrap:wrap;gap:6px}
@@ -160,15 +172,38 @@ function applies(p, d){
 }
 const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
+// 台数の傾向。全体との差で読むもの（全系の8割は9台以下なので、割合そのものは効かない）
+function sizeBlock(z, all){
+  if(!z) return '';
+  const row = (name, note, v, base) => {
+    const d = v - base;
+    const delta = d === 0 ? '' : `<em class="${d>0?'up':'dn'}">${d>0?'+':''}${d}</em>`;
+    return `<div class="sr"><span class="sl">${name}<i>${note}</i></span>
+      <span class="bar"><u style="width:${Math.max(v,1)}%"></u></span>
+      <span class="sv">${v}%${delta}</span></div>`;
+  };
+  return `<div class="sec">傾向</div><div class="sizeb">
+    ${row('多台数','20台〜', z.big, all.big)}
+    ${row('中台数','10〜19台', z.mid, all.mid)}
+    ${row('小台数','〜9台', z.small, all.small)}
+    <p class="dates">1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
+      <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>
+  </div>`;
+}
+
 function detail(p){
   const ms = p.top.length
     ? `<div class="ms">${chips(p.top, !p.small, p.days)}</div>`
     : '<p class="note" style="margin:0">実績がまだありません。</p>';
-  const dates = p.dates ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
+  const irr = p.g === '不定期イベント';
+  const dates = irr && p.dates
+    ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
   const warn = p.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
+  const note = p.note ? `<p class="ov">${esc(p.note)}</p>` : '';
   return `<div class="card detail">
-    <div class="dhd"><b>${esc(fullLabel(p))}</b><span class="tag">過去${p.days}${p.dates?'回':'日'}</span></div>
-    ${ms}${dates}${warn}</div>`;
+    <div class="dhd"><b>${esc(fullLabel(p))}</b><span class="tag">過去${p.days}${irr?'回':'日'}</span></div>
+    ${note}<div class="sec">選ばれた機種</div>${ms}${dates}${warn}
+    ${sizeBlock(p.size, DB.sizeAll)}</div>`;
 }
 
 function drawPicked(){

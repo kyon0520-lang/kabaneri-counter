@@ -194,7 +194,7 @@ for group, items in DEFS.items():
         if not p: continue
         p.update({'g': group, 'key': it['key'], 'sub': it.get('sub', ''),
                   'match': it['match']})
-        if 'irregular' in it['match']: p['dates'] = ds
+        p['dates'] = ds
         events.append(p)
 print('   不定期による置き換え %d日' % len(_claimed.get('不定期イベント', ())))
 
@@ -226,7 +226,38 @@ thismonth = {
     'notYet': notyet,
 }
 
+# --- 台数の傾向（多=20台以上／中=10〜19台／小=9台以下） ---
+# 台数は現在の設置台数。撤去済みで台数が分からない機種は母数から外す。
+def size_profile(dates):
+    c = collections.Counter(); us = []; picked = 0
+    for d in dates:
+        ms = days.get(d, ())
+        picked += len(ms)
+        for m in ms:
+            u = UNITS.get(m)
+            if u is None: continue
+            c['big' if u >= 20 else ('mid' if u >= 10 else 'small')] += 1
+            us.append(u)
+    n = sum(c.values())
+    if not n or not dates: return None
+    return {'n': n, 'unknown': picked - n,
+            'big': round(100 * c['big'] / n), 'mid': round(100 * c['mid'] / n),
+            'small': round(100 * c['small'] / n),
+            'avg': round(sum(us) / len(us), 1),
+            'perDay': round(picked / len(dates), 1)}
+
+for p in events:
+    p['size'] = size_profile(p['dates'])
+
+# イベント概要（data/event_notes.json に key → 文章。無ければ空）
+_np = B + '/data/event_notes.json'
+NOTES = {k: v for k, v in (_json.load(open(_np, encoding='utf-8')).items()
+                           if os.path.exists(_np) else []) if not k.startswith('_')}
+for p in events:
+    if NOTES.get(p['key']): p['note'] = NOTES[p['key']]
+
 out = {'generated': today.isoformat(), 'totalDays': tot,
+       'sizeAll': size_profile(alldays),
        'events': events, 'thisMonth': thismonth,
        'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
