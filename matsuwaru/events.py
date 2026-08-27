@@ -29,6 +29,7 @@ if _os.path.exists(_lp):
     _adj = _rj.get('ラインナップ照合', {})
     _out = set(_adj.get('対象外', []))     # 現行にないと分かっている機種
     _only = _adj.get('限定', {})           # 照合にこの名前だけを使う機種
+    _ng = _adj.get('除外語', {})           # この語を含む設置機種には当てない（アイム↔ネオアイム）
     import unicodedata as _ud
     def _n(x):
         return re.sub(r'[\s\u3000/／・~〜\-!！?？:：\.]', '', _ud.normalize('NFKC', x).lower())
@@ -40,7 +41,8 @@ if _os.path.exists(_lp):
         cand = _only[m] if m in _only else [m] + _read.get(m, [])
         for k in sorted(set(cand), key=len, reverse=True):
             if len(_n(k)) < 2: continue
-            hit = [u for h, u in _hall if _n(k) in h]
+            ng = [_n(x) for x in _ng.get(m, [])]
+            hit = [u for h, u in _hall if _n(k) in h and not any(g in h for g in ng)]
             if hit: return True, sum(hit)
         return False, 0
     _mt = {m: _match(m) for m in MACHINES}
