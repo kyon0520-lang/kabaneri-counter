@@ -264,14 +264,14 @@ def size_profile(dates):
         for m in ms:
             u = units_on(d, m)
             if u is None: continue
-            seen.add('big' if u >= 20 else ('mid' if u >= 10 else 'small'))
+            seen.add('big' if u >= 20 else ('mid' if u >= 10 else ('small' if u >= 4 else 'tiny')))
             us.append(u)
         for b in seen: c[b] += 1
     if not n or not us: return None
     return {'n': n,
             'big': round(100 * c['big'] / n), 'mid': round(100 * c['mid'] / n),
-            'small': round(100 * c['small'] / n),
-            'bigN': c['big'], 'midN': c['mid'], 'smallN': c['small'],
+            'small': round(100 * c['small'] / n), 'tiny': round(100 * c['tiny'] / n),
+            'bigN': c['big'], 'midN': c['mid'], 'smallN': c['small'], 'tinyN': c['tiny'],
             'avg': round(sum(us) / len(us), 1),
             'perDay': round(picked / n, 1)}
 
