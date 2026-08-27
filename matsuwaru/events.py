@@ -104,22 +104,35 @@ DEFS = _json.load(open(B + '/data/event_defs.json', encoding='utf-8'))
 def lastday(d):
     return (d2(d) + timedelta(days=1)).day == 1
 
-def match_dates(mt):
+# 店長ポストで判明した、日付ルールと食い違うイベント（data/schedule.json）。
+# ここに載っている日は日付からの自動判定を捨てて、書かれたkeyだけをその日のイベントとする。
+_sp = B + '/data/schedule.json'
+SCHED = {}
+if os.path.exists(_sp):
+    SCHED = {d: set(v) for d, v in _json.load(open(_sp, encoding='utf-8')).items()
+             if not d.startswith('_')}
+
+def match_dates(mt, key):
     if 'digit' in mt:
-        return [d for d in alldays if int(d[-2:]) % 10 in mt['digit']]
-    if 'day' in mt:
-        return [d for d in alldays if int(d[-2:]) in mt['day']]
-    if mt.get('monthend'):
-        return [d for d in alldays if lastday(d)]
-    if 'irregular' in mt:
-        return irr.get(mt['irregular'], [])
-    return []
+        ds = [d for d in alldays if int(d[-2:]) % 10 in mt['digit']]
+    elif 'day' in mt:
+        ds = [d for d in alldays if int(d[-2:]) in mt['day']]
+    elif mt.get('monthend'):
+        ds = [d for d in alldays if lastday(d)]
+    elif 'irregular' in mt:
+        ds = list(irr.get(mt['irregular'], []))
+    else:
+        return []
+    # 上書きのある日は、その日に指定されたイベントだけを残す／足す
+    ds = [d for d in ds if key in SCHED.get(d, {key})]
+    ds += [d for d, ks in SCHED.items() if key in ks and d in alldays and d not in ds]
+    return sorted(ds)
 
 events = []
 for group, items in DEFS.items():
     if group.startswith('_'): continue
     for it in items:
-        ds = match_dates(it['match'])
+        ds = match_dates(it['match'], it['key'])
         p = profile(ds, it['label'])
         if not p: continue
         p.update({'g': group, 'key': it['key'], 'sub': it.get('sub', ''),
@@ -156,7 +169,8 @@ thismonth = {
 }
 
 out = {'generated': today.isoformat(), 'totalDays': tot,
-       'events': events, 'thisMonth': thismonth}
+       'events': events, 'thisMonth': thismonth,
+       'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 print('イベント集計: 対象%d日 / イベント%d件 / 今月実施%d機種・未実施%d機種 (%.0fKB)' % (
     tot, len(events), len(thismonth['done']), len(notyet),

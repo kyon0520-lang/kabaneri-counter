@@ -44,6 +44,8 @@ h2:first-of-type{margin-top:4px}
 .dhd .tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;
   background:var(--accent-soft);color:var(--accent)}
 .day.tomorrow .dhd .tag{background:rgba(244,63,94,.18);color:var(--hot)}
+/* 日付ルールではなく店長ポストで確定した日 */
+.dhd .tag.conf,.day.tomorrow .dhd .tag.conf{background:rgba(16,185,129,.16);color:#4ade80}
 .evname{font-size:13px;color:var(--ink);margin:0 0 9px}
 .evname i{font-style:normal;color:var(--sub)}
 .ms{display:flex;flex-wrap:wrap;gap:6px}
@@ -139,7 +141,7 @@ function mchip([m,k,rate,mul], rank){
   const badge = rank<=3 ? `<i>${rank}位</i>` : '';
   return `<span class="m${cls}">${badge}${esc(m)} ${rate}%<em>過去${k}回</em></span>`;
 }
-const chips = top => ranked(top).map(([r,rank])=>mchip(r,rank)).join('');
+const chips = (top, rank=true) => ranked(top).map(([r,n])=>mchip(r, rank?n:99)).join('');
 
 function dayCard(d, when, D){
   const day = d.getDate(), mo = d.getMonth()+1;
@@ -150,16 +152,24 @@ function dayCard(d, when, D){
   hits.forEach(h=>h.top.forEach(r=>{ if(!best[r[0]] || r[2]>best[r[0]][2]) best[r[0]]=r; }));
   const ms = Object.values(best).sort((a,b)=>b[2]-a[2]||b[1]-a[1]).slice(0,8);
   return `<div class="card day${when==='明日'?' tomorrow':''}">
-    <div class="dhd"><b>${J(mo,day)}（${WD[d.getDay()]}）</b><span class="tag">${when}</span></div>
+    <div class="dhd"><b>${J(mo,day)}（${WD[d.getDay()]}）</b><span class="tag">${when}</span>${override(d)?'<span class="tag conf">店長ポスト</span>':''}</div>
     <p class="evname">${esc(names)}${hits.length?` <i>／ 過去${hits.map(h=>h.days).join('・')}日ぶん</i>`:''}</p>
-    ${ms.length?`<div class="ms">${chips(ms)}</div>`:'<p class="note" style="margin:0">実績がまだありません。</p>'}
+    ${ms.length?`<div class="ms">${chips(ms, !hits.every(h=>h.small))}</div>`:'<p class="note" style="margin:0">実績がまだありません。</p>'}
+    ${hits.length&&hits.every(h=>h.small)?'<p class="dates" style="margin:9px 0 0">※開催回数が少なく、傾向とまでは言えません。</p>':''}
   </div>`;
 }
 
 let DB=null, picked=null;
 
+const ymd = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0')
+                  + '-' + String(d.getDate()).padStart(2,'0');
+// 店長ポストで判明した日は、日付ルールより優先する
+const override = d => (DB && DB.schedule) ? DB.schedule[ymd(d)] : null;
+
 // その日に当てはまるイベントかどうか
 function applies(p, d){
+  const ov = override(d);
+  if(ov) return ov.includes(p.key);
   const m = p.match, day = d.getDate();
   if(m.digit) return m.digit.includes(day%10);
   if(m.day) return m.day.includes(day);
@@ -171,7 +181,7 @@ const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
 function detail(p){
   const ms = p.top.length
-    ? `<div class="ms">${chips(p.top)}</div>`
+    ? `<div class="ms">${chips(p.top, !p.small)}</div>`
     : '<p class="note" style="margin:0">実績がまだありません。</p>';
   const dates = p.dates ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
   const warn = p.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
