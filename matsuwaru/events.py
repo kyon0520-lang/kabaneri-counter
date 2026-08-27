@@ -18,6 +18,28 @@ canon = _json.load(open(B + '/data/canon.json', encoding='utf-8'))
 # 機種と判定された名前だけを集計する。末尾⑥・アナザー末尾・設置台数などは
 # 機種ではないので、検索側と同じ判定（finalize.py）の結果を使って外す
 MACHINES = set(_json.load(open(B + '/data/machines.json', encoding='utf-8')))
+
+# 現行ラインナップ（店舗公式の設置機種ページ）。撤去済みを「まだ来ていない」から外す
+LINEUP, INSTALLED = None, None
+_lp = B + '/data/lineup.json'
+if _os.path.exists(_lp):
+    LINEUP = _json.load(open(_lp, encoding='utf-8'))
+    _rj = _json.load(open(B + '/data/readings.json', encoding='utf-8'))
+    _read = _rj['readings']
+    # 読みが広すぎて別機種を掴む機種は、照合専用の名前だけを使う
+    _only = {k: v for k, v in _rj.get('ラインナップ照合', {}).items() if not k.startswith('_')}
+    import unicodedata as _ud
+    def _n(x):
+        return re.sub(r'[\s\u3000/／・~〜\-!！?？:：\.]', '', _ud.normalize('NFKC', x).lower())
+    _hall = [_n(nm) for nm, _ in LINEUP['slots']]
+    def _installed(m):
+        # 詳しい名前から先に当てる（からくり2 が からくり より先に決まるように）
+        cand = _only[m] if m in _only else [m] + _read.get(m, [])
+        for k in sorted(set(cand), key=len, reverse=True):
+            if len(_n(k)) < 2: continue
+            if any(_n(k) in h for h in _hall): return True
+        return False
+    INSTALLED = {m for m in MACHINES if _installed(m)}
 fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.path.exists(B + '/data/event_fixes.json') else {}
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
 ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
@@ -120,10 +142,13 @@ for m in base:
 notyet = []
 for m, n in base.most_common():
     if donec.get(m) or n < 4: continue
+    if INSTALLED is not None and m not in INSTALLED: continue   # 撤去済みは出さない
     avg, sd = gaps.get(m, (None, None))
     notyet.append([m, avg, sd, (today - d2(last[m])).days, last[m]])
 thismonth = {
     'month': ym,
+    'lineup': ({'fetched': LINEUP['fetched'], 'machines': len(LINEUP['slots']),
+                'installed': len(INSTALLED)} if LINEUP else None),
     'done': [[m, n, last[m]] for m, n in donec.most_common()],
     'notYet': notyet,
 }

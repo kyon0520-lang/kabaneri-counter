@@ -79,7 +79,7 @@ if gap > MAX_GAP:
     die('最新記事が%d日前(%s)。ブログの更新停止か取得失敗の可能性' % (gap, latest))
 
 # --- 4) データ生成 → 名寄せ ---
-for s in ('build.py', 'finalize.py', 'events.py'):
+for s in ('build.py', 'finalize.py', 'lineup.py', 'events.py'):
     r = subprocess.run([sys.executable, os.path.join(_ROOT, s), STORE], capture_output=True, text=True)
     if r.returncode:
         print(r.stderr); die('%s が失敗' % s)

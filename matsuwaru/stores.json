@@ -11,7 +11,9 @@
       "since": "2026-02-22",
       "sinceNote": "⚠️ 検索できるデータは、エンドウ店長の就任日以降のものです。",
       "example": "会議",
-      "version": 4
+      "version": 4,
+      "lineupUrl": "https://www.maruhan.co.jp/hall/3044/kisyu.html",
+      "lineupName": "マルハン公式の設置機種ページ"
     }
   ]
 }
