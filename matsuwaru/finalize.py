@@ -115,6 +115,10 @@ print('示唆ワード ユニーク: %d語'%len(set(r['keyword'] for r in mm)))
 top=collections.Counter(r['machine'] for r in mm).most_common(8)
 print('件数上位:', ', '.join('%s(%d)'%(m,c) for m,c in top))
 
+# 機種と判定した名前の一覧。events.py が同じ基準で絞れるようにする
+json.dump(sorted({r['machine'] for r in out if r['category'] == '機種'}),
+          open(B + '/data/machines.json', 'w'), ensure_ascii=False, indent=1)
+
 # --- 検索用の軽量インデックス（ページが読むのはこれ） ---
 arts, ai = [], {}
 for r in sorted(out, key=lambda x: x['targetDate']):

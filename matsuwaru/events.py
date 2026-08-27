@@ -15,6 +15,9 @@ raw = _json.load(open(B + '/raw.json', encoding='utf-8'))
 # finalize.py が確定した名寄せ表。decisions.json だけだと
 # 「番長ゼロ→番長ZERO」のような自動統合分が反映されない
 canon = _json.load(open(B + '/data/canon.json', encoding='utf-8'))
+# 機種と判定された名前だけを集計する。末尾⑥・アナザー末尾・設置台数などは
+# 機種ではないので、検索側と同じ判定（finalize.py）の結果を使って外す
+MACHINES = set(_json.load(open(B + '/data/machines.json', encoding='utf-8')))
 fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.path.exists(B + '/data/event_fixes.json') else {}
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
 ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
@@ -32,11 +35,7 @@ for a in raw:
     # 連想にしか出てこない機種があり、結果だけだと取りこぼす。
     ms = {cn(r['machine']) for r in a['results']}
     ms |= {cn(x['machine']) for x in a['assoc'] if x['machine']}
-    # 機種ではない見出し（色の注記、シリーズ表記、設置台数など）を落とす。
-    # 残すと「かぐや様（ピンク）」のような表記が別機種として数えられてしまう。
-    ms = {m for m in ms if not re.search(
-        r'[（(]|シリーズ|バラエティ|設置機種|減台|増台|にまつわる|記念|誕生日|周年|年目|日目'
-        r'|全系\d|画像の|回想|担当責任者|背景|山佐の日|据え置き', m)}
+    ms = {m for m in ms if m in MACHINES}
     if not ms: continue
     days[t] = sorted(ms)
 alldays = sorted(days)
