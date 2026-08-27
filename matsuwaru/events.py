@@ -12,8 +12,9 @@ STORE = sys.argv[1] if len(sys.argv) > 1 else 'toho'
 B = _os.path.join(_ROOT, STORE)
 
 raw = _json.load(open(B + '/raw.json', encoding='utf-8'))
-dec = _json.load(open(B + '/data/decisions.json', encoding='utf-8'))
-canon = dec.get('merge', {})
+# finalize.py が確定した名寄せ表。decisions.json だけだと
+# 「番長ゼロ→番長ZERO」のような自動統合分が反映されない
+canon = _json.load(open(B + '/data/canon.json', encoding='utf-8'))
 fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.path.exists(B + '/data/event_fixes.json') else {}
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
 ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
@@ -26,8 +27,18 @@ def d2(s):
 days = {}
 for a in raw:
     t = a.get('targetDate')
-    if not t or not a['results']: continue
-    days[t] = sorted({cn(r['machine']) for r in a['results']})
+    if not t: continue
+    # 台数付きの結果セクションと、連想の見出しの両方から拾う。
+    # 連想にしか出てこない機種があり、結果だけだと取りこぼす。
+    ms = {cn(r['machine']) for r in a['results']}
+    ms |= {cn(x['machine']) for x in a['assoc'] if x['machine']}
+    # 機種ではない見出し（色の注記、シリーズ表記、設置台数など）を落とす。
+    # 残すと「かぐや様（ピンク）」のような表記が別機種として数えられてしまう。
+    ms = {m for m in ms if not re.search(
+        r'[（(]|シリーズ|バラエティ|設置機種|減台|増台|にまつわる|記念|誕生日|周年|年目|日目'
+        r'|全系\d|画像の|回想|担当責任者|背景|山佐の日|据え置き', m)}
+    if not ms: continue
+    days[t] = sorted(ms)
 alldays = sorted(days)
 
 # --- 不定期イベント（対象日ベース。誤検出は event_fixes.json で直す） ---

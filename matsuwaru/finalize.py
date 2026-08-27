@@ -78,6 +78,9 @@ for r in recs:
         x['category']='機種'; x['machine']=canon.get(m,m)
     out.append(x)
 
+# 確定した名寄せ表を書き出す。events.py など他の集計が同じ基準を使えるようにするため
+json.dump(canon, open(B + '/data/canon.json', 'w'), ensure_ascii=False, indent=1)
+
 # --- 手動修正の適用（data/corrections.json） ---
 _cpath = B + '/data/corrections.json'
 if os.path.exists(_cpath):
