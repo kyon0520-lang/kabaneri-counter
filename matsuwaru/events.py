@@ -73,8 +73,8 @@ def profile(dates, label):
         # 1回だけの機種は50%×88倍のような無意味な数字になるため。
         mul = round(rate / b, 1) if (b and k >= 2 and n >= 3) else 0
         rows.append([m, k, round(rate * 100), mul])
-    # 回数 → 倍率 → 全体での多さ の順に並べる
-    rows.sort(key=lambda r: (-r[1], -r[3], -base[r[0]]))
+    # 回数 → 全体での多さ の順に並べる（表示と同じ基準にする）
+    rows.sort(key=lambda r: (-r[1], -base[r[0]]))
     return {'label': label, 'days': n, 'small': n < 3, 'top': rows[:8]}
 
 # --- 末尾ごと（◯のつく日）---

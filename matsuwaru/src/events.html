@@ -113,10 +113,10 @@ fetch('data/events.json').then(r=>r.json()).then(render).catch(()=>{
   document.getElementById('main').innerHTML='<p class="note">データを読み込めませんでした。</p>';
 });
 
-// 何倍かで色を変える。3倍以上＝強い、2倍以上＝やや強い
+// 割合で色を変える。40%以上＝強い、25%以上＝やや強い
 function mchip([m,k,rate,mul]){
-  const cls = mul>=3 ? ' hi' : (mul>=2 ? ' mid' : '');
-  return `<span class="m${cls}">${esc(m)}<em>${rate}%${mul>=2?' ×'+mul:''}</em></span>`;
+  const cls = rate>=40 ? ' hi' : (rate>=25 ? ' mid' : '');
+  return `<span class="m${cls}">${esc(m)} ${rate}%<em>過去${k}回</em></span>`;
 }
 
 function dayCard(d, when, D){
@@ -132,8 +132,8 @@ function dayCard(d, when, D){
   const names = hits.map(h=>h.label).join('・') || '特に該当なし';
   // 同じ機種が複数イベントに出たら、倍率の高いほうを採る
   const best = {};
-  hits.forEach(h=>h.top.forEach(r=>{ if(!best[r[0]] || r[3]>best[r[0]][3]) best[r[0]]=r; }));
-  const ms = Object.values(best).sort((a,b)=>b[3]-a[3]||b[2]-a[2]).slice(0,8);
+  hits.forEach(h=>h.top.forEach(r=>{ if(!best[r[0]] || r[2]>best[r[0]][2]) best[r[0]]=r; }));
+  const ms = Object.values(best).sort((a,b)=>b[2]-a[2]||b[1]-a[1]).slice(0,8);
   return `<div class="card day${when==='明日'?' tomorrow':''}">
     <div class="dhd"><b>${J(mo,day)}（${WD[d.getDay()]}）</b><span class="tag">${when}</span></div>
     <p class="evname">${esc(names)}${hits.length?` <i>／ 過去${hits.map(h=>h.days).join('・')}日ぶん</i>`:''}</p>
@@ -185,7 +185,7 @@ function render(D){
 
   h += `<h2>${when}のイベント</h2>`;
   h += dayCard(target, when, D);
-  h += `<p class="note">数字はその日に全系になった割合と、普段の何倍かです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
+  h += `<p class="note">そのイベントの日のうち、何回・何割で全系になったかです。過去${D.totalDays}日ぶんの実績から出しています。</p>`;
 
   const list = pickerList(D);
   // 明日のイベントを最初から選んでおく
