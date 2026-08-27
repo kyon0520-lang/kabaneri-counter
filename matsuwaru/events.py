@@ -229,23 +229,27 @@ thismonth = {
 # --- 台数の傾向（多=20台以上／中=10〜19台／小=9台以下） ---
 # 台数は現在の設置台数。撤去済みで台数が分からない機種は母数から外す。
 def size_profile(dates):
-    c = collections.Counter(); us = []; picked = 0
+    """「その日に○台数の機種が1つでも選ばれたか」を開催日ごとに数える。
+    ユーザーは日付で「この日は多台数が来ないな」と読むので、延べ機種数ではなく日数で出す。"""
+    c = collections.Counter(); us = []; picked = 0; n = 0
     for d in dates:
         ms = days.get(d, ())
-        picked += len(ms)
+        if not ms: continue
+        n += 1; picked += len(ms)
+        seen = set()
         for m in ms:
             u = UNITS.get(m)
             if u is None: continue
-            c['big' if u >= 20 else ('mid' if u >= 10 else 'small')] += 1
+            seen.add('big' if u >= 20 else ('mid' if u >= 10 else 'small'))
             us.append(u)
-    n = sum(c.values())
-    if not n or not dates: return None
-    return {'n': n, 'unknown': picked - n,
+        for b in seen: c[b] += 1
+    if not n or not us: return None
+    return {'n': n,
             'big': round(100 * c['big'] / n), 'mid': round(100 * c['mid'] / n),
             'small': round(100 * c['small'] / n),
             'bigN': c['big'], 'midN': c['mid'], 'smallN': c['small'],
             'avg': round(sum(us) / len(us), 1),
-            'perDay': round(picked / len(dates), 1)}
+            'perDay': round(picked / n, 1)}
 
 for p in events:
     p['size'] = size_profile(p['dates'])

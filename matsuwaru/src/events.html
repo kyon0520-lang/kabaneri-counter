@@ -175,20 +175,16 @@ function applies(p, d){
 }
 const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
-// 傾向をひとことで。全体との差が何ポイント離れているかだけで文を組み立てる
-const SZL = {big:'多台数（20台以上）', mid:'中台数（10〜19台）', small:'小台数（9台以下）'};
+// 傾向をひとことで。「その台数帯が選ばれた日が何回あったか」の全体との差で組み立てる
 function sizeText(z, all){
-  const d = {big:z.big-all.big, mid:z.mid-all.mid, small:z.small-all.small};
-  const ks = ['big','mid','small'].sort((a,b)=>d[b]-d[a]);
-  const hi = ks[0], lo = ks[2];
-  const out = [];
-  if(d[hi] >= 10)     out.push(`${SZL[hi]}が、他の日に比べてはっきり選ばれやすい日です。`);
-  else if(d[hi] >= 5) out.push(`${SZL[hi]}が、他の日よりやや選ばれやすい日です。`);
-  else                out.push('台数の偏りは小さく、全体と近い出方をしています。');
-  if(d[hi] >= 5){
-    if(z.big === 0 && z.n >= 20) out.push('20台以上の機種は、これまで一度も選ばれていません。');
-    else if(d[lo] <= -8) out.push(`逆に${SZL[lo]}は少なめです。`);
-  }
+  const out = [], dB = z.big - all.big, dM = z.mid - all.mid;
+  if(z.big === 100 && z.n >= 3)      out.push('これまでの開催すべてで、20台以上の機種が選ばれています。');
+  else if(z.big === 0 && z.n >= 4)   out.push('20台以上の機種は、これまで一度も選ばれていません。');
+  else if(dB >= 20)                  out.push('多台数（20台以上）が、他の日に比べて選ばれやすい日です。');
+  else if(dB <= -20)                 out.push('多台数（20台以上）は、他の日に比べて選ばれにくい日です。');
+  else                               out.push('台数の偏りは小さく、全体と近い出方をしています。');
+  if(dM >= 15)       out.push('中台数（10〜19台）も出やすい日です。');
+  else if(dM <= -15) out.push('中台数（10〜19台）は少なめです。');
   const dp = z.perDay - all.perDay;
   if(dp >= 2)         out.push('1日に選ばれる機種数も多い日です。');
   else if(dp <= -1.5) out.push('1日に選ばれる機種数は少なめです。');
@@ -211,7 +207,8 @@ function sizeBlock(z, all){
     ${row('中台数','10〜19台', z.mid, all.mid, z.midN)}
     ${row('小台数','〜9台', z.small, all.small, z.smallN)}
   </div>
-  <p class="dates">1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
+  <p class="dates">開催${z.n}回のうち、その台数帯が1機種でも選ばれた回数です。<br>
+    1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
     <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>`;
 }
 
