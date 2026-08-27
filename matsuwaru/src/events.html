@@ -175,28 +175,57 @@ function applies(p, d){
 }
 const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
-// 傾向をひとことで。「その台数帯が選ばれた日が何回あったか」の全体との差で組み立てる
-function sizeText(z, all){
-  const out = [], dB = z.big - all.big;
-  if(z.big === 100 && z.n >= 3)      out.push('これまでの開催すべてで、20台以上の機種が選ばれています。');
-  else if(z.big === 0 && z.n >= 4)   out.push('20台以上の機種は、これまで一度も選ばれていません。');
-  else if(dB >= 20)                  out.push('多台数（20台以上）が、他の日に比べて選ばれやすい日です。');
-  else if(dB <= -20)                 out.push('多台数（20台以上）は、他の日に比べて選ばれにくい日です。');
-  else                               out.push('台数の偏りは小さく、全体と近い出方をしています。');
-  // 残りの帯は、いちばん差が大きいものだけ触れる（並べると読みにくいため）
-  const c = [{n:'中台数（10〜19台）', d:z.mid-all.mid},
-             {n:'小台数（4〜9台）',   d:z.small-all.small},
-             {n:'3台以下の機種',       d:z.tiny-all.tiny}]
-            .sort((a,b)=>Math.abs(b.d)-Math.abs(a.d))[0];
-  if(Math.abs(c.d) >= 15) out.push(c.d > 0 ? `${c.n}も出やすい日です。` : `${c.n}は少なめです。`);
+// 傾向の文章。①多台数の実態 ②中台数との関係 ③系統 ④結論 の順に組み立てる
+function sizeText(z, all, p, D){
+  const out = [], n = z.n;
+  const names = (p.bigList||[]).map(x=>`${x[0]} ${x[1]}台${x[2]>1?`（${x[2]}回）`:''}`).join('・');
+
+  // ① 多台数
+  if(z.bigN === 0)
+    out.push(n === 1 ? '多台数（20台以上）は入っていません。'
+                     : `多台数（20台以上）は、${n}回とも一度も選ばれていません。`);
+  else if(z.big === 100)
+    out.push(`これまでの開催すべてで多台数（20台以上）が選ばれています。${names?'入ったのは'+names+'。':''}`);
+  else if(z.bigN <= 3 || z.big - all.big <= -15)
+    out.push(`多台数（20台以上）は${n}回中${z.bigN}回だけです。${names?'入ったのは'+names+'。':''}`);
+  else if(z.big - all.big >= 15)
+    out.push(`多台数（20台以上）が${z.bigN}/${n}回と、他の日より選ばれやすい日です。${names?'入ったのは'+names+'。':''}`);
+  else
+    out.push(`多台数（20台以上）は${z.bigN}/${n}回で、全体と近い出方です。`);
+
+  // ② 中台数
+  if(p.midFills)
+    out.push(`中台数（10〜19台）は${z.midN}/${n}回。入らなかった日はすべて多台数が入った日で、どちらかの規模がほぼ毎回選ばれます。`);
+  else if(z.mid - all.mid >= 15)
+    out.push(`中台数（10〜19台）は${z.midN}/${n}回と多めです。`);
+  else if(z.mid - all.mid <= -15)
+    out.push(`中台数（10〜19台）は${z.midN}/${n}回と少なめです。`);
+
+  // ③ 系統（全体での出やすさと比べて離れているものだけ）
+  const gAll = Object.fromEntries((D.groupsAll||[]).map(([g,k])=>[g, k/D.sizeAll.n*100]));
+  const gs = (p.groups||[]).map(([g,k])=>({g, k, d: k/n*100 - (gAll[g]||0)}))
+                           .sort((a,b)=>Math.abs(b.d)-Math.abs(a.d));
+  const up = gs.find(x=>x.d >= 15), dn = gs.find(x=>x.d <= -20);
+  if(up && up.k === n)  out.push(`系統では${up.g}が${up.k}/${n}回と、全開催で入っています。`);
+  else if(up)           out.push(`系統では${up.g}が${up.k}/${n}回と目立ちます。`);
+  if(dn) out.push(up ? `逆に${dn.g}は${dn.k}/${n}回と少なめです。`
+                     : `系統では${dn.g}が${dn.k}/${n}回と少なめです。`);
+
+  // ④ 結論
+  const band = z.bigN === 0 ? null
+             : (z.big >= 70 ? '多台数' : (z.midN >= z.bigN && z.mid - all.mid >= 10 ? '中台数' : null));
+  const key = [band && band + '規模', up && up.g + '系'].filter(Boolean);
+  if(key.length) out.push(`${key.join('と')}の示唆を拾えるかが鍵になります。`);
+  else if(z.bigN === 0) out.push('小さめの島を中心に示唆を追うことになります。');
+
   const dp = z.perDay - all.perDay;
-  if(dp >= 2)         out.push('1日に選ばれる機種数も多い日です。');
-  else if(dp <= -1.5) out.push('1日に選ばれる機種数は少なめです。');
+  if(dp >= 2)         out.push(`1日に選ばれる機種数も多く、平均${z.perDay}機種です。`);
+  else if(dp <= -1.5) out.push(`1日に選ばれる機種数は少なめで、平均${z.perDay}機種です。`);
   return out.join('');
 }
 
 // 台数の傾向。全体との差で読むもの（全系の8割は9台以下なので、割合そのものは効かない）
-function sizeBlock(z, all){
+function sizeBlock(z, all, p, D){
   if(!z) return '';
   const row = (name, note, v, base, k) => {
     const d = v - base;
@@ -205,7 +234,7 @@ function sizeBlock(z, all){
       <span class="bar"><u style="width:${Math.max(v,1)}%"></u></span>
       <span class="sv"><em class="cnt">${k}/${z.n}回</em>${v}%${delta}</span></div>`;
   };
-  return `<div class="sec">傾向</div><p class="ov">${sizeText(z, all)}</p>
+  return `<div class="sec">傾向</div><p class="ov">${sizeText(z, all, p, D)}</p>
   <div class="sizeb">
     ${row('多台数','20台〜', z.big, all.big, z.bigN)}
     ${row('中台数','10〜19台', z.mid, all.mid, z.midN)}
@@ -229,7 +258,7 @@ function detail(p){
   return `<div class="card detail">
     <div class="dhd"><b>${esc(fullLabel(p))}</b><span class="tag">過去${p.days}${irr?'回':'日'}</span></div>
     ${note}<div class="sec">選ばれた機種</div>${ms}${dates}${warn}
-    ${sizeBlock(p.size, DB.sizeAll)}</div>`;
+    ${sizeBlock(p.size, DB.sizeAll, p, DB)}</div>`;
 }
 
 function drawPicked(){

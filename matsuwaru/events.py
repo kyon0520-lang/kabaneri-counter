@@ -282,8 +282,39 @@ def size_profile(dates):
             'avg': round(sum(us) / len(us), 1),
             'perDay': round(picked / n, 1)}
 
+# 系統（data/machine_groups.json）。その系統の機種が1つでも選ばれた日を数える
+_gp = B + '/data/machine_groups.json'
+GROUPS = {}
+if os.path.exists(_gp):
+    GROUPS = {k: set(v) for k, v in _json.load(open(_gp, encoding='utf-8')).items()
+              if not k.startswith('_')}
+
+def group_counts(dates):
+    c = collections.Counter()
+    for d in dates:
+        ms = set(days.get(d, ()))
+        for g, mem in GROUPS.items():
+            if ms & mem: c[g] += 1
+    return [[g, n] for g, n in c.most_common()]
+
 for p in events:
     p['size'] = size_profile(p['dates'])
+    p['groups'] = group_counts(p['dates'])
+    # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
+    bl, bigdays = {}, set()
+    for d in p['dates']:
+        for m in days.get(d, ()):
+            u = units_on(d, m)
+            if not u or u < 20: continue
+            bigdays.add(d)
+            cur = bl.get(m)
+            bl[m] = [m, max(u, cur[1]) if cur else u, (cur[2] + 1) if cur else 1]
+    p['bigList'] = sorted(bl.values(), key=lambda x: -x[1])[:4]
+    # 中台数が入らなかった日が、多台数を選んだ日と一致するか
+    nomid = [d for d in p['dates']
+             if not any((units_on(d, m) or 0) >= 10 and (units_on(d, m) or 0) < 20
+                        for m in days.get(d, ()))]
+    p['midFills'] = bool(nomid) and all(d in bigdays for d in nomid)
 
 # イベント概要（data/event_notes.json に key → 文章。無ければ空）
 _np = B + '/data/event_notes.json'
@@ -294,6 +325,7 @@ for p in events:
 
 out = {'generated': today.isoformat(), 'totalDays': tot,
        'sizeAll': size_profile(alldays),
+       'groupsAll': group_counts(alldays),
        'events': events, 'thisMonth': thismonth,
        'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
