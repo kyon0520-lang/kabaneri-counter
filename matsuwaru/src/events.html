@@ -221,14 +221,19 @@ function trendParts(z, all, p, D){
                            .sort((a,b)=>Math.abs(b.d)-Math.abs(a.d));
   const few = p.days < 3;
   // 全体より多くても、その日の4割も出ていない系統は traits として弱いので触れない
-  const ups = few ? [] : gs.filter(x=>x.d >= 10 && x.k / n >= 0.4).slice(0,2).sort((a,b)=>b.k-a.k);
-  const dn  = few ? null : gs.find(x=>x.d <= -20);
+  // lead.groups があれば、その系統だけを出す（回数は集計から取るので古くならない）
+  const pick = p.lead && p.lead.groups;
+  const ups = few ? []
+    : pick ? pick.map(name => gs.find(x => x.g === name)).filter(Boolean)
+           : gs.filter(x=>x.d >= 10 && x.k / n >= 0.4).slice(0,2).sort((a,b)=>b.k-a.k);
+  const dn  = (few || pick) ? null : gs.find(x=>x.d <= -20);
   const up  = ups[0];
   // 小台数（4〜9台）のジャグラーも系統の話として同じ行に入れる
   const sj = p.sjug, sa = D.sjugAll;
   const jugSmall = sj && sa && p.days >= 5 && sj.pct - sa.pct >= 12;
   const jugTxt = jugSmall
-    ? `小台数（4〜9台）のジャグラーが<n>${sj.k}/${sj.n}回</n>` : '';
+    ? `小台数（4〜9台）のジャグラーが<n>${sj.k}/${sj.n}回</n>`
+      + (sj.top && sj.top.length ? `（メインは${sj.top[0][0]}）` : '') : '';
   if(ups.length || dn || jugSmall || (p.lead && p.lead.group)){
     const g1 = ups.length === 0 ? '' : ups.length === 1
       ? (up.k === n ? `${up.g}がこれまでの開催すべて <n>${up.k}/${n}回</n>`
@@ -238,7 +243,13 @@ function trendParts(z, all, p, D){
       : (jugTxt || (dn ? `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ` : ''));
     const sub = (dn && (g1 || jugTxt)) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '';
     const numAll = p.numTie && p.numTie.days === p.days;
-    const gAdd = p.lead && p.lead.group ? p.lead.group : '';
+    // groupPin: 指定した系統を必ず系統行に出す（件数は集計から取る）
+    let gAdd = p.lead && p.lead.group ? p.lead.group : '';
+    const pin = p.lead && p.lead.groupPin;
+    if(pin){
+      const pv = (p.groups||[]).find(x=>x[0] === pin);
+      if(pv) gAdd = `${pin} <n>${pv[1]}/${n}回</n>` + (gAdd ? `。${gAdd}` : '');
+    }
     rows.push({t:'系統', main: gAdd ? `${gAdd}。${main}` : main,
                sub, w: (up && up.k === n && !numAll) ? -0.5 : 1});
   }
@@ -338,7 +349,7 @@ function trendParts(z, all, p, D){
   if(hw){
     if(hw.lead) lead = hw.lead;
     if(hw.tags) tags.length = 0, hw.tags.forEach(x=>tags.push(x));
-    if(hw.fin)  fin = hw.fin + (sizeAdd || '');
+    if(hw.fin)  fin = hw.fin + (hw.size === false ? '' : (sizeAdd || ''));
   }
 
   const dp = z.perDay - all.perDay;

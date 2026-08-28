@@ -350,10 +350,14 @@ def smalljug_share(dates):
     """開催のうち、小台数（4〜9台）のジャグラーが入った回数"""
     ds = [d for d in dates if days.get(d)]
     if not ds: return None
-    k = sum(1 for d in ds
-            if any(m in JUGGLER and (units_on(d, m) or 0) and 4 <= (units_on(d, m) or 0) <= 9
-                   for m in days[d]))
-    return {'k': k, 'n': len(ds), 'pct': round(100 * k / len(ds))}
+    k = 0; who = collections.Counter()
+    for d in ds:
+        hit = [m for m in days[d]
+               if m in JUGGLER and 4 <= (units_on(d, m) or 0) <= 9]
+        if hit: k += 1
+        for m in hit: who[m] += 1
+    return {'k': k, 'n': len(ds), 'pct': round(100 * k / len(ds)),
+            'top': who.most_common(2)}
 
 def group_counts(dates):
     c = collections.Counter()
