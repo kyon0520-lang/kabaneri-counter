@@ -190,24 +190,45 @@ function numText(p){
 
 function sizeText(z, all, p, D){
   const out = [], n = z.n;
-  const nt = numText(p);
-  if (nt) out.push(nt);
   const names = (p.bigList||[]).map(x=>`${x[0]} ${x[1]}台${x[2]>1?`（${x[2]}回）`:''}`).join('・');
 
-  // ① 多台数
+  // ① 系統。まず「どの系統の機種が来る日か」を言う
+  const gAll = Object.fromEntries((D.groupsAll||[]).map(([g,k])=>[g, k/D.sizeAll.n*100]));
+  const gs = (p.groups||[]).map(([g,k])=>({g, k, d: k/n*100 - (gAll[g]||0)}))
+                           .sort((a,b)=>Math.abs(b.d)-Math.abs(a.d));
+  // 開催2回以下では「全開催で入る」も偶然なので系統には触れない
+  const few = p.days < 3;
+  const ups = few ? [] : gs.filter(x=>x.d >= 10).slice(0, 2).sort((a,b)=>b.k-a.k);
+  const dn = few ? null : gs.find(x=>x.d <= -20);
+  const up = ups[0];
+  if(ups.length === 1)
+    out.push(up.k === n ? `系統では${up.g}が${up.k}/${n}回と、全開催で入っています。`
+                        : `系統では${up.g}が${up.k}/${n}回と目立ちます。`);
+  else if(ups.length === 2)
+    out.push(ups[0].k === n
+      ? `系統では${ups[0].g}が全開催で入り、${ups[1].g}も${ups[1].k}/${n}回と目立ちます。`
+      : `系統では${ups[0].g}が${ups[0].k}/${n}回、${ups[1].g}が${ups[1].k}/${n}回と目立ちます。`);
+  if(dn) out.push(ups.length ? `逆に${dn.g}は${dn.k}/${n}回と少なめです。`
+                             : `系統では${dn.g}が${dn.k}/${n}回と少なめです。`);
+
+  // ② 数字まつわり
+  const nt = numText(p);
+  if(nt) out.push(nt);
+
+  // ③ 台数
+  const dB = z.big - all.big;
   if(z.bigN === 0)
     out.push(n === 1 ? '多台数（20台以上）は入っていません。'
                      : `多台数（20台以上）は、${n}回とも一度も選ばれていません。`);
   else if(z.big === 100)
     out.push(`これまでの開催すべてで多台数（20台以上）が選ばれています。${names?'入ったのは'+names+'。':''}`);
-  else if(z.bigN <= 3 || z.big - all.big <= -15)
+  else if(z.bigN <= 3 || dB <= -15)
     out.push(`多台数（20台以上）は${n}回中${z.bigN}回だけです。${names?'入ったのは'+names+'。':''}`);
-  else if(z.big - all.big >= 15)
+  else if(dB >= 15)
     out.push(`多台数（20台以上）が${z.bigN}/${n}回と、他の日より選ばれやすい日です。${names?'入ったのは'+names+'。':''}`);
   else
     out.push(`多台数（20台以上）は${z.bigN}/${n}回で、全体と近い出方です。`);
 
-  // ② 中台数
   if(p.midFills)
     out.push(`中台数（10〜19台）は${z.midN}/${n}回。入らなかった日はすべて多台数が入った日で、どちらかの規模がほぼ毎回選ばれます。`);
   else if(z.mid - all.mid >= 15)
@@ -215,44 +236,30 @@ function sizeText(z, all, p, D){
   else if(z.mid - all.mid <= -15)
     out.push(`中台数（10〜19台）は${z.midN}/${n}回と少なめです。`);
 
-  // ③ 系統（全体での出やすさと比べて離れているものだけ）
-  const gAll = Object.fromEntries((D.groupsAll||[]).map(([g,k])=>[g, k/D.sizeAll.n*100]));
-  const gs = (p.groups||[]).map(([g,k])=>({g, k, d: k/n*100 - (gAll[g]||0)}))
-                           .sort((a,b)=>Math.abs(b.d)-Math.abs(a.d));
-  const up = gs.find(x=>x.d >= 15), dn = gs.find(x=>x.d <= -20);
-  if(up && up.k === n)  out.push(`系統では${up.g}が${up.k}/${n}回と、全開催で入っています。`);
-  else if(up)           out.push(`系統では${up.g}が${up.k}/${n}回と目立ちます。`);
-  if(dn) out.push(up ? `逆に${dn.g}は${dn.k}/${n}回と少なめです。`
-                     : `系統では${dn.g}が${dn.k}/${n}回と少なめです。`);
-
-  // ④ 結論
-  // まつわりが効いている日は、系統はその副産物であることが多い（7のつく日のコナミなど）。
-  // そういう日は系統を結論に出さず、まつわりを先に置く。
-  const t = p.numTie, strongNum = t && t.days / p.days >= 0.7;
-  const band = z.bigN === 0 ? null
-             : (z.big >= 70 ? '多台数' : (z.midN >= z.bigN && z.mid - all.mid >= 10 ? '中台数' : null));
-  const key = [];
-  if (strongNum) key.push(`${t.digit}まつわり`);
-  if (band) key.push(band + '規模');
-  if (!strongNum && up) key.push(up.g + '系');
-  if(key.length) out.push(`${key.join('と')}の示唆を拾えるかが鍵になります。`);
-  else if(z.bigN === 0) out.push('小さめの島を中心に示唆を追うことになります。');
-
-  // 種別。ほぼ毎日どちらも入るので、割合が全体から離れている日だけ触れる
   const nm = p.norm, na = D.normAll;
   if(nm && na && Math.abs(nm.pct - na.pct) >= 10)
     out.push(nm.pct > na.pct
       ? `選ばれた機種の${nm.pct}%がノーマルAタイプで、全体（${na.pct}%）より多めです。`
       : `選ばれた機種のうちノーマルAタイプは${nm.pct}%で、全体（${na.pct}%）より少なめです。`);
 
-  // バラエティ（1台構成）。おまけの島なので普段は傾向が出ない。
-  // 実際に離れた日だけ触れる（8ポイント以上・開催5回以上）
   const vr = p.vari, va = D.variAll;
   if(vr && va && p.days >= 5 && Math.abs(vr.pct - va.pct) >= 8)
     out.push(vr.pct > va.pct
       ? `1台構成のバラエティ機種が${vr.pct}%と、全体（${va.pct}%）より多めです。`
       : `1台構成のバラエティ機種は${vr.pct}%で、全体（${va.pct}%）より少なめです。`);
 
+  // ④ 結論。まつわりが効いている日は系統がその副産物なので、系統は出さない
+  const t = p.numTie, strongNum = t && t.days / p.days >= 0.7;
+  const band = z.bigN === 0 ? null
+             : (z.big >= 70 ? '多台数' : (z.midN >= z.bigN && z.mid - all.mid >= 10 ? '中台数' : null));
+  const key = [];
+  if(strongNum) key.push(`${t.digit}まつわり`);
+  if(!strongNum && up) key.push(up.g + '系');
+  if(band) key.push(band + '規模');
+  if(key.length) out.push(`${key.join('と')}の示唆を拾えるかが鍵になります。`);
+  else if(z.bigN === 0) out.push('小さめの島を中心に示唆を追うことになります。');
+
+  // ⑤ おまけ
   const dp = z.perDay - all.perDay;
   if(dp >= 2)         out.push(`1日に選ばれる機種数も多く、平均${z.perDay}機種です。`);
   else if(dp <= -1.5) out.push(`1日に選ばれる機種数は少なめで、平均${z.perDay}機種です。`);
