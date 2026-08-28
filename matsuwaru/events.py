@@ -376,15 +376,17 @@ def ten_share(dates):
     合わせると「大きめの島がひとつ入る日」として読めることがある"""
     ds = [d for d in dates if days.get(d)]
     if not ds: return None
-    k = big = mid = both = 0
+    k = big = mid = both = one = 0
     for d in ds:
         us = [units_on(d, m) or 0 for m in days[d]]
         b = any(u >= 20 for u in us); m = any(10 <= u < 20 for u in us)
+        c = sum(1 for u in us if u >= 10)
         if b: big += 1
         if m: mid += 1
         if b and m: both += 1
         if b or m: k += 1
-    return {'k': k, 'n': len(ds), 'big': big, 'mid': mid, 'both': both}
+        if c == 1: one += 1          # 大きい島がひとつだけの日
+    return {'k': k, 'n': len(ds), 'big': big, 'mid': mid, 'both': both, 'one': one}
 
 def group_main(dates):
     """系統ごとの「中身」。その系統が入った日のうち、どの機種が何日を占めるか。

@@ -344,7 +344,8 @@ function trendParts(z, all, p, D){
   // 「大きめの島がひとつ入る日」として読める。手書きで指定した日だけ出す
   const tn = p.ten;
   if(p.lead && p.lead.ten && tn) rows.push({t:'10台以上',
-    main: `多台数か中台数が <n>${tn.k}/${tn.n}回</n>`,
+    main: `10台以上が入ったのは <n>${tn.k}/${tn.n}回</n>、`
+        + `そのうち1機種だけが <n>${tn.one}/${tn.k}回</n>`,
     sub: `多台数が${tn.big}回、中台数が${tn.mid}回。`
        + (tn.both ? `同じ日に両方入ったのは${tn.both}回だけ` : '同じ日に両方が入ったことはありません'),
     w:2.8});
