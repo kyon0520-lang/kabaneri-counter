@@ -43,6 +43,26 @@ h2:first-of-type{margin-top:4px}
   background:var(--accent-soft);color:var(--accent);flex:0 0 auto;white-space:nowrap}
 .ov{font-size:12.5px;color:var(--sub);margin:8px 0 0;line-height:1.75}
 .sec{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;margin:14px 0 8px}
+/* 傾向：結論リード → 段組み → 棒グラフ → 締めの結論 */
+.lead{border-left:3px solid var(--accent);padding:1px 0 1px 13px;margin:0 0 14px}
+.lead p{margin:0;font-size:16.5px;font-weight:700;line-height:1.6;letter-spacing:.01em}
+.lead .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.lead .tags i{font-style:normal;font-size:11.5px;font-weight:700;padding:3px 10px;
+  border-radius:999px;background:var(--accent-soft);color:#9ec3fb}
+.rowset{display:grid;gap:10px;margin:0}
+.rw{display:grid;grid-template-columns:60px 1fr;gap:11px;align-items:start}
+.rw dt{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--sub);
+  background:var(--bg-soft);border-radius:6px;padding:3px 0;text-align:center;margin-top:3px}
+.rw dd{margin:0;font-size:13.5px;line-height:1.75}
+.rw dd small{display:block;font-size:12px;color:var(--sub);line-height:1.7;margin-top:1px}
+.rw dd n{font-style:normal;font-family:var(--mono,ui-monospace,monospace);font-weight:600;
+  color:#4ade80;font-variant-numeric:tabular-nums}
+.rw dd n.dn{color:var(--sub)}
+.fin{display:flex;align-items:flex-start;gap:10px;margin-top:14px;
+  background:var(--accent-soft);border-radius:12px;padding:12px 14px}
+.fin i{flex:0 0 auto;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  color:#0d1c2e;background:var(--accent);border-radius:6px;padding:3px 8px;margin-top:1px}
+.fin p{margin:0;font-size:13.5px;font-weight:700;line-height:1.75;color:var(--ink)}
 .sizeb{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px 10px}
 .sizeb .sr{display:contents}
 .sizeb .sl{font-size:12px;color:var(--ink);white-space:nowrap}
@@ -176,94 +196,116 @@ function applies(p, d){
 const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
 // 傾向の文章。①多台数の実態 ②中台数との関係 ③系統 ④結論 の順に組み立てる
-// この店は「まつわる」で決まる。日付の数字は機種名だけでなく台数にも掛かるので、
-// そこが効いている日はいちばん先に言う
-function numText(p){
-  const t = p.numTie;
-  if (!t || t.days / p.days < 0.5) return '';
-  const who = t.top.map(([m, r, k]) => `${m}${r === '名前' ? '' : ' ' + r}が${k}回`).join('、');
-  const head = t.days === p.days
-    ? `${t.digit}にまつわる機種が、これまでの開催すべてで入っています。`
-    : `${t.digit}にまつわる機種が${t.days}/${p.days}回で入っています。`;
-  return head + (who ? who + '。' : '');
-}
+// 傾向は「結論 → 根拠 → 結論」で組む。根拠はそのイベントでいちばん効いている軸から並べる。
+const BAND = {多台数:'多台数（20台以上）', 中台数:'中台数（10〜19台）', 小台数以下:'小台数（9台以下）'};
 
-function sizeText(z, all, p, D){
-  const out = [], n = z.n;
-  const names = (p.bigList||[]).map(x=>`${x[0]} ${x[1]}台${x[2]>1?`（${x[2]}回）`:''}`).join('・');
+function trendParts(z, all, p, D){
+  const n = z.n, rows = [];
 
-  // ① 系統。まず「どの系統の機種が来る日か」を言う
+  // 系統
   const gAll = Object.fromEntries((D.groupsAll||[]).map(([g,k])=>[g, k/D.sizeAll.n*100]));
   const gs = (p.groups||[]).map(([g,k])=>({g, k, d: k/n*100 - (gAll[g]||0)}))
                            .sort((a,b)=>Math.abs(b.d)-Math.abs(a.d));
-  // 開催2回以下では「全開催で入る」も偶然なので系統には触れない
   const few = p.days < 3;
-  const ups = few ? [] : gs.filter(x=>x.d >= 10).slice(0, 2).sort((a,b)=>b.k-a.k);
-  const dn = few ? null : gs.find(x=>x.d <= -20);
-  const up = ups[0];
-  if(ups.length === 1)
-    out.push(up.k === n ? `系統では${up.g}が${up.k}/${n}回と、全開催で入っています。`
-                        : `系統では${up.g}が${up.k}/${n}回と目立ちます。`);
-  else if(ups.length === 2)
-    out.push(ups[0].k === n
-      ? `系統では${ups[0].g}が全開催で入り、${ups[1].g}も${ups[1].k}/${n}回と目立ちます。`
-      : `系統では${ups[0].g}が${ups[0].k}/${n}回、${ups[1].g}が${ups[1].k}/${n}回と目立ちます。`);
-  if(dn) out.push(ups.length ? `逆に${dn.g}は${dn.k}/${n}回と少なめです。`
-                             : `系統では${dn.g}が${dn.k}/${n}回と少なめです。`);
+  // 全体より多くても、その日の4割も出ていない系統は traits として弱いので触れない
+  const ups = few ? [] : gs.filter(x=>x.d >= 10 && x.k / n >= 0.4).slice(0,2).sort((a,b)=>b.k-a.k);
+  const dn  = few ? null : gs.find(x=>x.d <= -20);
+  const up  = ups[0];
+  if(ups.length || dn){
+    const main = ups.length === 0 ? `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ`
+      : ups.length === 1
+        ? (up.k === n ? `${up.g}がこれまでの開催すべて <n>${up.k}/${n}回</n>`
+                      : `${up.g} <n>${up.k}/${n}回</n>`)
+        : `${ups[0].g} <n>${ups[0].k}/${n}回</n>、${ups[1].g} <n>${ups[1].k}/${n}回</n>`;
+    rows.push({t:'系統', main, sub: (ups.length && dn) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '', w:1});
+  }
 
-  // ② 数字まつわり
-  const nt = numText(p);
-  if(nt) out.push(nt);
-
-  // ③ 台数
-  const dB = z.big - all.big;
-  if(z.bigN === 0)
-    out.push(n === 1 ? '多台数（20台以上）は入っていません。'
-                     : `多台数（20台以上）は、${n}回とも一度も選ばれていません。`);
-  else if(z.big === 100)
-    out.push(`これまでの開催すべてで多台数（20台以上）が選ばれています。${names?'入ったのは'+names+'。':''}`);
-  else if(z.bigN <= 3 || dB <= -15)
-    out.push(`多台数（20台以上）は${n}回中${z.bigN}回だけです。${names?'入ったのは'+names+'。':''}`);
-  else if(dB >= 15)
-    out.push(`多台数（20台以上）が${z.bigN}/${n}回と、他の日より選ばれやすい日です。${names?'入ったのは'+names+'。':''}`);
-  else
-    out.push(`多台数（20台以上）は${z.bigN}/${n}回で、全体と近い出方です。`);
-
-  if(p.midFills)
-    out.push(`中台数（10〜19台）は${z.midN}/${n}回。入らなかった日はすべて多台数が入った日で、どちらかの規模がほぼ毎回選ばれます。`);
-  else if(z.mid - all.mid >= 15)
-    out.push(`中台数（10〜19台）は${z.midN}/${n}回と多めです。`);
-  else if(z.mid - all.mid <= -15)
-    out.push(`中台数（10〜19台）は${z.midN}/${n}回と少なめです。`);
-
-  const nm = p.norm, na = D.normAll;
-  if(nm && na && Math.abs(nm.pct - na.pct) >= 10)
-    out.push(nm.pct > na.pct
-      ? `選ばれた機種の${nm.pct}%がノーマルAタイプで、全体（${na.pct}%）より多めです。`
-      : `選ばれた機種のうちノーマルAタイプは${nm.pct}%で、全体（${na.pct}%）より少なめです。`);
-
-  const vr = p.vari, va = D.variAll;
-  if(vr && va && p.days >= 5 && Math.abs(vr.pct - va.pct) >= 8)
-    out.push(vr.pct > va.pct
-      ? `1台構成のバラエティ機種が${vr.pct}%と、全体（${va.pct}%）より多めです。`
-      : `1台構成のバラエティ機種は${vr.pct}%で、全体（${va.pct}%）より少なめです。`);
-
-  // ④ 結論。まつわりが効いている日は系統がその副産物なので、系統は出さない
+  // まつわり
   const t = p.numTie, strongNum = t && t.days / p.days >= 0.7;
-  const band = z.bigN === 0 ? null
-             : (z.big >= 70 ? '多台数' : (z.midN >= z.bigN && z.mid - all.mid >= 10 ? '中台数' : null));
-  const key = [];
-  if(strongNum) key.push(`${t.digit}まつわり`);
-  if(!strongNum && up) key.push(up.g + '系');
-  if(band) key.push(band + '規模');
-  if(key.length) out.push(`${key.join('と')}の示唆を拾えるかが鍵になります。`);
-  else if(z.bigN === 0) out.push('小さめの島を中心に示唆を追うことになります。');
+  if(t && t.days / p.days >= 0.5){
+    const who = t.top.map(([m,r,k])=>`${m}${r==='名前'?'':' '+r}が${k}回`).join('、');
+    rows.push({t:'まつわり',
+      main: t.days === p.days ? `${t.digit}まつわりがこれまでの開催すべて <n>${t.days}/${p.days}回</n>`
+                              : `${t.digit}まつわりが <n>${t.days}/${p.days}回</n>`,
+      sub: who, w: t.days / p.days >= 0.7 ? 0 : 2});   // 全開催級のまつわりは先頭に出す
+  }
 
-  // ⑤ おまけ
+  // 台数
+  const dB = z.big - all.big, dM = z.mid - all.mid;
+  const names = (p.bigList||[]).map(x=>`${x[0]} ${x[1]}台${x[2]>1?`（${x[2]}回）`:''}`).join('・');
+  let bm, bs = '';
+  if(z.bigN === 0)          bm = `多台数は<n class="dn">${n===1?'入っていません':n+'回とも一度もなし'}</n>`;
+  else if(z.big === 100)    { bm = `これまでの開催すべてで多台数 <n>${z.bigN}/${n}回</n>`; bs = names ? '入ったのは' + names : ''; }
+  else if(z.bigN <= 3 || dB <= -15) { bm = `多台数は <n class="dn">${z.bigN}/${n}回</n>だけ`; bs = names ? '入ったのは' + names : ''; }
+  else if(dB >= 15)         { bm = `多台数が <n>${z.bigN}/${n}回</n>と多め`; bs = names ? '入ったのは' + names : ''; }
+  else                      bm = `多台数は <n>${z.bigN}/${n}回</n>で全体と近い`;
+  if(p.midFills)            { bm += `、中台数は <n>${z.midN}/${n}回</n>`; bs = (bs?bs+'。':'') + '中台数が入らなかった日はすべて多台数が入った日'; }
+  else if(dM >= 15)         bm = `中台数が <n>${z.midN}/${n}回</n>と多め、` + bm;
+  else if(dM <= -15)        bm += `、中台数も <n class="dn">${z.midN}/${n}回</n>と少なめ`;
+  rows.push({t:'台数', main: bm, sub: bs, w:3});
+
+  // 顔ぶれ（小台数ジャグラー・種別・バラエティ）
+  const nm = p.norm, na = D.normAll, vr = p.vari, va = D.variAll, ex = [];
+  const sj = p.sjug, sa = D.sjugAll;
+  const jugSmall = sj && sa && p.days >= 5 && sj.pct - sa.pct >= 6;
+  if(jugSmall)
+    ex.push(`小台数（4〜9台）のジャグラーが<n>${sj.pct}%</n>（全体${sa.pct}%）`);
+  if(nm && na && Math.abs(nm.pct - na.pct) >= 10)
+    ex.push(`ノーマルAタイプが<n class="${nm.pct>na.pct?'':'dn'}">${nm.pct}%</n>（全体${na.pct}%）`);
+  if(vr && va && p.days >= 5 && Math.abs(vr.pct - va.pct) >= 8)
+    ex.push(`1台構成のバラエティ機種が<n class="${vr.pct>va.pct?'':'dn'}">${vr.pct}%</n>（全体${va.pct}%）`);
+  if(ex.length) rows.push({t:'顔ぶれ', main: ex.join('、'), sub:'', w:4});
+
+  // 並びは 系統 → まつわり → 台数 → 顔ぶれ。ただし全開催級のまつわりだけ先頭に出す
+  rows.sort((a,b)=>a.w-b.w);
+
+  // 結論
+  // 台数の狙い目。多台数も中台数も少ない日は「9台以下を狙う」が答えになる。
+  const bigLow = z.bigN <= 3 || dB <= -15;
+  const band = (z.bigN > 0 && z.big >= 70) ? '多台数'
+             : (z.midN >= z.bigN && dM >= 10) ? '中台数'
+             : (bigLow && dM <= -15) ? '小台数以下' : null;
+  // まつわりが台数で成立している日は「N台構成の機種」と言い切れる
+  const byUnits = t && t.top.filter(x => x[1] === `${t.digit}台`).length >= Math.ceil(t.top.length / 2);
+  const head = strongNum
+    ? (byUnits ? `${t.digit}まつわりの${t.digit}台構成機種` : `${t.digit}まつわりの機種`)
+    : (up ? `${up.g}系` : null);
+  const tags = [];
+  if(strongNum) tags.push(byUnits ? `${t.digit}まつわり・${t.digit}台構成` : `${t.digit}まつわり`);
+  if(up) tags.push(up.g);
+  if(jugSmall) tags.push('小台数ジャグラー');
+  if(band && !(byUnits && band === '小台数以下')) tags.push(BAND[band]);
+
+  // 台数の言い添え。まつわりが台数由来なら重複するので省く
+  const sizeAdd = (band === '小台数以下')
+    ? `多台数は${z.bigN === 0 ? n + '回とも来ておらず' : z.bigN + '/' + n + '回だけで'}、中台数も${z.midN}/${n}回と少ないので、9台以下の島から探すのが有効です。`
+    : band ? `${BAND[band]}の機種を候補に置いて追うのが有効です。` : '';
+
+  let lead, fin;
+  if(head && band && !(byUnits && band === '小台数以下')){
+    lead = `${head}と${BAND[band]}から攻める`;
+    fin  = `${head}を軸に、${sizeAdd}`;
+  } else if(head){
+    lead = `${head}から攻める`;
+    fin  = sizeAdd ? `${head}を軸に、${sizeAdd}` : `${head}を追えるかが分かれ目になります。`;
+  } else if(band){
+    lead = `${BAND[band]}から攻める`;
+    fin  = band === '小台数以下' ? sizeAdd : `${BAND[band]}の機種を中心に追うのが有効です。`;
+  } else if(z.bigN === 0){
+    lead = '小さめの島から攻める';
+    fin  = '多台数が来ない日なので、小さめの島を中心に示唆を追うことになります。';
+    tags.push('小さめの島');
+  } else {
+    lead = '偏りの小さい日';
+    fin  = '系統も台数も全体と近く、示唆そのものから絞るしかない日です。';
+  }
+  if(jugSmall) fin += `小台数のジャグラーもよく選ばれる日です。`;
+
   const dp = z.perDay - all.perDay;
-  if(dp >= 2)         out.push(`1日に選ばれる機種数も多く、平均${z.perDay}機種です。`);
-  else if(dp <= -1.5) out.push(`1日に選ばれる機種数は少なめで、平均${z.perDay}機種です。`);
-  return out.join('');
+  if(dp >= 2)         fin += `1日に選ばれる機種数も多く、平均${z.perDay}機種です。`;
+  else if(dp <= -1.5) fin += `1日に選ばれる機種数は少なめで、平均${z.perDay}機種です。`;
+
+  return {lead, tags, rows, fin};
 }
 
 // 台数の傾向。全体との差で読むもの（全系の8割は9台以下なので、割合そのものは効かない）
@@ -276,7 +318,12 @@ function sizeBlock(z, all, p, D){
       <span class="bar"><u style="width:${Math.max(v,1)}%"></u></span>
       <span class="sv"><em class="cnt">${k}/${z.n}回</em>${v}%${delta}</span></div>`;
   };
-  return `<div class="sec">傾向</div><p class="ov">${sizeText(z, all, p, D)}</p>
+  const T = trendParts(z, all, p, D);
+  return `<div class="sec">傾向</div>
+  <div class="lead"><p>${T.lead}</p>${T.tags.length
+    ? `<div class="tags">${T.tags.map(x=>`<i>${esc(x)}</i>`).join('')}</div>` : ''}</div>
+  <dl class="rowset">${T.rows.map(r=>
+    `<div class="rw"><dt>${r.t}</dt><dd>${r.main}${r.sub?`<small>${r.sub}</small>`:''}</dd></div>`).join('')}</dl>
   <div class="sizeb">
     ${row('多台数','20台〜', z.big, all.big, z.bigN)}
     ${row('中台数','10〜19台', z.mid, all.mid, z.midN)}
@@ -285,7 +332,8 @@ function sizeBlock(z, all, p, D){
   </div>
   <p class="dates">${p.numTie ? 'まつわりは、機種名にその数字が入るか、台数の末尾がその数字のものです。<br>' : ''}開催${z.n}回のうち、その台数帯が1機種でも選ばれた回数です。台数は実施当日の記録です。<br>
     1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
-    <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>`;
+    <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>
+  <div class="fin"><i>結論</i><p>${T.fin}</p></div>`;
 }
 
 function detail(p){
