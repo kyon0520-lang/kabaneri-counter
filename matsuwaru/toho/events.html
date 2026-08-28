@@ -600,16 +600,26 @@ function render(D){
   h += `<section id="pane-month" hidden><h2>${t.month.replace('-','年')}月の実施状況</h2>`;
   h += `<div class="card"><b>実施済み ${t.done.length}機種</b>
      <div class="ms" style="margin-top:8px">${t.done.map(([m,n])=>`<span class="m">${esc(m)}<em>${n}回</em></span>`).join('')}</div></div>`;
-  if(t.notYet.length){
+  if(t.notYet.length || (t.never||[]).length){
     h += `<div class="card"><b>今月未実施の機種</b><div style="margin-top:10px">`;
-    h += t.notYet.slice(0,20).map(([m,avg,sd,gap,last])=>{
+    h += t.notYet.slice(0,20).map(([m,avg,sd,gap,last,n])=>{
       const steady = avg && sd && sd < avg*0.6;
+      // 実績が3回以下だと間隔の平均が出せない。回数だけ出して、経過日数で見てもらう
+      const body = avg
+        ? `平均${avg}日おき<em>ばらつき±${sd}日${steady?' 安定':''}</em>`
+        : `これまで${n}回<em>間隔を出すには実績が足りません</em>`;
       return `<div class="notyet"><div class="rh"><b>${esc(m)}</b>
         <span>${last.slice(5).replace('-','/')}から${gap}日</span></div>
-        <span class="m${steady?' mid':''}" style="font-size:12px">平均${avg}日おき<em>ばらつき±${sd}日${steady?' 安定':''}</em></span></div>`;
-    }).join('') + `</div></div>`;
+        <span class="m${steady?' mid':''}" style="font-size:12px">${body}</span></div>`;
+    }).join('');
+    if((t.never||[]).length){
+      h += `<div class="notyet"><div class="rh"><b>まだ一度も全系になっていない機種</b></div>
+        <div class="ms" style="margin-top:2px">${t.never.map(([m,u])=>
+          `<span class="m" style="font-size:12px">${esc(m)}<em>${u}台</em></span>`).join('')}</div></div>`;
+    }
+    h += `</div></div>`;
     const lu = t.lineup ? `現在の設置機種${t.lineup.machines}機種（${t.lineup.fetched}時点・毎週の入れ替え後に更新）と照らし合わせ、撤去済みの機種は除いています。` : '';
-    h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}</p>`;
+    h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}公式の設置機種にあって、これまで一度も全系の記録がない機種は最後にまとめています。</p>`;
   }
 
   h += `</section>`;

@@ -34,7 +34,8 @@ if _os.path.exists(_lp):
     import unicodedata as _ud
     def _n(x):
         return re.sub(r'[\s\u3000/／・~〜\-!！?？:：\.]', '', _ud.normalize('NFKC', x).lower())
-    _hall = [(_n(nm), u) for nm, u in LINEUP['slots']]
+    _hall = [(_n(nm), u, nm) for nm, u in LINEUP['slots']]
+    _used = set()          # どの設置機種に当たったか（当たらなかったものが新台）
     def _match(m):
         """(設置しているか, 台数) を返す"""
         if m in _out: return False, 0
@@ -43,12 +44,21 @@ if _os.path.exists(_lp):
         for k in sorted(set(cand), key=len, reverse=True):
             if len(_n(k)) < 2: continue
             ng = [_n(x) for x in _ng.get(m, [])]
-            hit = [u for h, u in _hall if _n(k) in h and not any(g in h for g in ng)]
-            if hit: return True, sum(hit)
+            hit = [(u, raw) for h, u, raw in _hall
+                   if _n(k) in h and not any(g in h for g in ng)]
+            if hit:
+                _used.update(raw for _, raw in hit)
+                return True, sum(u for u, _ in hit)
         return False, 0
     _mt = {m: _match(m) for m in MACHINES}
     INSTALLED = {m for m, (ok, _) in _mt.items() if ok}
     UNITS = {m: u for m, (ok, u) in _mt.items() if ok}
+    # どの機種にも当たらなかった設置機種＝ブログの記録に一度も出てこない機種。
+    # 入替直後の新台がここに入る。公式の表記から頭のS/Lと末尾の型番を落として名前にする
+    def _disp(nm):
+        t = re.sub(r'^[SLPＳＬ]\s*', '', nm.strip())
+        return re.sub(r'\s*[A-Za-z]+\d*$', '', t).strip()
+    NEVER = [[_disp(nm), u] for nm, u in LINEUP['slots'] if nm not in _used]
 fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.path.exists(B + '/data/event_fixes.json') else {}
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
 ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
@@ -255,16 +265,18 @@ for m in base:
         gaps[m] = (round(statistics.mean(g), 1), round(statistics.pstdev(g), 1))
 notyet = []
 for m, n in base.most_common():
-    if donec.get(m) or n < 4: continue
+    if donec.get(m): continue
     if INSTALLED is not None and m not in INSTALLED: continue   # 撤去済みは出さない
+    # 実績が3回以下だと間隔の平均は出せないが、未実施であることは変わらないので出す
     avg, sd = gaps.get(m, (None, None))
-    notyet.append([m, avg, sd, (today - d2(last[m])).days, last[m]])
+    notyet.append([m, avg, sd, (today - d2(last[m])).days, last[m], n])
 thismonth = {
     'month': ym,
     'lineup': ({'fetched': LINEUP['fetched'], 'machines': len(LINEUP['slots']),
                 'installed': len(INSTALLED)} if LINEUP else None),
     'done': [[m, n, last[m]] for m, n in donec.most_common()],
     'notYet': notyet,
+    'never': (NEVER if LINEUP else []),
 }
 
 # --- 台数の傾向（多=20台以上／中=10〜19台／小=9台以下） ---
