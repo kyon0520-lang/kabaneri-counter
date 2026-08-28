@@ -229,16 +229,18 @@ function trendParts(z, all, p, D){
   const jugSmall = sj && sa && p.days >= 5 && sj.pct - sa.pct >= 12;
   const jugTxt = jugSmall
     ? `小台数（4〜9台）のジャグラーが<n>${sj.k}/${sj.n}回</n>` : '';
-  if(ups.length || dn || jugSmall){
+  if(ups.length || dn || jugSmall || (p.lead && p.lead.group)){
     const g1 = ups.length === 0 ? '' : ups.length === 1
       ? (up.k === n ? `${up.g}がこれまでの開催すべて <n>${up.k}/${n}回</n>`
                     : `${up.g} <n>${up.k}/${n}回</n>`)
       : `${ups[0].g} <n>${ups[0].k}/${n}回</n>、${ups[1].g} <n>${ups[1].k}/${n}回</n>`;
     const main = g1 ? (jugTxt ? `${g1}。${jugTxt}` : g1)
-      : (jugTxt || `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ`);
+      : (jugTxt || (dn ? `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ` : ''));
     const sub = (dn && (g1 || jugTxt)) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '';
     const numAll = p.numTie && p.numTie.days === p.days;
-    rows.push({t:'系統', main, sub, w: (up && up.k === n && !numAll) ? -0.5 : 1});
+    const gAdd = p.lead && p.lead.group ? p.lead.group : '';
+    rows.push({t:'系統', main: gAdd ? `${gAdd}。${main}` : main,
+               sub, w: (up && up.k === n && !numAll) ? -0.5 : 1});
   }
 
   // まつわり
@@ -330,6 +332,14 @@ function trendParts(z, all, p, D){
     fin  = '系統も台数も全体と近く、示唆そのものから絞るしかない日です。';
   }
   if(jugSmall) fin += `小台数のジャグラーもよく選ばれる日です。`;
+
+  // 手書きがあれば置き換える。台数の話は後ろに残す
+  const hw = p.lead;
+  if(hw){
+    if(hw.lead) lead = hw.lead;
+    if(hw.tags) tags.length = 0, hw.tags.forEach(x=>tags.push(x));
+    if(hw.fin)  fin = hw.fin + (sizeAdd || '');
+  }
 
   const dp = z.perDay - all.perDay;
   if(dp >= 2)         fin += `1日に選ばれる機種数も多く、平均${z.perDay}機種です。`;

@@ -317,6 +317,12 @@ def variety_share(dates):
     k = sum(1 for d in dates for m in days.get(d, ()) if units_on(d, m) == 1)
     return {'k': k, 'n': n, 'pct': round(100 * k / n)}
 
+# 手書きのリード文・結論（data/event_lead.json）。末尾のように、全台系の機種データには
+# 出てこない性格を持つ日のためのもの。
+_ld = B + '/data/event_lead.json'
+LEAD = {k: v for k, v in (_json.load(open(_ld, encoding='utf-8')).items()
+                          if os.path.exists(_ld) else []) if not k.startswith('_')}
+
 # 看板機種（data/event_signature.json）。そのイベントで名指しされている機種が
 # 実際に入っているか。顔ぶれが途中で変わったイベントは since 以降だけで数える。
 _sg = B + '/data/event_signature.json'
@@ -421,6 +427,7 @@ for p in events:
     p['vari'] = variety_share(p['dates'])
     p['sjug'] = smalljug_share(p['dates'])
     p['sig'] = signature(p['key'], p['dates'])
+    if LEAD.get(p['key']): p['lead'] = LEAD[p['key']]
     p['groups'] = group_counts(p['dates'])
     # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
     bl, bigdays = {}, set()
