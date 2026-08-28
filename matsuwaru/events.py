@@ -136,12 +136,12 @@ def profile(dates, label):
         for m in days[d]: c[m] += 1
     rows = []
     for m, k in c.items():
-        rate, b = k / n, base[m] / tot
-        # 倍率は表示していないが、並びの補助として持っておく
-        mul = round(rate / b, 1) if (b and k >= 2 and n >= 3) else 0
-        rows.append([m, k, round(rate * 100), mul])
+        # その日群でいちばん多かった台数。台数帯で絞り込むときの代表値にする
+        us = collections.Counter(u for u in (units_on(d, m) for d in ds if m in days[d]) if u)
+        rows.append([m, k, round(100 * k / n), us.most_common(1)[0][0] if us else 0])
     rows.sort(key=lambda r: (-r[1], -UNITS.get(r[0], 0), -base[r[0]]))
-    return {'label': label, 'days': n, 'small': n < 3, 'top': rows[:8]}
+    # 上位3位までをチップに出し、残りは一覧のシートで見せるので全件返す
+    return {'label': label, 'days': n, 'small': n < 3, 'top': rows}
 
 # --- 定義ファイルに従ってイベントを組み立てる（表示順もこの順） ---
 DEFS = _json.load(open(B + '/data/event_defs.json', encoding='utf-8'))
@@ -493,6 +493,7 @@ out = {'generated': today.isoformat(), 'totalDays': tot,
        'groupsAll': group_counts(alldays),
        'normAll': norm_share(alldays),
        'variAll': variety_share(alldays),
+       'jug': sorted(JUGGLER),
        'sjugAll': smalljug_share(alldays),
        'threeAll': three_share(alldays),
        'events': events, 'thisMonth': thismonth,

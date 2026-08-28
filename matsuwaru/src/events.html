@@ -92,6 +92,42 @@ h2:first-of-type{margin-top:4px}
 .m.r3{background:rgba(217,119,6,.16)}
 .m.r3 i{background:#d97706;color:#fff}
 .m.r3 em{color:#e0a76a}
+/* 全機種のシート。上位3位まではチップ、残りはここで見る */
+.allbtn{display:block;width:100%;margin-top:10px;font:inherit;font-size:13px;font-weight:700;
+  cursor:pointer;color:#9ec3fb;background:transparent;border:1px solid var(--line);
+  border-radius:10px;padding:10px}
+.sheetwrap{position:fixed;inset:0;z-index:40;display:none}
+.sheetwrap.on{display:block}
+.veil{position:absolute;inset:0;background:rgba(5,12,22,.66)}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:86%;display:flex;flex-direction:column;
+  background:var(--panel);border-radius:18px 18px 0 0;border-top:1px solid var(--line);
+  padding:14px 15px calc(18px + env(safe-area-inset-bottom))}
+.sheet .shd{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.sheet .shd b{font-size:15px}
+.sheet .shd button{font:inherit;font-size:13px;font-weight:700;color:#9ec3fb;
+  background:transparent;border:0;cursor:pointer;padding:4px}
+.sheet .sq{flex:0 0 auto;width:100%;font:inherit;font-size:16px;background:var(--bg-soft);color:var(--ink);
+  border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin:0 0 10px}
+.sheet .sq::placeholder{color:#6f89a6}
+.segs{flex:0 0 auto;display:flex;gap:6px;overflow-x:auto;padding:1px 0 10px;-webkit-overflow-scrolling:touch}
+.segs button{flex:0 0 auto;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
+  border:0;background:var(--bg-soft);color:var(--sub);border-radius:999px;padding:6px 13px}
+.segs button.on{background:var(--accent);color:#fff}
+.sheet .scnt{flex:0 0 auto;font-size:11.5px;color:var(--sub);margin:0 0 4px}
+.sheet .sbody{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.mlist{margin:0;padding:0;list-style:none}
+.mlist li{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  padding:9px 2px;border-bottom:1px solid rgba(44,69,96,.55)}
+.mlist li:last-child{border-bottom:0}
+.mlist .nm{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mlist .u{font-size:10.5px;font-weight:700;color:#cfe0f2;background:#33465f;
+  border-radius:5px;padding:1px 6px}
+.mlist .rt{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mlist .rt em{font-style:normal;font-size:10.5px;color:var(--sub);margin-right:6px}
+.mlist .rt b{font-size:13px}
+.mlist .bar{grid-column:1/-1;height:4px;border-radius:99px;background:var(--bg-soft);overflow:hidden}
+.mlist .bar u{display:block;height:100%;background:var(--accent);text-decoration:none}
+.mlist .none{padding:14px 2px;color:var(--sub);font-size:13px}
 .m.mid{background:rgba(234,179,8,.14)}
 .m.mid em{color:var(--warm)}
 .pickbox{position:relative;margin:0 0 14px}
@@ -150,6 +186,18 @@ h2:first-of-type{margin-top:4px}
 
 <main id="main"><p class="note">読み込み中…</p></main>
 
+<div class="sheetwrap" id="sheet" aria-hidden="true">
+  <div class="veil" id="veil"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="選ばれた機種の一覧">
+    <div class="shd"><b id="sheettitle"></b><button id="sheetclose">閉じる</button></div>
+    <input class="sq" id="sheetq" type="search" enterkeyhint="search" autocomplete="off"
+           placeholder="機種名で絞り込む">
+    <div class="segs" id="sheetsegs"></div>
+    <p class="scnt" id="sheetcnt"></p>
+    <div class="sbody"><ul class="mlist" id="sheetlist"></ul></div>
+  </div>
+</div>
+
 <script>
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -171,6 +219,9 @@ function mchip([m,k,rate,mul], rank, days){
 }
 const chips = (top, rank=true, days=0) =>
   ranked(top).map(([r,n])=>mchip(r, rank?n:99, days)).join('');
+// カードに出すのは3位まで（同率で3位が並ぶ日はその全部）。残りはシートで見る
+const topChips = (top, rank=true, days=0) =>
+  ranked(top).filter(([r,n])=>!rank || n <= 3).map(([r,n])=>mchip(r, rank?n:99, days)).join('');
 
 
 let DB=null, picked=null;
@@ -401,7 +452,9 @@ function sizeBlock(z, all, p, D){
 
 function detail(p){
   const ms = p.top.length
-    ? `<div class="ms">${chips(p.top, !p.small, p.days)}</div>`
+    ? `<div class="ms">${topChips(p.top, !p.small, p.days)}</div>`
+      + (p.top.length > 3
+         ? `<button class="allbtn" id="allbtn">すべての機種を見る（${p.top.length}）</button>` : '')
     : '<p class="note" style="margin:0">実績がまだありません。</p>';
   const irr = p.g === '不定期イベント';
   const dates = irr && p.dates
@@ -414,9 +467,64 @@ function detail(p){
     ${sizeBlock(p.size, DB.sizeAll, p, DB)}</div>`;
 }
 
+// ── 全機種のシート ───────────────────────────────
+// 台数はそのイベントの日にいちばん多かった台数。0は当日の記録が無い機種
+const SEGS = [
+  ['すべて',    () => true, ''],
+  ['ジャグラー', r => (DB.jug||[]).includes(r[0]), ''],
+  ['小台数',    r => r[3] > 0 && r[3] <= 9, '9台以下'],
+  ['中台数',    r => r[3] >= 10 && r[3] <= 19, '10〜19台'],
+  ['多台数',    r => r[3] >= 20, '20台〜'],
+];
+// カナ・かなの違いを吸収して機種名を引けるようにする
+const NZ = s => String(s).normalize('NFKC').toLowerCase().replace(/[\s　]/g,'')
+                 .replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60));
+let seg = 0;
+
+function drawSheet(){
+  const p = DB.events.find(x=>x.key===picked) || DB.events[0];
+  document.getElementById('sheettitle').textContent = fullLabel(p) + 'に選ばれた機種';
+  document.getElementById('sheetsegs').innerHTML = SEGS.map(([n],i)=>
+    `<button data-i="${i}" class="${i===seg?'on':''}">${n}</button>`).join('');
+  const q = NZ(document.getElementById('sheetq').value.trim());
+  const rows = p.top.filter(SEGS[seg][1]).filter(r => !q || NZ(r[0]).includes(q));
+  const note = SEGS[seg][2] ? `（${SEGS[seg][2]}）` : '';
+  document.getElementById('sheetcnt').textContent =
+    `${SEGS[seg][0]}${note} ${rows.length}機種／回数の多い順`;
+  document.getElementById('sheetlist').innerHTML = rows.length
+    ? rows.map(([m,k,rate,u])=>
+      `<li><span class="nm">${esc(m)}${u?`<span class="u">${u}台</span>`:''}</span>
+        <span class="rt"><em>${k}/${p.days}回</em><b>${rate}%</b></span>
+        <span class="bar"><u style="width:${Math.max(rate,2)}%"></u></span></li>`).join('')
+    : '<li class="none">あてはまる機種がありません。</li>';
+}
+function openSheet(){
+  seg = 0;
+  document.getElementById('sheetq').value = '';
+  drawSheet();
+  document.getElementById('sheet').classList.add('on');
+  document.getElementById('sheet').setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeSheet(){
+  document.getElementById('sheet').classList.remove('on');
+  document.getElementById('sheet').setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+document.getElementById('veil').onclick = closeSheet;
+document.getElementById('sheetclose').onclick = closeSheet;
+document.getElementById('sheetq').oninput = drawSheet;
+document.getElementById('sheetsegs').onclick = e => {
+  const b = e.target.closest('button'); if(!b) return; seg = +b.dataset.i; drawSheet();
+};
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
+
 function drawPicked(){
   const cur = DB.events.find(x=>x.key===picked) || DB.events[0];
   document.getElementById('detail').innerHTML = detail(cur);
+  closeSheet();
+  const b = document.getElementById('allbtn');
+  if(b) b.onclick = openSheet;
 }
 
 function render(D){
