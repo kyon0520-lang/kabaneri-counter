@@ -18,6 +18,9 @@
   --ink:#e6f0fa; --sub:#93aac4; --line:#2c4560;
   --accent:#3b82f6; --accent-soft:rgba(59,130,246,.22);
   --red:#e2453c; --green:#2fb56a;
+  /* タブの色。JS の applyCat() が上書きするが、読み込み前でも機種チップが
+     色なしにならないよう初期タブ（本文）の色を初期値として置く */
+  --cat:#3b82f6; --cat-ink:#fff;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -241,7 +244,7 @@ fetch('data/index.json').then(r=>r.json()).then(d=>{
   // 機種名＋読み・別名を正規化して検索対象に（カナで「ToLOVEる」などを引けるように）
   DB.mkeys = DB.machines.map((m,i)=>[m, ...((DB.readings||[])[i]||[])].map(N));
   document.getElementById('gen').textContent='最終更新 '+d.generated+'／'+d.recs.length+'件';
-  render();
+  applyCat(); render();
 }).catch(()=>{
   document.getElementById('results').innerHTML=
     '<div class="empty"><p class="big">データを読み込めませんでした</p><p>通信環境をご確認ください。</p></div>';
