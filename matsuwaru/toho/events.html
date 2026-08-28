@@ -237,7 +237,8 @@ function trendParts(z, all, p, D){
     const main = g1 ? (jugTxt ? `${g1}。${jugTxt}` : g1)
       : (jugTxt || `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ`);
     const sub = (dn && (g1 || jugTxt)) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '';
-    rows.push({t:'系統', main, sub, w:1});
+    const numAll = p.numTie && p.numTie.days === p.days;
+    rows.push({t:'系統', main, sub, w: (up && up.k === n && !numAll) ? -0.5 : 1});
   }
 
   // まつわり
@@ -283,10 +284,13 @@ function trendParts(z, all, p, D){
              : (bigLow && dM <= -15) ? '小台数以下' : null;
   // まつわりが台数で成立している日は「N台構成の機種」と言い切れる
   const byUnits = t && t.top.filter(x => x[1] === `${t.digit}台`).length >= Math.ceil(t.top.length / 2);
+  // 全開催で入る系統がある日は、それがいちばん確かな手がかり
+  const allIn = (up && up.k === n && !(t && t.days === p.days)) ? up : null;
+  const numHead = strongNum
+    ? (byUnits ? `${t.digit}まつわりの${t.digit}台構成機種` : `${t.digit}まつわりの機種`) : null;
   const head = sg ? `看板の${sg.label}`
-    : strongNum
-      ? (byUnits ? `${t.digit}まつわりの${t.digit}台構成機種` : `${t.digit}まつわりの機種`)
-      : (up ? `${up.g}系` : null);
+    : allIn ? allIn.g
+    : numHead || (up ? `${up.g}系` : null);
   const tags = [];
   if(sg) tags.push('看板機種');
   if(strongNum) tags.push(byUnits ? `${t.digit}まつわり・${t.digit}台構成` : `${t.digit}まつわり`);
@@ -300,7 +304,14 @@ function trendParts(z, all, p, D){
     : band ? `${BAND[band]}の機種を候補に置いて追うのが有効です。` : '';
 
   let lead, fin;
-  if(head && band && !(byUnits && band === '小台数以下')){
+  if(allIn && !sg){
+    // 「必ず入る」が言える日は、そこを起点にしてから次の手がかりへ
+    const next = [numHead, band ? `${BAND[band]}の機種` : null].filter(Boolean)[0];
+    lead = `${allIn.g}が必ず入る強い日。まずはここから`;
+    fin  = `${allIn.g}は${n}回すべてで入っています。まずここを軸に、`
+         + (next ? `${next}を候補に置いて追うのが有効です。`
+                 : (sizeAdd || 'そこから示唆で絞るのが有効です。'));
+  } else if(head && band && !(byUnits && band === '小台数以下')){
     lead = sg ? `看板の4機種と${BAND[band]}から攻める`
               : `${head}と${BAND[band]}から攻める`;
     fin  = `${head}を軸に、${sizeAdd}`;
