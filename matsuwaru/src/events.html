@@ -340,6 +340,15 @@ function trendParts(z, all, p, D){
     main: `3台構成の機種が <n>${th.k}/${th.n}回</n>`,
     sub: (th.top||[]).map(([m,k])=>`${m}が${k}回`).join('、'), w:2.5});
 
+  // 10台以上。多台数と中台数を別々に見ると少なく見えるが、合わせると
+  // 「大きめの島がひとつ入る日」として読める。手書きで指定した日だけ出す
+  const tn = p.ten;
+  if(p.lead && p.lead.ten && tn) rows.push({t:'10台以上',
+    main: `多台数か中台数が <n>${tn.k}/${tn.n}回</n>`,
+    sub: `多台数が${tn.big}回、中台数が${tn.mid}回。`
+       + (tn.both ? `同じ日に両方入ったのは${tn.both}回だけ` : '同じ日に両方が入ったことはありません'),
+    w:2.8});
+
   // 台数。lead.band があればその台数帯を手書き指定として扱う
   const hwBand = (p.lead && p.lead.band) || null;
   const dB = z.big - all.big, dM = z.mid - all.mid;

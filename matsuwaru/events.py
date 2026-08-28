@@ -371,6 +371,21 @@ def three_share(dates):
     return {'k': k, 'n': len(ds), 'pct': round(100 * k / len(ds)),
             'top': who.most_common(3)}
 
+def ten_share(dates):
+    """10台以上（多台数＋中台数）が入った回数。片方ずつだと少なく見えるが、
+    合わせると「大きめの島がひとつ入る日」として読めることがある"""
+    ds = [d for d in dates if days.get(d)]
+    if not ds: return None
+    k = big = mid = both = 0
+    for d in ds:
+        us = [units_on(d, m) or 0 for m in days[d]]
+        b = any(u >= 20 for u in us); m = any(10 <= u < 20 for u in us)
+        if b: big += 1
+        if m: mid += 1
+        if b and m: both += 1
+        if b or m: k += 1
+    return {'k': k, 'n': len(ds), 'big': big, 'mid': mid, 'both': both}
+
 def group_main(dates):
     """系統ごとの「中身」。その系統が入った日のうち、どの機種が何日を占めるか。
     手書きの文中に {山佐} と書くと「（SBJ）」のように差し込むために使う。"""
@@ -466,6 +481,7 @@ for p in events:
     p['vari'] = variety_share(p['dates'])
     p['sjug'] = smalljug_share(p['dates'])
     p['three'] = three_share(p['dates'])
+    p['ten'] = ten_share(p['dates'])
     p['sig'] = signature(p['key'], p['dates'])
     if LEAD.get(p['key']): p['lead'] = LEAD[p['key']]
     p['groups'] = group_counts(p['dates'])
@@ -501,6 +517,7 @@ out = {'generated': today.isoformat(), 'totalDays': tot,
        'jug': sorted(JUGGLER),
        'sjugAll': smalljug_share(alldays),
        'threeAll': three_share(alldays),
+       'tenAll': ten_share(alldays),
        'events': events, 'thisMonth': thismonth,
        'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
