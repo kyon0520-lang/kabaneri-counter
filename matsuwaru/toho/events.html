@@ -337,7 +337,7 @@ function trendParts(z, all, p, D){
   const th = p.three, thA = D.threeAll;
   const three3 = th && thA && p.days >= 6 && th.pct - thA.pct >= 15;
   if(three3) rows.push({t:'3台構成',
-    main: `3台構成の機種が <n>${th.k}/${th.n}回</n>（全体${thA.pct}%）`,
+    main: `3台構成の機種が <n>${th.k}/${th.n}回</n>`,
     sub: (th.top||[]).map(([m,k])=>`${m}が${k}回`).join('、'), w:2.5});
 
   // 台数。lead.band があればその台数帯を手書き指定として扱う
@@ -349,7 +349,7 @@ function trendParts(z, all, p, D){
   else if(z.big === 100)    { bm = `これまでの開催すべてで多台数 <n>${z.bigN}/${n}回</n>`; bs = names ? '入ったのは' + names : ''; }
   else if(z.bigN <= 3 || dB <= -15) { bm = `多台数は <n class="dn">${z.bigN}/${n}回</n>だけ`; bs = names ? '入ったのは' + names : ''; }
   else if(dB >= 15)         { bm = `多台数が <n>${z.bigN}/${n}回</n>と多め`; bs = names ? '入ったのは' + names : ''; }
-  else                      bm = `多台数は <n>${z.bigN}/${n}回</n>で全体と近い`;
+  else                      bm = `多台数は <n>${z.bigN}/${n}回</n>で偏りなし`;
   if(p.midFills)            { bm += `、中台数は <n>${z.midN}/${n}回</n>`; bs = (bs?bs+'。':'') + '中台数が入らなかった日はすべて多台数が入った日'; }
   else if(dM >= 15)         bm = `中台数が <n>${z.midN}/${n}回</n>と多め、` + bm;
   else if(dM <= -15)        bm += `、中台数も <n class="dn">${z.midN}/${n}回</n>と少なめ`;
@@ -359,9 +359,9 @@ function trendParts(z, all, p, D){
   // 顔ぶれ（種別・バラエティ）
   const nm = p.norm, na = D.normAll, vr = p.vari, va = D.variAll, ex = [];
   if(nm && na && Math.abs(nm.pct - na.pct) >= 10)
-    ex.push(`ノーマルAタイプが<n class="${nm.pct>na.pct?'':'dn'}">${nm.pct}%</n>（全体${na.pct}%）`);
+    ex.push(`ノーマルAタイプが<n class="${nm.pct>na.pct?'':'dn'}">${nm.pct}%</n>と${nm.pct>na.pct?'多め':'少なめ'}`);
   if(vr && va && p.days >= 5 && Math.abs(vr.pct - va.pct) >= 8)
-    ex.push(`1台構成のバラエティ機種が<n class="${vr.pct>va.pct?'':'dn'}">${vr.pct}%</n>（全体${va.pct}%）`);
+    ex.push(`1台構成のバラエティ機種が<n class="${vr.pct>va.pct?'':'dn'}">${vr.pct}%</n>と${vr.pct>va.pct?'多め':'少なめ'}`);
   if(ex.length) rows.push({t:'顔ぶれ', main: ex.join('、'), sub:'', w:4});
 
   // 並びは 系統 → まつわり → 台数 → 顔ぶれ。ただし全開催級のまつわりだけ先頭に出す
@@ -419,7 +419,7 @@ function trendParts(z, all, p, D){
     tags.push('小さめの島');
   } else {
     lead = '偏りの小さい日';
-    fin  = '系統も台数も全体と近く、示唆そのものから絞るしかない日です。';
+    fin  = '系統にも台数にも偏りがなく、示唆そのものから絞るしかない日です。';
   }
   if(jugSmall) fin += `小台数のジャグラーもよく選ばれる日です。`;
 
@@ -459,7 +459,7 @@ function sizeBlock(z, all, p, D){
   </div>
   <p class="dates">${p.numTie ? 'まつわりは、機種名にその数字が入るか、台数の末尾がその数字のものです。<br>' : ''}開催${z.n}回のうち、その台数帯が1機種でも選ばれた回数です。台数は実施当日の記録です。<br>
     1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
-    <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>
+    <span class="sub2">（ふだんは${all.perDay}機種・${all.avg}台）</span></p>
   <div class="fin"><i>結論</i><p>${T.fin}</p></div>`;
 }
 
