@@ -317,6 +317,8 @@ def variety_share(dates):
 # 小台数（4〜9台）のジャグラー。島単位で狙える形なので、割合で見ると日ごとの差が出る。
 JUGGLER = set(GROUPS.get('ジャグラー', ()))
 def smalljug_share(dates):
+    """選ばれた延べ機種のうち、小台数（4〜9台）のジャグラーが何機種か。
+    「その日に入ったか」だと全体で54%あって差が出にくいので、機種数の濃さで見る。"""
     n = sum(len(days.get(d, ())) for d in dates)
     if not n: return None
     k = 0
