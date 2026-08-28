@@ -264,6 +264,14 @@ function trendParts(z, all, p, D){
       sub: who, w: t.days / p.days >= 0.7 ? 0 : 2});   // 全開催級のまつわりは先頭に出す
   }
 
+  // 3台構成。3台並びが仕掛けられる日（BIG THANK YOU など）に効く。
+  // 「3台以下」の帯だとほぼ全日100%になって差が見えないので、ちょうど3台だけを数える
+  const th = p.three, thA = D.threeAll;
+  const three3 = th && thA && p.days >= 6 && th.pct - thA.pct >= 15;
+  if(three3) rows.push({t:'3台構成',
+    main: `3台構成の機種が <n>${th.k}/${th.n}回</n>（全体${thA.pct}%）`,
+    sub: (th.top||[]).map(([m,k])=>`${m}が${k}回`).join('、'), w:2.5});
+
   // 台数。lead.band があればその台数帯を手書き指定として扱う
   const hwBand = (p.lead && p.lead.band) || null;
   const dB = z.big - all.big, dM = z.mid - all.mid;
@@ -311,6 +319,7 @@ function trendParts(z, all, p, D){
   if(strongNum) tags.push(byUnits ? `${t.digit}まつわり・${t.digit}台構成` : `${t.digit}まつわり`);
   if(up) tags.push(up.g);
   if(jugSmall) tags.push('小台数ジャグラー');
+  if(three3 && !tags.some(x=>x.includes('3台構成'))) tags.push('3台構成');
   if(band && !(byUnits && band === '小台数以下')) tags.push(BAND[band]);
 
   // 台数の言い添え。まつわりが台数由来なら重複するので省く

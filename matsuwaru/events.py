@@ -359,6 +359,18 @@ def smalljug_share(dates):
     return {'k': k, 'n': len(ds), 'pct': round(100 * k / len(ds)),
             'top': who.most_common(2)}
 
+def three_share(dates):
+    """開催のうち、ちょうど3台構成の機種が入った回数。3台並びの日に効く"""
+    ds = [d for d in dates if days.get(d)]
+    if not ds: return None
+    k = 0; who = collections.Counter()
+    for d in ds:
+        hit = [m for m in days[d] if units_on(d, m) == 3]
+        if hit: k += 1
+        for m in hit: who[m] += 1
+    return {'k': k, 'n': len(ds), 'pct': round(100 * k / len(ds)),
+            'top': who.most_common(3)}
+
 def group_counts(dates):
     c = collections.Counter()
     for d in dates:
@@ -433,6 +445,7 @@ for p in events:
     p['norm'] = norm_share(p['dates'])
     p['vari'] = variety_share(p['dates'])
     p['sjug'] = smalljug_share(p['dates'])
+    p['three'] = three_share(p['dates'])
     p['sig'] = signature(p['key'], p['dates'])
     if LEAD.get(p['key']): p['lead'] = LEAD[p['key']]
     p['groups'] = group_counts(p['dates'])
@@ -465,6 +478,7 @@ out = {'generated': today.isoformat(), 'totalDays': tot,
        'normAll': norm_share(alldays),
        'variAll': variety_share(alldays),
        'sjugAll': smalljug_share(alldays),
+       'threeAll': three_share(alldays),
        'events': events, 'thisMonth': thismonth,
        'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
