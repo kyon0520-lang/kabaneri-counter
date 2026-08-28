@@ -300,12 +300,31 @@ def group_counts(dates):
 # --- 数字まつわり ---------------------------------------------------
 # この店は「まつわる」で機種を決める。日付の数字は機種名だけでなく設置台数にも掛かる。
 # 例：7のつく日の「アイム 7台」「七つ魔」。台数は末尾一致も見る（17台・27台）。
+# 数字の言い換え。ローマ数字は前後に英字が来ないときだけ数として扱う
+# （「ToLOVEる」のVや「ストⅥ」のVを5と誤認しないため）。
 NUMWORD = {0: ['0', 'ゼロ', 'ZERO', '〇', '零'], 1: ['1', '一', 'ワン'],
-           2: ['2', '二', 'ツー', 'II'], 3: ['3', '三', 'スリー', 'III'],
-           4: ['4', '四', 'フォー'], 5: ['5', '五', 'ファイブ', 'V'],
+           2: ['2', '二', 'ツー'], 3: ['3', '三', 'スリー'],
+           4: ['4', '四', 'フォー'], 5: ['5', '五', 'ファイブ'],
            6: ['6', '六', 'シックス'], 7: ['7', '七', 'セブン'],
-           8: ['8', '八', 'エイト', 'VIII'], 9: ['9', '九', 'ナイン']}
+           8: ['8', '八', 'エイト'], 9: ['9', '九', 'ナイン']}
+ROMAN = {5: 'V', 8: 'VIII', 2: 'II', 3: 'III', 6: 'VI', 4: 'IV', 7: 'VII', 9: 'IX'}
 def _nu(x): return _ud.normalize('NFKC', x).upper()
+_ROMAN_RE = {d: re.compile(r'(?<![A-Z])' + r + r'(?![A-Z])') for d, r in ROMAN.items()}
+
+# 機種名＋読み・別名。まつわりは正式名称にも掛かる（エウレカ＝エウレカセブン＝7）。
+# 型番やリール径は数えたくないので、readings.json の「まつわり除外読み」で外す。
+_RJ = _json.load(open(B + '/data/readings.json', encoding='utf-8'))
+NUM_SKIP = set(_RJ.get('まつわり除外読み', []))
+ALIAS = {m: [m] + [r for r in _RJ['readings'].get(m, []) if r not in NUM_SKIP]
+         for m in MACHINES}
+
+def name_digits(m, dg, aliases):
+    """機種名・読みのどれかに、その数字が入っているか"""
+    for nm in aliases:
+        t = _nu(nm)
+        if any(_nu(w) in t for w in NUMWORD[dg]): return True
+        if dg in _ROMAN_RE and _ROMAN_RE[dg].search(t): return True
+    return False
 
 def event_digit(mt):
     """そのイベントが「何の数字の日」か。決まらないものは None"""
@@ -317,14 +336,13 @@ def event_digit(mt):
 
 def numtie(dates, dg):
     if dg is None: return None
-    words = [_nu(w) for w in NUMWORD[dg]]
     hit_days = 0; who = collections.Counter(); why = {}
     for d in dates:
         found = False
         for m in days.get(d, ()):
             u = units_on(d, m)
             r = None
-            if any(w in _nu(m) for w in words): r = '名前'
+            if name_digits(m, dg, ALIAS.get(m, [m])): r = '名前'
             elif u is not None and u % 10 == dg: r = '%d台' % u
             if r:
                 found = True; who[m] += 1; why.setdefault(m, r)
