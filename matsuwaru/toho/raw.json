@@ -30858,5 +30858,137 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/08/28/070518",
+  "articleDate": "2026-08-28",
+  "targetDate": "2026-08-27",
+  "postDate": "2026-08-26",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2092575294054105190",
+  "title": "8月27日のマルハン新宿東宝ビルまとめ✏️多台数含む7機種+バラの2機種が全！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "モンキーV",
+    "matched": false,
+    "keyword": "シャチハタ",
+    "chain": [
+     "シャチハタ",
+     "ハタ",
+     "波多野"
+    ],
+    "raw": "シャチハタ→ハタ→波多野",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女5",
+    "matched": false,
+    "keyword": "シャチハタ",
+    "chain": [
+     "シャチハタ",
+     "旗",
+     "戦国乙女"
+    ],
+    "raw": "シャチハタ→旗→戦国乙女",
+    "result": null
+   },
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": false,
+    "keyword": "夏の思い出",
+    "chain": [
+     "夏の思い出",
+     "ケツメイシ",
+     "メーシー"
+    ],
+    "raw": "夏の思い出→ケツメイシ→メーシー",
+    "result": null
+   },
+   {
+    "machine": "ハッピー",
+    "matched": false,
+    "keyword": "7にまつわる",
+    "chain": [
+     "7にまつわる",
+     "7台設置機種"
+    ],
+    "raw": "7にまつわる→7台設置機種",
+    "result": null
+   },
+   {
+    "machine": "スーパーブラックジャック",
+    "matched": false,
+    "keyword": "カード",
+    "chain": [
+     "カード",
+     "トランプ",
+     "ブラックジャック"
+    ],
+    "raw": "カード→トランプ→ブラックジャック",
+    "result": null
+   },
+   {
+    "machine": "ディスクウルリミ",
+    "matched": false,
+    "keyword": "デスク写真",
+    "chain": [
+     "デスク写真",
+     "デスクアップ"
+    ],
+    "raw": "デスク写真→デスクアップ",
+    "result": null
+   },
+   {
+    "machine": "シェイクBT",
+    "matched": false,
+    "keyword": "航空会社",
+    "chain": [
+     "航空会社",
+     "飛行機",
+     "旅行",
+     "ツアー",
+     "ナディアツアー"
+    ],
+    "raw": "航空会社→飛行機→旅行→ツアー→ナディアツアー",
+    "result": null
+   },
+   {
+    "machine": "ギアス",
+    "matched": false,
+    "keyword": "身に覚えのない",
+    "chain": [
+     "身に覚えのない",
+     "記憶ゼロ",
+     "ゼロ"
+    ],
+    "raw": "身に覚えのない→記憶ゼロ→ゼロ",
+    "result": null
+   },
+   {
+    "machine": "ギアス",
+    "matched": false,
+    "keyword": "8/27キャラ誕🎂",
+    "chain": [
+     "8/27キャラ誕🎂",
+     "ニーナ・アインシュタイン"
+    ],
+    "raw": "8/27キャラ誕🎂→ニーナ・アインシュタイン",
+    "result": null
+   },
+   {
+    "machine": "Sエウレカ",
+    "matched": false,
+    "keyword": "7にまつわる",
+    "chain": [
+     "7にまつわる",
+     "セブン"
+    ],
+    "raw": "7にまつわる→セブン",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
