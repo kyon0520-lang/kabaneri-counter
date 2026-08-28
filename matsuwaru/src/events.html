@@ -176,8 +176,22 @@ function applies(p, d){
 const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
 // 傾向の文章。①多台数の実態 ②中台数との関係 ③系統 ④結論 の順に組み立てる
+// この店は「まつわる」で決まる。日付の数字は機種名だけでなく台数にも掛かるので、
+// そこが効いている日はいちばん先に言う
+function numText(p){
+  const t = p.numTie;
+  if (!t || t.days / p.days < 0.5) return '';
+  const who = t.top.map(([m, r, k]) => `${m}${r === '名前' ? '' : ' ' + r}が${k}回`).join('、');
+  const head = t.days === p.days
+    ? `${t.digit}にまつわる機種が、これまでの開催すべてで入っています。`
+    : `${t.digit}にまつわる機種が${t.days}/${p.days}回で入っています。`;
+  return head + (who ? who + '。' : '');
+}
+
 function sizeText(z, all, p, D){
   const out = [], n = z.n;
+  const nt = numText(p);
+  if (nt) out.push(nt);
   const names = (p.bigList||[]).map(x=>`${x[0]} ${x[1]}台${x[2]>1?`（${x[2]}回）`:''}`).join('・');
 
   // ① 多台数
@@ -212,9 +226,15 @@ function sizeText(z, all, p, D){
                      : `系統では${dn.g}が${dn.k}/${n}回と少なめです。`);
 
   // ④ 結論
+  // まつわりが効いている日は、系統はその副産物であることが多い（7のつく日のコナミなど）。
+  // そういう日は系統を結論に出さず、まつわりを先に置く。
+  const t = p.numTie, strongNum = t && t.days / p.days >= 0.7;
   const band = z.bigN === 0 ? null
              : (z.big >= 70 ? '多台数' : (z.midN >= z.bigN && z.mid - all.mid >= 10 ? '中台数' : null));
-  const key = [band && band + '規模', up && up.g + '系'].filter(Boolean);
+  const key = [];
+  if (strongNum) key.push(`${t.digit}まつわり`);
+  if (band) key.push(band + '規模');
+  if (!strongNum && up) key.push(up.g + '系');
   if(key.length) out.push(`${key.join('と')}の示唆を拾えるかが鍵になります。`);
   else if(z.bigN === 0) out.push('小さめの島を中心に示唆を追うことになります。');
 
@@ -241,7 +261,7 @@ function sizeBlock(z, all, p, D){
     ${row('小台数','4〜9台', z.small, all.small, z.smallN)}
     ${row('3台以下','', z.tiny, all.tiny, z.tinyN)}
   </div>
-  <p class="dates">開催${z.n}回のうち、その台数帯が1機種でも選ばれた回数です。台数は実施当日の記録です。<br>
+  <p class="dates">${p.numTie ? 'まつわりは、機種名にその数字が入るか、台数の末尾がその数字のものです。<br>' : ''}開催${z.n}回のうち、その台数帯が1機種でも選ばれた回数です。台数は実施当日の記録です。<br>
     1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
     <span class="sub2">（全体は${all.perDay}機種・${all.avg}台）</span></p>`;
 }

@@ -297,8 +297,45 @@ def group_counts(dates):
             if ms & mem: c[g] += 1
     return [[g, n] for g, n in c.most_common()]
 
+# --- 数字まつわり ---------------------------------------------------
+# この店は「まつわる」で機種を決める。日付の数字は機種名だけでなく設置台数にも掛かる。
+# 例：7のつく日の「アイム 7台」「七つ魔」。台数は末尾一致も見る（17台・27台）。
+NUMWORD = {0: ['0', 'ゼロ', 'ZERO', '〇', '零'], 1: ['1', '一', 'ワン'],
+           2: ['2', '二', 'ツー', 'II'], 3: ['3', '三', 'スリー', 'III'],
+           4: ['4', '四', 'フォー'], 5: ['5', '五', 'ファイブ', 'V'],
+           6: ['6', '六', 'シックス'], 7: ['7', '七', 'セブン'],
+           8: ['8', '八', 'エイト', 'VIII'], 9: ['9', '九', 'ナイン']}
+def _nu(x): return _ud.normalize('NFKC', x).upper()
+
+def event_digit(mt):
+    """そのイベントが「何の数字の日」か。決まらないものは None"""
+    if 'digit' in mt and len(mt['digit']) == 1: return mt['digit'][0]
+    if 'day' in mt:
+        ds = {d % 10 for d in mt['day']}
+        if len(ds) == 1: return ds.pop()
+    return None
+
+def numtie(dates, dg):
+    if dg is None: return None
+    words = [_nu(w) for w in NUMWORD[dg]]
+    hit_days = 0; who = collections.Counter(); why = {}
+    for d in dates:
+        found = False
+        for m in days.get(d, ()):
+            u = units_on(d, m)
+            r = None
+            if any(w in _nu(m) for w in words): r = '名前'
+            elif u is not None and u % 10 == dg: r = '%d台' % u
+            if r:
+                found = True; who[m] += 1; why.setdefault(m, r)
+        if found: hit_days += 1
+    if not hit_days: return None
+    return {'digit': dg, 'days': hit_days,
+            'top': [[m, why[m], k] for m, k in who.most_common(4)]}
+
 for p in events:
     p['size'] = size_profile(p['dates'])
+    p['numTie'] = numtie(p['dates'], event_digit(p['match']))
     p['groups'] = group_counts(p['dates'])
     # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
     bl, bigdays = {}, set()
