@@ -32,6 +32,15 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
 .badge{display:inline-block;font-size:10.5px;font-weight:700;color:var(--accent);
   background:var(--accent-soft);border-radius:999px;padding:3px 9px;margin-left:8px;vertical-align:2px}
 .back{display:inline-block;font-size:13px;color:var(--accent);text-decoration:none}
+.mtabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin:12px -20px -12px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mtabs::-webkit-scrollbar{display:none}
+.mtabs button{flex:1 0 auto;background:none;border:0;border-bottom:2px solid transparent;
+  color:var(--sub);font-family:inherit;font-size:12.5px;
+  padding:11px 6px;cursor:pointer;white-space:nowrap;transition:color .13s}
+.mtabs button.on{color:var(--ink);font-weight:700;border-bottom-color:var(--accent)}
+section[hidden]{display:none}
+section > h2:first-child{margin-top:4px}
 main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
 h2{font-size:13px;color:var(--sub);margin:28px 0 10px;font-weight:700;letter-spacing:.04em}
 h2:first-of-type{margin-top:4px}
@@ -182,6 +191,10 @@ h2:first-of-type{margin-top:4px}
   </div>
   <h1 class="ttl">イベント傾向チェッカー<span class="badge">{{LABEL}}</span></h1>
   <a class="back" href="./">← 示唆から検索する</a>
+  <div class="mtabs" id="ptabs" role="tablist">
+    <button data-t="trend" class="on">イベント傾向</button>
+    <button data-t="month">月間全系実施機種</button>
+  </div>
 </div>
 
 <main id="main"><p class="note">読み込み中…</p></main>
@@ -564,15 +577,17 @@ function render(D){
     ? `<optgroup label="${name}">` + items.map(p=>
         `<option value="${esc(p.key)}"${p.key===picked?' selected':''}>${applies(p,target)?'● ':''}${esc(fullLabel(p))}</option>`
       ).join('') + `</optgroup>` : '';
-  h += `<h2>イベントを選ぶ</h2>`;
+  h += `<section id="pane-trend"><h2>イベントを選ぶ</h2>`;
   h += `<div class="pickbox"><select id="picker" aria-label="イベントを選ぶ">`
      + [...new Set(D.events.map(p=>p.g))].map(g=>grp(g, D.events.filter(p=>p.g===g))).join('')
      + `</select></div>`;
   h += `<div id="detail"></div>`;
   h += `<p class="note">そのイベントの日のうち、何回・何割で全系になったかです。過去${D.totalDays}日ぶんの実績から出しています。同じ日に複数当てはまる場合は、細かいほうのイベントだけを数えています。取材などの不定期イベントが入った日と、21-27WEEK・月末最終日にあたる日は、◯のつく日の集計には含めていません。</p>`;
 
+  h += `</section>`;
+
   const t = D.thisMonth;
-  h += `<h2>${t.month.replace('-','年')}月の実施状況</h2>`;
+  h += `<section id="pane-month" hidden><h2>${t.month.replace('-','年')}月の実施状況</h2>`;
   h += `<div class="card"><b>実施済み ${t.done.length}機種</b>
      <div class="ms" style="margin-top:8px">${t.done.map(([m,n])=>`<span class="m">${esc(m)}<em>${n}回</em></span>`).join('')}</div></div>`;
   if(t.notYet.length){
@@ -587,6 +602,7 @@ function render(D){
     h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}</p>`;
   }
 
+  h += `</section>`;
   h += `<div class="foot">出典：<a href="{{BLOGURL}}" target="_blank" rel="noopener">{{BLOGNAME}}</a><br>
     集計は実際に全台系が行われた日で行っています。<br>最終更新 ${D.generated}</div>`;
   document.getElementById('main').innerHTML = h;
@@ -594,6 +610,13 @@ function render(D){
   document.getElementById('picker').addEventListener('change', e=>{
     picked = e.target.value; drawPicked();
   });
+  document.getElementById('ptabs').onclick = e => {
+    const b = e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('#ptabs button').forEach(x=>x.classList.toggle('on', x===b));
+    document.getElementById('pane-trend').hidden = b.dataset.t !== 'trend';
+    document.getElementById('pane-month').hidden = b.dataset.t !== 'month';
+    closeSheet(); scrollTo(0, 0);
+  };
 }
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
