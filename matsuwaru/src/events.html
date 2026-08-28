@@ -71,10 +71,8 @@ h2:first-of-type{margin-top:4px}
 .sizeb .bar u{display:block;height:100%;background:var(--accent);text-decoration:none}
 .sizeb .sv{font-size:12px;font-weight:700;text-align:right;white-space:nowrap;
   font-variant-numeric:tabular-nums}
-.sizeb .sv em.cnt{font-weight:400;font-size:10.5px;color:var(--sub);margin:0 6px 0 0}
-.sizeb .sv em{font-style:normal;font-weight:700;font-size:10.5px;margin-left:4px}
-.sizeb .sv em.up{color:#4ade80}
-.sizeb .sv em.dn{color:var(--sub)}
+.sizeb .sv em.cnt{font-style:normal;font-weight:400;font-size:10.5px;
+  color:var(--sub);margin:0 6px 0 0}
 .sizeb .sub2{color:var(--sub);opacity:.75}
 .evname{font-size:13px;color:var(--ink);margin:0 0 9px}
 .evname i{font-style:normal;color:var(--sub)}
@@ -373,13 +371,10 @@ function trendParts(z, all, p, D){
 // 台数の傾向。全体との差で読むもの（全系の8割は9台以下なので、割合そのものは効かない）
 function sizeBlock(z, all, p, D){
   if(!z) return '';
-  const row = (name, note, v, base, k) => {
-    const d = v - base;
-    const delta = d === 0 ? '' : `<em class="${d>0?'up':'dn'}">${d>0?'+':''}${d}</em>`;
-    return `<div class="sr"><span class="sl">${name}<i>${note}</i></span>
+  const row = (name, note, v, k) =>
+    `<div class="sr"><span class="sl">${name}<i>${note}</i></span>
       <span class="bar"><u style="width:${Math.max(v,1)}%"></u></span>
-      <span class="sv"><em class="cnt">${k}/${z.n}回</em>${v}%${delta}</span></div>`;
-  };
+      <span class="sv"><em class="cnt">${k}/${z.n}回</em>${v}%</span></div>`;
   const T = trendParts(z, all, p, D);
   return `<div class="sec">傾向</div>
   <div class="lead"><p>${T.lead}</p>${T.tags.length
@@ -387,10 +382,10 @@ function sizeBlock(z, all, p, D){
   <dl class="rowset">${T.rows.map(r=>
     `<div class="rw"><dt>${r.t}</dt><dd>${r.main}${r.sub?`<small>${r.sub}</small>`:''}</dd></div>`).join('')}</dl>
   <div class="sizeb">
-    ${row('多台数','20台〜', z.big, all.big, z.bigN)}
-    ${row('中台数','10〜19台', z.mid, all.mid, z.midN)}
-    ${row('小台数','4〜9台', z.small, all.small, z.smallN)}
-    ${row('3台以下','', z.tiny, all.tiny, z.tinyN)}
+    ${row('多台数','20台〜', z.big, z.bigN)}
+    ${row('中台数','10〜19台', z.mid, z.midN)}
+    ${row('小台数','4〜9台', z.small, z.smallN)}
+    ${row('3台以下','', z.tiny, z.tinyN)}
   </div>
   <p class="dates">${p.numTie ? 'まつわりは、機種名にその数字が入るか、台数の末尾がその数字のものです。<br>' : ''}開催${z.n}回のうち、その台数帯が1機種でも選ばれた回数です。台数は実施当日の記録です。<br>
     1日あたり${z.perDay}機種／選ばれた機種の平均${z.avg}台
