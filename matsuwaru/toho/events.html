@@ -211,13 +211,20 @@ function trendParts(z, all, p, D){
   const ups = few ? [] : gs.filter(x=>x.d >= 10 && x.k / n >= 0.4).slice(0,2).sort((a,b)=>b.k-a.k);
   const dn  = few ? null : gs.find(x=>x.d <= -20);
   const up  = ups[0];
-  if(ups.length || dn){
-    const main = ups.length === 0 ? `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ`
-      : ups.length === 1
-        ? (up.k === n ? `${up.g}がこれまでの開催すべて <n>${up.k}/${n}回</n>`
-                      : `${up.g} <n>${up.k}/${n}回</n>`)
-        : `${ups[0].g} <n>${ups[0].k}/${n}回</n>、${ups[1].g} <n>${ups[1].k}/${n}回</n>`;
-    rows.push({t:'系統', main, sub: (ups.length && dn) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '', w:1});
+  // 小台数（4〜9台）のジャグラーも系統の話として同じ行に入れる
+  const sj = p.sjug, sa = D.sjugAll;
+  const jugSmall = sj && sa && p.days >= 5 && sj.pct - sa.pct >= 6;
+  const jugTxt = jugSmall
+    ? `小台数（4〜9台）のジャグラーが<n>${sj.pct}%</n>（全体${sa.pct}%）` : '';
+  if(ups.length || dn || jugSmall){
+    const g1 = ups.length === 0 ? '' : ups.length === 1
+      ? (up.k === n ? `${up.g}がこれまでの開催すべて <n>${up.k}/${n}回</n>`
+                    : `${up.g} <n>${up.k}/${n}回</n>`)
+      : `${ups[0].g} <n>${ups[0].k}/${n}回</n>、${ups[1].g} <n>${ups[1].k}/${n}回</n>`;
+    const main = g1 ? (jugTxt ? `${g1}。${jugTxt}` : g1)
+      : (jugTxt || `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ`);
+    const sub = (dn && (g1 || jugTxt)) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '';
+    rows.push({t:'系統', main, sub, w:1});
   }
 
   // まつわり
@@ -244,12 +251,8 @@ function trendParts(z, all, p, D){
   else if(dM <= -15)        bm += `、中台数も <n class="dn">${z.midN}/${n}回</n>と少なめ`;
   rows.push({t:'台数', main: bm, sub: bs, w:3});
 
-  // 顔ぶれ（小台数ジャグラー・種別・バラエティ）
+  // 顔ぶれ（種別・バラエティ）
   const nm = p.norm, na = D.normAll, vr = p.vari, va = D.variAll, ex = [];
-  const sj = p.sjug, sa = D.sjugAll;
-  const jugSmall = sj && sa && p.days >= 5 && sj.pct - sa.pct >= 6;
-  if(jugSmall)
-    ex.push(`小台数（4〜9台）のジャグラーが<n>${sj.pct}%</n>（全体${sa.pct}%）`);
   if(nm && na && Math.abs(nm.pct - na.pct) >= 10)
     ex.push(`ノーマルAタイプが<n class="${nm.pct>na.pct?'':'dn'}">${nm.pct}%</n>（全体${na.pct}%）`);
   if(vr && va && p.days >= 5 && Math.abs(vr.pct - va.pct) >= 8)
