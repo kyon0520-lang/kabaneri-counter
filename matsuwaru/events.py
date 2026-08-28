@@ -318,8 +318,11 @@ NUM_SKIP = set(_RJ.get('まつわり除外読み', []))
 ALIAS = {m: [m] + [r for r in _RJ['readings'].get(m, []) if r not in NUM_SKIP]
          for m in MACHINES}
 
+NUM_FIX = {k: v for k, v in _RJ.get('まつわり数字', {}).items() if not k.startswith('_')}
+
 def name_digits(m, dg, aliases):
     """機種名・読みのどれかに、その数字が入っているか"""
+    if m in NUM_FIX: return dg in NUM_FIX[m]   # 手で決めたものが最優先
     for nm in aliases:
         t = _nu(nm)
         if any(_nu(w) in t for w in NUMWORD[dg]): return True
