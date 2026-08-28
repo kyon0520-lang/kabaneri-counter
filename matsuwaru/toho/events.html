@@ -215,7 +215,7 @@ function trendParts(z, all, p, D){
   const sj = p.sjug, sa = D.sjugAll;
   const jugSmall = sj && sa && p.days >= 5 && sj.pct - sa.pct >= 12;
   const jugTxt = jugSmall
-    ? `小台数（4〜9台）のジャグラーが<n>${sj.k}/${sj.n}回</n>（全体は${sa.k}/${sa.n}日）` : '';
+    ? `小台数（4〜9台）のジャグラーが<n>${sj.k}/${sj.n}回</n>` : '';
   if(ups.length || dn || jugSmall){
     const g1 = ups.length === 0 ? '' : ups.length === 1
       ? (up.k === n ? `${up.g}がこれまでの開催すべて <n>${up.k}/${n}回</n>`
