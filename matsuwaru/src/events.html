@@ -202,6 +202,19 @@ const BAND = {多台数:'多台数（20台以上）', 中台数:'中台数（10�
 function trendParts(z, all, p, D){
   const n = z.n, rows = [];
 
+  // 看板機種。そのイベントで名指しされている機種が実際に入っているか
+  const sg = p.sig;
+  if(sg){
+    const who = sg.top.map(([m,k])=>`${m}が${k}回`).join('、');
+    const miss = sg.miss.length === 1
+      ? `外れたのは${sg.miss[0].slice(5).replace('-','/')}の1回だけ`
+      : (sg.miss.length ? `外れたのは${sg.miss.length}回` : '');
+    rows.push({t:'看板機種',
+      main: `${sg.label}のいずれかが <n>${sg.k}/${sg.n}回</n>`
+            + (sg.since ? `<small style="display:inline;margin-left:6px">${sg.since}</small>` : ''),
+      sub: [who, miss].filter(Boolean).join('。'), w:-1});
+  }
+
   // 系統
   const gAll = Object.fromEntries((D.groupsAll||[]).map(([g,k])=>[g, k/D.sizeAll.n*100]));
   const gs = (p.groups||[]).map(([g,k])=>({g, k, d: k/n*100 - (gAll[g]||0)}))
@@ -270,10 +283,12 @@ function trendParts(z, all, p, D){
              : (bigLow && dM <= -15) ? '小台数以下' : null;
   // まつわりが台数で成立している日は「N台構成の機種」と言い切れる
   const byUnits = t && t.top.filter(x => x[1] === `${t.digit}台`).length >= Math.ceil(t.top.length / 2);
-  const head = strongNum
-    ? (byUnits ? `${t.digit}まつわりの${t.digit}台構成機種` : `${t.digit}まつわりの機種`)
-    : (up ? `${up.g}系` : null);
+  const head = sg ? `看板の${sg.label}`
+    : strongNum
+      ? (byUnits ? `${t.digit}まつわりの${t.digit}台構成機種` : `${t.digit}まつわりの機種`)
+      : (up ? `${up.g}系` : null);
   const tags = [];
+  if(sg) tags.push('看板機種');
   if(strongNum) tags.push(byUnits ? `${t.digit}まつわり・${t.digit}台構成` : `${t.digit}まつわり`);
   if(up) tags.push(up.g);
   if(jugSmall) tags.push('小台数ジャグラー');
@@ -286,7 +301,8 @@ function trendParts(z, all, p, D){
 
   let lead, fin;
   if(head && band && !(byUnits && band === '小台数以下')){
-    lead = `${head}と${BAND[band]}から攻める`;
+    lead = sg ? `看板の4機種と${BAND[band]}から攻める`
+              : `${head}と${BAND[band]}から攻める`;
     fin  = `${head}を軸に、${sizeAdd}`;
   } else if(head){
     lead = `${head}から攻める`;

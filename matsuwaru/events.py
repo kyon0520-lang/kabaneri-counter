@@ -314,6 +314,27 @@ def variety_share(dates):
     k = sum(1 for d in dates for m in days.get(d, ()) if units_on(d, m) == 1)
     return {'k': k, 'n': n, 'pct': round(100 * k / n)}
 
+# 看板機種（data/event_signature.json）。そのイベントで名指しされている機種が
+# 実際に入っているか。顔ぶれが途中で変わったイベントは since 以降だけで数える。
+_sg = B + '/data/event_signature.json'
+SIG = {k: v for k, v in (_json.load(open(_sg, encoding='utf-8')).items()
+                         if os.path.exists(_sg) else []) if not k.startswith('_')}
+
+def signature(key, dates):
+    cfg = SIG.get(key)
+    if not cfg: return None
+    ms = set(cfg['machines'])
+    ds = [d for d in dates if days.get(d) and (not cfg.get('since') or d >= cfg['since'])]
+    if not ds: return None
+    hit = [d for d in ds if set(days[d]) & ms]
+    cnt = collections.Counter()
+    for d in ds:
+        for m in set(days[d]) & ms: cnt[m] += 1
+    return {'k': len(hit), 'n': len(ds), 'label': cfg['label'],
+            'since': cfg.get('sinceNote', ''),
+            'top': cnt.most_common(4),
+            'miss': [d for d in ds if d not in hit]}
+
 # 小台数（4〜9台）のジャグラー。島単位で狙える形なので、割合で見ると日ごとの差が出る。
 JUGGLER = set(GROUPS.get('ジャグラー', ()))
 def smalljug_share(dates):
@@ -396,6 +417,7 @@ for p in events:
     p['norm'] = norm_share(p['dates'])
     p['vari'] = variety_share(p['dates'])
     p['sjug'] = smalljug_share(p['dates'])
+    p['sig'] = signature(p['key'], p['dates'])
     p['groups'] = group_counts(p['dates'])
     # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
     bl, bigdays = {}, set()
