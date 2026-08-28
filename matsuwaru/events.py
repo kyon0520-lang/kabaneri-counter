@@ -317,16 +317,13 @@ def variety_share(dates):
 # 小台数（4〜9台）のジャグラー。島単位で狙える形なので、割合で見ると日ごとの差が出る。
 JUGGLER = set(GROUPS.get('ジャグラー', ()))
 def smalljug_share(dates):
-    """選ばれた延べ機種のうち、小台数（4〜9台）のジャグラーが何機種か。
-    「その日に入ったか」だと全体で54%あって差が出にくいので、機種数の濃さで見る。"""
-    n = sum(len(days.get(d, ())) for d in dates)
-    if not n: return None
-    k = 0
-    for d in dates:
-        for m in days.get(d, ()):
-            u = units_on(d, m)
-            if m in JUGGLER and u and 4 <= u <= 9: k += 1
-    return {'k': k, 'n': n, 'pct': round(100 * k / n)}
+    """開催のうち、小台数（4〜9台）のジャグラーが入った回数"""
+    ds = [d for d in dates if days.get(d)]
+    if not ds: return None
+    k = sum(1 for d in ds
+            if any(m in JUGGLER and (units_on(d, m) or 0) and 4 <= (units_on(d, m) or 0) <= 9
+                   for m in days[d]))
+    return {'k': k, 'n': len(ds), 'pct': round(100 * k / len(ds))}
 
 def group_counts(dates):
     c = collections.Counter()
