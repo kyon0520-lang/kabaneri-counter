@@ -371,6 +371,21 @@ def three_share(dates):
     return {'k': k, 'n': len(ds), 'pct': round(100 * k / len(ds)),
             'top': who.most_common(3)}
 
+def group_main(dates):
+    """系統ごとの「中身」。その系統が入った日のうち、どの機種が何日を占めるか。
+    手書きの文中に {山佐} と書くと「（SBJ）」のように差し込むために使う。"""
+    out = {}
+    for g, mem in GROUPS.items():
+        gk = 0; who = collections.Counter()
+        for d in dates:
+            hit = mem & set(days.get(d, ()))
+            if hit: gk += 1
+            for m in hit: who[m] += 1
+        if not gk: continue
+        m, k = who.most_common(1)[0]
+        out[g] = [m, k, gk]
+    return out
+
 def group_counts(dates):
     c = collections.Counter()
     for d in dates:
@@ -449,6 +464,7 @@ for p in events:
     p['sig'] = signature(p['key'], p['dates'])
     if LEAD.get(p['key']): p['lead'] = LEAD[p['key']]
     p['groups'] = group_counts(p['dates'])
+    p['gmain'] = group_main(p['dates'])
     # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
     bl, bigdays = {}, set()
     for d in p['dates']:

@@ -195,6 +195,12 @@ const fullLabel = p => p.label + (p.sub ? '（' + p.sub + '）' : '');
 
 // 傾向の文章。①多台数の実態 ②中台数との関係 ③系統 ④結論 の順に組み立てる
 // 傾向は「結論 → 根拠 → 結論」で組む。根拠はそのイベントでいちばん効いている軸から並べる。
+// 手書き文の {山佐} を「（SBJ）」に差し替える。その系統が入った日の半分以上を
+// ひとつの機種が占めるときだけ出す（顔ぶれが割れている系統を1機種で代表させない）
+const fillMain = (txt, p) => String(txt).replace(/\{([^}]+)\}/g, (_, g) => {
+  const v = p.gmain && p.gmain[g];
+  return (v && v[1] / v[2] >= 0.5) ? `（${v[0]}）` : '';
+});
 const BAND = {多台数:'多台数（20台以上）', 中台数:'中台数（10〜19台）', 小台数以下:'小台数（9台以下）'};
 
 function trendParts(z, all, p, D){
@@ -242,7 +248,7 @@ function trendParts(z, all, p, D){
     const sub = (dn && (g1 || jugTxt)) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '';
     const numAll = p.numTie && p.numTie.days === p.days;
     // groupPin: 指定した系統を必ず系統行に出す（件数は集計から取る）
-    let gAdd = p.lead && p.lead.group ? p.lead.group : '';
+    let gAdd = p.lead && p.lead.group ? fillMain(p.lead.group, p) : '';
     const pin = p.lead && p.lead.groupPin;
     if(pin){
       const pv = (p.groups||[]).find(x=>x[0] === pin);
@@ -356,9 +362,9 @@ function trendParts(z, all, p, D){
   // 手書きがあれば置き換える。台数の話は後ろに残す
   const hw = p.lead;
   if(hw){
-    if(hw.lead) lead = hw.lead;
-    if(hw.tags) tags.length = 0, hw.tags.forEach(x=>tags.push(x));
-    if(hw.fin)  fin = hw.fin + (hw.size === false ? '' : (sizeAdd || ''));
+    if(hw.lead) lead = fillMain(hw.lead, p);
+    if(hw.tags) tags.length = 0, hw.tags.forEach(x=>tags.push(fillMain(x, p)));
+    if(hw.fin)  fin = fillMain(hw.fin, p) + (hw.size === false ? '' : (sizeAdd || ''));
   }
 
   const dp = z.perDay - all.perDay;
