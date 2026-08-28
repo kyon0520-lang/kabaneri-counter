@@ -416,9 +416,14 @@ ALIAS = {m: [m] + [r for r in _RJ['readings'].get(m, []) if r not in NUM_SKIP]
          for m in MACHINES}
 
 NUM_FIX = {k: v for k, v in _RJ.get('まつわり数字', {}).items() if not k.startswith('_')}
+# その日にだけ通じるまつわり。1日の東京大戦のファンキー（犬→ワン）のように、
+# 店の言い伝えとしてその日にだけ掛かるものはイベント単位で持つ
+NUM_EVENT = {k: v for k, v in _RJ.get('イベント限定まつわり', {}).items()
+             if not k.startswith('_')}
 
-def name_digits(m, dg, aliases):
+def name_digits(m, dg, aliases, xfix=None):
     """機種名・読みのどれかに、その数字が入っているか"""
+    if xfix and m in xfix: return dg in xfix[m]  # そのイベントだけの決めごとが最優先
     if m in NUM_FIX: return dg in NUM_FIX[m]   # 手で決めたものが最優先
     for nm in aliases:
         t = _nu(nm)
@@ -434,7 +439,7 @@ def event_digit(mt):
         if len(ds) == 1: return ds.pop()
     return None
 
-def numtie(dates, dg):
+def numtie(dates, dg, xfix=None):
     if dg is None: return None
     hit_days = 0; who = collections.Counter(); why = collections.defaultdict(set)
     for d in dates:
@@ -444,7 +449,7 @@ def numtie(dates, dg):
             # 名前でも台数でも掛かる機種がある（北斗転生2＝北斗七星の7かつ7台）。
             # どちらか片方で止めず、両方を理由として残す。
             why_ = []
-            if name_digits(m, dg, ALIAS.get(m, [m])): why_.append('名前')
+            if name_digits(m, dg, ALIAS.get(m, [m]), xfix): why_.append('名前')
             if u is not None and u % 10 == dg: why_.append('%d台' % u)
             if why_:
                 found = True; who[m] += 1; why[m] |= set(why_)
@@ -456,7 +461,7 @@ def numtie(dates, dg):
 
 for p in events:
     p['size'] = size_profile(p['dates'])
-    p['numTie'] = numtie(p['dates'], event_digit(p['match']))
+    p['numTie'] = numtie(p['dates'], event_digit(p['match']), NUM_EVENT.get(p['key']))
     p['norm'] = norm_share(p['dates'])
     p['vari'] = variety_share(p['dates'])
     p['sjug'] = smalljug_share(p['dates'])
