@@ -56,6 +56,7 @@ ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
 # 「モンキーV（青）」「防振り ※1台稼働停止中」のような但し書き付きの表記があり、
 # そのままだと機種として拾えず台数を取りこぼす。落としてから名寄せし直す。
 _ANN = re.compile(r'[（(][^）)]*[）)]|※.*$')
+COLOR_TAG = re.compile(r'[（(](青|赤|黄|緑|紫|ピンク|白|黒|オレンジ|水色)[）)]')
 def cn(m):
     c = canon.get(m, m)
     if c in MACHINES: return c
@@ -71,7 +72,9 @@ for a in raw:
     if not t: continue
     # 台数付きの結果セクションと、連想の見出しの両方から拾う。
     # 連想にしか出てこない機種があり、結果だけだと取りこぼす。
-    ms = {cn(r['machine']) for r in a['results']}
+    # 「かぐや様（ピンク）」のような色付きは、その日の機種イベントの対象台を示す
+    # 一覧表であって全台系の結果ではない。台数は使うが、全系機種としては数えない。
+    ms = {cn(r['machine']) for r in a['results'] if not COLOR_TAG.search(r['machine'])}
     ms |= {cn(x['machine']) for x in a['assoc'] if x['machine']}
     ms = {m for m in ms if m in MACHINES}
     if not ms: continue
