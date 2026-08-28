@@ -245,6 +245,14 @@ function sizeText(z, all, p, D){
       ? `選ばれた機種の${nm.pct}%がノーマルAタイプで、全体（${na.pct}%）より多めです。`
       : `選ばれた機種のうちノーマルAタイプは${nm.pct}%で、全体（${na.pct}%）より少なめです。`);
 
+  // バラエティ（1台構成）。おまけの島なので普段は傾向が出ない。
+  // 実際に離れた日だけ触れる（8ポイント以上・開催5回以上）
+  const vr = p.vari, va = D.variAll;
+  if(vr && va && p.days >= 5 && Math.abs(vr.pct - va.pct) >= 8)
+    out.push(vr.pct > va.pct
+      ? `1台構成のバラエティ機種が${vr.pct}%と、全体（${va.pct}%）より多めです。`
+      : `1台構成のバラエティ機種は${vr.pct}%で、全体（${va.pct}%）より少なめです。`);
+
   const dp = z.perDay - all.perDay;
   if(dp >= 2)         out.push(`1日に選ばれる機種数も多く、平均${z.perDay}機種です。`);
   else if(dp <= -1.5) out.push(`1日に選ばれる機種数は少なめで、平均${z.perDay}機種です。`);

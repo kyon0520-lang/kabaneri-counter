@@ -307,6 +307,13 @@ def norm_share(dates):
     k = sum(1 for d in dates for m in days.get(d, ()) if m in NORMAL)
     return {'k': k, 'n': n, 'pct': round(100 * k / n)}
 
+# バラエティ機種＝1台構成。台数は日によって変わるので、その日に1台だった機種で数える。
+def variety_share(dates):
+    n = sum(len(days.get(d, ())) for d in dates)
+    if not n: return None
+    k = sum(1 for d in dates for m in days.get(d, ()) if units_on(d, m) == 1)
+    return {'k': k, 'n': n, 'pct': round(100 * k / n)}
+
 def group_counts(dates):
     c = collections.Counter()
     for d in dates:
@@ -376,6 +383,7 @@ for p in events:
     p['size'] = size_profile(p['dates'])
     p['numTie'] = numtie(p['dates'], event_digit(p['match']))
     p['norm'] = norm_share(p['dates'])
+    p['vari'] = variety_share(p['dates'])
     p['groups'] = group_counts(p['dates'])
     # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
     bl, bigdays = {}, set()
@@ -404,6 +412,7 @@ out = {'generated': today.isoformat(), 'totalDays': tot,
        'sizeAll': size_profile(alldays),
        'groupsAll': group_counts(alldays),
        'normAll': norm_share(alldays),
+       'variAll': variety_share(alldays),
        'events': events, 'thisMonth': thismonth,
        'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
