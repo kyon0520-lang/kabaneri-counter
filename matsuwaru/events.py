@@ -92,12 +92,19 @@ alldays = sorted(days)
 _seen = collections.defaultdict(list)
 for _t in alldays:
     for _m, _u in UHIST.get(_t, {}).items(): _seen[_m].append((_t, _u))
+# 台数の出どころは2つ。ブログの各記事（その日の実測）と、マルハン公式の設置機種ページ
+# （取得日つき）。ブログに台数が載らない日があるので、日付がいちばん近いほうを使う。
+# 直近の日なら公式のほうが確か、古い日ならその頃のブログ記録のほうが確か。
+LINEUP_DATE = LINEUP['fetched'] if LINEUP else None
+
 def units_on(d, m):
     v = UHIST.get(d, {}).get(m)
     if v: return v
-    rec = _seen.get(m)
-    if rec: return min(rec, key=lambda x: abs((d2(x[0]) - d2(d)).days))[1]
-    return UNITS.get(m)   # ブログに一度も台数が出ていない機種は現在の設置台数で代用
+    cand = list(_seen.get(m, ()))
+    cu = UNITS.get(m)
+    if cu and LINEUP_DATE: cand.append((LINEUP_DATE, cu))
+    if not cand: return cu
+    return min(cand, key=lambda x: abs((d2(x[0]) - d2(d)).days))[1]
 
 # --- 不定期イベント（対象日ベース。誤検出は event_fixes.json で直す） ---
 irr = collections.defaultdict(list)
