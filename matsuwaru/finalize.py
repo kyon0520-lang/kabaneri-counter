@@ -15,7 +15,8 @@ dec=json.load(open(B+'/data/decisions.json'))
 cnt=collections.Counter(r['machine'] for r in recs)
 
 def clean(s):
-    s=unicodedata.normalize('NFKC',s); s=re.sub(r'[（(].*?[）)]','',s)
+    # 【1台稼働停止】のような但し書きも落とす（結果欄に付くことがある）
+    s=unicodedata.normalize('NFKC',s); s=re.sub(r'[（(].*?[）)]|【.*?】|※.*$','',s)
     for a,b in [('Ⅴ','V'),('Ⅲ','III'),('Ⅱ','II'),('Ⅵ','VI')]: s=s.replace(a,b)
     return re.sub(r'[！!、,\s　]+$','',s).strip()
 def d2(s):
@@ -53,7 +54,23 @@ AUTO=[['マイジャグV','マイジャグ','マイジャグⅤ','マイジャ�
       ['ニューキンハナ','Lキンハナ'],['エウレカ','エウレカA','Sエウレカ','エウレカセブン'],
       ['いざ番長','いざ番'],['リゼロ2','リゼロ','リゼロ2nd','Re:ゼロ'],
       ['Sこのすば','このすば'],['Sカバネリ','カバネリ','Sカバネリ（※1台稼働停止）'],
-      ['カバネリ海門','Lカバネリ','カバネリ海門決戦']]
+      ['カバネリ海門','Lカバネリ','カバネリ海門決戦'],
+      # ここから下は結果欄にしか出てこない表記。連想の見出しに出ないので、
+      # 書いておかないと機種として拾えず、その日の全系から抜け落ちる
+      ['レビュースタァ','レヴュスタ','レヴュースタァライト'],
+      ['ウルミラ','ミラクルジャグラー'],
+      ['ハッピー','ハッピージャグラーVⅢ','ハッピージャグラーVIII'],
+      ['ミスタージャグラー','ミスジャグ'],
+      ['バイオRE:2','バイオRE'],
+      ['サンダーV','サンダーBT'],
+      ['ドラハナ','ドラゴンハナハナ～閃光～ 30','ドラゴンハナハナ'],
+      ['ゴッドイーター','スマスロ ゴッドイーター リザレクション'],
+      ['いざ番長','いざ！番長'],
+      ['ヴヴヴ2','Lパチスロ 革命機ヴァルヴレイヴ2'],
+      ['カバネリ海門','スマスロ 甲鉄城のカバネリ 海門決戦'],
+      ['からくり','パチスロ からくりサーカス'],
+      ['カイジ','回胴黙示録カイジ 狂宴'],
+      ['アズレン','アズールレーン']]
 
 canon={}
 for g in AUTO:
@@ -119,9 +136,21 @@ print('示唆ワード ユニーク: %d語'%len(set(r['keyword'] for r in mm)))
 top=collections.Counter(r['machine'] for r in mm).most_common(8)
 print('件数上位:', ', '.join('%s(%d)'%(m,c) for m,c in top))
 
-# 機種と判定した名前の一覧。events.py が同じ基準で絞れるようにする
-json.dump(sorted({r['machine'] for r in out if r['category'] == '機種'}),
-          open(B + '/data/machines.json', 'w'), ensure_ascii=False, indent=1)
+# 機種と判定した名前の一覧。events.py が同じ基準で絞れるようにする。
+# 連想の見出しに一度も出ず、結果欄にしか名前が出ない機種がある
+# （「3台設置機種が全系」のようにまとめて示唆された日）。
+# ここで拾わないと、その日の全系からその機種が丸ごと抜け落ちる。
+_names = {r['machine'] for r in out if r['category'] == '機種'}
+_sum = re.compile(r'総差枚|勝率')
+_col = re.compile(r'[（(](青|赤|黄|緑|紫|ピンク|白|黒|オレンジ|水色)[）)]')
+for a in raw:
+    for r in a.get('results', ()):
+        m = r['machine']
+        if _sum.search(m) or _col.search(m): continue
+        c = canon.get(m) or canon.get(clean(m)) or clean(m)
+        if not c or NON.search(c) or c in DUP: continue
+        _names.add(c)
+json.dump(sorted(_names), open(B + '/data/machines.json', 'w'), ensure_ascii=False, indent=1)
 
 # --- 検索用の軽量インデックス（ページが読むのはこれ） ---
 arts, ai = [], {}

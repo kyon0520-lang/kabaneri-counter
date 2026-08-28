@@ -6,6 +6,7 @@ import sys, os, json as _json
 import os as _os
 from datetime import date, timedelta, datetime, timezone
 import collections, statistics, re
+import unicodedata as _ud
 
 _ROOT = _os.path.dirname(_os.path.abspath(__file__))
 STORE = sys.argv[1] if len(sys.argv) > 1 else 'toho'
@@ -39,9 +40,12 @@ if _os.path.exists(_lp):
     def _match(m):
         """(設置しているか, 台数) を返す"""
         if m in _out: return False, 0
-        # 詳しい名前から先に当てる（からくり2 が からくり より先に決まるように）
-        cand = _only[m] if m in _only else [m] + _read.get(m, [])
-        for k in sorted(set(cand), key=len, reverse=True):
+        # まず機種名そのもので当てる。読みは補助で、長いものから試す。
+        # （真打吉宗 の読み「ヨシムネ」が別機種の「ヨシムネS」に先に当たっていた。
+        #   set の並びは実行ごとに変わるため、順番は必ず決め打ちにすること）
+        cand = _only[m] if m in _only else (
+            [m] + sorted(dict.fromkeys(_read.get(m, [])), key=lambda x: (-len(x), x)))
+        for k in dict.fromkeys(cand):
             if len(_n(k)) < 2: continue
             ng = [_n(x) for x in _ng.get(m, [])]
             hit = [(u, raw) for h, u, raw in _hall
@@ -57,7 +61,8 @@ if _os.path.exists(_lp):
     # 入替直後の新台がここに入る。公式の表記から頭のS/Lと末尾の型番を落として名前にする
     def _disp(nm):
         t = re.sub(r'^[SLPＳＬ]\s*', '', nm.strip())
-        return re.sub(r'\s*[A-Za-z]+\d*$', '', t).strip()
+        t = re.sub(r'\s*[A-Za-z]+\d*$', '', t)
+        return t.strip(' /／・')
     NEVER = [[_disp(nm), u] for nm, u in LINEUP['slots'] if nm not in _used]
 fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.path.exists(B + '/data/event_fixes.json') else {}
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
@@ -65,13 +70,21 @@ ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
 
 # 「モンキーV（青）」「防振り ※1台稼働停止中」のような但し書き付きの表記があり、
 # そのままだと機種として拾えず台数を取りこぼす。落としてから名寄せし直す。
-_ANN = re.compile(r'[（(][^）)]*[）)]|※.*$')
+_ANN = re.compile(r'[（(][^）)]*[）)]|【[^】]*】|※.*$')
 COLOR_TAG = re.compile(r'[（(](青|赤|黄|緑|紫|ピンク|白|黒|オレンジ|水色)[）)]')
+def _clean(x):
+    # finalize.py の clean() と同じ正規化。全角のＡなどを吸収する
+    x = _ud.normalize('NFKC', x)
+    x = re.sub(r'[（(].*?[）)]|【.*?】', '', x)
+    for a, b in [('Ⅴ', 'V'), ('Ⅲ', 'III'), ('Ⅱ', 'II'), ('Ⅵ', 'VI')]: x = x.replace(a, b)
+    return re.sub(r'[！!、,\s　]+$', '', x).strip()
 def cn(m):
     c = canon.get(m, m)
     if c in MACHINES: return c
     s = _ANN.sub('', m).strip()
-    return canon.get(s, s)
+    if s in canon: return canon[s]
+    t = _clean(m)
+    return canon.get(t, canon.get(s, s))
 def d2(s):
     y, m, dd = map(int, s.split('-')); return date(y, m, dd)
 
