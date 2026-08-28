@@ -524,6 +524,7 @@ for p in events:
     if NOTES.get(p['key']): p['note'] = NOTES[p['key']]
 
 out = {'generated': today.isoformat(), 'totalDays': tot,
+       'since': min(alldays) if alldays else None,
        'sizeAll': size_profile(alldays),
        'groupsAll': group_counts(alldays),
        'normAll': norm_share(alldays),

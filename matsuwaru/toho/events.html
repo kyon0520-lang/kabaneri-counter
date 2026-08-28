@@ -613,13 +613,14 @@ function render(D){
         <span class="m${steady?' mid':''}" style="font-size:12px">${body}</span></div>`;
     }).join('');
     if((t.never||[]).length){
-      h += `<div class="notyet"><div class="rh"><b>まだ一度も全系になっていない機種</b></div>
+      const since = (D.since||'').replace(/-/g,'/').slice(0,7);
+      h += `<div class="notyet"><div class="rh"><b>${since}以降 全系になっていない機種</b></div>
         <div class="ms" style="margin-top:2px">${t.never.map(([m,u])=>
           `<span class="m" style="font-size:12px">${esc(m)}<em>${u}台</em></span>`).join('')}</div></div>`;
     }
     h += `</div></div>`;
     const lu = t.lineup ? `現在の設置機種${t.lineup.machines}機種（${t.lineup.fetched}時点・毎週の入れ替え後に更新）と照らし合わせ、撤去済みの機種は除いています。` : '';
-    h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}公式の設置機種にあって、これまで一度も全系の記録がない機種は最後にまとめています。</p>`;
+    h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}公式の設置機種にあって、この期間に全系の記録がない機種は最後にまとめています。それ以前のことは分かりません。</p>`;
   }
 
   h += `</section>`;
