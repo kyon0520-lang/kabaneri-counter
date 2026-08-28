@@ -405,20 +405,23 @@ def event_digit(mt):
 
 def numtie(dates, dg):
     if dg is None: return None
-    hit_days = 0; who = collections.Counter(); why = {}
+    hit_days = 0; who = collections.Counter(); why = collections.defaultdict(set)
     for d in dates:
         found = False
         for m in days.get(d, ()):
             u = units_on(d, m)
-            r = None
-            if name_digits(m, dg, ALIAS.get(m, [m])): r = '名前'
-            elif u is not None and u % 10 == dg: r = '%d台' % u
-            if r:
-                found = True; who[m] += 1; why.setdefault(m, r)
+            # 名前でも台数でも掛かる機種がある（北斗転生2＝北斗七星の7かつ7台）。
+            # どちらか片方で止めず、両方を理由として残す。
+            why_ = []
+            if name_digits(m, dg, ALIAS.get(m, [m])): why_.append('名前')
+            if u is not None and u % 10 == dg: why_.append('%d台' % u)
+            if why_:
+                found = True; who[m] += 1; why[m] |= set(why_)
         if found: hit_days += 1
     if not hit_days: return None
     return {'digit': dg, 'days': hit_days,
-            'top': [[m, why[m], k] for m, k in who.most_common(4)]}
+            'top': [[m, '・'.join(sorted(why[m], key=lambda x: 0 if x == '名前' else 1)), k]
+                    for m, k in who.most_common(4)]}
 
 for p in events:
     p['size'] = size_profile(p['dates'])
