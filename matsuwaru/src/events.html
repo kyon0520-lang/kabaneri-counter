@@ -238,6 +238,13 @@ function sizeText(z, all, p, D){
   if(key.length) out.push(`${key.join('と')}の示唆を拾えるかが鍵になります。`);
   else if(z.bigN === 0) out.push('小さめの島を中心に示唆を追うことになります。');
 
+  // 種別。ほぼ毎日どちらも入るので、割合が全体から離れている日だけ触れる
+  const nm = p.norm, na = D.normAll;
+  if(nm && na && Math.abs(nm.pct - na.pct) >= 10)
+    out.push(nm.pct > na.pct
+      ? `選ばれた機種の${nm.pct}%がノーマルAタイプで、全体（${na.pct}%）より多めです。`
+      : `選ばれた機種のうちノーマルAタイプは${nm.pct}%で、全体（${na.pct}%）より少なめです。`);
+
   const dp = z.perDay - all.perDay;
   if(dp >= 2)         out.push(`1日に選ばれる機種数も多く、平均${z.perDay}機種です。`);
   else if(dp <= -1.5) out.push(`1日に選ばれる機種数は少なめで、平均${z.perDay}機種です。`);

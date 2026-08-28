@@ -296,6 +296,17 @@ if os.path.exists(_gp):
     GROUPS = {k: set(v) for k, v in _json.load(open(_gp, encoding='utf-8')).items()
               if not k.startswith('_')}
 
+# 種別（ノーマルAタイプ／AT機）。系統と違い「1機種でも入ったか」ではほぼ毎日両方入って
+# 差が出ないので、その日に選ばれた機種のうち何割がノーマルかで見る。
+_tp = B + '/data/machine_types.json'
+NORMAL = set(_json.load(open(_tp, encoding='utf-8'))['ノーマル']) if os.path.exists(_tp) else set()
+
+def norm_share(dates):
+    n = sum(len(days.get(d, ())) for d in dates)
+    if not n: return None
+    k = sum(1 for d in dates for m in days.get(d, ()) if m in NORMAL)
+    return {'k': k, 'n': n, 'pct': round(100 * k / n)}
+
 def group_counts(dates):
     c = collections.Counter()
     for d in dates:
@@ -364,6 +375,7 @@ def numtie(dates, dg):
 for p in events:
     p['size'] = size_profile(p['dates'])
     p['numTie'] = numtie(p['dates'], event_digit(p['match']))
+    p['norm'] = norm_share(p['dates'])
     p['groups'] = group_counts(p['dates'])
     # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
     bl, bigdays = {}, set()
@@ -391,6 +403,7 @@ for p in events:
 out = {'generated': today.isoformat(), 'totalDays': tot,
        'sizeAll': size_profile(alldays),
        'groupsAll': group_counts(alldays),
+       'normAll': norm_share(alldays),
        'events': events, 'thisMonth': thismonth,
        'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
