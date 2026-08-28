@@ -194,7 +194,7 @@ h2:first-of-type{margin-top:4px}
            placeholder="機種名で絞り込む">
     <div class="segs" id="sheetsegs"></div>
     <p class="scnt" id="sheetcnt"></p>
-    <div class="sbody"><ul class="mlist" id="sheetlist"></ul></div>
+    <div class="sbody" id="sheetbody"><ul class="mlist" id="sheetlist"></ul></div>
   </div>
 </div>
 
@@ -498,6 +498,17 @@ function drawSheet(){
         <span class="bar"><u style="width:${Math.max(rate,2)}%"></u></span></li>`).join('')
     : '<li class="none">あてはまる機種がありません。</li>';
 }
+// 絞り込むたびにシートの高さが変わると、その場で下から生えたり縮んだりして見苦しい。
+// 開いた時点の「すべて」の高さを下限に固定し、以降は中身だけが入れ替わるようにする
+function lockHeight(){
+  const body = document.getElementById('sheetbody'), qEl = document.getElementById('sheetq');
+  const keepSeg = seg, keepQ = qEl.value;
+  seg = 0; qEl.value = ''; drawSheet();          // いちばん長い「すべて」で測る
+  body.style.minHeight = '';
+  const h = Math.round(body.getBoundingClientRect().height);
+  seg = keepSeg; qEl.value = keepQ; drawSheet();
+  body.style.minHeight = h + 'px';
+}
 function openSheet(){
   seg = 0;
   document.getElementById('sheetq').value = '';
@@ -505,17 +516,24 @@ function openSheet(){
   document.getElementById('sheet').classList.add('on');
   document.getElementById('sheet').setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
+  lockHeight();
 }
 function closeSheet(){
   document.getElementById('sheet').classList.remove('on');
   document.getElementById('sheet').setAttribute('aria-hidden','true');
+  document.getElementById('sheetbody').style.minHeight = '';
   document.body.style.overflow = '';
 }
+// 画面の向きを変えたら測り直す
+addEventListener('resize', () => {
+  if(document.getElementById('sheet').classList.contains('on')) lockHeight();
+});
 document.getElementById('veil').onclick = closeSheet;
 document.getElementById('sheetclose').onclick = closeSheet;
 document.getElementById('sheetq').oninput = drawSheet;
 document.getElementById('sheetsegs').onclick = e => {
-  const b = e.target.closest('button'); if(!b) return; seg = +b.dataset.i; drawSheet();
+  const b = e.target.closest('button'); if(!b) return;
+  seg = +b.dataset.i; drawSheet(); document.getElementById('sheetbody').scrollTop = 0;
 };
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
 
