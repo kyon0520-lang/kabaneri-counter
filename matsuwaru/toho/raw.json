@@ -30990,5 +30990,119 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "エグち"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/08/29/084941",
+  "articleDate": "2026-08-29",
+  "targetDate": "2026-08-28",
+  "postDate": "2026-08-27",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2092937802669605149",
+  "title": "8月28日のマルハン新宿東宝ビルまとめ✏️東京喰種が全系とエグちな仕掛け！",
+  "results": [
+   {
+    "machine": "東京喰種",
+    "plus": 33,
+    "total": 39,
+    "avg": 5431
+   },
+   {
+    "machine": "キンハナ",
+    "plus": 14,
+    "total": 14,
+    "avg": 2436
+   },
+   {
+    "machine": "マギレコ",
+    "plus": 5,
+    "total": 5,
+    "avg": 5480
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "東京喰種",
+    "matched": true,
+    "keyword": "メーカー村+ダッシュ",
+    "chain": [
+     "メーカー村+ダッシュ",
+     "ダッシュ村",
+     "TOKIO",
+     "東京"
+    ],
+    "raw": "メーカー村+ダッシュ→ダッシュ村→TOKIO→東京",
+    "result": {
+     "plus": 33,
+     "total": 39,
+     "avg": 5431
+    }
+   },
+   {
+    "machine": "キンハナ",
+    "matched": true,
+    "keyword": "ポスター左上に王冠",
+    "chain": [
+     "ポスター左上に王冠",
+     "キング"
+    ],
+    "raw": "ポスター左上に王冠→キング",
+    "result": {
+     "plus": 14,
+     "total": 14,
+     "avg": 2436
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "8/28",
+    "chain": [
+     "8/28",
+     "劇場版 魔法少女まどか☆マギカ公開"
+    ],
+    "raw": "8/28→劇場版 魔法少女まどか☆マギカ公開",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 5480
+    }
+   },
+   {
+    "machine": "シャーマンキング",
+    "matched": false,
+    "keyword": "ポスターに王冠",
+    "chain": [
+     "ポスターに王冠",
+     "キング"
+    ],
+    "raw": "ポスターに王冠→キング",
+    "result": null
+   },
+   {
+    "machine": "ハイパーラッシュ",
+    "matched": false,
+    "keyword": "インバウンド",
+    "chain": [
+     "インバウンド"
+    ],
+    "raw": "・インバウンド",
+    "result": null
+   },
+   {
+    "machine": "ハイパーラッシュ",
+    "matched": false,
+    "keyword": "バウンド",
+    "chain": [
+     "バウンド",
+     "バウンドストップ"
+    ],
+    "raw": "バウンド→バウンドストップ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
