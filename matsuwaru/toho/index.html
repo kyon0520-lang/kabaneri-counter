@@ -116,6 +116,28 @@ main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
 .tip .hd{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.55;margin-bottom:5px}
 .tip .bd{font-size:12px;color:var(--sub);line-height:1.7}
 .hintlabel{font-size:12px;color:var(--sub);margin:22px 0 8px}
+
+/* ---- 読み込み中の骨組み ----
+   データが届くまでの高さを先に取っておき、フッターが下へ飛ぶのを防ぐ。
+   予約は vh で持つ。#results は画面の上端より下から始まるので、
+   100vh 取れば後ろの中身は必ず画面の外に出る。そこから先がどれだけ
+   伸びても、見えている場所は動かない */
+.skel{min-height:102vh}
+.skb{display:block;border-radius:7px;background:var(--bg-soft)}
+.sktip{border-left:3px solid var(--line);background:rgba(255,255,255,.035);
+  border-radius:0 12px 12px 0;padding:14px 15px;margin:0 0 20px}
+.sktip .skb{height:13px;margin-bottom:9px}
+.sktip .skb:last-child{height:11px;margin-bottom:0;opacity:.55}
+.sklabel{height:11px;width:44%;margin:22px 0 10px;opacity:.7}
+.skcard{border:1px solid var(--line);border-radius:16px;background:var(--panel);
+  padding:15px 16px;margin-bottom:11px}
+.skchain{display:flex;gap:6px;align-items:center;margin-bottom:13px}
+.skchain .skb{height:26px;flex:0 0 auto}
+.skfoot{border-top:1px dashed var(--line);padding-top:10px}
+.skfoot .skb{height:11px;width:36%;opacity:.55}
+@keyframes skpulse{0%,100%{opacity:.9}50%{opacity:.45}}
+.skel .skb{animation:skpulse 1.5s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.skel .skb{animation:none}}
 .more{display:block;width:100%;padding:13px;margin-top:6px;border:1px solid var(--line);
   background:var(--panel);border-radius:12px;font:inherit;font-size:14px;color:var(--accent);cursor:pointer}
 .foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
@@ -202,7 +224,30 @@ body.memo-open .memoscrim{display:block}
 <main>
   <p class="count" id="count"></p>
   <div class="chips" id="chips"></div>
-  <div id="results"></div>
+  <!-- 読み込み中の骨組み。data/index.json が届いた時点で render() が丸ごと差し替える。
+       ここに高さがないと、下のフッターが画面2枚ぶん下へ飛ぶ -->
+  <div id="results"><div class="skel" aria-hidden="true">
+    <div class="sktip"><span class="skb" style="width:88%"></span><span class="skb" style="width:62%"></span></div>
+    <span class="skb sklabel"></span>
+    <div class="skcard"><div class="skchain">
+      <span class="skb" style="width:24%"></span><span class="skb" style="width:16%"></span><span class="skb" style="width:31%"></span>
+    </div><div class="skfoot"><span class="skb"></span></div></div>
+    <div class="skcard"><div class="skchain">
+      <span class="skb" style="width:19%"></span><span class="skb" style="width:28%"></span><span class="skb" style="width:22%"></span>
+    </div><div class="skfoot"><span class="skb"></span></div></div>
+    <div class="skcard"><div class="skchain">
+      <span class="skb" style="width:30%"></span><span class="skb" style="width:18%"></span><span class="skb" style="width:26%"></span>
+    </div><div class="skfoot"><span class="skb"></span></div></div>
+    <div class="skcard"><div class="skchain">
+      <span class="skb" style="width:22%"></span><span class="skb" style="width:21%"></span><span class="skb" style="width:34%"></span>
+    </div><div class="skfoot"><span class="skb"></span></div></div>
+    <div class="skcard"><div class="skchain">
+      <span class="skb" style="width:27%"></span><span class="skb" style="width:15%"></span><span class="skb" style="width:24%"></span>
+    </div><div class="skfoot"><span class="skb"></span></div></div>
+    <div class="skcard"><div class="skchain">
+      <span class="skb" style="width:18%"></span><span class="skb" style="width:30%"></span><span class="skb" style="width:28%"></span>
+    </div><div class="skfoot"><span class="skb"></span></div></div>
+  </div></div>
   <div class="foot">
     <p class="src">出典：<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a></p>
     <p>本ページは同ブログの記事をもとに、マルハン新宿東宝ビル店の示唆と機種の対応を検索できる形にまとめたものです。

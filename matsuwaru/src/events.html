@@ -160,6 +160,27 @@ h2:first-of-type{margin-top:4px}
 .row .rh b{font-size:14px}
 .row .rh span{font-size:11px;color:var(--sub);white-space:nowrap}
 .note{font-size:11.5px;color:var(--sub);line-height:1.7;margin:0 0 14px}
+
+/* ---- 読み込み中の骨組み ----
+   events.json が届くと #main の中身が丸ごと入れ替わる。骨組みが無いと
+   見出しも選択欄もカードも位置が動くので、実物と同じ形・同じ高さを先に置く */
+.skel{min-height:104vh}
+.skb{display:block;border-radius:7px;background:var(--bg-soft)}
+.skh{height:13px;width:34%;margin:4px 0 10px;border-radius:6px;background:var(--bg-soft);opacity:.7}
+.skpick{height:50px;border:1.5px solid var(--line);border-radius:12px;
+  background:var(--panel);margin:0 0 14px}
+.skcard{border:1px solid var(--line);border-radius:16px;background:var(--panel);
+  padding:15px 16px;margin-bottom:11px}
+.sklead{border-left:3px solid var(--line);padding:1px 0 1px 13px;margin:0 0 16px}
+.sklead .skb{height:17px;margin-bottom:8px}
+.sklead .skb:last-child{width:58%;margin-bottom:0}
+.skrow{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.skrow .skb:first-child{height:12px;width:22%;flex:0 0 auto;opacity:.65}
+.skrow .skb:last-child{height:12px;flex:1}
+.skrow:last-child{margin-bottom:0}
+@keyframes skpulse{0%,100%{opacity:.9}50%{opacity:.45}}
+.skel .skb{animation:skpulse 1.5s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.skel .skb{animation:none}}
 .dates{font-size:11px;color:var(--sub);margin:6px 0 0}
 .foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
   font-size:11px;color:var(--sub);line-height:1.8}
@@ -197,7 +218,35 @@ h2:first-of-type{margin-top:4px}
   </div>
 </div>
 
-<main id="main"><p class="note">読み込み中…</p></main>
+<!-- 読み込み中の骨組み。実物（見出し → 選択欄 → カード）と同じ位置に置く。
+     ここが「読み込み中…」の1行だけだと、届いた瞬間に見出しも中身も動く -->
+<main id="main"><div class="skel" aria-hidden="true">
+  <div class="skh"></div>
+  <div class="skpick"></div>
+  <div class="skcard">
+    <div class="sklead"><span class="skb"></span><span class="skb"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:74%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:58%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:66%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:48%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:70%"></span></div>
+  </div>
+  <div class="skcard">
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:62%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:76%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:54%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:68%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:50%"></span></div>
+  </div>
+  <div class="skh" style="width:28%;margin-top:20px"></div>
+  <div class="skcard">
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:72%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:56%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:64%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:46%"></span></div>
+    <div class="skrow"><span class="skb"></span><span class="skb" style="max-width:60%"></span></div>
+  </div>
+</div></main>
 
 <div class="sheetwrap" id="sheet" aria-hidden="true">
   <div class="veil" id="veil"></div>
