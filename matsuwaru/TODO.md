@@ -1,8 +1,25 @@
 # 全台系まつわるチェッカー やること
-最終更新 2026-08-28
+最終更新 2026-08-29
 
 確認シート: https://claude.ai/code/artifact/9a7aa3af-8b7a-4760-b70e-47083aac3e31
 （イベント傾向が実際に使っている分類。設定ファイルからそのまま書き出している）
+
+## 直したら必ず push する
+
+**ローカルでコミットしてデプロイしただけでは、次の自動更新に消される。**
+毎日の更新は GitHub のリポジトリからコードを取り出して動くので、push していない
+変更は「無かったこと」として本番が作り直される。2026-08-29 にこれが起きて、
+タブ・全機種シート・未実施の改修がまとめて巻き戻った（24コミットが未pushだった）。
+
+    cd /Users/Shared/kabaneri-counter/github-pages
+    git add -A && git commit -m "..." && git push origin main
+    npx wrangler pages deploy . --project-name=kabaneri-counter --branch=main
+
+自動更新が先に走っていると push が弾かれる。そのときは `git fetch` してから
+`git merge origin/main` し、`toho/data/events.json` の衝突は生成物なので
+`git checkout --ours` で自分側を採用し、`events.py` と `src/build-pages.py` を
+流し直してからコミットする。
+
 
 ## 分析するときに忘れないこと
 
@@ -69,9 +86,19 @@
 
 ### D. minnanoslot.com のトップページから /matsuwaru/ へのリンクが未設置
 
-### E. 自動更新が明日ちゃんと発火するかの確認
-cron を 09:17 / 10:37 / 13:23 JST に変えた翌日が 2026-08-29。
-`gh run list --workflow=matsuwaru-daily.yml` で確認する。
+### E.（解決済み）自動更新の遅延 → Cloudflare から叩く形にした
+GitHub Actions の定時実行は**10〜12時間ずれていた**（09:17設定が19:43に実行など）。
+分をずらしても効かず、混雑時に後回しにされるのが原因。手動実行は指定どおり動くので、
+Cloudflare Workers の定時実行から GitHub の手動実行APIを叩く形に変えた。
+
+- Worker: `/Users/Shared/kabaneri-counter/dispatch-worker/`（リポジトリ外・未コミット）
+- 起動時刻: 08:10 / 09:10 / 10:10 / 13:10 JST
+- GitHub のトークンは Cloudflare のシークレット `GH_TOKEN`。
+  ユーザーが登録済みで、こちら（Claude）は中身を受け取っていない。
+  権限は Actions=Read and write のみ（Metadata は自動で付く）
+- 状態の確認: `curl -s https://matsuwaru-dispatch.kyon0520.workers.dev/`
+- 2026-08-29 10:20 に実際に発火することを確認済み
+- GitHub 側の cron（09:17/10:37/13:23 JST）は保険としてそのまま残してある
 
 ## 済んだこと（2026-08-28）
 
