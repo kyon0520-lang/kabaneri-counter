@@ -365,6 +365,10 @@ function tabCounts(all, searching){
 }
 
 function render(){
+  // データが届く前でもタブと検索窓は押せる。DB を見に行くと例外になるので
+  // ここで抜ける。押されたタブの見た目だけは先に動かしておく（押しても
+  // 無反応に見えないように）。中身は届いた時点で、そのタブで正しく描かれる
+  if(!DB){ tabCounts([], false); return; }
   const q=document.getElementById('q').value.trim();
   const cnt=document.getElementById('count'), chips=document.getElementById('chips'),
         res=document.getElementById('results');
