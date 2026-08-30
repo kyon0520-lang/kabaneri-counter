@@ -31104,5 +31104,193 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/08/30/082746",
+  "articleDate": "2026-08-30",
+  "targetDate": "2026-08-29",
+  "postDate": "2026-08-28",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2093300184084344832",
+  "title": "8月29日のマルハン新宿東宝ビルまとめ✏️マイジャグVが全系で流石の安定感！",
+  "results": [
+   {
+    "machine": "マイジャグV",
+    "plus": 46,
+    "total": 48,
+    "avg": 3248
+   },
+   {
+    "machine": "SBJ",
+    "plus": 3,
+    "total": 5,
+    "avg": 1920
+   },
+   {
+    "machine": "スタハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 1933
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "マイジャグV",
+    "matched": true,
+    "keyword": "M&Ms",
+    "chain": [
+     "M&Ms",
+     "M"
+    ],
+    "raw": "M&Ms→M",
+    "result": {
+     "plus": 46,
+     "total": 48,
+     "avg": 3248
+    }
+   },
+   {
+    "machine": "マイジャグV",
+    "matched": true,
+    "keyword": "間食ブーム",
+    "chain": [
+     "間食ブーム",
+     "マイブーム",
+     "マイ"
+    ],
+    "raw": "間食ブーム→マイブーム→マイ",
+    "result": {
+     "plus": 46,
+     "total": 48,
+     "avg": 3248
+    }
+   },
+   {
+    "machine": "SBJ",
+    "matched": true,
+    "keyword": "袋",
+    "chain": [
+     "袋",
+     "フクロ",
+     "黒"
+    ],
+    "raw": "袋→フクロ→黒",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 1920
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "手につきにくい",
+    "chain": [
+     "手につきにくい",
+     "月",
+     "衛星",
+     "星"
+    ],
+    "raw": "手につきにくい→月→衛星→星",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 1933
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "29日",
+    "chain": [
+     "29日",
+     "ぷくぅの日"
+    ],
+    "raw": "29日→ぷくぅの日",
+    "result": null
+   },
+   {
+    "machine": "ハードボイルド",
+    "matched": false,
+    "keyword": "M&M'S",
+    "chain": [
+     "M&M'S",
+     "全7色",
+     "ナナ"
+    ],
+    "raw": "M&M'S→全7色→ナナ",
+    "result": null
+   },
+   {
+    "machine": "ハイパーラッシュ",
+    "matched": false,
+    "keyword": "M&M's",
+    "chain": [
+     "M&M's",
+     "T.J.&ヒカル"
+    ],
+    "raw": "M&M's→T.J.&ヒカル",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "最近",
+    "chain": [
+     "最近",
+     "細菌"
+    ],
+    "raw": "最近→細菌",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "8/29",
+    "chain": [
+     "8/29",
+     "パニック"
+    ],
+    "raw": "8/29→パニック",
+    "result": null
+   },
+   {
+    "machine": "ギアス",
+    "matched": false,
+    "keyword": "QRコード",
+    "chain": [
+     "QRコード",
+     "コード"
+    ],
+    "raw": "QRコード→コード",
+    "result": null
+   },
+   {
+    "machine": "ギアス",
+    "matched": false,
+    "keyword": "M&M'S",
+    "chain": [
+     "M&M'S",
+     "全7色",
+     "COLORS"
+    ],
+    "raw": "M&M'S→全7色→COLORS",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "M&M's",
+    "chain": [
+     "M&M's",
+     "全７色",
+     "七色雲海、セブン"
+    ],
+    "raw": "M&M's→全７色→七色雲海、セブン",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
