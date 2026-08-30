@@ -31292,5 +31292,90 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/08/31/070647",
+  "articleDate": "2026-08-31",
+  "targetDate": "2026-08-30",
+  "postDate": "2026-08-29",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2093662485832511848",
+  "title": "8月30日のマルハン新宿東宝ビルまとめ✏️⓪のつく日に30φのドラハナが全系！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ドラハナ",
+    "matched": false,
+    "keyword": "野崎",
+    "chain": [
+     "野崎",
+     "阿部寛",
+     "ドラゴン桜"
+    ],
+    "raw": "野崎→阿部寛→ドラゴン桜",
+    "result": null
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": false,
+    "keyword": "精神",
+    "chain": [
+     "精神",
+     "精神と時の部屋",
+     "ドラゴンボール"
+    ],
+    "raw": "精神→精神と時の部屋→ドラゴンボール",
+    "result": null
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": false,
+    "keyword": "野崎",
+    "chain": [
+     "野崎",
+     "公安"
+    ],
+    "raw": "野崎→公安",
+    "result": null
+   },
+   {
+    "machine": "ドッチ",
+    "matched": false,
+    "keyword": "Tシャツ",
+    "chain": [
+     "Tシャツ",
+     "洗濯",
+     "選択",
+     "どっち"
+    ],
+    "raw": "Tシャツ→洗濯→選択→どっち",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "VIVAVT",
+    "chain": [
+     "VIVAVT",
+     "堺雅人",
+     "真田丸"
+    ],
+    "raw": "VIVAVT→堺雅人→真田丸",
+    "result": null
+   },
+   {
+    "machine": "吉宗",
+    "matched": false,
+    "keyword": "湖池屋",
+    "chain": [
+     "湖池屋",
+     "越後屋"
+    ],
+    "raw": "湖池屋→越後屋",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
