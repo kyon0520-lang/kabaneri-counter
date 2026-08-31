@@ -162,7 +162,8 @@ def profile(dates, label):
         # その日群でいちばん多かった台数。台数帯で絞り込むときの代表値にする
         us = collections.Counter(u for u in (units_on(d, m) for d in ds if m in days[d]) if u)
         rows.append([m, k, round(100 * k / n), us.most_common(1)[0][0] if us else 0])
-    rows.sort(key=lambda r: (-r[1], -UNITS.get(r[0], 0), -base[r[0]]))
+    # 最後に機種名を入れて、全部同じときも順番が動かないようにする
+    rows.sort(key=lambda r: (-r[1], -UNITS.get(r[0], 0), -base[r[0]], r[0]))
     # 上位3位までをチップに出し、残りは一覧のシートで見せるので全件返す
     return {'label': label, 'days': n, 'small': n < 3, 'top': rows}
 
@@ -424,8 +425,11 @@ def group_main(dates):
             if hit: gk += 1
             for m in hit: who[m] += 1
         if not gk: continue
-        m, k = who.most_common(1)[0]
-        out[g] = [m, k, gk]
+        # 同数のときの選び方を決め打ちにする。most_common は同数だと集合の
+        # 並び順で決まってしまい、同じデータでも実行のたびに答えが変わっていた。
+        # 日数が同じなら、いま設置台数の多いほうを代表にする（それも同じなら機種名順）
+        m = min(who, key=lambda x: (-who[x], -UNITS.get(x, 0), x))
+        out[g] = [m, who[m], gk]
     return out
 
 def group_counts(dates):
