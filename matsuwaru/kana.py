@@ -16,6 +16,26 @@
 import json, os, re
 
 KANJI = re.compile(r'[一-鿿々〆ヶ]')          # 読みを作る対象。カナ・かなは正規化で足りる
+
+# 台数・日付の「かたち」だけを表す語には読みを付けない。
+# 「5台機種」に読みを付けると「5だいきしゅ」になり、「だい」「きしゅ」で
+# 台数表記が全部当たってしまう（実測で「きしゅ」が12件→173件）。
+# この種の語は台数タブ・日付タブから辿るもので、読みで引く必要がない。
+#
+# 見分け方：数字・記号・ひらがな・ラテン文字を落とし、残った漢字が
+# 「台・機種・設置・日・月・年・目・就任…」だけなら、かたちだけの語とみなす。
+# 「花火の日」は花火が、「大都機種」は大都が、「黒筐体、5台」は黒筐体が残るので、
+# 中身のある語はここで落ちない。カタカナも中身とみなして残す（「2台レールガン2」）。
+# 一字だけの「月」「日」はそれ自体が示唆なので対象外にする。
+CORE = re.compile(r'[^一-鿿々〆ァ-ヶ]')     # 漢字とカタカナ以外を落とす
+FORM = re.compile(r'台|機種|設置|減|増|入替|日|月|年|目|周|就任|文字|字|全系')
+
+
+def _form_only(w):
+    # 一字の語（「月」「日」「台」）はそれ自体が示唆なので、かたちとはみなさない
+    return len(w) > 1 and not FORM.sub('', CORE.sub('', w))
+
+
 CACHE = 'data/token_readings.json'
 NOTE = ('検索用のひらがな読み。pykakasi が自動で作ったもので、表示には使わない。'
         '読みが違うときは readings.json の「語の読み」に正しい読みを書く（そちらが勝つ）。'
@@ -50,10 +70,13 @@ def build(base, words, manual=None):
         cache = {k: v for k, v in json.load(open(path, encoding='utf-8')).items()
                  if not k.startswith('_')}
 
-    target = [w for w in words if KANJI.search(w)]
+    target = [w for w in words if KANJI.search(w) and not _form_only(w)]
+    # 対象から外した語の読みが残っていたら捨てる（見分け方を変えたときの掃除）
+    stale = [w for w in cache if _form_only(w)]
+    for w in stale: del cache[w]
     missing = sorted(w for w in target if w not in cache)
-    if missing:
-        made = _convert(missing)
+    if missing or stale:
+        made = _convert(missing) if missing else {}
         if made is None:
             print('  読みを作れません（pykakasi 未導入）。新しい語 %d 件は'
                   'ひらがなで引けません: %s' % (len(missing), '・'.join(missing[:5])))
@@ -63,8 +86,10 @@ def build(base, words, manual=None):
             out.update({k: cache[k] for k in sorted(cache)})
             json.dump(out, open(path, 'w', encoding='utf-8'),
                       ensure_ascii=False, indent=1)
-            print('  読みを %d 件追加（合計 %d 件）'
-                  % (sum(1 for v in made.values() if v), sum(1 for v in cache.values() if v)))
+            print('  読みを %d 件追加%s（合計 %d 件）'
+                  % (sum(1 for v in made.values() if v),
+                     '・%d 件を対象外として削除' % len(stale) if stale else '',
+                     sum(1 for v in cache.values() if v)))
 
     _lost = [w for w in manual if w not in target]
     if _lost: print('  読みの対象が見つからない語: ' + '、'.join(_lost))
