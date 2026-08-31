@@ -23,6 +23,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      # 検索用の読み（人参→にんじん）を作るのに使う。入らなくても取り込みは進む
+      - name: 読み変換を入れる
+        continue-on-error: true   # 入らなくても既存の読みで動く。ここで日次更新を止めない
+        run: pip install -r matsuwaru/requirements.txt
+
       # 新着記事の取得〜名寄せまで。異常時はここで落ちて失敗通知が飛ぶ
       # stores.json に定義された全店舗をまわす。1店舗でも失敗したらワークフローを失敗させる
       - name: 新着を取り込む

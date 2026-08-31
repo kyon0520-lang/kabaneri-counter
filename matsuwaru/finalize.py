@@ -198,8 +198,16 @@ if os.path.exists(_rpath):
     if _unknown: print('  読みの対象が見つからない機種: ' + ', '.join(_unknown))
 readings = [_rd.get(m, []) for m in mnames]
 
+# 連想の言葉と機種名に、検索用のひらがな読みを付ける（「人参」を「にんじん」でも引くため）。
+# 表示は元の言葉のまま。読みが違うときは readings.json の「語の読み」に書けばそちらが勝つ
+sys.path.insert(0, _ROOT)
+import kana
+_manual = json.load(open(_rpath, encoding='utf-8')).get('語の読み', {}) if os.path.exists(_rpath) else {}
+treads = kana.build(B, sorted({t for r in rows for t in r[2]} | set(mnames)), _manual)
+
 idx = {'generated': __import__('datetime').date.today().isoformat(),
-       'machines': mnames, 'readings': readings, 'articles': arts, 'recs': rows}
+       'machines': mnames, 'readings': readings, 'treads': treads,
+       'articles': arts, 'recs': rows}
 json.dump(idx, open(B + '/data/index.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 import collections as _c
 _kc = _c.Counter(r[7] for r in rows)

@@ -354,9 +354,11 @@ let DB=null, sel=null, shown=30, tab=0;
 
 fetch('data/index.json').then(r=>r.json()).then(d=>{
   DB=d;
-  DB.recs.forEach(r=>{ r.push(r[2].map(N)); });      // r[8] = 正規化済みトークン
+  // 漢字の言葉のひらがな読み（人参→にんじん）。表示には使わず、当たり判定にだけ足す
+  const rd = w => ((DB.treads||{})[w]||[]).map(N);
+  DB.recs.forEach(r=>{ r.push(r[2].map(N), r[2].map(rd)); });  // r[8]=正規化トークン r[9]=その読み
   // 機種名＋読み・別名を正規化して検索対象に（カナで「ToLOVEる」などを引けるように）
-  DB.mkeys = DB.machines.map((m,i)=>[m, ...((DB.readings||[])[i]||[])].map(N));
+  DB.mkeys = DB.machines.map((m,i)=>[m, ...((DB.readings||[])[i]||[])].map(N).concat(rd(m)));
   document.getElementById('gen').textContent='最終更新 '+d.generated+'／'+d.recs.length+'件';
   applyCat(); render();
 }).catch(()=>{
@@ -383,11 +385,11 @@ function search(q){
   const has = (tok)=> num ? digitIn(tok,n) : tok.includes(n);
   const out=[];
   for(const r of DB.recs){
-    const t=r[8]; let sc=0;
-    if(t[0]===n) sc=4;
-    else if(t.includes(n)) sc=3;
-    else if(has(t[0])) sc=2;
-    else if(t.some(x=>has(x))) sc=1;
+    const t=r[8], y=r[9]; let sc=0;   // y[i] = t[i] のひらがな読み（無ければ空）
+    if(t[0]===n || (y[0]||[]).includes(n)) sc=4;
+    else if(t.includes(n) || y.some(a=>a.includes(n))) sc=3;
+    else if(has(t[0]) || (y[0]||[]).some(x=>has(x))) sc=2;
+    else if(t.some(x=>has(x)) || y.some(a=>a.some(x=>has(x)))) sc=1;
     else if(DB.mkeys[r[1]].some(k=>has(k))) sc=1;
     if(sc) out.push([sc,r]);
   }
@@ -403,7 +405,8 @@ function search(q){
 function chainHTML(r,q){
   const n=N(q||''), mach=DB.machines[r[1]], parts=[];
   r[2].forEach((node,i)=>{
-    const hit = n && N(node).includes(n);
+    // 読みで当たった語にも印を付ける。でないと「にんじん」で出た「人参」が光らない
+    const hit = n && (N(node).includes(n) || (r[9][i]||[]).some(x=>x.includes(n)));
     parts.push(`<span class="node${hit?' hit':''}">${esc(node)}</span>`);
   });
   // 連想の最後が機種名でなければ、機種名を終点として継ぎ足す
