@@ -629,7 +629,10 @@ function render(D){
   let h = '';
 
   // 対象日に当てはまるものを最初から選んでおく
-  const hit = D.events.find(p=>applies(p,target));
+  // 日付ぴったりのイベント（21-27WEEK・月末最終日）を◯のつく日より優先する。
+  // 6/30 のように両方に当てはまる日があるため（トップのカードと同じ判定）
+  const _hits = D.events.filter(p=>applies(p,target));
+  const hit = _hits.find(p=>!p.match.digit) || _hits[0];
   picked = (hit || D.events[0]).key;
   // 端末標準の選択（縦にスクロールできる）を使う
   const grp = (name, items) => items.length

@@ -3,7 +3,8 @@
 // （キャッシュ優先にすると版数の上げ忘れで古い画面が出続けるため、この方式にしている）
 const CACHE = 'matsuwaru-toho-v4';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
-                './icon-192.png', './icon-512.png', './data/index.json'];
+                './icon-192.png', './icon-512.png', './data/index.json',
+                './data/lead.json'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));

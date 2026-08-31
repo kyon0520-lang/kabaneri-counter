@@ -536,19 +536,88 @@ NOTES = {k: v for k, v in (_json.load(open(_np, encoding='utf-8')).items()
 for p in events:
     if NOTES.get(p['key']): p['note'] = NOTES[p['key']]
 
+SIZE_ALL = size_profile(alldays)
+GROUPS_ALL = group_counts(alldays)
+THREE_ALL = three_share(alldays)
+
 out = {'generated': today.isoformat(), 'totalDays': tot,
        'since': min(alldays) if alldays else None,
-       'sizeAll': size_profile(alldays),
-       'groupsAll': group_counts(alldays),
+       'sizeAll': SIZE_ALL,
+       'groupsAll': GROUPS_ALL,
        'normAll': norm_share(alldays),
        'variAll': variety_share(alldays),
        'jug': sorted(JUGGLER),
        'sjugAll': smalljug_share(alldays),
-       'threeAll': three_share(alldays),
+       'threeAll': THREE_ALL,
        'tenAll': ten_share(alldays),
        'events': events, 'thisMonth': thismonth,
        'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
 _json.dump(out, open(B + '/data/events.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+
+# ===== トップページの「今日の傾向」カード用に、小さいファイルを別に出す =====
+# events.json は71KBあり、検索ページの初期表示に乗せたくない。
+# カードが必要なのは「日付の判定」「短い傾向文」「上位3機種」だけなので、それだけ抜く。
+
+BAND_NAME = {'big': '多台数', 'mid': '中台数', 'small': '小台数'}
+DIFF_MIN = 8      # 全体との差がこれ未満の軸は、傾向として書かない（誤差の範囲なので）
+
+def fill_main(txt, p):
+    """手書き文の {山佐} を「（SBJ）」に差し替える。events.html の fillMain と同じ判定。
+       その系統が入った日の半分以上をひとつの機種が占めるときだけ出す。"""
+    def rep(mm):
+        v = (p.get('gmain') or {}).get(mm.group(1))
+        return '（%s）' % v[0] if v and v[2] and v[1] / v[2] >= 0.5 else ''
+    return re.sub(r'\{([^}]+)\}', rep, str(txt)).strip()
+
+def card_say(p):
+    """カードに出す短い傾向文。手書きがあればそれを使う。
+       無ければ実績から「大都が13/14回。中台数が軸」の形で組み立てる。"""
+    hw = (LEAD.get(p['key']) or {}).get('lead')
+    if hw: return fill_main(hw, p)
+    n = p['days']
+    if not n: return None
+    parts = []
+    # ① 系統。全体より DIFF_MIN 以上多いもののうち、いちばん離れているもの
+    # 全体より離れているだけでなく、その日の半分以上で起きていること。
+    # 珍しい系統は母数が小さいぶん差が大きく出るが、「3/12回」を狙い目とは書けない
+    gbase = dict(GROUPS_ALL)
+    best = None
+    for g, k in p.get('groups', []):
+        rate = 100 * k / n
+        diff = rate - 100 * gbase.get(g, 0) / tot
+        if diff >= DIFF_MIN and rate >= 50 and (best is None or diff > best[0]):
+            best = (diff, g, k)
+    if best: parts.append('%sが%d/%d回' % (best[1], best[2], n))
+    # ② 台数帯。同じ基準で
+    sz = p.get('size')
+    if sz and SIZE_ALL:
+        bb = None
+        for b in ('big', 'mid', 'small'):
+            diff = sz[b] - SIZE_ALL[b]
+            if diff >= DIFF_MIN and (bb is None or diff > bb[0]):
+                bb = (diff, BAND_NAME[b])
+        if bb: parts.append('%sが軸' % bb[1])
+    # ③ どちらも無ければ3台構成を見る
+    if not parts and p.get('three') and THREE_ALL:
+        t = p['three']
+        if t['pct'] - THREE_ALL['pct'] >= DIFF_MIN:
+            parts.append('3台構成が%d/%d回' % (t['k'], t['n']))
+    # ④ それも無ければ顔ぶれで代える（傾向が無い日は、無いと分かるほうがよい）
+    if not parts:
+        nm = [r[0] for r in p['top'][:2]]
+        return '・'.join(nm) + 'が中心' if nm else None
+    return '。'.join(parts)
+
+cards = []
+for p in events:
+    cards.append({'key': p['key'], 'label': p['label'], 'sub': p.get('sub') or '',
+                  'match': p['match'], 'days': p['days'],
+                  'say': card_say(p),
+                  'top': [[r[0], r[1]] for r in p['top'][:3]],
+                  'all': len(p['top'])})
+lead_out = {'generated': today.isoformat(), 'events': cards,
+            'schedule': {d: sorted(ks) for d, ks in SCHED.items()}}
+_json.dump(lead_out, open(B + '/data/lead.json', 'w'), ensure_ascii=False, separators=(',', ':'))
 print('イベント集計: 対象%d日 / イベント%d件 / 今月実施%d機種・未実施%d機種 (%.0fKB)' % (
     tot, len(events), len(thismonth['done']), len(notyet),
     os.path.getsize(B + '/data/events.json') / 1024))

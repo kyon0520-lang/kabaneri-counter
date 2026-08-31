@@ -117,6 +117,54 @@ main{max-width:680px;margin:0 auto;padding:18px 20px 60px}
 .tip .bd{font-size:12px;color:var(--sub);line-height:1.7}
 .hintlabel{font-size:12px;color:var(--sub);margin:22px 0 8px}
 
+/* ---- 今日／明日の傾向カード（イベント傾向チェッカーへの入口） ---- */
+#today{margin:0 0 20px}
+.tcard{position:relative}
+.tlink{display:block;text-decoration:none;color:var(--ink);position:relative;overflow:hidden;
+  border:1px solid rgba(59,130,246,.55);border-radius:16px;
+  background:linear-gradient(160deg,rgba(59,130,246,.20),rgba(59,130,246,.07) 62%,rgba(59,130,246,.03));
+  box-shadow:0 6px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06)}
+.tlink::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.tlink .in{padding:15px 16px 14px}
+.thd{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-right:32px}
+.thd .lab{flex:0 0 auto;font-size:11.5px;font-weight:700;color:#0d1c2e;background:#8ab6ff;
+  border-radius:999px;padding:4px 11px;letter-spacing:.03em}
+.thd .meta{font-size:11.5px;color:#a9caff;font-weight:700;overflow-wrap:anywhere}
+/* 閉じるボタン。カード全体がリンクなので、その上に別のボタンとして重ねる */
+.txbtn{position:absolute;top:0;right:0;z-index:2;width:44px;height:44px;padding:0;
+  border:0;background:none;cursor:pointer;color:#7f9dc4;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:0 16px 0 14px;transition:color .13s,background .13s}
+.txbtn:hover{color:#dce9fa;background:rgba(255,255,255,.07)}
+.txbtn svg{width:13px;height:13px;display:block}
+/* 1行の日でも2行ぶんの高さを取る。日によってカードの高さが動かないようにするため */
+.tsay{font-size:19px;font-weight:700;line-height:1.45;margin:0 0 12px;min-height:55px}
+.trank{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.trank .r{display:flex;align-items:center;gap:9px;font-size:13.5px;
+  border-radius:11px;padding:8px 11px;background:rgba(255,255,255,.07)}
+.trank .r .md{flex:0 0 auto;width:21px;height:21px;border-radius:50%;color:#2a2005;
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.trank .r1 .md{background:linear-gradient(150deg,#f6d97a,#d4a63c)}
+.trank .r2 .md{background:linear-gradient(150deg,#e2e9f0,#a9b6c4)}
+.trank .r3 .md{background:linear-gradient(150deg,#e0a877,#b5713d);color:#2b1608}
+.trank .r1{background:rgba(234,179,8,.14);border:1px solid rgba(234,179,8,.32)}
+.trank .r .nm{font-weight:700;overflow-wrap:anywhere}
+.trank .r .ct{margin-left:auto;font-weight:700;color:#cfe0f5;font-size:13px;white-space:nowrap}
+.trank .r1 .ct{color:#f6d97a}
+.tgo{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--accent);color:#fff;border-radius:11px;padding:11px 15px}
+.tgo .t{font-size:15px;font-weight:700;line-height:1.35}
+.tgo .t em{display:block;font-style:normal;font-size:11.5px;font-weight:400;
+  opacity:.87;margin-top:3px;line-height:1.5}
+.tgo .ar{font-size:16px;font-weight:700;flex:0 0 auto}
+/* 読み込み中の骨組み。実物とほぼ同じ高さにして、届いた瞬間に下がずれないようにする */
+.tskel{border:1px solid var(--line);border-radius:16px;background:var(--panel);
+  padding:15px 16px 14px}
+.tskel .b{display:block;border-radius:7px;background:var(--bg-soft);
+  animation:skpulse 1.5s ease-in-out infinite}
+.tskel .h{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+@media (prefers-reduced-motion:reduce){.tskel .b{animation:none}}
+
 /* ---- 読み込み中の骨組み ----
    データが届くまでの高さを先に取っておき、フッターが下へ飛ぶのを防ぐ。
    予約は vh で持つ。#results は画面の上端より下から始まるので、
@@ -222,6 +270,27 @@ body.memo-open .memoscrim{display:block}
 </div>
 
 <main>
+  <!-- 今日／明日の傾向カード。data/lead.json が届いた時点で中身が入れ替わる -->
+  <div id="today"><div class="tskel" aria-hidden="true">
+    <div class="h"><span class="b" style="width:78px;height:23px;border-radius:999px"></span>
+      <span class="b" style="width:118px;height:12px"></span></div>
+    <span class="b" style="height:16px;width:72%;margin-bottom:9px"></span>
+    <span class="b" style="height:16px;width:46%;margin-bottom:24px"></span>
+    <span class="b" style="height:38px;margin-bottom:6px;border-radius:11px"></span>
+    <span class="b" style="height:38px;margin-bottom:6px;border-radius:11px"></span>
+    <span class="b" style="height:38px;margin-bottom:21px;border-radius:11px"></span>
+    <span class="b" style="height:62px;border-radius:11px"></span>
+  </div></div>
+  <script>
+  // 「その日ぶんは消した」人には、骨組みごと出さない。ここで消さないと一瞬映る
+  (function(){try{
+    var n=new Date(), t=new Date(n), p=function(v){return String(v).padStart(2,'0')};
+    if(n.getHours()*60+n.getMinutes()>=20*60+30) t.setDate(t.getDate()+1);
+    if(localStorage.getItem('matsuwaru-todaycard-toho')
+       === t.getFullYear()+'-'+p(t.getMonth()+1)+'-'+p(t.getDate()))
+      document.getElementById('today').remove();
+  }catch(e){}})();
+  </script>
   <p class="count" id="count"></p>
   <div class="chips" id="chips"></div>
   <!-- 読み込み中の骨組み。data/index.json が届いた時点で render() が丸ごと差し替える。
@@ -441,6 +510,78 @@ document.addEventListener('click',e=>{
   if(c){ const m=c.dataset.m; sel = (sel===m? null : m); shown=30; render(); window.scrollTo({top:0,behavior:'smooth'}); }
   if(e.target.id==='more'){ shown+=50; render(); }
 });
+
+/* ===== 今日／明日の傾向カード =====
+   イベント傾向チェッカーへの入口。events.json は71KBあるので、
+   カードに要るぶんだけを抜いた data/lead.json（数KB）を読む */
+(function(){
+  const box = document.getElementById('today');
+  if(!box) return;                       // その日ぶんを消した人は要素ごと無い
+  const KEY = 'matsuwaru-todaycard-toho';
+  const pad = v => String(v).padStart(2,'0');
+  const ymd = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  // 店長ポストは毎晩20:30ごろ。それを過ぎたら対象は翌営業日になる
+  const now = new Date();
+  const after = now.getHours()*60 + now.getMinutes() >= 20*60 + 30;
+  const target = new Date(now);
+  if(after) target.setDate(target.getDate() + 1);
+
+  const applies = (p, d, sc) => {
+    const ov = sc[ymd(d)];
+    if(ov) return ov.includes(p.key);    // 店長ポストで判明した日は、その内容だけを採る
+    const m = p.match, day = d.getDate();
+    if(m.digit) return m.digit.includes(day % 10);
+    if(m.day) return m.day.includes(day);
+    if(m.monthend) return new Date(d.getFullYear(), d.getMonth()+1, 0).getDate() === day;
+    return false;                        // 不定期は日付から判定できない
+  };
+  // 日付ぴったりのイベント（21-27WEEK・月末最終日）を◯のつく日より優先する。
+  // 6/30 のように両方に当てはまる日があるため
+  const pick = (evs, d, sc) => {
+    const hit = evs.filter(p => applies(p, d, sc));
+    return hit.find(p => !p.match.digit) || hit[0] || null;
+  };
+  const md = d => (d.getMonth()+1) + '/' + d.getDate();
+  // 補足（「毎月1日」「大都、ハナハナ」など）は付けない。日付がすぐ隣にあり、
+  // 中身は傾向文と順位表が持っているので、ここでは名前だけでよい
+
+  fetch('data/lead.json').then(r=>r.json()).then(D=>{
+    const sc = D.schedule || {};
+    let d = new Date(target), p = pick(D.events, d, sc);
+    let lab = after ? '明日の傾向' : '今日の傾向';
+    if(!p){                              // イベントの無い日は、次のイベントを出す
+      for(let i = 1; i <= 31 && !p; i++){
+        d = new Date(target); d.setDate(d.getDate() + i);
+        p = pick(D.events, d, sc);
+      }
+      lab = '次のイベント';
+    }
+    if(!p || !p.say){ box.remove(); return; }
+    const rows = p.top.map((t,i) =>
+      `<div class="r r${i+1}"><span class="md">${i+1}</span>` +
+      `<span class="nm">${esc(t[0])}</span><span class="ct">${t[1]}/${p.days}回</span></div>`).join('');
+    box.innerHTML =
+      `<div class="tcard">
+        <button class="txbtn" id="txclose" type="button" aria-label="このカードを閉じる">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.9"
+               stroke-linecap="round" aria-hidden="true"><path d="M2 2 L12 12 M12 2 L2 12"/></svg></button>
+        <a class="tlink" href="events"><div class="in">
+          <div class="thd"><span class="lab">${lab}</span>
+            <span class="meta">${md(d)}・${esc(p.label)}</span></div>
+          <p class="tsay">${esc(p.say)}</p>
+          <div class="trank">${rows}</div>
+          <div class="tgo"><div class="t">続きを読む<em>系統・台数帯・過去の全系${p.all}機種</em></div>
+            <span class="ar">→</span></div>
+        </div></a>
+      </div>`;
+    document.getElementById('txclose').addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      // 消すのはその日ぶんだけ。中身は毎日変わるので、明日はまた出す
+      try{ localStorage.setItem(KEY, ymd(target)); }catch(err){}
+      box.remove();
+    });
+  }).catch(()=>{ box.remove(); });
+})();
 
 /* ===== メモ。端末内だけに残し、どこにも送らない ===== */
 (function(){
