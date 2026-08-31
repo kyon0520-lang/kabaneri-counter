@@ -31377,5 +31377,265 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/01/074936",
+  "articleDate": "2026-09-01",
+  "targetDate": "2026-08-31",
+  "postDate": "2026-08-30",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2094025034494824718",
+  "title": "8月31日のマルハン新宿東宝ビルまとめ✏️月末は圧巻の全系仕掛け！",
+  "results": [
+   {
+    "machine": "ゴッドイーター",
+    "plus": 7,
+    "total": 13,
+    "avg": 4285
+   },
+   {
+    "machine": "真打吉宗",
+    "plus": 6,
+    "total": 12,
+    "avg": 2475
+   },
+   {
+    "machine": "北斗",
+    "plus": 8,
+    "total": 8,
+    "avg": 4538
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 5,
+    "total": 6,
+    "avg": 2600
+   },
+   {
+    "machine": "アイム",
+    "plus": 4,
+    "total": 5,
+    "avg": 1200
+   },
+   {
+    "machine": "ミスター",
+    "plus": 4,
+    "total": 5,
+    "avg": 1800
+   },
+   {
+    "machine": "からくり",
+    "plus": 2,
+    "total": 4,
+    "avg": 1350
+   },
+   {
+    "machine": "ToLOVEる",
+    "plus": 4,
+    "total": 4,
+    "avg": 5325
+   },
+   {
+    "machine": "チバリヨ",
+    "plus": 2,
+    "total": 3,
+    "avg": 5167
+   },
+   {
+    "machine": "ビックドリーム",
+    "plus": 2,
+    "total": 3,
+    "avg": 5300
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ゴッドイーター",
+    "matched": true,
+    "keyword": "GETSUMATSU",
+    "chain": [
+     "GETSUMATSU",
+     "GE",
+     "ゴッドイーター"
+    ],
+    "raw": "GETSUMATSU→GE→ゴッドイーター",
+    "result": {
+     "plus": 7,
+     "total": 13,
+     "avg": 4285
+    }
+   },
+   {
+    "machine": "真打吉宗",
+    "matched": true,
+    "keyword": "GETSUMATSU",
+    "chain": [
+     "GETSUMATSU",
+     "MATU",
+     "松",
+     "吉宗"
+    ],
+    "raw": "GETSUMATSU→MATU→松→吉宗",
+    "result": {
+     "plus": 6,
+     "total": 12,
+     "avg": 2475
+    }
+   },
+   {
+    "machine": "北斗",
+    "matched": true,
+    "keyword": "GETSUMATSU",
+    "chain": [
+     "GETSUMATSU",
+     "UMA",
+     "馬",
+     "黒王号"
+    ],
+    "raw": "GETSUMATSU→UMA→馬→黒王号",
+    "result": {
+     "plus": 8,
+     "total": 8,
+     "avg": 4538
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "31日",
+    "chain": [
+     "31日",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "31日→サイ→つのっち",
+    "result": {
+     "plus": 5,
+     "total": 6,
+     "avg": 2600
+    }
+   },
+   {
+    "machine": "アイム",
+    "matched": true,
+    "keyword": "31日",
+    "chain": [
+     "31日",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "31日→サイ→つのっち",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1200
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "コーン",
+    "chain": [
+     "コーン",
+     "コンたろ"
+    ],
+    "raw": "コーン→コンたろ",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1800
+    }
+   },
+   {
+    "machine": "からくり",
+    "matched": true,
+    "keyword": "ぜひ",
+    "chain": [
+     "ぜひ",
+     "ぜひぜひ"
+    ],
+    "raw": "ぜひ→ぜひぜひ",
+    "result": {
+     "plus": 2,
+     "total": 4,
+     "avg": 1350
+    }
+   },
+   {
+    "machine": "からくり",
+    "matched": true,
+    "keyword": "入替減台機種",
+    "chain": [
+     "入替減台機種",
+     "からくり"
+    ],
+    "raw": "入替減台機種→からくり",
+    "result": {
+     "plus": 2,
+     "total": 4,
+     "avg": 1350
+    }
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": true,
+    "keyword": "モグベジ",
+    "chain": [
+     "モグベジ",
+     "もぐもぐ",
+     "もぐもぐタイ焼きタイム"
+    ],
+    "raw": "モグベジ→もぐもぐ→もぐもぐタイ焼きタイム",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 5325
+    }
+   },
+   {
+    "machine": "チバリヨ",
+    "matched": true,
+    "keyword": "あんかけ",
+    "chain": [
+     "あんかけ",
+     "アンちゃん"
+    ],
+    "raw": "あんかけ→アンちゃん",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 5167
+    }
+   },
+   {
+    "machine": "ビックドリーム",
+    "matched": true,
+    "keyword": "大盛ごはん",
+    "chain": [
+     "大盛ごはん",
+     "大",
+     "ビッグ"
+    ],
+    "raw": "大盛ごはん→大→ビッグ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 5300
+    }
+   },
+   {
+    "machine": "タクトオーパス",
+    "matched": false,
+    "keyword": "餃子パスポート",
+    "chain": [
+     "餃子パスポート",
+     "パス"
+    ],
+    "raw": "餃子パスポート→パス",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
