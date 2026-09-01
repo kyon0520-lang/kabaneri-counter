@@ -88,6 +88,16 @@ npx wrangler pages deploy . --project-name=kabaneri-counter --branch=main
 `minnanoslot.com` は Cloudflare のダッシュボードで
 **Workers & Pages → kabaneri-counter → Custom domains** から接続しています。
 
+プロジェクト名が `kabaneri-counter` のままなのは承知のうえ。**2026-09-01 に検討して見送った。**
+Cloudflare Pages には名前を変える機能がなく（wrangler も create / delete / list だけ）、
+移すには「新しい箱を作る → 表札を付け替える → 古い箱を消す」しかない。
+表札は同時に1つの箱にしか付けられないので、**切り替えの数分間サイトが落ちる**。
+得られるのは管理画面の見た目だけで、来る人が見るのは `minnanoslot.com` のまま。割に合わない。
+
+まつわるチェッカーだけを別プロジェクトに分けることもできない。Cloudflare Pages は
+ホスト名まるごとを受け持つ仕組みで、`minnanoslot.com/matsuwaru/` のような
+途中の階層だけを別プロジェクトに担当させられない。分けるとURLそのものが変わる。
+
 ### GitHub
 
 ```bash
