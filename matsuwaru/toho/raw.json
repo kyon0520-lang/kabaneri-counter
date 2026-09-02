@@ -31637,5 +31637,269 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "東京大戦"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/02/083124",
+  "articleDate": "2026-09-02",
+  "targetDate": "2026-09-01",
+  "postDate": "2026-08-31",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2094387431349125618",
+  "title": "9月1日のマルハン新宿東宝ビルまとめ✏️ 派手な全系仕掛けでお祭り状態！！！！",
+  "results": [
+   {
+    "machine": "ネオアイムEX",
+    "plus": 36,
+    "total": 40,
+    "avg": 1648
+   },
+   {
+    "machine": "ゴージャグ3",
+    "plus": 18,
+    "total": 22,
+    "avg": 1864
+   },
+   {
+    "machine": "からくり2",
+    "plus": 13,
+    "total": 27,
+    "avg": 2189
+   },
+   {
+    "machine": "戦国乙女5",
+    "plus": 11,
+    "total": 14,
+    "avg": 4779
+   },
+   {
+    "machine": "サンダー",
+    "plus": 3,
+    "total": 3,
+    "avg": 2433
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ネオアイムEX",
+    "matched": true,
+    "keyword": "レシートの日付が8/31",
+    "chain": [
+     "レシートの日付が8/31",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "レシートの日付が8/31→サイ→つのっち",
+    "result": {
+     "plus": 36,
+     "total": 40,
+     "avg": 1648
+    }
+   },
+   {
+    "machine": "ネオアイムEX",
+    "matched": true,
+    "keyword": "CoCo壱",
+    "chain": [
+     "CoCo壱",
+     "NeCo壱キャンペーン",
+     "Neo"
+    ],
+    "raw": "CoCo壱→NeCo壱キャンペーン→Neo",
+    "result": {
+     "plus": 36,
+     "total": 40,
+     "avg": 1648
+    }
+   },
+   {
+    "machine": "ゴージャグ3",
+    "matched": true,
+    "keyword": "CoCo壱番",
+    "chain": [
+     "CoCo壱番",
+     "CoCo",
+     "GOGO"
+    ],
+    "raw": "CoCo壱番→CoCo→GOGO",
+    "result": {
+     "plus": 18,
+     "total": 22,
+     "avg": 1864
+    }
+   },
+   {
+    "machine": "ゴージャグ3",
+    "matched": true,
+    "keyword": "レシートの日付が8/31",
+    "chain": [
+     "レシートの日付が8/31",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "レシートの日付が8/31→サイ→つのっち",
+    "result": {
+     "plus": 18,
+     "total": 22,
+     "avg": 1864
+    }
+   },
+   {
+    "machine": "からくり2",
+    "matched": true,
+    "keyword": "とび辛SPICE",
+    "chain": [
+     "とび辛SPICE",
+     "辛さ",
+     "からサー"
+    ],
+    "raw": "とび辛SPICE→辛さ→からサー",
+    "result": {
+     "plus": 13,
+     "total": 27,
+     "avg": 2189
+    }
+   },
+   {
+    "machine": "からくり2",
+    "matched": true,
+    "keyword": "ベストコンビ",
+    "chain": [
+     "ベストコンビ",
+     "頼もしいぜ‼"
+    ],
+    "raw": "ベストコンビ→頼もしいぜ‼",
+    "result": {
+     "plus": 13,
+     "total": 27,
+     "avg": 2189
+    }
+   },
+   {
+    "machine": "戦国乙女5",
+    "matched": true,
+    "keyword": "東京大戦",
+    "chain": [
+     "東京大戦",
+     "戦",
+     "戦国"
+    ],
+    "raw": "東京大戦→戦→戦国",
+    "result": {
+     "plus": 11,
+     "total": 14,
+     "avg": 4779
+    }
+   },
+   {
+    "machine": "戦国乙女5",
+    "matched": true,
+    "keyword": "かき氷",
+    "chain": [
+     "かき氷",
+     "シロップ",
+     "シロ"
+    ],
+    "raw": "かき氷→シロップ→シロ",
+    "result": {
+     "plus": 11,
+     "total": 14,
+     "avg": 4779
+    }
+   },
+   {
+    "machine": "サンダー",
+    "matched": true,
+    "keyword": "感謝",
+    "chain": [
+     "感謝",
+     "サンキュー"
+    ],
+    "raw": "感謝→サンキュー",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2433
+    }
+   },
+   {
+    "machine": "サンダー",
+    "matched": true,
+    "keyword": "参加",
+    "chain": [
+     "参加",
+     "サンカー"
+    ],
+    "raw": "参加→サンカー",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2433
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "かき氷",
+    "chain": [
+     "かき氷",
+     "かき氷マーク",
+     "波",
+     "波に乗れ"
+    ],
+    "raw": "かき氷→かき氷マーク→波→波に乗れ",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "レシート伝票番号00810",
+    "chain": [
+     "レシート伝票番号00810",
+     "810"
+    ],
+    "raw": "レシート伝票番号00810→810",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "パリパリチキンにチキン煮込み",
+    "chain": [
+     "パリパリチキンにチキン煮込み",
+     "鳥放題"
+    ],
+    "raw": "パリパリチキンにチキン煮込み→鳥放題",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "プロジェクト",
+    "chain": [
+     "プロジェクト",
+     "ハロープロジェクト",
+     "アイドル",
+     "ゾンサガ"
+    ],
+    "raw": "プロジェクト→ハロープロジェクト→アイドル→ゾンサガ",
+    "result": null
+   },
+   {
+    "machine": "吉宗",
+    "matched": false,
+    "keyword": "9/1",
+    "chain": [
+     "9/1",
+     "くノ一",
+     "吉宗"
+    ],
+    "raw": "9/1→くノ一→吉宗",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
