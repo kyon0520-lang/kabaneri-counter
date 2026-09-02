@@ -9,20 +9,31 @@
   - サービスワーカーの登録（その場描きアイコンの処理と入れ替え）
   - Cloudflare Web Analytics の計測タグ
 
-SEND_ENABLED を False にすると、みんなのスロットへの送信まわりを
-まるごと外した版を書き出す（原本は触らない）。
-「実戦記録の保存だけ」のカウンターとして先に配りたいときに使う。
+機能フラグを False にすると、その機能を原本から外した版を書き出す（原本は触らない）。
 戻すときは True にして、もう一度実行するだけ。
+
+  SEND_ENABLED  … みんなのスロットへの送信・会員登録・読み出し・マイページ
+  WINS_ENABLED  … 当選履歴カウンター（左端の「当選」つまみごと）
+  CYCLE_ENABLED … 当選履歴の中の周期カウンター（何周期目・周期到達・周期別の当選率）
+
+CYCLE は WINS の中に入っている。WINS を False にすれば周期も一緒に消えるので、
+CYCLE を単体で False にするのは「当選履歴は残すが周期だけやめる」ときだけ。
 """
 import os
 import re
 
-# ---- 送信機能を公開版に含めるか ----
-SEND_ENABLED = True
+# ---- 公開版に含める機能 ----
+SEND_ENABLED = False
+WINS_ENABLED = False
+CYCLE_ENABLED = False
 
-# 原本に置いた印。この間が送信機能で、外すときはここごと消す
-MARKS = [('/* ==SEND:START== */', '/* ==SEND:END== */'),
-         ('<!-- ==SEND:START== -->', '<!-- ==SEND:END== -->')]
+# 内側（CYCLE）から順に処理する
+FEATURES = {'SEND': SEND_ENABLED, 'CYCLE': CYCLE_ENABLED, 'WINS': WINS_ENABLED}
+
+# 原本に置いた印。CSS/JS は /* */、HTML は <!-- --> で囲む
+#   ==NAME:START==  〜 ==NAME:END==   … その機能を含めるときだけ残る
+#   ==NAME!:START== 〜 ==NAME!:END==  … 含めないときだけ残る（差し替え文言に使う）
+COMMENTS = [('/* ', ' */'), ('<!-- ', ' -->')]
 
 BASE = os.path.dirname(os.path.abspath(__file__))       # src/
 PUB = os.path.dirname(BASE)                             # 公開ディレクトリ
@@ -69,19 +80,33 @@ ICON_BLOCK_START = '/* ---------- iOS ホーム画面用のアイコンと名前
 ICON_BLOCK_END = 'setupHomeScreen();\n'
 
 
-def apply_send_flag(html):
-    """印で囲んだ範囲を、含めるなら印だけ外し、含めないなら中身ごと消す"""
-    for start, end in MARKS:
-        if SEND_ENABLED:
-            html = html.replace(start, '').replace(end, '')
-            continue
-        while start in html:
-            i = html.index(start)
-            j = html.index(end, i) + len(end)
-            html = html[:i] + html[j:]
-        assert end not in html, f'{end} が余っています。印の対が合っていません'
+def _strip(html, start, end, keep):
+    """印で囲んだ範囲を、keep なら印だけ外し、そうでなければ中身ごと消す"""
+    while start in html:
+        i = html.index(start)
+        assert end in html[i:], f'{start} に対応する {end} がありません'
+        j = html.index(end, i)
+        inner = html[i + len(start):j] if keep else ''
+        html = html[:i] + inner + html[j + len(end):]
+    assert end not in html, f'{end} が余っています。印の対が合っていません'
+    return html
+
+
+def apply_flags(html):
+    """機能ごとの印を処理する。原本には手を触れず、書き出す側だけを削る"""
+    for name, on in FEATURES.items():
+        for a, b in COMMENTS:
+            html = _strip(html, f'{a}=={name}:START=={b}', f'{a}=={name}:END=={b}', on)
+            html = _strip(html, f'{a}=={name}!:START=={b}', f'{a}=={name}!:END=={b}', not on)
+    # 外したはずのものが残っていたら、そこで気づけるようにする
     if not SEND_ENABLED:
         assert '/api/records' not in html, '送信の呼び出しが残っています'
+    if not CYCLE_ENABLED:
+        assert 'wincycle' not in html, '周期チップの参照が残っています'
+        assert 'cycleTable' not in html, '周期別の表が残っています'
+    if not WINS_ENABLED:
+        assert 'winpanel' not in html, '当選履歴パネルの参照が残っています'
+        assert 'renderWins' not in html, '当選履歴の描画が残っています'
     return html
 
 
@@ -108,7 +133,7 @@ def renumber_manual(html):
 
 def build_app():
     src = open(SRC, encoding='utf-8').read()
-    src = apply_send_flag(src)
+    src = apply_flags(src)
 
     assert TITLE in src, 'title タグが見つかりません'
     out = src.replace(TITLE, HEAD_ADD + TITLE, 1)
@@ -130,7 +155,7 @@ def build_manual():
     if not os.path.exists(MAN_SRC):
         return
     man = open(MAN_SRC, encoding='utf-8').read()
-    man = apply_send_flag(man)
+    man = apply_flags(man)
     man = renumber_manual(man)
     if 'cloudflareinsights' not in man:
         man = man.rstrip() + '\n' + BEACON
@@ -141,5 +166,6 @@ def build_manual():
 if __name__ == '__main__':
     build_app()
     build_manual()
-    print(f'送信機能: {"あり" if SEND_ENABLED else "なし（保存のみの版）"}')
+    for name, on in FEATURES.items():
+        print(f'{name}: {"あり" if on else "なし"}')
     print(f'公開URL: {SITE}')

@@ -219,6 +219,7 @@
   }
   .shot .bellbar .rt em{font-style:normal;font-size:9px;color:var(--s-muted);font-weight:400;display:block}
 
+  <!-- ==WINS:START== -->
   /* 当選履歴カウンター（画面写真） */
   .shot .win{background:var(--s-panel);border:1px solid var(--s-line);border-radius:14px;padding:12px}
   .shot .wv{display:flex;border-bottom:1px solid var(--s-line);position:relative}
@@ -280,6 +281,7 @@
   /* バッジは枠の外に出す。中に置くと文字に重なるため */
   .shot .win .pin{top:50%;left:-9px;transform:translateY(-50%);box-shadow:0 0 0 2px var(--s-panel)}
   .shot .wl .pin{left:auto;right:0;box-shadow:none}
+  <!-- ==WINS:END== -->
 
   /* 番号バッジ */
   .pin{
@@ -326,6 +328,20 @@
     display:flex;gap:14px;align-items:flex-start;
     border:1px solid var(--rule);border-radius:12px;background:var(--card);padding:14px 16px;
   }
+  <!-- ==WINS:START== -->
+  /* 番号は書かずに数えさせる。周期の項目を外しても連番が崩れないようにするため */
+  .flow.auto{counter-reset:st}
+  .flow.auto .step{counter-increment:st}
+  .flow.auto .step .no:empty::before{content:counter(st)}
+  .win.abc{counter-reset:pin wl}
+  .win.abc .pin{counter-increment:pin}
+  .win.abc .pin:empty::before{content:counter(pin,upper-alpha)}
+  .win.abc .wl i{counter-increment:wl}
+  .win.abc .wl i:empty::before{content:counter(wl)}
+  .legend.abc{counter-reset:pin}
+  .legend.abc .num{counter-increment:pin}
+  .legend.abc .num:empty::before{content:counter(pin,upper-alpha)}
+  <!-- ==WINS:END== -->
   .step .no{
     flex:0 0 26px;height:26px;border-radius:8px;background:var(--ink);color:var(--paper);
     font-size:13px;font-weight:800;display:grid;place-items:center;
@@ -414,7 +430,7 @@
   <header class="lead">
     <div class="eyebrow">取扱説明書</div>
     <h1>カバネリ海門カウンター</h1>
-    <p>スマスロ 甲鉄城のカバネリ 海門決戦を、打ちながら数えるためのカウンターです。CZ抽選の発光だけでなく、当選したG数・契機・ボーナスの種類、下段ベルまでまとめて記録できます。数えた結果から、発光率・CZ 1回あたりの平均ポイント・周期別の当選率・ST確率などが自動で出ます。</p>
+    <p>スマスロ 甲鉄城のカバネリ 海門決戦を、打ちながら数えるためのカウンターです。<!-- ==WINS:START== -->CZ抽選の発光だけでなく、当選したG数・契機・ボーナスの種類、下段ベルまでまとめて記録できます。<!-- ==WINS:END== --><!-- ==WINS!:START== -->CZ抽選の発光と、下段ベルを記録できます。<!-- ==WINS!:END== -->数えた結果から、発光率・CZ 1回あたりの平均ポイント・<!-- ==CYCLE:START== -->周期別の当選率・<!-- ==CYCLE:END== -->ST確率などが自動で出ます。</p>
     <div class="chips">
       <span class="chip"><span class="dot r">無</span>無名 ／ 赤</span>
       <span class="chip"><span class="dot g">生</span>生駒 ／ 緑</span>
@@ -444,7 +460,8 @@
   <!-- 1 -->
   <section id="s1">
     <h2><span class="n">1</span>画面の見かた</h2>
-    <p>カウンターは2つあります。開いたときに出る <strong>CZ発光カウンター</strong> と、右にスワイプして開く <strong>当選履歴カウンター</strong> です。どちらも同じ実戦の記録として一緒に保存されます。</p>
+    <!-- ==WINS:START== --><p>カウンターは2つあります。開いたときに出る <strong>CZ発光カウンター</strong> と、右にスワイプして開く <strong>当選履歴カウンター</strong> です。どちらも同じ実戦の記録として一緒に保存されます。</p><!-- ==WINS:END== -->
+    <!-- ==WINS!:START== --><p>数えるのは <strong>CZ発光カウンター</strong> です。開くとそのまま出ます。打ちながら気づいたことは、左にスワイプして開く <strong>メモ</strong> に書けます。</p><!-- ==WINS!:END== -->
 
     <h3>CZ発光カウンター</h3>
     <p>無名・生駒・銅藍の3枚が、同じ形のカードで縦に並びます。3キャラをまとめた数字は <strong>合算値</strong> のタブにあります。</p>
@@ -489,61 +506,65 @@
       <li><span class="num">8</span><span class="txt"><b>平均 pt/CZ</b><span>CZ突入を押したときのポイントの平均。<strong>数え途中の現在のポイントは入りません</strong>ので、突入を押すまで動きません。銅藍は「平均 pt/周期」。</span></span></li>
     </ul>
 
+<!-- ==WINS:START== -->
     <h3>当選履歴カウンター</h3>
     <p>画面を<strong>右にスワイプ</strong>するか、左端の「当選」のつまみを押すと開きます。当たるたびに1件ずつ足していく画面です。</p>
 
     <div class="shot">
-      <div class="win">
+      <div class="win abc">
         <div class="wv">
-          <span class="on">入力</span><span>当選履歴</span><span>周期当選率</span>
-          <span class="pin">A</span>
+          <span class="on">入力</span><span>当選履歴</span><span><!-- ==CYCLE:START== -->周期当選率<!-- ==CYCLE:END== --><!-- ==CYCLE!:START== -->集計<!-- ==CYCLE!:END== --></span>
+          <span class="pin"></span>
         </div>
         <div class="wt">
           <span class="on">通常</span><span>駆け抜け後</span><span>上位後</span><span>リセット後</span><span>合算</span>
-          <span class="pin">B</span>
+          <span class="pin"></span>
         </div>
 
-        <div class="wl"><i>1</i>データカウンターのG数<span class="pin">C</span></div>
+        <div class="wl"><i></i>データカウンターのG数<span class="pin"></span></div>
         <div class="wi">482</div>
         <div class="wh">台の上のカウンターの数字です。サブ液晶のG数ではありません。</div>
 
-        <div class="wl"><i>2</i>何周期目だったか<span class="pin">D</span></div>
+        <!-- ==CYCLE:START== -->
+        <div class="wl"><i></i>何周期目だったか<span class="pin"></span></div>
         <div class="wc">
           <span>1周期</span><span>2周期</span><span class="on">3周期</span>
           <span>4周期</span><span>5周期</span><span>6周期</span>
         </div>
+        <!-- ==CYCLE:END== -->
 
-        <div class="wl"><i>3</i>当たったきっかけ<span class="pin">E</span></div>
+        <div class="wl"><i></i>当たったきっかけ<span class="pin"></span></div>
         <div class="wc">
-          <span>周期到達</span><span class="r on">無名CZ</span><span class="g">生駒CZ</span>
+          <!-- ==CYCLE:START== --><span>周期到達</span><!-- ==CYCLE:END== --><span class="r on">無名CZ</span><span class="g">生駒CZ</span>
           <span class="b">銅藍CZ</span><span class="ceil">天井</span>
         </div>
 
-        <div class="wl"><i>4</i>当たったボーナス<span class="pin">F</span></div>
+        <div class="wl"><i></i>当たったボーナス<span class="pin"></span></div>
         <div class="wc">
           <span class="ep">エピソードB</span><span class="sh">駿城B</span>
           <span class="two"><i>駿</i><b>エピ</b></span>
         </div>
 
-        <div class="wadd">追加する<span class="pin">G</span></div>
+        <div class="wadd">追加する<span class="pin"></span></div>
         <div class="wa">
           <span class="sv">この実戦を保存</span><span class="rs">全リセット</span>
-          <span class="pin">H</span>
+          <span class="pin"></span>
         </div>
       </div>
     </div>
 
-    <ul class="legend">
-      <li><span class="num">A</span><span class="txt"><b>入力 ／ 当選履歴 ／ 周期当選率</b><span>いちばん上の3つ。<strong>入力</strong>が数える画面、<strong>当選履歴</strong>がここで入れた当選の一覧、<strong>周期当選率</strong>が集計です。まだ何も入れていなくても、これから埋まる表の形が見られます。</span></span></li>
-      <li><span class="num">B</span><span class="txt"><b>状態のタブ</b><span>通常・駆け抜け後・上位後・リセット後と、集計用の合算。いま打っている状態を選びます。色分けは 通常＝青／駆け抜け後＝黄／上位後＝ピンク／リセット後＝白。</span></span></li>
-      <li><span class="num">C</span><span class="txt"><b>データカウンターのG数</b><span>台の上のカウンターの数字。<strong>サブ液晶のG数ではありません。</strong>3桁まで。</span></span></li>
-      <li><span class="num">D</span><span class="txt"><b>何周期目だったか</b><span>1〜6周期。<strong>CZや天井で当たったときも必ず選びます。</strong>ここが抜けると、通過した周期が集計から落ちます。</span></span></li>
-      <li><span class="num">E</span><span class="txt"><b>当たったきっかけ</b><span>周期到達・無名CZ・生駒CZ・銅藍CZ・天井。周期が最後まで進んで当たったなら<strong>周期到達</strong>です。</span></span></li>
-      <li><span class="num">F</span><span class="txt"><b>当たったボーナス</b><span>エピソードB・駿城B・駿→エピ（駿城Bからの昇格）。</span></span></li>
-      <li><span class="num">G</span><span class="txt"><b>追加する</b><span>1件として記録されます。周期・きっかけ・ボーナスのどれかが抜けていると、足りないものを知らせて止まります。</span></span></li>
-      <li><span class="num">H</span><span class="txt"><b>この実戦を保存／全リセット</b><span>いちばん下。CZ発光カウンター側の同じボタンを押すのと同じです。保存は両方をまとめて1件の実戦にし、全リセットは<strong>両方のカウンターを消します</strong>。</span></span></li>
+    <ul class="legend abc">
+      <li><span class="num"></span><span class="txt"><b>入力 ／ 当選履歴 ／ <!-- ==CYCLE:START== -->周期当選率<!-- ==CYCLE:END== --><!-- ==CYCLE!:START== -->集計<!-- ==CYCLE!:END== --></b><span>いちばん上の3つ。<strong>入力</strong>が数える画面、<strong>当選履歴</strong>がここで入れた当選の一覧、<strong><!-- ==CYCLE:START== -->周期当選率<!-- ==CYCLE:END== --><!-- ==CYCLE!:START== -->集計<!-- ==CYCLE!:END== --></strong>が集計です。まだ何も入れていなくても、これから埋まる表の形が見られます。</span></span></li>
+      <li><span class="num"></span><span class="txt"><b>状態のタブ</b><span>通常・駆け抜け後・上位後・リセット後と、集計用の合算。いま打っている状態を選びます。色分けは 通常＝青／駆け抜け後＝黄／上位後＝ピンク／リセット後＝白。</span></span></li>
+      <li><span class="num"></span><span class="txt"><b>データカウンターのG数</b><span>台の上のカウンターの数字。<strong>サブ液晶のG数ではありません。</strong>3桁まで。</span></span></li>
+      <!-- ==CYCLE:START== --><li><span class="num"></span><span class="txt"><b>何周期目だったか</b><span>1〜6周期。<strong>CZや天井で当たったときも必ず選びます。</strong>ここが抜けると、通過した周期が集計から落ちます。</span></span></li><!-- ==CYCLE:END== -->
+      <li><span class="num"></span><span class="txt"><b>当たったきっかけ</b><span><!-- ==CYCLE:START== -->周期到達・<!-- ==CYCLE:END== -->無名CZ・生駒CZ・銅藍CZ・天井。<!-- ==CYCLE:START== -->周期が最後まで進んで当たったなら<strong>周期到達</strong>です。<!-- ==CYCLE:END== --><!-- ==CYCLE!:START== -->当たりを引いたきっかけを1つ選びます。<!-- ==CYCLE!:END== --></span></span></li>
+      <li><span class="num"></span><span class="txt"><b>当たったボーナス</b><span>エピソードB・駿城B・駿→エピ（駿城Bからの昇格）。</span></span></li>
+      <li><span class="num"></span><span class="txt"><b>追加する</b><span>1件として記録されます。<!-- ==CYCLE:START== -->周期・<!-- ==CYCLE:END== -->きっかけ・ボーナスのどれかが抜けていると、足りないものを知らせて止まります。</span></span></li>
+      <li><span class="num"></span><span class="txt"><b>この実戦を保存／全リセット</b><span>いちばん下。CZ発光カウンター側の同じボタンを押すのと同じです。保存は両方をまとめて1件の実戦にし、全リセットは<strong>両方のカウンターを消します</strong>。</span></span></li>
     </ul>
     <p class="cap">画面の中の <b>1</b>・<b>2</b>・<b>3</b> はアプリが出している入力の順番です。</p>
+<!-- ==WINS:END== -->
   </section>
 
   <!-- 2 -->
@@ -556,7 +577,8 @@
       <li><span class="num">グ</span><span class="txt"><b>規定pt分布グラフ</b><span>CZ突入時のポイントの分布。</span></span></li>
     </ul>
     <p>右上の <strong>三本線のボタン</strong> から、<strong>実戦履歴</strong>・<strong>記録の引き継ぎ</strong>・<strong>取扱説明書</strong>を開けます。</p>
-    <p>当選履歴カウンターは<strong>右にスワイプ</strong>、メモは<strong>左にスワイプ</strong>で開きます。画面の左右の端にあるつまみを押しても開きます。</p>
+    <!-- ==WINS:START== --><p>当選履歴カウンターは<strong>右にスワイプ</strong>、メモは<strong>左にスワイプ</strong>で開きます。画面の左右の端にあるつまみを押しても開きます。</p><!-- ==WINS:END== -->
+    <!-- ==WINS!:START== --><p>メモは<strong>左にスワイプ</strong>で開きます。画面の右端にあるつまみを押しても開きます。</p><!-- ==WINS!:END== -->
     <p class="cap">下段ベルは画面下に固定されています。［＋］［下段ベル］［−］の並びで、真ん中を押して数えます。−を選んでから押すと1つ減ります。</p>
   </section>
 
@@ -609,52 +631,60 @@
     </div>
   </section>
 
+<!-- ==WINS:START== -->
   <!-- 4 -->
   <section id="s4">
     <h2><span class="n">4</span>当選履歴の数え方</h2>
-    <p>当たったときだけ入れます。3つ選んで「追加する」を押す、これを繰り返すだけです。</p>
-    <div class="flow">
+    <p>当たったときだけ入れます。<!-- ==CYCLE:START== -->3つ<!-- ==CYCLE:END== --><!-- ==CYCLE!:START== -->2つ<!-- ==CYCLE!:END== -->選んで「追加する」を押す、これを繰り返すだけです。</p>
+    <div class="flow auto">
       <div class="step">
-        <span class="no">1</span>
+        <span class="no"></span>
         <span class="body"><b>いま打っている状態のタブを選ぶ</b>
         <span>通常・駆け抜け後・上位後・リセット後。合算は集計を見るためのタブなので、ここでは選びません。</span></span>
       </div>
       <div class="arrow">▼</div>
       <div class="step">
-        <span class="no">2</span>
+        <span class="no"></span>
         <span class="body"><b>データカウンターのG数を入れる</b>
         <span>台の上のカウンターの数字です。<strong>サブ液晶のG数ではありません。</strong>3桁まで入ります。</span></span>
       </div>
       <div class="arrow">▼</div>
+      <!-- ==CYCLE:START== -->
       <div class="step">
-        <span class="no">3</span>
+        <span class="no"></span>
         <span class="body"><b>何周期目だったかを選ぶ</b>
         <span>1〜6周期。<strong>CZや天井で当たったときも必ず選びます。</strong></span></span>
       </div>
       <div class="arrow">▼</div>
+      <!-- ==CYCLE:END== -->
       <div class="step">
-        <span class="no">4</span>
+        <span class="no"></span>
         <span class="body"><b>当たったきっかけを選ぶ</b>
-        <span>周期到達・無名CZ・生駒CZ・銅藍CZ・天井 から1つ。周期が最後まで進んで当たったなら「周期到達」です。</span></span>
+        <span><!-- ==CYCLE:START== -->周期到達・<!-- ==CYCLE:END== -->無名CZ・生駒CZ・銅藍CZ・天井 から1つ。<!-- ==CYCLE:START== -->周期が最後まで進んで当たったなら「周期到達」です。<!-- ==CYCLE:END== --></span></span>
       </div>
       <div class="arrow">▼</div>
       <div class="step">
-        <span class="no">5</span>
+        <span class="no"></span>
         <span class="body"><b>当たったボーナスを選ぶ</b>
         <span>エピソードB・駿城B・駿→エピ（駿城Bから昇格）から1つ。</span></span>
       </div>
       <div class="arrow">▼</div>
       <div class="step">
-        <span class="no">6</span>
+        <span class="no"></span>
         <span class="body"><b>「追加する」を押す</b>
         <span>1件として記録され、入力欄が空になります。次に当たったら1に戻ります。</span></span>
       </div>
     </div>
+    <!-- ==CYCLE:START== -->
     <div class="note">
       <b>CZや天井で当たったときも、周期を必ず選んでください</b><br>
       たとえば3周期の途中でCZを引いて当たった場合、<strong>1周期と2周期は消化済み</strong>です。周期を入れておかないと、その2回が集計から落ちて当選率が実際より高く出ます。なお3周期そのものは途中で終わっているので、集計には数えません。
     </div>
     <p class="cap">最終周期（通常は6周期、その他は4周期）に<strong>到達して</strong>当たった場合と天井は、エピソードB確定なのでボーナスが自動で選ばれます。最終周期中のCZで当たった場合は確定しないので、選択肢は出たままです。</p>
+    <!-- ==CYCLE:END== -->
+    <!-- ==CYCLE!:START== -->
+    <p class="cap">天井で当たった場合はエピソードB確定なので、ボーナスが自動で選ばれます。</p>
+    <!-- ==CYCLE!:END== -->
 
     <h3>状態のタブ</h3>
     <p>上の <strong>通常・駆け抜け後・上位後・リセット後</strong> は、いまどの状態を打っているかです。色で分けてあります（通常＝青／駆け抜け後＝黄／上位後＝ピンク／リセット後＝白）。</p>
@@ -662,13 +692,14 @@
       <b>状態はエピソードBを引くまで変わりません</b><br>
       そのため、駿城Bを入れたあとは状態のタブが押せなくなります。エピソードB（昇格を含む）を入れると解除され、次の状態を選べます。実戦履歴でも、エピソードBを引いたところで区切って状態を出し直します。
     </div>
-    <p class="cap">駆け抜け後・上位後・リセット後は4周期までです。5・6周期の選択肢は出ません。</p>
+    <!-- ==CYCLE:START== --><p class="cap">駆け抜け後・上位後・リセット後は4周期までです。5・6周期の選択肢は出ません。</p><!-- ==CYCLE:END== -->
 
     <div class="note">
       <b>一覧では、CZは1文字に略します</b><br>
-      追加した記録は「4周期 <span style="color:#ff8a82">無CZ</span>」のように並びます。<span style="color:#ff8a82">無</span>＝無名、<span style="color:#5fd398">生</span>＝生駒、<span style="color:#8fc0ff">銅</span>＝銅藍で、カードのアイコンと同じ字です。文字の色もキャラの色に合わせてあります。
+      追加した記録は「<!-- ==CYCLE:START== -->4周期 <!-- ==CYCLE:END== --><span style="color:#ff8a82">無CZ</span>」のように並びます。<span style="color:#ff8a82">無</span>＝無名、<span style="color:#5fd398">生</span>＝生駒、<span style="color:#8fc0ff">銅</span>＝銅藍で、カードのアイコンと同じ字です。文字の色もキャラの色に合わせてあります。
     </div>
   </section>
+<!-- ==WINS:END== -->
 
   <!-- 5 -->
   <section id="s5">
@@ -689,7 +720,7 @@
     </div>
     <ul class="legend">
       <li><span class="num">1</span><span class="txt"><b>現在ポイントリセット</b><span>3キャラの現在ポイントを0にして、その分を合計から差し引きます。直後に出る「元に戻す」で取り消せます。</span></span></li>
-      <li><span class="num">2</span><span class="txt"><b>全リセット</b><span>確認画面のあと、カウント・分布グラフの記録・下段ベル・G数・<strong>当選履歴・メモ</strong>をまとめて消します。保存済みの実戦は残ります。</span></span></li>
+      <li><span class="num">2</span><span class="txt"><b>全リセット</b><span>確認画面のあと、カウント・分布グラフの記録・下段ベル・G数・<strong><!-- ==WINS:START== -->当選履歴・<!-- ==WINS:END== -->メモ</strong>をまとめて消します。保存済みの実戦は残ります。</span></span></li>
     </ul>
 
     <h3>銅藍の強制周期（150G・300G）</h3>
@@ -838,7 +869,7 @@
   <!-- 9 -->
   <section id="s9">
     <h2><span class="n">9</span>実戦履歴と結果カード</h2>
-    <p>画面下の <strong>この実戦を保存</strong> を押すと、その実戦がまるごと記録に残ります。当選履歴カウンターの入力タブからも押せます。</p>
+    <p>画面下の <strong>この実戦を保存</strong> を押すと、その実戦がまるごと記録に残ります。<!-- ==WINS:START== -->当選履歴カウンターの入力タブからも押せます。<!-- ==WINS:END== --></p>
     <!-- ==SEND:START== -->
     <p class="cap">まだ参加していない場合は、押した時点で参加の画面が出ます。参加せずに閉じると保存はされません。数えたカウント自体は消えないので、参加してから押し直せます。</p>
     <!-- ==SEND:END== -->
@@ -847,23 +878,25 @@
     <div class="note">
       <b>保存してもカウントは消えません</b><br>
       保存が終わると <b>結果カードを作る</b> と <b>カウントを0にする</b> が出ます。0にするかは自分で選べるので、同じ台を続けて打つならそのまま数え続けられます。<br><br>
-      ただし<b>当選履歴とメモは、保存した時点で空になります</b>。実戦の記録に移したためで、消えたわけではありません。
+      ただし<b><!-- ==WINS:START== -->当選履歴とメモは<!-- ==WINS:END== --><!-- ==WINS!:START== -->メモは<!-- ==WINS!:END== -->、保存した時点で空になります</b>。実戦の記録に移したためで、消えたわけではありません。
     </div>
 
     <h3>あとから見る</h3>
-    <p>右上のメニューから <strong>実戦履歴</strong> を開きます。行には日付と設定だけが並び、タップするとその実戦の<strong>結果カード</strong>、CZ突入時のポイント分布、当選した周期の分布、書いてあればメモが出ます。</p>
+    <p>右上のメニューから <strong>実戦履歴</strong> を開きます。行には日付と設定だけが並び、タップするとその実戦の<strong>結果カード</strong>、CZ突入時のポイント分布、<!-- ==CYCLE:START== -->当選した周期の分布、<!-- ==CYCLE:END== -->書いてあればメモが出ます。</p>
     <p>上の <strong>すべて／6〜1／不明</strong> のボタンで、<strong>設定ごとに絞り込め</strong>ます。絞り込み中は件数が「3件 / 全8件」のように出ます。</p>
-    <p>結果カードには、発光率・平均pt/CZ・総ゲーム数・下段ベル・キャラ別の内訳（それぞれの発光率と平均pt）・当選履歴のまとめが入ります。<strong>シェアする</strong>を押すと画像として保存や投稿ができます。</p>
+    <p>結果カードには、発光率・平均pt/CZ・総ゲーム数・下段ベル・キャラ別の内訳（それぞれの発光率と平均pt）<!-- ==WINS:START== -->・当選履歴のまとめ<!-- ==WINS:END== -->が入ります。<strong>シェアする</strong>を押すと画像として保存や投稿ができます。</p>
 
     <h3>消すとき</h3>
-    <p>行を開いて <strong>この実戦を削除</strong> を押します。<strong>全リセット</strong>は数え途中のカウント・当選履歴・メモを消すもので、保存済みの実戦には手をつけません。</p>
+    <p>行を開いて <strong>この実戦を削除</strong> を押します。<strong>全リセット</strong>は数え途中のカウント・<!-- ==WINS:START== -->当選履歴・<!-- ==WINS:END== -->メモを消すもので、保存済みの実戦には手をつけません。</p>
     <p class="cap">保存できるのは500件までです。超えると古いものから消えます。1実戦あたり1〜8KB程度なので、500件でも1MBに届きません。</p>
   </section>
 
+<!-- ==WINS:START== -->
   <!-- 10 -->
   <section id="s10">
-    <h2><span class="n">10</span>周期当選率の出しかた</h2>
-    <p>当選履歴カウンターの <strong>周期当選率</strong> のタブに出ます。入れた記録から自動で計算されます。1件も入れていないうちは、すべて0の空の表が出ます。</p>
+    <h2><span class="n">10</span><!-- ==CYCLE:START== -->周期当選率の出しかた<!-- ==CYCLE:END== --><!-- ==CYCLE!:START== -->集計の見かた<!-- ==CYCLE!:END== --></h2>
+    <p>当選履歴カウンターの <!-- ==CYCLE:START== --><strong>周期当選率</strong><!-- ==CYCLE:END== --><!-- ==CYCLE!:START== --><strong>集計</strong><!-- ==CYCLE!:END== --> のタブに出ます。入れた記録から自動で計算されます。1件も入れていないうちは、すべて0の空の表が出ます。</p>
+    <!-- ==CYCLE:START== -->
     <p><strong>周期別</strong>の表は、周期ごとに「到達」「当選」「当選率」を並べます。</p>
     <p><strong>到達</strong>は、その周期を<strong>最後まで消化した</strong>回数です。抽選を受けた回数、と言い換えてもかまいません。</p>
     <div class="note">
@@ -872,15 +905,18 @@
     </div>
     <p><strong>当選</strong>は、きっかけが<strong>周期到達</strong>のものだけです。CZや天井での当選は、周期が最後まで進んで当たったわけではないので含めません。</p>
     <p><strong>当選率</strong>は 当選 ÷ 到達 です。</p>
+    <!-- ==CYCLE:END== -->
     <p><strong>CZ当選</strong>は別の表になり、無名CZ・生駒CZ・銅藍CZごとの当選数とエピソードB率が出ます。記録がある種類だけ並びます。</p>
     <p><strong>エピソードB率</strong>に、駿城Bからの昇格（駿→エピ）は含みません。直撃だけの割合です。</p>
-    <p><strong>合算</strong>のタブでは、全状態と、短縮（駆け抜け後・上位後・リセット後）の2つを並べます。ST確率・全ボーナス・CZ確率もここに出ます。</p>
+    <!-- ==CYCLE:START== --><p><strong>合算</strong>のタブでは、全状態と、短縮（駆け抜け後・上位後・リセット後）の2つを並べます。ST確率・全ボーナス・CZ確率もここに出ます。</p><!-- ==CYCLE:END== -->
+    <!-- ==CYCLE!:START== --><p><strong>合算</strong>のタブに、ST確率・全ボーナス・CZ確率が出ます。</p><!-- ==CYCLE!:END== -->
     <div class="formula">
       <b>ST確率</b>
       <code>入れたG数の合計 ÷ エピソードBの回数</code>
       <span class="cap">昇格（駿→エピ）もSTには入るので含みます。全ボーナスは駿城Bも数えた確率、CZ確率のCZ回数はカウンター側の突入回数を使います。</span>
     </div>
   </section>
+<!-- ==WINS:END== -->
 
   <!-- 11 -->
   <section id="s11">

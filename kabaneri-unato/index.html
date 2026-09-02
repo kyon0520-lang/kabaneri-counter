@@ -81,12 +81,6 @@
   }
   .menu button:active,.menu a:active{background:var(--panel2)}
   
-  /* メニューに出す参加状態。文字だけだと見落とすので色を付ける */
-  .menu .mstate{
-    display:block;font-size:10.5px;margin-top:3px;color:var(--muted);font-weight:700;
-  }
-  .menu .mstate.on{color:#7fe0ab}
-  
   h1{font-size:15px;margin:0;letter-spacing:.02em;min-width:0}
   /* サイト名。機種名より一段小さく、上に添える */
   header .site{display:flex;align-items:center;gap:6px;margin:0 0 3px}
@@ -492,30 +486,6 @@
   .a2hs-note b{color:var(--text)}
 
   
-  /* 参加（メール登録）まわり */
-  .sheet.join .lead{font-size:12.5px;color:var(--muted);line-height:1.85;margin:0 0 12px}
-  .sheet.join .give{
-    border:1px solid var(--line);background:var(--panel2);border-radius:10px;
-    padding:11px 12px;margin:0 0 12px;font-size:11.5px;line-height:1.9;color:var(--muted);
-  }
-  .sheet.join .give b{color:var(--text);display:block;margin-bottom:2px}
-  .sheet.join input[type="email"]{
-    width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;
-    color:var(--text);font-family:inherit;font-size:16px;padding:12px;margin-bottom:10px;
-  }
-  .sheet.join input[type="email"]:focus{outline:none;border-color:#3b82f6}
-  .sheet.join .sent{
-    border:1px solid rgba(47,181,106,.5);background:rgba(47,181,106,.1);
-    border-radius:10px;padding:12px;font-size:12.5px;line-height:1.9;margin:0 0 12px;
-  }
-  .sheet.join .sent b{color:#7fe0ab}
-  .sheet.join .who{font-size:12.5px;line-height:1.8;margin:0 0 12px}
-  .sheet.join .who b{color:#7fe0ab}
-  .sheet.join .danger{
-    background:none;border:0;color:#ff8a82;font-size:11.5px;
-    font-family:inherit;padding:8px 0;cursor:pointer;text-decoration:underline;
-  }
-  
 
   .modal{
     position:fixed;inset:0;z-index:50;padding:24px;
@@ -530,52 +500,8 @@
   .sheet p{margin:0 0 6px;font-size:14px;font-weight:700}
   .sheet .sub{margin:0 0 14px;font-size:11px;color:var(--muted);font-weight:400;line-height:1.6}
   .sheet .acts{display:flex;gap:8px}
-  /* ===== 当選履歴 ===== */
-  .winhandle{
-    position:fixed;left:0;top:38%;z-index:40;
-    background:var(--panel2);color:var(--muted);
-    border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;
-    padding:12px 6px;font-size:11px;line-height:1.25;letter-spacing:.08em;
-    cursor:pointer;font-family:inherit;
-  }
-  .winscrim{display:none;position:fixed;inset:0;z-index:44;background:rgba(6,16,28,.5)}
-  body.win-open .winscrim{display:block}
-  .winpanel{
-    position:fixed;top:0;left:0;bottom:0;z-index:45;
-    /* 当選履歴の1行に収める情報が多いので、画面をほぼ使い切る */
-    width:min(96vw,460px);background:var(--panel);
-    border-right:1px solid var(--line);
-    padding:calc(14px + env(safe-area-inset-top)) 14px 16px;
-    display:flex;flex-direction:column;gap:10px;overflow-y:auto;
-    transform:translateX(-100%);transition:transform .26s cubic-bezier(.2,.7,.3,1);
-  }
-  .winpanel.open{transform:none}
-  .wtabs{display:flex;gap:4px;background:var(--panel2);border:1px solid var(--line);
-         border-radius:10px;padding:4px}
-  .wtabs button{
-    flex:1;background:none;border:0;border-radius:7px;color:var(--muted);
-    font-family:inherit;font-size:11.5px;padding:9px 2px;cursor:pointer;white-space:nowrap;
-  }
-  /* 状態ごとに色を分ける。選んだものだけ塗る */
-  .wtabs button.on{background:#2f6bd8;color:#fff;font-weight:700}
-  .wtabs button[data-mode="through"].on{background:#e8c06a;color:#16283f}
-  .wtabs button[data-mode="upper"].on{background:#e86aa8;color:#fff}
-  .wtabs button[data-mode="reset"].on{background:#eef2f8;color:#16283f}
-  .wtabs button[data-mode="all"].on{background:#5c6f88;color:#fff}
-  .wtabs button:disabled{opacity:.35;cursor:default}
-  .wtabs button.on:disabled{opacity:.9}
-  .wlock{margin:0;font-size:10.5px;color:var(--muted);line-height:1.6}
-  /* 記録と当選率の切り替え */
-  .wview{display:flex;gap:0;border-bottom:1px solid var(--line)}
-  .wview button{
-    flex:1;background:none;border:0;border-bottom:2px solid transparent;
-    color:var(--muted);font-family:inherit;font-size:12.5px;padding:10px 2px;cursor:pointer;
-  }
-  .wview button.on{color:var(--text);font-weight:700;border-bottom-color:#2f6bd8}
-  /* 一覧は溜まっても高さを取りすぎないよう、この中でスクロールさせる */
-  .winlist{max-height:40vh;overflow-y:auto}
-  .winform{display:flex;flex-direction:column;gap:7px}
-  /* 見出し。番号を添えて操作の順番が分かるようにする */
+  
+  /* 記録の引き継ぎでも使うので、当選履歴を外しても残す */
   .wlbl{
     display:flex;align-items:center;gap:8px;
     font-size:13px;font-weight:700;color:var(--text);letter-spacing:.04em;margin-top:10px;
@@ -585,142 +511,7 @@
     background:#2f6bd8;color:#fff;font-size:11px;font-weight:700;
     display:grid;place-items:center;
   }
-  /* 取り違えやすいので、注意として淡い赤で出す */
-  .whint{margin:-2px 0 0;font-size:10px;color:#ff9d96;line-height:1.6}
-  .winform input{
-    background:var(--panel2);border:1px solid var(--line);border-radius:9px;
-    color:var(--text);font-family:inherit;font-size:16px;padding:10px 12px;width:100%;
-  }
-  .winform input:focus{outline:none;border-color:#3b82f6}
-  .wchips{display:flex;flex-wrap:wrap;gap:6px}
-  .wchips button{
-    background:var(--panel2);border:1px solid var(--line);border-radius:999px;
-    color:var(--text);font-family:inherit;font-size:12px;padding:8px 12px;cursor:pointer;
-  }
-  .wchips button.on{background:#2f6bd8;border-color:#2f6bd8;color:#fff;font-weight:700}
-  /* ボーナスは選ぶ前から色で分かるようにする。選択中は輪郭で示す */
-  .wchips button[data-bonus="episode"]{background:#2f6bd8;border-color:#2f6bd8;color:#fff;opacity:.55}
-  .wchips button[data-bonus="shunjo"]{background:#eef2f8;border-color:#eef2f8;color:#16283f;opacity:.55}
-  .wchips button[data-bonus="both"]{
-    position:relative;background:none;border-color:#eef2f8;color:inherit;opacity:.55;
-    padding:0;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-width:104px;
-  }
-  .wchips button[data-bonus="both"] i,
-  .wchips button[data-bonus="both"] b{
-    font-style:normal;padding:8px 0;font-size:12px;text-align:center;
-  }
-  .wchips button[data-bonus="both"] i{background:#eef2f8;color:#16283f}
-  .wchips button[data-bonus="both"] b{background:#2f6bd8;color:#fff}
-  .wchips button[data-bonus].on{
-    opacity:1;font-weight:700;
-    box-shadow:0 0 0 2px var(--panel), 0 0 0 4px #7fb0ff;
-  }
-  .wchips button.r{border-color:rgba(226,69,60,.6)}
-  .wchips button.g{border-color:rgba(47,181,106,.6)}
-  .wchips button.b{border-color:rgba(59,130,246,.6)}
-  .wchips button.ceil{border-color:rgba(232,192,106,.6);color:#e8c06a}
-  .wchips button.ceil.on{background:#8c7042;border-color:#8c7042;color:#fff}
-  .wchips button.r.on{background:#c1272d;border-color:#c1272d}
-  .wchips button.g.on{background:#17864a;border-color:#17864a}
-  .wchips button.b.on{background:#245fc4;border-color:#245fc4}
-  .winadd{
-    margin-top:8px;background:#2f6bd8;border:1px solid #2f6bd8;color:#fff;
-    border-radius:10px;padding:12px;font-size:14px;font-weight:700;
-    font-family:inherit;cursor:pointer;
-  }
-  /* カウンター側と同じ操作を、当選履歴からも押せるようにしたもの */
-  .wacts{display:flex;gap:8px;margin-top:14px}
-  .wacts button{
-    flex:1;border-radius:10px;padding:12px 6px;font-size:13px;font-weight:700;
-    font-family:inherit;cursor:pointer;background:transparent;
-  }
-  .wacts .wsave{border:1px solid rgba(47,181,106,.5);color:#7fe0ab}
-  .wacts .wreset{border:1px solid rgba(226,69,60,.5);color:#ff8a82}
-  .winlist{display:flex;flex-direction:column;gap:5px}
-  .winstats{padding-bottom:8px}
-  /* 列幅を決めたグリッドにする。中身の長さで押し出されると
-     ボーナスと×の位置が行ごとにずれ、幅が足りない行では×が
-     画面の外へ出て押せなくなる。伸び縮みするのは周期の欄だけ */
-  .winrow{
-    display:grid;grid-template-columns:auto 66px 46px minmax(0,1fr) 78px 16px;
-    align-items:center;gap:4px;font-size:12px;
-    background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;
-  }
-  /* CZ当選は種別の文字だけキャラの色にする（枠は付けない） */
-  .winrow.red .via{color:#ff8a82}
-  .winrow.green .via{color:#5fd398}
-  .winrow.blue .via{color:#8fc0ff}
-  .winrow .no{color:var(--muted);font-size:10px}
-  /* 状態の欄。続きの行は空欄にして、G数と周期の位置を揃える */
-  .winrow .md{min-width:0}
-  /* 状態タブと同じ色にして、セクションの切り替わりを色で追えるようにする */
-  .winrow .md i{
-    font-style:normal;display:inline-block;font-size:9.5px;
-    border-radius:999px;padding:2px 7px;white-space:nowrap;font-weight:700;
-  }
-  .winrow .md i[data-mode="normal"]{background:#2f6bd8;color:#fff}
-  .winrow .md i[data-mode="through"]{background:#e8c06a;color:#16283f}
-  .winrow .md i[data-mode="upper"]{background:#e86aa8;color:#fff}
-  .winrow .md i[data-mode="reset"]{background:#eef2f8;color:#16283f}
-  /* G数は右揃えにして、続く周期の位置を揃える */
-  .winrow .g{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
-  /* 周期ときっかけ。ここだけが幅に合わせて縮む。
-     狭い画面では末尾を省略して、右のボーナスと×を守る */
-  .winrow .via{
-    color:var(--muted);white-space:nowrap;
-    overflow:hidden;text-overflow:ellipsis;
-  }
-  /* どの種類でも同じ幅にして、上下の行で左右の端を揃える */
-  .winrow .bn{
-    font-size:10.5px;font-weight:700;border-radius:999px;
-    padding:4px 6px;white-space:nowrap;text-align:center;
-  }
-  .winrow .bn.ep{background:#2f6bd8;color:#fff}          /* エピソードB */
-  .winrow .bn.sh{background:#eef2f8;color:#16283f}       /* 駿城B */
-  /* 駿→エピ は白と青のツートン。左右をきっちり半分にし、矢印は境目に重ねる */
-  .winrow .bn.two{
-    position:relative;display:grid;grid-template-columns:1fr 1fr;
-    padding:0;overflow:hidden;
-  }
-  .winrow .bn.two i,.winrow .bn.two b{font-style:normal;padding:4px 0;text-align:center}
-  .winrow .bn.two i{background:#eef2f8;color:#16283f}
-  .winrow .bn.two b{background:#2f6bd8;color:#fff}
-  .bn.two .ar, .wchips button.two .ar{
-    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    background:var(--panel);color:#fff;border-radius:50%;
-    width:1.35em;height:1.35em;display:grid;place-items:center;
-    font-size:.92em;line-height:1;pointer-events:none;
-  }
-  .winrow .x{
-    position:relative;background:none;border:0;padding:0;
-    color:var(--muted);cursor:pointer;font-size:14px;font-family:inherit;
-  }
-  /* 見た目は小さいままで、指で押せる範囲だけ広げる */
-  .winrow .x::after{content:'';position:absolute;inset:-9px -8px}
-  .winempty{font-size:11px;color:var(--muted);padding:6px 2px}
-  .winstats table{width:100%;border-collapse:collapse;font-size:11.5px}
-  .winstats th,.winstats td{border:1px solid var(--line);padding:6px 4px;text-align:center}
-  .winstats th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:10px}
-  .winstats td.n{font-variant-numeric:tabular-nums}
-  .winstats h3{margin:10px 0 6px;font-size:11px;color:var(--muted);font-weight:600}
-  .winstats .winnote{margin:6px 0 0;font-size:10.5px;color:var(--muted);line-height:1.7}
-  /* 合算値タブの数字と見た目を揃える（大きさ・太さ・色分け） */
-  .wsum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:2px 0 0}
-  .wsum div{
-    background:var(--panel2);border:1px solid var(--line);border-radius:10px;
-    padding:10px 6px;text-align:center;
-  }
-  .wsum .k{display:block;font-size:10px;color:var(--muted)}
-  .wsum .v{display:block;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px}
-  .wsum .s{display:block;font-size:9px;color:var(--muted);margin-top:2px;line-height:1.5}
-  .wsum .st{background:rgba(59,130,246,.10);border-color:rgba(59,130,246,.35)}
-  .wsum .st .v{color:#8fc0ff}
-  .wsum .bn{background:rgba(232,192,106,.10);border-color:rgba(232,192,106,.35)}
-  .wsum .bn .v{color:#e8c06a}
-  /* CZ確率だけ緑。ST確率と同じ青だと、隣り合っていて見分けがつかない */
-  .wsum .cz{background:rgba(47,181,106,.10);border-color:rgba(47,181,106,.35)}
-  .wsum .cz .v{color:#7fe0ab}
-  @media (prefers-reduced-motion:reduce){ .winpanel{transition:none} }
+  
   /* ===== 打ちながら書くメモ ===== */
   .memohandle{
     position:fixed;right:0;top:38%;z-index:40;
@@ -916,10 +707,6 @@
 <nav class="menu" id="menu">
   <button id="histbtn">実戦履歴</button>
   
-  <button id="pullbtn">実戦履歴を読み出す</button>
-  <button id="acctbtn">みんなのスロット<span class="mstate" id="acctstate">未参加</span></button>
-  <a id="mypagebtn" href="/mypage/" target="_blank" rel="noopener">ブラウザで実戦履歴を見る</a>
-  
   <button id="trbtn">記録の引き継ぎ</button>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
 </nav>
@@ -954,7 +741,7 @@
       <button data-set="none">不明</button>
     </div>
         <div class="histlist" id="histlist"></div>
-    <p class="note">行をタップすると内訳が開きます。<br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button></p>
+    <p class="note">行をタップすると内訳が開きます。</p>
   </section>
 
   <!-- カード群をJSで描画 -->
@@ -1082,7 +869,7 @@
   <div class="sheet" role="dialog" aria-modal="true">
     <p>保存しました</p>
     <p class="sub" id="savedsub"></p>
-    <div id="cmp" hidden></div>
+    
     <div class="acts stack">
       <button class="primary" id="mkcard">結果カードを作る</button>
       <button id="clearafter">カウントを0にする</button>
@@ -1091,66 +878,7 @@
   </div>
 </div>
 
-<!-- 当選履歴。右にスワイプか左端のつまみで開く -->
-<div class="winscrim" id="winscrim"></div>
-<aside class="winpanel" id="winpanel" aria-hidden="true">
-  <div class="memohd"><b>当選履歴カウンター</b><button class="linkbtn" id="winclose">閉じる</button></div>
 
-  <div class="wview" id="winview">
-    <button data-view="log" class="on">入力</button>
-    <button data-view="list">当選履歴</button>
-    <button data-view="stats">周期当選率</button>
-  </div>
-
-  <div class="wtabs" id="wintabs">
-    <button data-mode="normal" class="on">通常</button>
-    <button data-mode="through">駆け抜け後</button>
-    <button data-mode="upper">上位後</button>
-    <button data-mode="reset">リセット後</button>
-    <button data-mode="all" class="allt">合算</button>
-  </div>
-  <p class="wlock" id="wlock" hidden>エピソードBを引くまで状態は変わりません</p>
-
-  <div class="winform" id="winform">
-    <label class="wlbl"><i>1</i>データカウンターのG数</label>
-    <input id="wing" type="number" inputmode="numeric" placeholder="例 482" min="0" max="999">
-    <p class="whint">台の上のカウンターの数字です。サブ液晶のG数ではありません。</p>
-
-    <label class="wlbl"><i>2</i>何周期目だったか</label>
-    <div class="wchips" id="wincycle">
-      <button data-cycle="1">1周期</button><button data-cycle="2">2周期</button>
-      <button data-cycle="3">3周期</button><button data-cycle="4">4周期</button>
-      <button data-cycle="5">5周期</button><button data-cycle="6">6周期</button>
-    </div>
-
-    <label class="wlbl"><i>3</i>当たったきっかけ</label>
-    <div class="wchips" id="winvia">
-      <button data-via="cycle">周期到達</button>
-      <button data-via="red" class="r">無名CZ</button>
-      <button data-via="green" class="g">生駒CZ</button>
-      <button data-via="blue" class="b">銅藍CZ</button>
-      <button data-via="ceiling" class="ceil">天井</button>
-    </div>
-
-    <label class="wlbl"><i>4</i><span id="wblbl">当たったボーナス</span></label>
-    <div class="wchips" id="winbonus">
-      <button data-bonus="episode">エピソードB</button>
-      <button data-bonus="shunjo" class="sh">駿城B</button>
-      <button data-bonus="both" class="two"><i>駿</i><b>エピ</b><span class="ar">→</span></button>
-    </div>
-
-    <button class="primary winadd" id="winadd">追加する</button>
-
-    <div class="wacts">
-      <button class="wsave" id="winsave">この実戦を保存</button>
-      <button class="wreset" id="winreset">全リセット</button>
-    </div>
-  </div>
-
-  <div class="winlist" id="winlist"></div>
-  <div class="winstats" id="winstats" hidden></div>
-</aside>
-<button class="winhandle" id="winhandle" aria-label="当選履歴を開く">当<br>選</button>
 
 <!-- 打ちながら書くメモ。横スワイプか右端のつまみで開く -->
 <div class="memoscrim" id="memoscrim"></div>
@@ -1160,7 +888,7 @@
     <button class="linkbtn" id="memoclose">閉じる</button>
   </div>
   <textarea id="memotext" placeholder="台番号、ホール、気づいたことなど" maxlength="2000"></textarea>
-  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。みんなのスロットには送りません。</p>
+  <p class="memonote">この実戦の記録と一緒に、<b>この端末の中だけ</b>に残ります。</p>
 </aside>
 <button class="memohandle" id="memohandle" aria-label="メモを開く">メ<br>モ</button>
 
@@ -1189,64 +917,6 @@
   </div>
 </div>
 
-
-<!-- 参加（メール登録）。数えるのは登録不要、保存だけ登録制。
-     パスワードは持たず、届いたリンクを押せた人を本人とみなす -->
-<div class="modal" id="joinmodal" hidden>
-  <div class="sheet join" role="dialog" aria-modal="true">
-
-    <!-- まだ参加していないとき -->
-    <div id="joinform">
-      <h2>実戦を保存するには参加が必要です</h2>
-      <p class="lead">記録はみんなのスロットに預かります。<b>端末を変えても、Safariとホーム画面アプリの間でも、同じ記録を読み出せます。</b>数えるだけなら参加は要りません。</p>
-
-      <div class="give">
-        <b>預かるもの</b>押した回数、総ゲーム数、下段ベル、CZ突入時のポイント、当選履歴、メモ、設定と根拠（選んだ場合のみ）
-      </div>
-      <div class="give">
-        <b>みんなの集計に使うもの</b>上のうち<strong>メモを除いた部分</strong>を、統計と設定判別に使い、サイト上で統計値として公開します。メモは読み出しのために預かるだけで、集計には使いません
-      </div>
-      <div class="give">
-        <b>使わないもの</b>名前、位置、店舗、端末を特定できる情報。メールアドレスはログインにだけ使い、公開しません
-      </div>
-
-      <label class="wlbl" for="joinemail"><i>＠</i>メールアドレス</label>
-      <input type="email" id="joinemail" inputmode="email" autocomplete="email"
-             autocapitalize="off" spellcheck="false" placeholder="you@example.com">
-      <p class="lead">届いたリンクを押すだけでログインします。パスワードはありません。</p>
-
-      <div class="acts stack">
-        <button class="primary" id="joinsend">確認メールを送る</button>
-        <button class="ghostish" id="joincancel">やめる</button>
-      </div>
-      <p class="lead"><a href="/privacy.html" target="_blank" rel="noopener">個人情報の扱いについて</a></p>
-    </div>
-
-    <!-- メールを送ったあと -->
-    <div id="joinsent" hidden>
-      <h2>メールを送りました</h2>
-      <div class="sent"><b id="joinaddr">—</b> にログイン用のリンクを送りました。<br>そのリンクを押すと参加が完了し、この画面に戻ってきます。</div>
-      <p class="lead">30分で使えなくなります。届かないときは迷惑メールをご確認ください。</p>
-      <div class="acts stack">
-        <button class="ghostish" id="joinback">別のアドレスにする</button>
-        <button class="ghostish" id="joinclose">閉じる</button>
-      </div>
-    </div>
-
-    <!-- 参加済み -->
-    <div id="joinme" hidden>
-      <h2>みんなのスロット</h2>
-      <p class="who">参加中：<b id="meemail">—</b><br><span class="sub">預かっている実戦　<b id="mecount">0</b> 件</span></p>
-      <div class="acts stack">
-        <button class="primary" id="mepull">実戦履歴を読み出す</button>
-        <button class="ghostish" id="melogout">この端末からログアウト</button>
-        <button class="ghostish" id="meclose">閉じる</button>
-      </div>
-      <button class="danger" id="medelete">アカウントと記録をすべて削除する</button>
-    </div>
-
-  </div>
-</div>
 
 
 <div class="modal" id="cardmodal" hidden>
@@ -1283,16 +953,6 @@
 </div>
 
 
-<div class="modal" id="askmodal" hidden>
-  <div class="sheet" role="dialog" aria-modal="true">
-    <p id="asktext">—</p>
-    <div class="acts">
-      <button id="askno">やめる</button>
-      <button class="primary" id="askyes">実行する</button>
-    </div>
-  </div>
-</div>
-
 
 <div class="toast" id="toast" hidden></div>
 
@@ -1321,8 +981,7 @@ let state;
 let czLog = [];      // CZ突入時のポイント記録
 let bell = { n:0, g:0 };   // 下段ベルの回数と現在のG数
 const WIN_MODES = { normal:'通常', through:'駆け抜け後', upper:'上位後', reset:'リセット後' };
-// 駆け抜け後・上位後・リセット後は4周期まで
-const WIN_MAX_CYCLE = { normal:6, through:4, upper:4, reset:4 };
+
 let memo = '';             // 実戦中のメモ。端末内だけに残し、送信はしない
 let wins = [];             // 当選履歴。{g, mode, via:'cycle'|'cz', cycle, cz, bonus}
 let winMode = 'normal';    // いま見ている／記録する状態
@@ -1579,15 +1238,9 @@ function doReset(){
   document.getElementById('games').value = '';
   setBellMode(1);
   CHARS.forEach(c => setMode(c.id, 1));
-  // 当選履歴も空にしたので、開いている画面を描き直す
-  winMode = 'normal';
-  pendCycle = pendVia = pendBonus = null;
-  bonusLocked = false;
-  document.getElementById('wing').value = '';
-  winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
-  renderWins(); applyWinView();
+  
   render(); save();
-  toast('カウントと当選履歴をリセットしました');
+  toast( 'カウントをリセットしました' );
 }
 
 document.getElementById('mok').addEventListener('click', doReset);
@@ -1659,39 +1312,7 @@ function distRowsHtml(pts){
   return html;
 }
 
-/* 当選した周期の分布。規定ptの表と同じ形にして、並べても違和感が出ないようにする。
-   list は当選の配列、maxC は数える周期の上限（通常6・短縮4） */
-function cycleDistHtml(list, maxC){
-  // 到達は最後まで消化した周期だけを数える（doneCycles を参照）
-  const known = list.filter(w => w.cycle >= 1 && w.cycle <= maxC);
-  const hits = known.filter(w => w.via === 'cycle');
-  const total = hits.length;
-  const counts = [];
-  for (let n = 1; n <= maxC; n++) counts.push(hits.filter(w => w.cycle === n).length);
-  const pct = n => total ? n / total * 100 : 0;
-  const maxPct = Math.max(...counts.map(pct), 1);
 
-  const rows = counts.map((n, i) => {
-    const cycle = i + 1;
-    const reached = known.filter(w => doneCycles(w) >= cycle).length;
-    const hitRate = reached ? (n / reached * 100).toFixed(1) + '%' : '—';
-    const p = pct(n);
-    return `<tr class="${n ? 'hit' : ''}">
-      <td>${cycle}周期</td>
-      <td class="range">${hitRate}</td>
-      <td class="dbar"><div class="barwrap">
-        <div class="bartrack"><div class="barfill" style="width:${n ? (p / maxPct * 100).toFixed(1) : 0}%"></div></div>
-        <span class="barpct">${p.toFixed(1)}%</span>
-      </div></td>
-      <td class="cnt">${fmt(n)}</td>
-    </tr>`;
-  }).join('');
-
-  return { total, html: `<div class="distwrap"><table class="dist">
-    <thead><tr><th>周期</th><th>当選率</th><th>振り分け</th><th>当選</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table></div>` };
-}
 
 /* 分布の表をまるごと組み立てる（見出し行つき）。実戦履歴の中で使う */
 function distTableHtml(pts){
@@ -2012,7 +1633,7 @@ function renderHist(){
   document.getElementById('hs-n').textContent = histFilter === 'all'
     ? `${fmt(hist.length)}件`
     : `${fmt(shown.length)}件 / 全${fmt(hist.length)}件`;
-   renderSendState(); 
+  
 }
 
 document.getElementById('histbtn').addEventListener('click', () => {
@@ -2059,15 +1680,7 @@ document.getElementById('histlist').addEventListener('click', e => {
             ? `<div class="hdisth">CZ突入時のポイント分布（${fmt(pts.length)}回）</div>` + distTableHtml(pts)
             : '<div class="hdisth">この実戦では無名・生駒のCZ突入がありません</div>';
 
-          // 当選した周期の分布。通常と短縮で周期の数が違うので分けて出す
-          const ws = rec.wins || [];
-          const normal = cycleDistHtml(ws.filter(w => (w.mode || 'normal') === 'normal'), 6);
-          const short = cycleDistHtml(ws.filter(w => SHORT_MODES.includes(w.mode || 'normal')), 4);
-          if (normal.total) html += `<div class="hdisth">当選した周期・通常（${fmt(normal.total)}回）</div>` + normal.html;
-          if (short.total)  html += `<div class="hdisth">当選した周期・短縮（${fmt(short.total)}回）</div>` + short.html;
-          if (!normal.total && !short.total && ws.length) {
-            html += '<div class="hdisth">周期での当選がありません（CZ・天井のみ）</div>';
-          }
+          
           box.innerHTML = html;
         }
       }
@@ -2105,8 +1718,8 @@ function openSaveSheet(){
       const s = state[c.id];
       return `${c.name}: 非発光${fmt(s.no)} / 発光${fmt(s.glow)} / 高確${fmt(s.hi)} / ${c.hit}${fmt(s.cz)}`;
     }).join('<br>') +
-    `<br>CZ突入時のpt: ${czLog.length ? czLog.map(r => fmt(r.pt)).join(', ') : 'なし'}` +
-    `<br>当選履歴: ${wins.length ? `${fmt(wins.length)}件（合計 ${fmt(wins.reduce((a, w) => a + w.g, 0))}G）` : 'なし'}`;
+    `<br>CZ突入時のpt: ${czLog.length ? czLog.map(r => fmt(r.pt)).join(', ') : 'なし'}`
+    ;
 
   pendingSetting = null; pendingEvidence = null;
   document.querySelectorAll('#setchips button').forEach(x => x.classList.toggle('on', x.dataset.set === ''));
@@ -2116,9 +1729,6 @@ function openSaveSheet(){
 }
 
 document.getElementById('savebtn').addEventListener('click', () => {
-  
-  // 保存はみんなのスロットに預ける形なので、参加していないとできない
-  if (!me) { openJoin(); return; }
   
   openSaveSheet();
 });
@@ -2164,355 +1774,22 @@ document.getElementById('sok').addEventListener('click', () => {
     return;
   }
 
-  memo = ''; memoText.value = ''; wins = []; renderWins(); save();
+  memo = ''; memoText.value = ''; wins = [];  save();
   document.getElementById('savemodal').hidden = true;
   renderHist(); renderDist();
   afterSave(rec);
 });
 
 
-/* ---------- みんなのスロットへの送信 ----------
-   保存した瞬間に送る。失敗したら sent:false のまま端末に残し、
-   起動時と、圏外から復帰した時に送り直す。
-   レコードのIDは端末が採番しているので、二重に届いてもサーバー側で弾かれる。 */
-const SEND_KEY = 'kabaneri-send-v1';
-const API_RECORDS = '/api/records';
-const APP_VERSION = 'v22';
-
-let sendCfg = { clientId:null, consent:null };   // consent: null=未確認 / true=送る / false=送らない
-
-function loadSendCfg(){
-  try {
-    const r = JSON.parse(localStorage.getItem(SEND_KEY));
-    if (r && typeof r === 'object') {
-      sendCfg.clientId = typeof r.clientId === 'string' ? r.clientId : null;
-      sendCfg.consent = r.consent === true ? true : (r.consent === false ? false : null);
-    }
-  } catch(e){}
-  if (!sendCfg.clientId) sendCfg.clientId = newId('c_');   // 端末ごとの匿名ID
-  saveSendCfg();
-}
-function saveSendCfg(){
-  try { localStorage.setItem(SEND_KEY, JSON.stringify(sendCfg)); } catch(e){}
-  renderSendState();
-}
-
-function renderSendState(){
-  const el = document.getElementById('sendstate');
-  if (!el) return;
-  // まだ届いていない件数も出す。出しておかないと、送れていないことに気づけない
-  const waiting = hist.filter(r => !r.sent).length;
-  el.textContent = !me ? '未参加'
-                 : waiting ? `参加中（未送信 ${fmt(waiting)}件）`
-                 : `参加中（${me.email}）`;
-}
-
-/* 送る形に整える。lost など端末内だけの値は送らない */
-function toPayload(r){
-  const chars = {};
-  Object.keys(r.chars || {}).forEach(id => {
-    const c = r.chars[id];
-    chars[id] = { no:c.no, glow:c.glow, hi:c.hi, cz:c.cz };
-  });
-  return {
-    id: r.id, clientId: sendCfg.clientId, machine: r.machine,
-    playedAt: r.date, games: r.games, bell: r.bell,
-    chars, czPointsBy: r.czPointsBy || [],
-    // 読み出しのために預ける。メモは集計には使わない（参加画面に明記）
-    memo: r.memo || '', wins: r.wins || [],
-    setting: r.setting, evidence: r.evidence, appVersion: APP_VERSION
-  };
-}
-
-function markSent(id){
-  const r = hist.find(x => x.id === id);
-  if (r) { r.sent = true; saveHist(); }
-}
-
-/* 1件送る。
-   受理は { ok:true, stats }、内容を弾かれたら { ok:false, reason }、
-   通信できなかったときだけ null（あとで送り直す）。
-   「送れた」と「弾かれた」を呼び出し側で見分けられるようにしている */
-async function sendRecord(r){
-  // 参加していない人は保存自体ができないので、ここに来るのは参加者だけ。
-  // ログアウト直後などのために、念のため見る
-  if (!me) return null;
-  let res;
-  try {
-    res = await fetch(API_RECORDS, {
-      method: 'POST',
-      credentials: 'same-origin',      // 誰の記録かはCookieで伝える
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(toPayload(r))
-    });
-  } catch(e) { return null; }          // 圏外など。あとで送り直す
-
-  let j = null;
-  try { j = await res.json(); } catch(e){}
-
-  if (res.ok && j && j.ok) { markSent(r.id); return { ok:true, stats: j.stats || null }; }
-
-  // 内容が悪くて弾かれた分は、送り直しても通らないので溜めない（429だけは残す）
-  if (res.status >= 400 && res.status < 500 && res.status !== 429) {
-    markSent(r.id);
-    return { ok:false, reason: (j && j.error) || `エラー ${res.status}` };
-  }
-  return null;
-}
-
-/* まだ送れていない分を送る。結果を返して、呼び出し側で知らせられるようにする */
-async function flushUnsent(limit = 10){
-  const none = { sent:0, rejected:0, left:0, offline:false };
-  if (!me) return none;
-  if (navigator.onLine === false) return { ...none, offline:true, left:hist.filter(r => !r.sent).length };
-
-  const pend = hist.filter(r => !r.sent).slice(0, limit);
-  let sent = 0, rejected = 0, offline = false;
-  for (const r of pend) {
-    const res = await sendRecord(r);
-    if (res === null) { offline = true; break; }   // 通信が駄目なら、そこで止める
-    if (res.ok) sent++; else rejected++;
-  }
-  return { sent, rejected, offline, left: hist.filter(r => !r.sent).length };
-}
-
-/* 送信を入にした直後に、溜まっていた分を送って結果を伝える。
-   ここで送らないと次に開くまで届かず、動いていないように見えてしまう */
-async function flushAndTell(){
-  const waiting = hist.filter(r => !r.sent).length;
-  if (!waiting) { toast('みんなのスロットへ送信します'); return; }
-
-  toast(`たまっていた ${fmt(waiting)}件を送っています…`);
-  const res = await flushUnsent(30);   // サーバー側の1日の上限は60件
-
-  let msg;
-  if (res.sent && res.rejected) msg = `${fmt(res.sent)}件を送りました（${fmt(res.rejected)}件は受け付けられませんでした）`;
-  else if (res.sent)            msg = `${fmt(res.sent)}件を送りました`;
-  else if (res.rejected)        msg = `${fmt(res.rejected)}件が受け付けられませんでした`;
-  else                          msg = 'いまは送れませんでした。電波が戻ったときに送り直します';
-  if (res.left) msg += `／残り${fmt(res.left)}件は次回`;
-  renderSendState();
-  toast(msg);
-}
-
-function showCompare(stats){
-  const el = document.getElementById('cmp');
-  if (!el) return;
-  if (!stats) { el.hidden = true; return; }
-  const line = (k, you, med, unit) => {
-    if (you == null) return '';
-    const m = med == null ? '—' : med + unit;
-    return `<div class="row"><span class="k">${k}</span>` +
-           `<span class="v"><b>${you}${unit}</b><i>みんな ${m}</i></span></div>`;
-  };
-  el.innerHTML =
-    `<div class="n">送信しました（この機種の記録 ${fmt(stats.n)} 件目）</div>` +
-    line('平均 pt/CZ', stats.avgPt && stats.avgPt.you, stats.avgPt && stats.avgPt.median, '') +
-    line('発光率', stats.glowRate && stats.glowRate.you, stats.glowRate && stats.glowRate.median, '%');
-  el.hidden = false;
-}
-
-
 
 /* 保存したあとの流れ。初回だけ送ってよいか聞く */
-
-let pendingSaved = null;
 
 
 function afterSave(rec){
   
-  showCompare(null);
-  
   openSavedSheet(rec);
   
-  sendRecord(rec).then(res => showCompare(res && res.ok ? res.stats : null)).catch(() => {});
-  
 }
-
-
-/* ---------- 参加（メール登録） ----------
-   数えるのは登録不要。保存だけ登録制。
-   記録はサーバーに預かるので、端末が変わっても
-   Safariとホーム画面アプリの間でも、同じものを読み出せる。 */
-
-/* 取り消せない操作の確認。confirm は公開ページで無視されるので自前で持つ */
-let askAction = null;
-function askConfirm(text, action){
-  document.getElementById('asktext').textContent = text;
-  askAction = action;
-  document.getElementById('askmodal').hidden = false;
-}
-document.getElementById('askno').addEventListener('click', () => {
-  askAction = null;
-  document.getElementById('askmodal').hidden = true;
-});
-document.getElementById('askyes').addEventListener('click', () => {
-  const a = askAction; askAction = null;
-  document.getElementById('askmodal').hidden = true;
-  if (a) a();
-});
-
-let me = null;                       // { email, records } | null
-const joinModal = document.getElementById('joinmodal');
-
-function joinView(name){
-  ['joinform', 'joinsent', 'joinme'].forEach(id => {
-    document.getElementById(id).hidden = (id !== name);
-  });
-  joinModal.hidden = false;
-}
-
-function openJoin(){
-  if (me) {
-    document.getElementById('meemail').textContent = me.email;
-    document.getElementById('mecount').textContent = fmt(me.records || 0);
-    joinView('joinme');
-  } else {
-    joinView('joinform');
-  }
-}
-const closeJoin = () => { joinModal.hidden = true; };
-
-/* 参加状態は、メニューと履歴画面の両方に出す。
-   保存を押してから断られるより、先に分かるほうがいい */
-function renderMe(){
-  const chip = document.getElementById('acctstate');
-  if (chip) {
-    chip.textContent = me ? '参加中' : '未参加';
-    chip.classList.toggle('on', !!me);
-  }
-  const st = document.getElementById('sendstate');
-  if (st) st.textContent = me ? `参加中（${me.email}）` : '未参加';
-}
-
-async function loadMe(){
-  try {
-    const res = await fetch('/api/auth/me', { credentials: 'same-origin' });
-    const j = await res.json();
-    me = (j && j.user) || null;
-  } catch(e) { me = null; }
-  renderMe();
-}
-
-document.getElementById('joinsend').addEventListener('click', async () => {
-  const el = document.getElementById('joinemail');
-  const email = el.value.trim();
-  if (!/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(email)) {
-    toast('メールアドレスを確認してください');
-    return;
-  }
-  const btn = document.getElementById('joinsend');
-  btn.disabled = true; btn.textContent = '送信中…';
-  try {
-    const res = await fetch('/api/auth/request', {
-      method: 'POST', credentials: 'same-origin',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    const j = await res.json();
-    if (!j.ok) { toast(j.error || '送信できませんでした'); return; }
-    document.getElementById('joinaddr').textContent = email;
-    joinView('joinsent');
-    // メール基盤を用意する前の確認用。DEV_LOGIN を立てたときだけ返ってくる
-    if (j.devLink) location.href = j.devLink;
-  } catch(e) {
-    toast('通信できませんでした');
-  } finally {
-    btn.disabled = false; btn.textContent = '確認メールを送る';
-  }
-});
-
-document.getElementById('joincancel').addEventListener('click', () => {
-  closeJoin();
-  // 保存しようとして止まっていた分は、参加しない限り保存できない
-  if (pendingSaved) { pendingSaved = null; toast('参加すると保存できます'); }
-});
-document.getElementById('joinclose').addEventListener('click', closeJoin);
-document.getElementById('joinback').addEventListener('click', () => joinView('joinform'));
-document.getElementById('meclose').addEventListener('click', closeJoin);
-document.getElementById('acctbtn').addEventListener('click', () => { closeMenu(); openJoin(); });
-
-document.getElementById('melogout').addEventListener('click', async () => {
-  await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
-  me = null; renderMe(); closeJoin();
-  toast('ログアウトしました。端末に残っている記録はそのままです');
-});
-
-document.getElementById('medelete').addEventListener('click', () => {
-  // 戻せないので、confirm ではなく自前の確認を挟む（サンドボックスで confirm が無視されるため）
-  askConfirm(
-    'アカウントと、預かっている実戦の記録をすべて削除します。元には戻せません。',
-    async () => {
-      const res = await fetch('/api/account/delete', { method: 'POST', credentials: 'same-origin' });
-      const j = await res.json().catch(() => null);
-      if (j && j.ok) {
-        me = null; renderMe(); closeJoin();
-        toast(`削除しました（実戦 ${fmt(j.deleted || 0)} 件）`);
-      } else {
-        toast('削除できませんでした');
-      }
-    });
-});
-
-/* ---------- サーバーから読み出す ---------- */
-
-async function pullRecords(){
-  if (!me) { openJoin(); return; }
-  toast('読み出しています…');
-  let j;
-  try {
-    const res = await fetch('/api/myrecords?machine=kabaneri-unato', { credentials: 'same-origin' });
-    j = await res.json();
-  } catch(e) { toast('通信できませんでした'); return; }
-  if (!j.ok) { toast(j.error || '読み出せませんでした'); return; }
-
-  // 端末にある分と混ぜる。同じ実戦は重ねない（idが一致するものは残す）
-  const have = new Set(hist.map(r => r.id));
-  const add = j.records.filter(r => !have.has(r.id));
-  hist = add.concat(hist);
-  hist.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
-  if (hist.length > 500) hist.length = 500;
-
-  if (!saveHist()) { toast('端末に書き込めませんでした'); return; }
-  renderHist(); renderDist();
-
-  // 読み出した結果が見えないと、動いたのかどうか分からない。
-  // 何か増えたときは履歴の画面を開いて示す
-  if (add.length) {
-    mainView = 'hist';
-    applyMainView();
-    toast(`${fmt(add.length)}件を読み出しました（預かり ${fmt(j.count)}件）`);
-    return;
-  }
-  // 増えなかったのは失敗ではなく、すでに全部この端末にあるということ。
-  // 「ありません」だけだと読み出せなかったように読めるので言い分ける
-  toast(j.count
-    ? `この端末はすべて読み出し済みです（預かり ${fmt(j.count)}件）`
-    : 'まだ預かっている記録はありません');
-}
-
-document.getElementById('pullbtn').addEventListener('click', () => { closeMenu(); pullRecords(); });
-document.getElementById('mepull').addEventListener('click', () => { closeJoin(); pullRecords(); });
-
-document.getElementById('sendtoggle').addEventListener('click', openJoin);
-
-/* メールのリンクから戻ってきたとき */
-(function(){
-  const q = new URLSearchParams(location.search).get('login');
-  if (!q) return;
-  history.replaceState(null, '', location.pathname);
-  const msg = {
-    ok: '参加しました。実戦を保存すると預かります',
-    expired: 'リンクの有効期限が切れています。もう一度お試しください',
-    used: 'このリンクは使用済みです。もう一度お試しください',
-    invalid: 'リンクが正しくありません',
-    error: 'ログインできませんでした',
-  }[q];
-  if (msg) setTimeout(() => toast(msg), 400);
-  if (q === 'ok') setTimeout(() => { loadMe().then(pullRecords); }, 300);
-})();
-
-window.addEventListener('online', () => { flushUnsent().then(renderSendState); });
 
 
 /* ---------- 打ちながら書くメモ ----------
@@ -2560,351 +1837,16 @@ memoScrim.addEventListener('click', closeMemo);
     const dx = t.clientX - x0, dy = t.clientY - y0;
     if (Math.abs(dx) < NEED || Math.abs(dx) < Math.abs(dy) * 1.6 || Math.abs(dy) > 70) return;
     const memoOpen = memoPanel.classList.contains('open');
-    const winOpen = winPanel.classList.contains('open');
-    if (dx < 0) {                       // 左へ
-      if (winOpen) closeWin();
-      else if (!memoOpen) openMemo();
-    } else {                            // 右へ
-      if (memoOpen) closeMemo();
-      else if (!winOpen) openWin();
-    }
+    
+    
+    // 開くのはメモだけ。左で開き、右で閉じる
+    if (dx < 0) { if (!memoOpen) openMemo(); }
+    else { if (memoOpen) closeMemo(); }
+    
   }, { passive: true });
 })();
 
-/* ---------- 当選履歴 ----------
-   当選G数 → 何で当たったか（周期 or CZ）→ ボーナスの種類、の順に選んで足す。
-   周期別の当選率は、当たった記録だけから逆算する。3周期で当たったなら
-   1・2周期は素通りしているので、N周期に到達した回数 = N周期以降で当たった件数。
-   CZ当選は何周期目か記録しないので、周期の分母には入れない。 */
-const winPanel = document.getElementById('winpanel');
-const winScrim = document.getElementById('winscrim');
-/* 入力中の選択。pendVia は 'cycle' | 'red' | 'green' | 'blue' | 'ceiling' */
-let pendCycle = null, pendVia = null, pendBonus = null;
-let winView = 'log';      // 'log' = 記録 / 'stats' = 当選率
-let bonusLocked = false;  // 最終周期はエピソードB確定なので自動で選ぶ
-/* 状態はエピソードBを引くまで変わらない。
-   最後の当選が駿城Bなら、そのセクションはまだ続いている。 */
-function sectionMode(){
-  const last = wins[wins.length - 1];
-  return (last && last.bonus === 'shunjo') ? (last.mode || 'normal') : null;
-}
 
-/* 入力中はセクションの状態に固定する（途中で切り替わることはないため） */
-function syncModeLock(){
-  const inSection = sectionMode();
-  const locked = winView === 'log' && inSection !== null;
-  if (locked && winMode !== inSection) {
-    winMode = inSection;
-    renderWins();
-  }
-  document.querySelectorAll('#wintabs button').forEach(b => {
-    b.disabled = locked;
-    b.classList.toggle('on', b.dataset.mode === winMode);
-  });
-  document.getElementById('wlock').hidden = !locked;
-}
-
-function applyWinView(){
-  const log = winView === 'log', list = winView === 'list';
-  // 合算は集計を見るためだけの選択肢。入力タブでは選べない
-  document.querySelector('#wintabs [data-mode="all"]').hidden = log;
-  if (log && winMode === 'all') { winMode = 'normal'; renderWins(); }
-  document.getElementById('winform').hidden = !log;
-  document.getElementById('winlist').hidden = !list;
-  document.getElementById('winstats').hidden = winView !== 'stats';
-  // 実戦履歴は全状態をまとめて出すので、状態タブは関係ない
-  document.getElementById('wintabs').hidden = list;
-  document.getElementById('wlock').hidden = list;
-  document.querySelectorAll('#winview button')
-    .forEach(b => b.classList.toggle('on', b.dataset.view === winView));
-  syncModeLock();
-}
-
-function openWin(){
-  winPanel.classList.add('open');
-  winPanel.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('win-open');
-}
-function closeWin(){
-  winPanel.classList.remove('open');
-  winPanel.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('win-open');
-}
-
-const VIA_CZ = { red:'無名CZ', green:'生駒CZ', blue:'銅藍CZ' };
-/* 一覧は1行に収める幅がないので、キャラはカードのアイコンと同じ一文字にする。
-   文字色もキャラの色なので、略しても取り違えない */
-const VIA_CZ_SHORT = { red:'無CZ', green:'生CZ', blue:'銅CZ' };
-const BONUS = { episode:'エピソードB', shunjo:'駿城B', both:'駿→エピ' };
-
-function pickChips(box, attr, set){
-  document.getElementById(box).addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    const v = b.dataset[attr];
-    document.querySelectorAll(`#${box} button`).forEach(x => x.classList.remove('on'));
-    const same = set(v === undefined ? null : v, b);
-    if (!same) b.classList.add('on');
-  });
-}
-/* 周期ときっかけは別々に選ぶ。CZや天井で当たったときも「何周期目か」を必ず記録する。
-   これがないと、通過した周期が分母から丸ごと落ちて当選率が実際より高く出る */
-pickChips('wincycle', 'cycle', v => {
-  const same = pendCycle === +v; pendCycle = same ? null : +v;
-  syncBonusChoices();
-  return same;
-});
-pickChips('winvia', 'via', v => {
-  const same = pendVia === v; pendVia = same ? null : v;
-  syncBonusChoices();
-  return same;
-});
-pickChips('winbonus', 'bonus', v => {
-  // 最終周期でエピソードB確定のときは、押しても外れないようにする
-  if (bonusLocked) { pendBonus = 'episode'; return false; }
-  const same = pendBonus === v; pendBonus = same ? null : v; return same;
-});
-
-// 当選G数は3桁まで（周期の途中なので999Gを超えない）
-document.getElementById('wing').addEventListener('input', e => {
-  if (e.target.value.length > 3) e.target.value = e.target.value.slice(0, 3);
-});
-
-document.getElementById('winadd').addEventListener('click', () => {
-  const el = document.getElementById('wing');
-  const g = Math.floor(+el.value);
-  if (!isFinite(g) || g < 0 || el.value === '') { toast('当選G数を入れてください'); return; }
-  if (g > 999) { toast('G数は999までです'); return; }
-  if (pendCycle === null) { toast('何周期目かを選んでください'); return; }
-  if (!pendVia) { toast('当たったきっかけを選んでください'); return; }
-  if (!pendBonus) { toast('ボーナスの種類を選んでください'); return; }
-
-  const isCz = pendVia === 'red' || pendVia === 'green' || pendVia === 'blue';
-  wins.push({
-    g, mode: winMode,
-    via: pendVia === 'cycle' ? 'cycle' : (pendVia === 'ceiling' ? 'ceiling' : 'cz'),
-    cycle: pendCycle, cz: isCz ? pendVia : null, bonus: pendBonus
-  });
-  if (wins.length > 500) wins.shift();
-  save(); renderWins();
-
-  el.value = '';
-  pendCycle = pendVia = pendBonus = null;
-  bonusLocked = false;
-  winPanel.querySelectorAll('.wchips button').forEach(x => x.classList.remove('on'));
-  syncBonusChoices();
-  toast('追加しました');
-});
-
-// カウンター側と同じ処理を呼ぶ。パネルは閉じてから開かせる
-document.getElementById('winsave').addEventListener('click', () => {
-  closeWin();
-  document.getElementById('savebtn').click();
-});
-document.getElementById('winreset').addEventListener('click', () => {
-  closeWin();
-  document.getElementById('reset2').click();
-});
-
-document.getElementById('winlist').addEventListener('click', e => {
-  const x = e.target.closest('[data-wdel]'); if (!x) return;
-  wins.splice(+x.dataset.wdel, 1);
-  save(); renderWins();
-});
-
-document.getElementById('winview').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  winView = b.dataset.view;
-  applyWinView();
-});
-
-document.getElementById('wintabs').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  winMode = b.dataset.mode;
-  document.querySelectorAll('#wintabs button').forEach(x => x.classList.toggle('on', x === b));
-  save(); renderWins();
-  applyWinView();
-});
-
-/* 最終周期（通常は6、その他は4）と天井はエピソードB確定。
-   誤って駿城Bを選べないよう、選択肢を隠して自動で選んでおく */
-function syncBonusChoices(){
-  const max = WIN_MAX_CYCLE[winMode] || 6;
-  // 最終周期に「到達して」当たった場合と、天井だけが確定。
-  // 最終周期中のCZで当たった場合は確定しないので、きっかけまで見る
-  const lock = (pendVia === 'cycle' && pendCycle === max) || pendVia === 'ceiling';
-  document.querySelectorAll('#winbonus button').forEach(b => {
-    b.hidden = lock && b.dataset.bonus !== 'episode';
-  });
-  document.getElementById('wblbl').textContent = lock
-    ? (pendVia === 'ceiling' ? '当たったボーナス（天井はエピソードB確定）'
-                             : '当たったボーナス（最終周期の到達はエピソードB確定）')
-    : '当たったボーナス';
-
-  if (lock) {
-    pendBonus = 'episode';
-    bonusLocked = true;
-    document.querySelectorAll('#winbonus button')
-      .forEach(b => b.classList.toggle('on', b.dataset.bonus === 'episode'));
-  } else if (bonusLocked) {
-    // 自動で選んだ分は解除する。自分で選んだ分は残す
-    bonusLocked = false;
-    pendBonus = null;
-    document.querySelectorAll('#winbonus button').forEach(b => b.classList.remove('on'));
-  }
-}
-
-/* 状態によっては5・6周期が無いので、選べないようにする */
-function syncCycleChoices(){
-  const max = WIN_MAX_CYCLE[winMode] || 6;
-  document.querySelectorAll('#wincycle button').forEach(b => {
-    const n = +b.dataset.cycle;
-    b.hidden = n > max;
-    if (n > max) b.classList.remove('on');
-  });
-  if (pendCycle !== null && pendCycle > max) pendCycle = null;
-  syncBonusChoices();
-}
-
-function renderWins(){
-  syncCycleChoices();
-  const list = document.getElementById('winlist');
-  const shown = winMode === 'all'
-    ? wins
-    : wins.filter(w => (w.mode || 'normal') === winMode);   // 集計は選んだ状態だけ
-  // 実戦履歴は状態で分けず、入れた順に全部出す
-  list.innerHTML = wins.length
-    ? wins.map((w, i) => {
-        // 周期はどの当選にも付くようになったので必ず出し、周期到達以外はきっかけも添える
-        const kind = w.via === 'ceiling' ? '天井' : w.via === 'cz' ? (VIA_CZ_SHORT[w.cz] || 'CZ') : '';
-        const via = (w.cycle ? `${w.cycle}周期` : '') + (kind ? (w.cycle ? ' ' : '') + kind : '');
-        return `<div class="winrow ${w.via === 'cz' ? w.cz : ''}">
-          <span class="no">${i + 1}</span>
-          <span class="md">${(() => {
-            // エピソードB（昇格を含む）を引いたところで1区切り。
-            // 次の行からまた状態を出し、どこから仕切り直しか分かるようにする
-            const prev = wins[i - 1];
-            const head = !prev
-              || (prev.bonus !== 'shunjo')
-              || (prev.mode || 'normal') !== (w.mode || 'normal');
-            return head ? `<i data-mode="${w.mode || 'normal'}">${WIN_MODES[w.mode || 'normal']}</i>` : '';
-          })()}</span>
-          <span class="g">${fmt(w.g)}G</span>
-          <span class="via">${via}</span>
-          ${w.bonus === 'both'
-            ? '<span class="bn two"><i>駿</i><b>エピ</b><span class="ar">→</span></span>'
-            : `<span class="bn ${w.bonus === 'episode' ? 'ep' : 'sh'}">${BONUS[w.bonus] || ''}</span>`}
-          <button class="x" data-wdel="${i}" aria-label="削除">×</button>
-        </div>`;
-      }).join('')
-    : '<div class="winempty">まだ当選の記録はありません</div>';
-
-  applyWinView();
-  renderWinStats(shown);
-}
-
-/* 総ゲーム数。当選ごとのG数なので、そのまま足し合わせる */
-function totalGames(list){
-  return list.reduce((a, w) => a + w.g, 0);
-}
-
-const SHORT_MODES = ['through', 'upper', 'reset'];   // 短縮（4周期まで）
-
-/* その当選までに「最後まで消化した」周期の数。
-   周期到達で当たったなら、その周期は最後まで進んで当たっているので N。
-   CZや天井で当たったなら、その周期は途中で終わっていて抽選を受けていないので N-1。
-   ここを間違えると、受けていない抽選を分母に入れてしまう */
-const doneCycles = w => (w.via === 'cycle' ? w.cycle : w.cycle - 1);
-
-/* 周期別の表。合算では全状態ぶんと短縮ぶんの2つを並べるので処理を分けた */
-function cycleTable(list, maxC, title){
-  /* 到達は「その周期を最後まで消化した回数」。
-     3周期のCZで当たった場合、消化したのは1・2周期まで。3周期は抽選を受けていない */
-  const known = list.filter(w => w.cycle >= 1 && w.cycle <= maxC);
-  // 0件でも枠だけは出す。何が記録される表なのかを先に見せたいため
-  const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
-  let html = `<h3>${title}・周期別</h3><table><thead><tr>` +
-             '<th>周期</th><th>到達</th><th>当選</th><th>当選率</th></tr></thead><tbody>';
-  for (let n = 1; n <= maxC; n++) {
-    const hit = known.filter(w => w.via === 'cycle' && w.cycle === n);
-    const reached = known.filter(w => doneCycles(w) >= n).length;
-    html += `<tr class="${hit.length ? 'hit' : ''}"><td>${n}周期</td>` +
-            `<td class="n">${fmt(reached)}</td>` +
-            `<td class="n">${fmt(hit.length)}</td>` +
-            `<td class="n">${pct(hit.length, reached)}</td></tr>`;
-  }
-  return html + '</tbody></table>';
-}
-
-function renderWinStats(shown){
-  const box = document.getElementById('winstats');
-  const cz = shown.filter(w => w.via === 'cz');
-
-  const pct = (a, b) => b ? (a / b * 100).toFixed(1) + '%' : '—';
-  let html = '';
-
-  /* ST確率とCZ確率。状態で分けず、記録した全部を合算する。
-     分母のG数は当選履歴に入れた当選G数の合計。
-     CZの回数はカウンター側の突入回数（無名＋生駒＋銅藍）を使う。 */
-  const totalG = totalGames(wins);
-  const stN = wins.filter(w => w.bonus !== 'shunjo').length;   // 昇格もSTには入っている
-  // 銅藍の周期突入はCZではないので混ぜない。分布や平均pt/CZと同じ扱い
-  const czN = AVG_IDS.reduce((a, id) => a + state[id].cz, 0);
-  const rate = (g, n) => n ? '1/' + (g / n).toFixed(1) : '—';
-
-  // ST確率・CZ確率は全状態をまとめた値なので、合算タブでだけ出す
-  if (winMode === 'all') {
-  const bonusN = shown.length;   // 駿城Bも含めた全ボーナス
-  html += '<div class="wsum">'
-        + `<div class="st"><span class="k">ST確率</span><span class="v">${rate(totalG, stN)}</span>`
-        + `<span class="s">${fmt(stN)}回</span></div>`
-        + `<div class="bn"><span class="k">全ボーナス</span><span class="v">${rate(totalG, bonusN)}</span>`
-        + `<span class="s">${fmt(bonusN)}回・駿城B含む</span></div>`
-        + `<div class="cz"><span class="k">CZ確率</span><span class="v">${rate(totalG, czN)}</span>`
-        + `<span class="s">${fmt(czN)}回</span></div>`
-        + '</div>'
-        + `<p class="winnote">当選までのG数を合計した ${fmt(totalG)}G で計算しています。`
-        + 'ST確率には昇格（駿→エピ）も含みます。CZ回数は無名・生駒の突入回数で、銅藍の周期突入は含みません。'
-        + '</p>';
-  }
-
-  if (winMode === 'all') {
-    // ①全状態の合算 ②短縮（駆け抜け後・上位後・リセット後）の合算
-    html += cycleTable(wins, 6, '全状態の合算');
-    html += cycleTable(wins.filter(w => SHORT_MODES.includes(w.mode || 'normal')), 4,
-                       '短縮の合算（駆け抜け後・上位後・リセット後）');
-  } else {
-    html += cycleTable(shown, WIN_MAX_CYCLE[winMode] || 6, WIN_MODES[winMode]);
-  }
-  html += '<p class="winnote">到達は、その周期を最後まで消化した回数です。'
-        + 'CZや天井で当たった周期は途中で終わっていて抽選を受けていないので、数えません。'
-        + '（3周期のCZで当たったなら、消化したのは1・2周期）</p>';
-
-  html += '<h3>CZ当選</h3><table><thead><tr>' +
-          '<th>種類</th><th>当選</th><th>エピソードB率</th></tr></thead><tbody>';
-  ['red', 'green', 'blue'].forEach(c => {
-    const hit = cz.filter(w => w.cz === c);
-    const ep = hit.filter(w => w.bonus === 'episode').length;
-    html += `<tr><td>${VIA_CZ[c]}</td><td class="n">${hit.length}</td>` +
-            `<td class="n">${pct(ep, hit.length)}</td></tr>`;
-  });
-  html += '</tbody></table>';
-
-  const epAll = shown.filter(w => w.bonus === 'episode').length;
-  const upAll = shown.filter(w => w.bonus === 'both').length;
-  html += `<h3>${winMode === 'all' ? '全状態' : WIN_MODES[winMode]} ${fmt(shown.length)}件`
-        + ` ／ エピソードB ${pct(epAll, shown.length)}`
-        + (wins.length !== shown.length ? `（全状態では ${fmt(wins.length)}件）` : '') + '</h3>';
-  html += `<p class="winnote">エピソードB率に、駿城Bからの昇格（駿→エピ）は含みません`
-        + (upAll ? `。昇格は ${fmt(upAll)}件` : '') + '</p>';
-  if (!wins.length) {
-    html += '<p class="winnote">入力のタブで当選を追加すると、ここに数字が入ります。</p>';
-  }
-  box.innerHTML = html;
-}
-
-document.getElementById('winhandle').addEventListener('click', openWin);
-document.getElementById('winclose').addEventListener('click', closeWin);
-winScrim.addEventListener('click', closeWin);
 
 /* ---------- 記録の引き継ぎ ----------
    会員登録の代わりに、短命なコードで別の端末へ移す。
@@ -2981,7 +1923,12 @@ document.getElementById('trtake').addEventListener('click', async () => {
 
 /* ---------- 結果カード ---------- */
 // スマホで見やすい縦長（4:5）。Xのタイムラインでも切り取られない比率
-const CARD_W = 1080, CARD_H = 1350;   // 当選履歴のぶんを下に足すので縦長に戻す
+const CARD_W = 1080;
+
+
+// 当選履歴の欄が無いぶん、下を繰り上げてカードも短くする
+const CARD_H = 1078, WIN_H = 272;
+
 const CARD_JP = '-apple-system,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif';
 
 /* 設定バッジ（トロフィーの色に合わせる） */
@@ -3118,46 +2065,7 @@ function buildCard(r){
 
   if (r.setting) drawSettingBadge(g, r.setting, CARD_W - M, 96);
 
-  /* ---- 当選履歴。この実戦で何回当たったかを先に見せる ---- */
-  const ws = r.wins || [];
-  const wTotalG = ws.reduce((a, w) => a + w.g, 0);
-  const wStN = ws.filter(w => w.bonus !== 'shunjo').length;   // 昇格もSTには入る
-  const wRate = n => (n && wTotalG) ? '1/' + Math.round(wTotalG / n) : '—';
-
-  g.fillStyle = '#8a93a6';
-  g.font = `500 24px ${CARD_JP}`;
-  g.fillText('当選履歴', M, 224);
-
-  const ww = (CARD_W - M * 2 - 32) / 3;
-  [['通常G数', ws.length ? fmt(wTotalG) : '—', ws.length ? 'G' : '', '#e8ecf3'],
-   ['ST確率', wRate(wStN), '', '#8fc0ff'],
-   ['全ボーナス', wRate(ws.length), '', '#e8c06a']].forEach(([k, v, u, col], i) => {
-    const x = M + i * (ww + 16), y = 248;
-    g.fillStyle = 'rgba(255,255,255,.045)';
-    g.beginPath(); g.roundRect(x, y, ww, 200, 20); g.fill();
-    g.strokeStyle = 'rgba(255,255,255,.10)'; g.lineWidth = 2; g.stroke();
-
-    g.fillStyle = '#8a93a6';
-    g.font = `500 24px ${CARD_JP}`;
-    g.fillText(k, x + 26, y + 52);
-
-    // 主要な数字と同じ72pxで置き、枠に収まらないときだけ落とす。
-    // 3列なので「1,210G」のような長い値は入りきらないことがある
-    let fs = 72;
-    const room = ww - 52 - (u ? 34 : 0);
-    g.font = `800 ${fs}px ${CARD_JP}`;
-    while (fs > 40 && g.measureText(v).width > room) {
-      fs -= 4; g.font = `800 ${fs}px ${CARD_JP}`;
-    }
-    g.fillStyle = col;
-    g.fillText(v, x + 26, y + 146);
-    if (u) {
-      const w = g.measureText(v).width;
-      g.font = `600 30px ${CARD_JP}`;
-      g.fillStyle = '#8a93a6';
-      g.fillText(u, x + 34 + w, y + 146);
-    }
-  });
+  
 
   // 主要な数字（2×2）
   const cells = [
@@ -3169,7 +2077,7 @@ function buildCard(r){
   const cw = (CARD_W - M * 2 - 20) / 2, ch = 200;
   cells.forEach((c, i) => {
     const x = M + (i % 2) * (cw + 20);
-    const y = 496 + Math.floor(i / 2) * (ch + 20);
+    const y = 496 - WIN_H + Math.floor(i / 2) * (ch + 20);
     g.fillStyle = 'rgba(255,255,255,.045)';
     g.beginPath(); g.roundRect(x, y, cw, ch, 20); g.fill();
     g.strokeStyle = 'rgba(255,255,255,.10)'; g.lineWidth = 2; g.stroke();
@@ -3192,11 +2100,11 @@ function buildCard(r){
   // キャラ別
   g.fillStyle = '#8a93a6';
   g.font = `500 24px ${CARD_JP}`;
-  g.fillText('キャラ別', M, 982);
+  g.fillText('キャラ別', M, 982 - WIN_H);
 
   const marks = [['red','無','#c2201a'], ['green','生','#178c4c'], ['blue','銅','#1d5fd6']];
   marks.forEach(([id, mk, col], i) => {
-    const y = 1036 + i * 80;
+    const y = 1036 - WIN_H + i * 80;
     const s = r.chars[id] || { no:0, glow:0, hi:0, cz:0 };
 
     g.fillStyle = 'rgba(255,255,255,.04)';
@@ -3370,8 +2278,6 @@ document.getElementById('a2hsx').addEventListener('click', closeA2hs);
 load();
 loadHist();
 
-loadSendCfg();
-
 buildCards();
 document.getElementById('games').value = bell.g ? bell.g : '';
 // 保存してあるメモを入力欄に戻す。書き戻さないと、開き直したとき
@@ -3380,22 +2286,13 @@ memoText.value = memo;
 render();
 
 // 前回送れなかった分を、起動時に送り直す
-document.querySelectorAll('#wintabs button')
-  .forEach(b => b.classList.toggle('on', b.dataset.mode === winMode));
-renderWins();
-applyWinView();
+
 applyMainView();
 
 // 記録を読み込んでから判定する（保存済みの件数で文面が変わるため）
 if (isIOS() && !isStandalone() && storageWorks() && !localStorage.getItem(A2HS_KEY)) {
   showA2hs();
 }
-
-// 参加しているかを先に確かめてから、溜まっている分を送り直す
-loadMe().then(() => {
-  renderSendState();
-  return flushUnsent();
-}).then(renderSendState).catch(() => {});
 
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる

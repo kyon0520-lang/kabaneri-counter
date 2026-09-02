@@ -1,263 +1,58 @@
+<!-- 準備中の画面（src/top-mode.py が書き出す。直接編集しない） -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#fdfdfd">
-<title>みんなのスロット｜スロットの設定判別を、みんなのデータで</title>
-<meta name="description" content="ひとりで数えるより、みんなで数えよう。みんなのスロットは、数えた実戦記録を持ち寄る場所。スロットの設定判別を、みんなのデータで。">
+<title>みんなのスロット</title>
+<meta name="description" content="パチスロを打ちながら数えるカウンターを作っています。">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="みんなのスロット">
 <meta property="og:title" content="みんなのスロット">
-<meta property="og:description" content="ひとりで数えるより、みんなで数えよう。数えた実戦記録を持ち寄って、スロットの設定判別をみんなのデータで。">
+<meta property="og:description" content="パチスロを打ちながら数えるカウンターを作っています。">
 <meta property="og:url" content="https://minnanoslot.com/">
-<meta property="og:image" content="https://minnanoslot.com/kabaneri-unato/ogp.png">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="./kabaneri-unato/icon-192.png">
 <link rel="apple-touch-icon" href="./kabaneri-unato/apple-touch-icon.png">
 <style>
   :root{
-    --bg:#fdfdfd;
-    --bg-soft:#f5f7fa;
-    --ink:#26262a;
-    --ink-2:#5c6270;
-    --ink-3:#8d94a3;
-    --line:#e6e9ef;
-    --accent:#2f7cf6;        /* カウンターの青と揃えた差し色 */
-    --accent-soft:#e4efff;
-    --red:#e2453c;
-    --green:#20b366;
-    --gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,
-             "Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+    --bg:#fdfdfd; --ink:#26262a; --ink-2:#5c6270; --ink-3:#8d94a3;
+    --line:#e6e9ef; --accent:#2f7cf6; --accent-soft:#e4efff;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{scroll-behavior:smooth}
+  html{background:var(--bg)}
   body{
-    margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);
-    font-size:14px;line-height:1.9;letter-spacing:.02em;overflow-x:hidden;
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,
+                "Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+    font-size:14px;line-height:1.9;letter-spacing:.02em;
     -webkit-font-smoothing:antialiased;
+    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   }
-  .wrap{width:100%;max-width:1040px;margin:0 auto;padding:0 24px}
-
-  /* ===== ヘッダー ===== */
-  header{
-    position:sticky;top:0;z-index:20;background:rgba(253,253,253,.88);
-    backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line);
-  }
-  header .bar{display:flex;align-items:center;justify-content:space-between;height:60px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:.04em}
-  /* 積んだメダルと、加わる一枚。線の色は文字に追従させる */
+  .wrap{width:100%;max-width:600px;margin:0 auto;padding:48px 24px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:.04em}
   .logo .mk{width:22px;height:35px;flex:0 0 auto;display:block;color:var(--ink)}
-  .markdefs{position:absolute;width:0;height:0;overflow:hidden}
-
-  /* ヘッダーのメニュー。
-     以前はここに「はじめる」を置いていたが、本文の「カウンターを開く」と
-     同じ行き先で重複していたので、行き先の一覧に変えた */
-  .navbtn{
-    display:none;background:none;border:0;padding:10px 6px;cursor:pointer;
-    flex-direction:column;gap:5px;width:40px;align-items:flex-end;
+  .tag{
+    display:inline-block;margin:34px 0 0;font-size:11px;font-weight:700;letter-spacing:.18em;
+    color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:6px 14px;
   }
-  .navbtn span{display:block;height:2px;width:20px;background:var(--ink);border-radius:2px;
-               transition:transform .22s,opacity .18s}
-  .navbtn span:nth-child(2){width:14px}
-  body.nav-open .navbtn span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-  body.nav-open .navbtn span:nth-child(2){opacity:0}
-  body.nav-open .navbtn span:nth-child(3){width:20px;transform:translateY(-7px) rotate(-45deg)}
-
-  .topnav{display:flex;align-items:center;gap:22px}
-  .topnav a{
-    text-decoration:none;color:var(--ink-2);font-size:13px;font-weight:600;
-    letter-spacing:.03em;white-space:nowrap;
-  }
-  @media (hover:hover){.topnav a:hover{color:var(--ink)}}
-  .topnav a.go{
-    background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;font-weight:700;
-  }
-  @media (hover:hover){.topnav a.go:hover{opacity:.85;color:#fff}}
-
-  /* 幅が足りなくなったら畳む。4つ並べると機種名が入らない */
-  @media (max-width:760px){
-    .navbtn{display:flex}
-    .topnav{
-      position:absolute;top:60px;right:12px;left:12px;
-      flex-direction:column;align-items:stretch;gap:0;
-      background:var(--bg);border:1px solid var(--line);border-radius:14px;
-      padding:6px;box-shadow:0 14px 34px rgba(20,26,38,.14);
-      opacity:0;visibility:hidden;transform:translateY(-6px);
-      transition:opacity .18s,transform .18s,visibility .18s;
-    }
-    body.nav-open .topnav{opacity:1;visibility:visible;transform:none}
-    .topnav a{padding:14px 14px;font-size:14.5px;border-radius:9px}
-    .topnav a.go{margin-top:4px;text-align:center}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .topnav,.navbtn span{transition:none}
-  }
-  .btn{
-    display:inline-flex;align-items:center;gap:8px;text-decoration:none;
-    background:var(--ink);color:#fff;font-weight:700;font-size:13px;
-    padding:11px 20px;border-radius:999px;letter-spacing:.04em;
+  h1{margin:16px 0 0;font-weight:700;font-size:clamp(22px,6vw,30px);line-height:1.6;letter-spacing:.03em}
+  p{margin:14px 0 0;color:var(--ink-2);max-width:32em}
+  .go{
+    display:inline-flex;align-items:center;gap:8px;margin:30px 0 0;text-decoration:none;
+    background:var(--accent);color:#fff;font-weight:700;font-size:14px;
+    padding:14px 26px;border-radius:999px;letter-spacing:.04em;
     transition:opacity .2s,transform .2s;
   }
-  .btn:active{transform:scale(.97)}
-  @media (hover:hover){.btn:hover{opacity:.85}}
-  .btn.lg{font-size:15px;padding:16px 30px}
-  .btn.accent{background:var(--accent)}
-
-  /* ===== 第一画面 ===== */
-  .hero{padding:60px 0 0;text-align:left}
-  /* 狭い画面では主張→絵の縦積み、広い画面で左右に割る */
-  .hero-grid{display:flex;flex-direction:column;gap:34px}
-  .hero-art{margin:0 -8px}
-  .hero-art .art{width:100%;height:auto;display:block}
-  .hero h1{
-    margin:0;font-weight:700;font-size:clamp(28px,7.6vw,52px);
-    line-height:1.55;letter-spacing:.03em;
-  }
-  .hero h1 .mark{
-    background:linear-gradient(transparent 62%, var(--accent-soft) 62%);
-    padding:0 .06em;
-  }
-  .hero .lead{margin:22px 0 0;color:var(--ink-2);font-size:14.5px;max-width:30em}
-  /* 2文のあいだを空ける。折り返しでできた行の切れ目と、
-     文の切れ目が同じ見え方だと、どこで話が変わるのか分からない */
-  .hero .lead span{display:block}
-  .hero .lead span + span{margin-top:.85em}
-  .hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 0;align-items:center}
-
-  /* 端末の絵。明るいサイトから暗いツールへの橋渡し */
-  .shot{margin:34px auto 0;width:246px;max-width:72vw}
-  .phone{
-    border-radius:32px;background:#0d1c2e;padding:12px 10px 16px;
-    box-shadow:0 24px 60px rgba(20,32,52,.22), 0 2px 8px rgba(20,32,52,.10);
-    border:1px solid #16283f;
-  }
-  .phone .top{height:5px;width:56px;border-radius:99px;background:#2c4560;margin:2px auto 12px}
-  .phone .ttl{color:#e6f0fa;font-size:10.5px;font-weight:700;padding:0 6px 10px;letter-spacing:.04em}
-  .pcard{background:#16283f;border:1px solid #2c4560;border-radius:12px;padding:10px;margin:0 4px 8px}
-  .pcard .hd{display:flex;align-items:center;gap:7px;margin-bottom:9px}
-  .pcard .ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
-             font-size:11px;color:#fff;font-weight:700}
-  .pcard .nm{color:#e6f0fa;font-size:10px;font-weight:700}
-  .pcard .row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-  .pcard .b{background:#1e3049;border:1px solid #2c4560;border-radius:6px;padding:6px 2px;text-align:center}
-  .pcard .b span{display:block;font-size:7px;color:#93aac4}
-  .pcard .b b{display:block;font-size:13px;color:#fff;line-height:1.4}
-  .pcard.r .ic{background:var(--red)} .pcard.g .ic{background:var(--green)} .pcard.b2 .ic{background:var(--accent)}
-
-  /* ===== セクション共通 ===== */
-  section{padding:84px 0}
-  .soft{background:var(--bg-soft)}
-  .sec-lbl{
-    display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;
-    color:var(--accent);margin:0 0 14px;
-  }
-  .sec-ttl{
-    margin:0 0 16px;font-weight:700;font-size:clamp(22px,5.8vw,34px);
-    line-height:1.6;letter-spacing:.03em;
-  }
-  .sec-txt{margin:0;color:var(--ink-2);max-width:34em}
-
-  /* ===== 3段（巨大な数字） ===== */
-  .steps{margin:44px 0 0;display:flex;flex-direction:column;gap:16px}
-  .step{
-    position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;
-    padding:30px 26px 28px;overflow:hidden;
-  }
-  .step .big{
-    position:absolute;right:14px;top:-18px;font-size:110px;font-weight:700;
-    line-height:1;color:var(--accent-soft);letter-spacing:-.02em;user-select:none;
-  }
-  .step h3{position:relative;margin:0 0 10px;font-size:19px;font-weight:700;letter-spacing:.04em}
-  .step p{position:relative;margin:0;color:var(--ink-2);font-size:13.5px;max-width:26em}
-  .step .soon{
-    display:inline-block;margin:0 0 12px;font-size:10.5px;font-weight:700;letter-spacing:.12em;
-    color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:5px 12px;
-  }
-
-  /* ===== 対応機種 ===== */
-  /* 機種のカードと端末の絵。狭い画面では縦、広い画面では横に並べる */
-  .mrow{display:flex;flex-direction:column}
-  .machines{margin:42px 0 0;display:flex;flex-direction:column;gap:14px;flex:1;min-width:0}
-  .mcard{
-    display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;
-    background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;
-    transition:box-shadow .25s,transform .2s;
-  }
-  .mcard:active{transform:scale(.995)}
-  @media (hover:hover){.mcard:hover{box-shadow:0 12px 32px rgba(20,32,52,.09)}}
-  .marks{display:flex;flex:0 0 auto}
-  .marks span{
-    width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
-    font-size:16px;font-weight:700;color:#fff;margin-left:-11px;box-shadow:0 0 0 3px #fff;
-  }
-  .marks span:first-child{margin-left:0}
-  .marks .r{background:linear-gradient(160deg,#ff6b60,#c2201a)}
-  .marks .g{background:linear-gradient(160deg,#57d992,#178c4c)}
-  .marks .b{background:linear-gradient(160deg,#6ea8ff,#1d5fd6)}
-  .mcard .txt{flex:1;min-width:0}
-  .mcard .nm{display:block;font-size:16px;font-weight:700;line-height:1.5;letter-spacing:.03em}
-  .mcard .sub{display:block;font-size:12.5px;color:var(--ink-2)}
-  .mcard .arw{color:var(--ink-3);font-size:20px;flex:0 0 auto}
-
-  /* ===== 参加のしかた ===== */
-  .plan{margin:42px 0 0;border-top:1px solid var(--line)}
-  .plan .row{
-    display:flex;flex-direction:column;gap:6px;
-    padding:24px 0;border-bottom:1px solid var(--line);
-  }
-  .plan h3{margin:0;font-size:16px;font-weight:700;letter-spacing:.04em}
-  .plan p{margin:0;color:var(--ink-2);font-size:13.5px;max-width:38em}
-  @media (min-width:760px){
-    .plan .row{flex-direction:row;align-items:baseline;gap:36px}
-    .plan h3{flex:0 0 11em}
-  }
-
-  /* ===== 最後の導線 ===== */
-  .cta{text-align:center}
-  .cta h2{
-    margin:0;font-weight:700;font-size:clamp(22px,5.8vw,34px);
-    line-height:1.7;letter-spacing:.03em;
-  }
-  .cta .actions{display:flex;justify-content:center;margin:32px 0 0}
-
-  /* ===== フッター ===== */
-  footer{border-top:1px solid var(--line);padding:42px 0 58px}
-  footer .row{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
-  footer nav{display:flex;flex-wrap:wrap;gap:20px;font-size:12.5px}
-  footer nav a{color:var(--ink-2);text-decoration:none}
-  @media (hover:hover){footer nav a:hover{color:var(--accent)}}
-  footer .note{margin:24px 0 0;font-size:11.5px;color:var(--ink-3);max-width:52em}
-  footer .cr{margin:18px 0 0;font-size:11px;color:var(--ink-3);letter-spacing:.06em}
-
-  /* ===== 出現 ===== */
-  .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
-  .rv.on{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  @media (min-width:760px){
-    .hero{padding:96px 0 0}
-    section{padding:110px 0}
-    .steps{flex-direction:row}
-    .step{flex:1}
-    .mrow{flex-direction:row;align-items:center;gap:44px}
-    .shot{margin:0;flex:0 0 246px}
-  }
-  @media (min-width:940px){
-    .hero{padding:76px 0 0}
-    .hero-grid{flex-direction:row;align-items:center;gap:44px}
-    .hero-txt{flex:0 0 45%}
-    .hero-art{flex:1;min-width:0;margin:0 -24px 0 0}
-    /* 2カラムでは行が短くなるので、見出しが途中で折れないところまで下げる */
-    .hero h1{font-size:clamp(30px,3.2vw,40px)}
-    .hero .lead{max-width:24em}
-  }
-
+  .go:active{transform:scale(.97)}
+  @media (hover:hover){.go:hover{opacity:.85}}
+  .note{margin:38px 0 0;padding-top:22px;border-top:1px solid var(--line);
+        font-size:11.5px;color:var(--ink-3)}
 </style>
 </head>
 <body>
 
-<svg class="markdefs" aria-hidden="true" focusable="false">
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
   <symbol id="mk" viewBox="0 0 60 96">
     <g transform="translate(30,48)">
       <g transform="translate(0,-34) rotate(-8)" fill="none" stroke="#2f7cf6" stroke-width="4" stroke-linecap="round">
@@ -294,226 +89,18 @@
   </symbol>
 </svg>
 
-<header>
-  <div class="wrap bar">
-    <div class="logo"><svg class="mk" viewBox="0 0 60 96" aria-hidden="true"><use href="#mk"></use></svg>みんなのスロット</div>
-    <button class="navbtn" id="navbtn" aria-label="メニュー" aria-expanded="false" aria-controls="topnav">
-      <span></span><span></span><span></span>
-    </button>
-    <nav class="topnav" id="topnav">
-      <a href="#concept">コンセプト</a>
-      <a href="#machines">対応機種</a>
-      <a href="#join">参加のしかた</a>
-      <a class="go" href="./kabaneri-unato/">カウンターを開く</a>
-    </nav>
-  </div>
-</header>
+<div class="wrap">
+  <div class="logo"><svg class="mk" viewBox="0 0 60 96" aria-hidden="true"><use href="#mk"></use></svg>みんなのスロット</div>
 
-<!-- 第一画面 -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div class="hero-txt">
-      <h1 class="rv">スロットの設定判別を、<br><span class="mark">みんなのデータで。</span></h1>
-      <p class="lead rv"><span>みんなのスロットは、カウントした実戦データを持ち寄る場所です。</span><span>あなたのデータが、明日の誰かの判別材料に。</span></p>
-      <div class="actions rv"><a class="btn lg accent" href="./kabaneri-unato/">カウンターを開く</a></div>
-    </div>
-    <div class="hero-art rv">
-      <picture>
-        <source srcset="./img/hero.webp" type="image/webp">
-        <img class="art" src="./img/hero.jpg" width="1100" height="887" decoding="async"
-             alt="スマホで数えた実戦記録が集まって、みんなの設定判別データになる様子">
-      </picture>
-    </div>
+  <span class="tag">COMING SOON</span>
+  <h1>準備中です。</h1>
+  <p>パチスロを打ちながら数えるカウンターを作っています。<br>いまはカバネリの1機種だけ、先に公開しています。</p>
 
-  </div>
-</section>
+  <a class="go" href="./kabaneri-unato/">カバネリ海門カウンターを開く</a>
 
-<!-- コンセプト -->
-<section class="soft" id="concept">
-  <div class="wrap">
-    <p class="sec-lbl rv">CONCEPT</p>
-    <h2 class="sec-ttl rv">ひとりで数えるより、<br>みんなで数えよう。</h2>
-    <p class="sec-txt rv">一人が一日に打てる台数は限られていて、判別するにはサンプルが足りません。同じ機種を打った人の記録を足し合わせれば、サンプルが増えて、判別の精度が上がる。みんなのスロットは、その足し算をするための道具です。</p>
+  <p class="note">数値は自分で数えた記録にもとづくもので、設定を保証するものではありません。</p>
+</div>
 
-    <div class="steps">
-      <div class="step rv">
-        <span class="big">01</span>
-        <h3>数える</h3>
-        <p>打ちながら押すだけ。終わってから入力し直す必要はありません。</p>
-      </div>
-      <div class="step rv">
-        <span class="big">02</span>
-        <h3>残る</h3>
-        <p>実戦ごとに記録され、通算で積み上がります。結果は1枚の画像にもできます。</p>
-      </div>
-      <div class="step rv">
-        <span class="big">03</span>
-        <span class="soon">COMING SOON</span>
-        <h3>集まる</h3>
-        <p>その記録が集まれば、サンプル数を添えた設定判別ができるようになります。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 対応機種 -->
-<section id="machines">
-  <div class="wrap">
-    <p class="sec-lbl rv">MACHINES</p>
-    <h2 class="sec-ttl rv">対応機種は、<br>いま1つだけ。</h2>
-    <p class="sec-txt rv">いま数えられるのは「スマスロ カバネリ 海門決戦」の1機種です。数を増やすより先に、1台ぶんを最後まで数えきれる形にすることを優先しました。キャラごとの非発光・発光・高確発光、CZ突入、下段ベル。打ちながら押した数が、そのまま発光率と平均ポイントになります。<br>対応機種はこれから増やしていきます。</p>
-
-    <div class="mrow">
-      <div class="machines">
-      <a class="mcard rv" href="./kabaneri-unato/">
-        <span class="marks">
-          <span class="r">無</span><span class="g">生</span><span class="b">銅</span>
-        </span>
-        <span class="txt">
-          <span class="nm">スマスロ カバネリ 海門決戦</span>
-          <span class="sub">海門カウンター</span>
-        </span>
-        <span class="arw">›</span>
-      </a>
-      </div>
-    <div class="shot rv">
-        <div class="phone">
-          <div class="top"></div>
-          <div class="ttl">カバネリ海門カウンター</div>
-          <div class="pcard r">
-            <div class="hd"><span class="ic">無</span><span class="nm">無名</span></div>
-            <div class="row">
-              <div class="b"><span>非発光</span><b>20</b></div>
-              <div class="b"><span>発光</span><b>2</b></div>
-              <div class="b"><span>高確</span><b>0</b></div>
-              <div class="b"><span>CZ</span><b>1</b></div>
-            </div>
-          </div>
-          <div class="pcard g">
-            <div class="hd"><span class="ic">生</span><span class="nm">生駒</span></div>
-            <div class="row">
-              <div class="b"><span>非発光</span><b>18</b></div>
-              <div class="b"><span>発光</span><b>1</b></div>
-              <div class="b"><span>高確</span><b>0</b></div>
-              <div class="b"><span>CZ</span><b>1</b></div>
-            </div>
-          </div>
-          <div class="pcard b2">
-            <div class="hd"><span class="ic">銅</span><span class="nm">銅藍</span></div>
-            <div class="row">
-              <div class="b"><span>非発光</span><b>6</b></div>
-              <div class="b"><span>発光</span><b>0</b></div>
-              <div class="b"><span>高確</span><b>0</b></div>
-              <div class="b"><span>周期</span><b>0</b></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 参加のしかた -->
-<section class="soft" id="join">
-  <div class="wrap">
-    <p class="sec-lbl rv">HOW TO JOIN</p>
-    <h2 class="sec-ttl rv">数えるのは、<br>開くだけ。</h2>
-    <p class="sec-txt rv">登録もインストールも要りません。ページを開いて押しはじめれば、すぐ数えられます。参加が必要になるのは、数えた実戦を記録として残すときだけです。</p>
-
-    <div class="plan">
-      <div class="row rv">
-        <h3>数えるだけなら登録不要</h3>
-        <p>アカウントもメールアドレスも要りません。開いたその場から数えはじめられます。ホーム画面に追加しておけば、圏外のホールでも起動できます。</p>
-      </div>
-      <div class="row rv">
-        <h3>記録を残すときだけ参加</h3>
-        <p>実戦を記録として保存するときに、メールアドレスで参加します。パスワードはありません。届いたリンクを押すだけです。</p>
-      </div>
-      <div class="row rv">
-        <h3>端末が変わっても記録は戻る</h3>
-        <p>保存した実戦はみんなのスロットが預かります。機種変更しても、読み出せば同じ記録が戻ります。ブラウザから一覧を見ることもできます。</p>
-      </div>
-      <div class="row rv">
-        <h3>預けた記録の使いみち</h3>
-        <p>統計と設定判別に使い、サイト上で公開するのは集計した数値だけです。名前・位置・店舗など個人を特定できるものは預かりません。メモは預かりますが集計には使いません。アカウントと記録は、いつでもまとめて削除できます。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 最後の導線 -->
-<section class="cta">
-  <div class="wrap">
-    <h2 class="rv">ここから、<br>みんなのデータになる。</h2>
-    <div class="actions rv"><a class="btn lg accent" href="./kabaneri-unato/">カウンターを開く</a></div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <div class="row">
-      <div class="logo"><svg class="mk" viewBox="0 0 60 96" aria-hidden="true"><use href="#mk"></use></svg>みんなのスロット</div>
-      <nav>
-        <a href="#concept">コンセプト</a>
-        <a href="#machines">対応機種</a>
-        <a href="#join">参加のしかた</a>
-        <a href="./kabaneri-unato/">カウンター</a>
-      </nav>
-    </div>
-    <p class="note">数値は自分で数えた記録にもとづくもので、設定を保証するものではありません。</p>
-    <p class="cr">© みんなのスロット</p>
-  </div>
-</footer>
-
-<script>
-/* ヘッダーのメニュー。狭い画面だけ畳む */
-(function () {
-  var btn = document.getElementById('navbtn');
-  var nav = document.getElementById('topnav');
-  if (!btn || !nav) return;
-  function set(open) {
-    document.body.classList.toggle('nav-open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  btn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    set(!document.body.classList.contains('nav-open'));
-  });
-  // 行き先を選んだら閉じる。同じページ内の移動なので開いたままだと邪魔になる
-  nav.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
-  document.addEventListener('click', function (e) {
-    if (!e.target.closest('#topnav') && !e.target.closest('#navbtn')) set(false);
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
-})();
-
-(function () {
-  var items = document.querySelectorAll('.rv');
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-    items.forEach(function (el) { el.classList.add('on'); });
-    return;
-  }
-  var io = new IntersectionObserver(function (es) {
-    es.forEach(function (e, i) {
-      if (!e.isIntersecting) return;
-      var el = e.target;
-      setTimeout(function () { el.classList.add('on'); }, i * 80);
-      io.unobserve(el);
-    });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: .1 });
-  items.forEach(function (el) { io.observe(el); });
-})();
-
-// 旧構成（サイト直下・/kabaneri/）で登録されたサービスワーカーが残っていると
-// 古い画面が表示され続けるため、ここで解除しておく
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function (rs) {
-    rs.forEach(function (r) {
-      if (!r.scope.includes('/kabaneri-unato/')) r.unregister();
-    });
-  }).catch(function () {});
-}
-</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
 </body>
 </html>
