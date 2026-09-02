@@ -45635,5 +45635,84 @@
     "avg": 620
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://slotterguild3.com/espace-kabukicho/61609/",
+  "articleDate": "2026-09-03",
+  "targetDate": "2026-09-02",
+  "postDate": "2026-09-01",
+  "tenchou": "@kabupa777",
+  "tweetUrl": "https://twitter.com/kabupa777/status/2094764961910182224",
+  "title": "9月2日(水)｜エスパス新宿歌舞伎町｜毎月2日の総付景品配布でポスター機種のカバネリ海門決戦が全台系濃厚に！同じポスター機種の炎炎2には高配分の仕掛けを確認！その他にも仕掛け多数で単品のお宝台も多数！",
+  "results": [
+   {
+    "machine": "カバネリ海門決戦",
+    "plus": 27,
+    "total": 31,
+    "avg": 3390
+   },
+   {
+    "machine": "ウルトラミラジャグ",
+    "plus": 4,
+    "total": 5,
+    "avg": 2150
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "カバネリ海門決戦",
+    "matched": true,
+    "keyword": "ずっーーと食べ続けたい",
+    "chain": [
+     "ずっーーと食べ続けたい",
+     "ぶっ通し",
+     "カバネリ海門決戦(9月ぶっ通しオススメ機種)"
+    ],
+    "raw": "■ずっーーと食べ続けたい→ぶっ通し→カバネリ海門決戦(9月ぶっ通しオススメ機種)",
+    "result": {
+     "plus": 27,
+     "total": 31,
+     "avg": 3390
+    }
+   },
+   {
+    "machine": "ウルトラミラジャグ",
+    "matched": true,
+    "keyword": "牛すき焼き",
+    "chain": [
+     "牛すき焼き",
+     "牛",
+     "ウルトラミラジャグ"
+    ],
+    "raw": "■牛すき焼き→牛→ウルトラミラジャグ",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2150
+    }
+   }
+  ],
+  "unassigned": [],
+  "highShare": [
+   {
+    "machine": "炎炎ノ消防隊2",
+    "plus": 9,
+    "total": 15,
+    "avg": 900
+   },
+   {
+    "machine": "邪神ちゃん",
+    "plus": 2,
+    "total": 3,
+    "avg": 3050
+   },
+   {
+    "machine": "喰霊零Re",
+    "plus": 2,
+    "total": 3,
+    "avg": 1167
+   }
+  ]
  }
 ]
