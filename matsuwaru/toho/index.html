@@ -560,9 +560,15 @@ document.addEventListener('click',e=>{
       lab = '次のイベント';
     }
     if(!p || !p.say){ box.remove(); return; }
-    const rows = p.top.map((t,i) =>
-      `<div class="r r${i+1}"><span class="md">${i+1}</span>` +
-      `<span class="nm">${esc(t[0])}</span><span class="ct">${t[1]}/${p.days}回</span></div>`).join('');
+    // 回数が同じなら同じ順位にする（イベント傾向のページと同じ数え方）。
+    // 並びの順番をそのまま順位にすると、6機種が2回で並んでいる日でも
+    // 1位・2位・3位に見えてしまう
+    let rank = 0, prev = null;
+    const rows = p.top.map((t,i) => {
+      if(t[1] !== prev){ rank = i + 1; prev = t[1]; }
+      return `<div class="r r${rank}"><span class="md">${rank}</span>` +
+        `<span class="nm">${esc(t[0])}</span><span class="ct">${t[1]}/${p.days}回</span></div>`;
+    }).join('');
     box.innerHTML =
       `<div class="tcard">
         <button class="txbtn" id="txclose" type="button" aria-label="このカードを閉じる">
