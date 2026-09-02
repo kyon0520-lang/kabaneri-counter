@@ -31901,5 +31901,89 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/03/065447",
+  "articleDate": "2026-09-03",
+  "targetDate": "2026-09-02",
+  "postDate": "2026-09-01",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2094749672875385247",
+  "title": "9月2日のマルハン新宿東宝ビルまとめ✏️5台設置機種中心にバラ含む全系6機種",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "Sアイム",
+    "matched": false,
+    "keyword": "マクドナルド",
+    "chain": [
+     "マクドナルド",
+     "I'm lovin' it"
+    ],
+    "raw": "マクドナルド→ I'm lovin' it",
+    "result": null
+   },
+   {
+    "machine": "防振り",
+    "matched": false,
+    "keyword": "防止",
+    "chain": [
+     "防止",
+     "防御"
+    ],
+    "raw": "防止→防御",
+    "result": null
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": false,
+    "keyword": "エビフィレオ",
+    "chain": [
+     "エビフィレオ",
+     "エビ",
+     "甲殻（攻殻）"
+    ],
+    "raw": "エビフィレオ→エビ→甲殻（攻殻）",
+    "result": null
+   },
+   {
+    "machine": "ウルミラジャグラー",
+    "matched": false,
+    "keyword": "チーズバーガー",
+    "chain": [
+     "チーズバーガー",
+     "チーズ",
+     "牛"
+    ],
+    "raw": "チーズバーガー→チーズ→牛",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "AIさん",
+    "chain": [
+     "AIさん",
+     "愛",
+     "ラブ"
+    ],
+    "raw": "AIさん→愛→ラブ",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "d払",
+    "chain": [
+     "d払",
+     "祓い",
+     "祓"
+    ],
+    "raw": "d払→祓い→祓",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
