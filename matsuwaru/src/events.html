@@ -147,6 +147,14 @@ h2:first-of-type{margin-top:4px}
 .pickbox::after{content:'▾';position:absolute;right:16px;top:50%;transform:translateY(-50%);
   color:var(--sub);pointer-events:none;font-size:15px}
 .detail .dhd{margin-bottom:8px}
+/* 折りたたみの見出し。未実施は80機種を超えるので、たたんでおいて押したときだけ開く */
+.disc{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;
+  font:inherit;color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.disc b{font-size:15px}
+.disc .dc{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--sub)}
+.disc .cv{width:8px;height:8px;border-right:2px solid #7f9dc4;border-bottom:2px solid #7f9dc4;
+  transform:rotate(45deg);transition:transform .15s;margin-top:-3px}
+.disc[aria-expanded="true"] .cv{transform:rotate(-135deg);margin-top:2px}
 .notyet{border:1px solid rgba(244,63,94,.45);background:rgba(244,63,94,.07);
   border-radius:12px;padding:11px 13px;margin-bottom:8px}
 .notyet:last-child{margin-bottom:0}
@@ -653,8 +661,14 @@ function render(D){
   h += `<div class="card"><b>実施済み ${t.done.length}機種</b>
      <div class="ms" style="margin-top:8px">${t.done.map(([m,n])=>`<span class="m">${esc(m)}<em>${n}回</em></span>`).join('')}</div></div>`;
   if(t.notYet.length || (t.never||[]).length){
-    h += `<div class="card"><b>今月未実施の機種</b><div style="margin-top:10px">`;
-    h += t.notYet.slice(0,20).map(([m,avg,sd,gap,last,n])=>{
+    // 件数が多いのでたたんでおく。開いたときは省かずに全部出す
+    // （20件で切っていたころは、残りがあること自体が画面に出ていなかった）
+    const nyn = t.notYet.length + (t.never||[]).length;
+    h += `<div class="card">
+      <button class="disc" id="nybtn" aria-expanded="false" aria-controls="nybox">
+        <b>今月未実施の機種</b><span class="dc">${nyn}機種<i class="cv"></i></span></button>
+      <div id="nybox" hidden style="margin-top:12px">`;
+    h += t.notYet.map(([m,avg,sd,gap,last,n])=>{
       const steady = avg && sd && sd < avg*0.6;
       // 実績が3回以下だと間隔の平均が出せない。回数だけ出して、経過日数で見てもらう
       const body = avg
@@ -670,9 +684,9 @@ function render(D){
         <div class="ms" style="margin-top:2px">${t.never.map(([m,u])=>
           `<span class="m" style="font-size:12px">${esc(m)}<em>${u}台</em></span>`).join('')}</div></div>`;
     }
-    h += `</div></div>`;
     const lu = t.lineup ? `現在の設置機種${t.lineup.machines}機種（${t.lineup.fetched}時点・毎週の入れ替え後に更新）と照らし合わせ、撤去済みの機種は除いています。` : '';
-    h += `<p class="note">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}公式の設置機種にあって、この期間に全系の記録がない機種は最後にまとめています。それ以前のことは分かりません。</p>`;
+    h += `<p class="note" style="margin-bottom:0">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}${(t.never||[]).length ? '公式の設置機種にあって、この期間に全系の記録がない機種は最後にまとめています。' : ''}それ以前のことは分かりません。</p>`;
+    h += `</div></div>`;
   }
 
   h += `</section>`;
@@ -683,6 +697,12 @@ function render(D){
   document.getElementById('picker').addEventListener('change', e=>{
     picked = e.target.value; drawPicked();
   });
+  const nyb = document.getElementById('nybtn');
+  if(nyb) nyb.onclick = () => {
+    const box = document.getElementById('nybox'), open = box.hidden;
+    box.hidden = !open;
+    nyb.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
   document.getElementById('ptabs').onclick = e => {
     const b = e.target.closest('button'); if(!b) return;
     document.querySelectorAll('#ptabs button').forEach(x=>x.classList.toggle('on', x===b));
