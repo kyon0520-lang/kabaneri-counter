@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0d1c2e">
-<title>イベント傾向チェッカー｜{{TITLE}}</title>
-<meta name="description" content="{{STORE}}のイベント別の機種傾向と、今月の実施状況。">
+<title>イベント傾向チェッカー｜全台系まつわるチェッカー</title>
+<meta name="description" content="エスパス日拓新宿歌舞伎町店のイベント別の機種傾向と、今月の実施状況。">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
@@ -218,7 +218,7 @@ h2:first-of-type{margin-top:4px}
     </svg>
     <span>みんなのスロット</span>
   </div>
-  <h1 class="ttl">イベント傾向チェッカー<span class="badge">{{LABEL}}</span></h1>
+  <h1 class="ttl">イベント傾向チェッカー<span class="badge">エスパス歌舞伎</span></h1>
   <a class="back" href="./">← 示唆から検索する</a>
   <div class="mtabs" id="ptabs" role="tablist">
     <button data-t="trend" class="on">イベント傾向</button>
@@ -690,7 +690,7 @@ function render(D){
   }
 
   h += `</section>`;
-  h += `<div class="foot">出典：<a href="{{BLOGURL}}" target="_blank" rel="noopener">{{BLOGNAME}}</a><br>
+  h += `<div class="foot">出典：<a href="https://slotterguild3.com/" target="_blank" rel="noopener">スロッターギルド</a><br>
     集計は実際に全台系が行われた日で行っています。<br>最終更新 ${D.generated}</div>`;
   document.getElementById('main').innerHTML = h;
   drawPicked();

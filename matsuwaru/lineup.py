@@ -11,6 +11,12 @@ _cfg = [s for s in _json.load(open(_ROOT + '/stores.json', encoding='utf-8'))['s
 if not _cfg: raise SystemExit('stores.json に店舗 "%s" がありません' % STORE)
 CONF = _cfg[0]
 B = os.path.join(_ROOT, STORE)
+# P-WORLD から取る店舗は lineup_pworld.py が担当する
+if CONF.get('lineupSource') == 'pworld':
+    import subprocess
+    raise SystemExit(subprocess.run([sys.executable,
+        os.path.join(_ROOT, 'lineup_pworld.py'), STORE] + sys.argv[2:]).returncode)
+
 URL = CONF.get('lineupUrl')
 if not URL:
     print('[%s] lineupUrl が未設定のため、ラインナップ取得は行いません' % STORE); raise SystemExit(0)

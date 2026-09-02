@@ -1,5 +1,5 @@
 {
-  "_説明": "店舗の定義。ここに1件足して build-pages.py を回せば、新しい店舗のページが生えます。sinceは示唆の癖が変わる区切り（店長交代日など）。",
+  "_説明": "店舗の定義。ここに1件足して build-pages.py を回せば、新しい店舗のページが生えます。sinceは示唆の癖が変わる区切り（店長交代日など）。 source=wp の店舗は WordPress REST API から取得する（parser で解析器 lib_<名前>.py を選ぶ）。public:false を付けると、そのページ自体は生成・公開されるが /matsuwaru/ の店舗一覧には載らない（直リンクを知っている人だけが見れるソフトローンチ状態）。省略時はtrue扱い。",
   "stores": [
     {
       "id": "toho",
@@ -14,6 +14,25 @@
       "version": 4,
       "lineupUrl": "https://www.maruhan.co.jp/hall/3044/kisyu.html",
       "lineupName": "マルハン公式の設置機種ページ"
+    },
+    {
+      "id": "kabuki",
+      "title": "全台系まつわるチェッカー",
+      "label": "エスパス歌舞伎",
+      "store": "エスパス日拓新宿歌舞伎町店",
+      "blogName": "スロッターギルド",
+      "blogUrl": "https://slotterguild3.com/",
+      "source": "wp",
+      "apiCategory": 7,
+      "parser": "kabuki",
+      "since": "2025-06-18",
+      "sinceNote": "⚠️ 検索できるデータは2025年6月18日以降のものです。全台系は毎日あるわけではありません。",
+      "example": "ツノッチ",
+      "version": 1,
+      "lineupUrl": "https://www.p-world.co.jp/tokyo/espace-kabuki.htm",
+      "lineupName": "P-WORLDの設置機種",
+      "lineupSource": "pworld",
+      "public": false
     }
   ]
 }

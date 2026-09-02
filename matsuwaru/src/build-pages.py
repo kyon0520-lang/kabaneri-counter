@@ -29,12 +29,13 @@ for s in cfg:
         shutil.copy2(os.path.join(SRC, 'icons', ic), os.path.join(d, ic))
     print('生成: /matsuwaru/%s/  (%s)' % (s['id'], s['store']))
 
-# 店舗一覧
+# 店舗一覧（public:false の店舗はページ自体は生成するが一覧には出さない＝ソフトローンチ）
 cards = '\n'.join(
     '''      <a class="store" href="./%s/">
         <span class="nm">%s</span>
         <span class="sub">%s</span>
-      </a>''' % (s['id'], html.escape(s['store']), html.escape(s['title'])) for s in cfg)
+      </a>''' % (s['id'], html.escape(s['store']), html.escape(s['title']))
+    for s in cfg if s.get('public', True))
 idx = open(os.path.join(SRC, 'stores.html'), encoding='utf-8').read().replace('{{CARDS}}', cards)
 open(os.path.join(B, 'index.html'), 'w', encoding='utf-8').write(idx)
 print('生成: /matsuwaru/  (店舗一覧 %d件)' % len(cfg))

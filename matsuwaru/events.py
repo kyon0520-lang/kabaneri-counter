@@ -60,10 +60,41 @@ if _os.path.exists(_lp):
     # どの機種にも当たらなかった設置機種＝ブログの記録に一度も出てこない機種。
     # 入替直後の新台がここに入る。公式の表記から頭のS/Lと末尾の型番を落として名前にする
     def _disp(nm):
-        t = re.sub(r'^[SLPＳＬ]\s*', '', nm.strip())
+        # P-WORLD は別名を / で連ねている。照合には全部使うが、表示は先頭だけ
+        t = nm.split('/')[0].strip()
+        t = re.sub(r'^[SLPＳＬ]\s*', '', t)
         t = re.sub(r'\s*[A-Za-z]+\d*$', '', t)
         return t.strip(' /／・')
     NEVER = [[_disp(nm), u] for nm, u in LINEUP['slots'] if nm not in _used]
+# フロアごとに別枠で動く機種（data/floors.json）。集計は別機種のままだが、
+# 「選ばれた機種」の並びだけは displayMerge の指定で1つにまとめて見せる。
+DISPMERGE = {}
+_flp = B + '/data/floors.json'
+if _os.path.exists(_flp):
+    for _m, _c in _json.load(open(_flp, encoding='utf-8'))['split'].items():
+        if _c.get('displayMerge'):
+            for _f in _c['floors']:
+                DISPMERGE['%s(%s)' % (_m, _f)] = _m
+
+def merge_top(rows, n):
+    """top の行をフロアまたぎで1本にまとめる。回数はその日群で
+       どちらかのフロアが選ばれた日数（重複して数えない）にしたいので、
+       日数は呼び出し側で数え直した値を渡す"""
+    if not DISPMERGE:
+        return rows
+    out, seen = [], {}
+    for r in rows:
+        k = DISPMERGE.get(r[0])
+        if not k:
+            out.append(r); continue
+        if k in seen:
+            i = seen[k]
+            out[i][3] = max(out[i][3], r[3])   # 台数は大きいほうを代表に
+            continue
+        seen[k] = len(out)
+        out.append([k, r[1], r[2], r[3]])
+    return out
+
 fixes = _json.load(open(B + '/data/event_fixes.json', encoding='utf-8')) if os.path.exists(B + '/data/event_fixes.json') else {}
 DROP = {(x[0], x[1]) for x in fixes.get('除外', [])}
 ADD  = [(x[0], x[1]) for x in fixes.get('追加', [])]
@@ -164,6 +195,18 @@ def profile(dates, label):
         rows.append([m, k, round(100 * k / n), us.most_common(1)[0][0] if us else 0])
     # 最後に機種名を入れて、全部同じときも順番が動かないようにする
     rows.sort(key=lambda r: (-r[1], -UNITS.get(r[0], 0), -base[r[0]], r[0]))
+    if DISPMERGE:
+        # 合算後の回数は「どちらかのフロアが選ばれた日数」。単純な足し算だと
+        # 両フロア実施の日を2回数えてしまう
+        cnt = collections.Counter()
+        for d in ds:
+            for k in {DISPMERGE.get(m, m) for m in days[d]}:
+                cnt[k] += 1
+        rows = merge_top(rows, n)
+        for r in rows:
+            r[1] = cnt.get(r[0], r[1])
+            r[2] = round(100 * r[1] / n)
+        rows.sort(key=lambda r: (-r[1], -UNITS.get(r[0], 0), -base.get(r[0], 0), r[0]))
     # 上位3位までをチップに出し、残りは一覧のシートで見せるので全件返す
     return {'label': label, 'days': n, 'small': n < 3, 'top': rows}
 
@@ -189,6 +232,10 @@ def rule_dates(mt):
         return [d for d in alldays if int(d[-2:]) in mt['day']]
     if mt.get('monthend'):
         return [d for d in alldays if lastday(d)]
+    if 'weekday' in mt:      # 0=月 … 5=土 6=日
+        return [d for d in alldays if date(*map(int, d.split('-'))).weekday() in mt['weekday']]
+    if mt.get('monthday'):   # 月と日が同じ日（1/1・2/2…）＝ 月日ゾロ目
+        return [d for d in alldays if int(d[5:7]) == int(d[8:10])]
     return []
 
 _rule_dates = rule_dates
@@ -234,6 +281,10 @@ for _g in PRIO:
     _claimed[_g] = _ds
 
 def outranked(group):
+    # _優先順位 に載っていない群は「重なる軸」（土曜日・日曜日など、
+    # 他のイベントと同じ日に併存する）。母数を削らず、他の母数も削らない。
+    if group not in PRIO:
+        return set()
     up = set()
     for g in PRIO:
         if g == group: break

@@ -12,6 +12,13 @@ STORE = sys.argv[1] if len(sys.argv) > 1 else 'toho'
 _cfg = [s for s in _json.load(open(_ROOT + '/stores.json', encoding='utf-8'))['stores'] if s['id'] == STORE]
 if not _cfg: raise SystemExit('stores.json に店舗 "%s" がありません' % STORE)
 CONF = _cfg[0]
+
+# WordPress REST API から取る店舗は sync_wp.py が担当する。
+# GitHub Actions は stores.json の全店舗を sync.py でまわすので、ここで振り分ける
+if CONF.get('source') == 'wp':
+    _r = subprocess.run([sys.executable, _os.path.join(_ROOT, 'sync_wp.py'), STORE])
+    sys.exit(_r.returncode)
+
 B = _os.path.join(_ROOT, STORE)
 CACHE = _os.path.join(_ROOT, 'cache', STORE)
 UA = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) matsuwaru-checker/personal'}
