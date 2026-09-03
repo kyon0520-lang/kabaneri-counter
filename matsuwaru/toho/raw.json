@@ -31985,5 +31985,189 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/04/073331",
+  "articleDate": "2026-09-04",
+  "targetDate": "2026-09-03",
+  "postDate": "2026-09-02",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2095112178923901326",
+  "title": "9月3日のマルハン新宿東宝ビルまとめ✏️全系+3台並びともに大量！",
+  "results": [
+   {
+    "machine": "モンハンライズ",
+    "plus": 2,
+    "total": 8,
+    "avg": -962
+   },
+   {
+    "machine": "ヴヴヴ",
+    "plus": 3,
+    "total": 5,
+    "avg": 780
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 3083
+   },
+   {
+    "machine": "スターハナハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 2533
+   },
+   {
+    "machine": "シェイクBT",
+    "plus": 2,
+    "total": 3,
+    "avg": 300
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "爪楊枝",
+    "chain": [
+     "爪楊枝",
+     "爪"
+    ],
+    "raw": "爪楊枝→爪",
+    "result": {
+     "plus": 2,
+     "total": 8,
+     "avg": -962
+    }
+   },
+   {
+    "machine": "ヴヴヴ",
+    "matched": true,
+    "keyword": "キルケー",
+    "chain": [
+     "キルケー",
+     "キル",
+     "ハラキリ"
+    ],
+    "raw": "キルケー→キル→ハラキリ",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 780
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "魔女",
+    "chain": [
+     "魔女",
+     "女"
+    ],
+    "raw": "魔女→女",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 3083
+    }
+   },
+   {
+    "machine": "スターハナハナ",
+    "matched": true,
+    "keyword": "キルケーの魔女",
+    "chain": [
+     "キルケーの魔女",
+     "閃光のハサウェイ",
+     "宇宙世紀"
+    ],
+    "raw": "キルケーの魔女→閃光のハサウェイ→宇宙世紀",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2533
+    }
+   },
+   {
+    "machine": "シェイクBT",
+    "matched": true,
+    "keyword": "上野",
+    "chain": [
+     "上野",
+     "コパンダ"
+    ],
+    "raw": "上野→コパンダ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 300
+    }
+   },
+   {
+    "machine": "シェイクBT",
+    "matched": true,
+    "keyword": "玉子キレイに割れなくて",
+    "chain": [
+     "玉子キレイに割れなくて",
+     "ぐちゃぐちゃ",
+     "シェイク"
+    ],
+    "raw": "玉子キレイに割れなくて→ぐちゃぐちゃ→シェイク",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 300
+    }
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "電車でGO",
+    "chain": [
+     "電車でGO",
+     "ゲーム版権"
+    ],
+    "raw": "電車でGO→ゲーム版権",
+    "result": null
+   },
+   {
+    "machine": "デビルメイクライ5",
+    "matched": false,
+    "keyword": "電車でGO",
+    "chain": [
+     "電車でGO",
+     "ゲーム版権"
+    ],
+    "raw": "電車でGO→ゲーム版権",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "爪楊枝",
+    "chain": [
+     "爪楊枝",
+     "妻",
+     "俺の嫁カスタム"
+    ],
+    "raw": "爪楊枝→妻→俺の嫁カスタム",
+    "result": null
+   },
+   {
+    "machine": "ひぐらし2",
+    "matched": false,
+    "keyword": "お昼という時間は過ぎてしまった",
+    "chain": [
+     "お昼という時間は過ぎてしまった",
+     "日が暮れて",
+     "ひぐらし"
+    ],
+    "raw": "お昼という時間は過ぎてしまった→日が暮れて→ひぐらし",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
