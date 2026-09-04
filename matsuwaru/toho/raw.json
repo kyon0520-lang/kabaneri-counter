@@ -32169,5 +32169,85 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/05/072058",
+  "articleDate": "2026-09-05",
+  "targetDate": "2026-09-04",
+  "postDate": "2026-09-03",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2095474446408814949",
+  "title": "9月4日のマルハン新宿東宝ビルまとめ✏️3機種の全系が好調！",
+  "results": [
+   {
+    "machine": "モンハンライズ",
+    "plus": 4,
+    "total": 8,
+    "avg": 2138
+   },
+   {
+    "machine": "SBJ",
+    "plus": 2,
+    "total": 5,
+    "avg": 1460
+   },
+   {
+    "machine": "ドッチ",
+    "plus": 2,
+    "total": 2,
+    "avg": 1200
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "目からウロコ",
+    "chain": [
+     "目からウロコ",
+     "鱗",
+     "爆鱗竜（バゼルギウス）"
+    ],
+    "raw": "目からウロコ→鱗→爆鱗竜（バゼルギウス）",
+    "result": {
+     "plus": 4,
+     "total": 8,
+     "avg": 2138
+    }
+   },
+   {
+    "machine": "SBJ",
+    "matched": true,
+    "keyword": "黒胡椒",
+    "chain": [
+     "黒胡椒",
+     "黒"
+    ],
+    "raw": "黒胡椒→黒",
+    "result": {
+     "plus": 2,
+     "total": 5,
+     "avg": 1460
+    }
+   },
+   {
+    "machine": "ドッチ",
+    "matched": true,
+    "keyword": "あつもり",
+    "chain": [
+     "あつもり",
+     "あつ森",
+     "どうぶつの森"
+    ],
+    "raw": "あつもり→あつ森→どうぶつの森",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 1200
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]

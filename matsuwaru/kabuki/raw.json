@@ -45801,5 +45801,45 @@
     "avg": 640
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://slotterguild3.com/espace-kabukicho/62016/",
+  "articleDate": "2026-09-05",
+  "targetDate": "2026-09-04",
+  "postDate": "2026-09-03",
+  "tenchou": "@kabupa777",
+  "tweetUrl": null,
+  "title": "9月4日(金)｜エスパス新宿歌舞伎町｜４の日仕掛けの末尾44番台は平均約2000枚のプラス！！高配分機種や10日間ポスターにも優秀4台並びなどの仕掛け多数！",
+  "results": [
+   {
+    "machine": "末尾44番台",
+    "plus": 6,
+    "total": 9,
+    "avg": 1967
+   }
+  ],
+  "assoc": [],
+  "unassigned": [],
+  "highShare": [
+   {
+    "machine": "スマスロ化物語",
+    "plus": 2,
+    "total": 3,
+    "avg": 1450
+   },
+   {
+    "machine": "とある禁書目録2",
+    "plus": 7,
+    "total": 15,
+    "avg": 1163
+   },
+   {
+    "machine": "SAOII",
+    "plus": 9,
+    "total": 20,
+    "avg": 905
+   }
+  ]
  }
 ]
