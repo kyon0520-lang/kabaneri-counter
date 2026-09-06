@@ -45953,5 +45953,118 @@
     "avg": 673
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://slotterguild3.com/espace-kabukicho/62227/",
+  "articleDate": "2026-09-07",
+  "targetDate": "2026-09-06",
+  "postDate": "2026-09-05",
+  "tenchou": "@kabupa777",
+  "tweetUrl": null,
+  "title": "9月6日(日)｜エスパス新宿歌舞伎町｜毎月6日は店長就任日！恒例の末尾⑥はもちろん好調！！全台系・高配分機種・優秀並びが多数アリ！さらに単品も多数確認！",
+  "results": [
+   {
+    "machine": "Lヴァルヴレイヴ2",
+    "plus": 12,
+    "total": 25,
+    "avg": 3456
+   },
+   {
+    "machine": "ゴージャグ3",
+    "plus": 26,
+    "total": 29,
+    "avg": 2591
+   },
+   {
+    "machine": "L化物語",
+    "plus": 3,
+    "total": 3,
+    "avg": 4450
+   },
+   {
+    "machine": "末尾⑥",
+    "plus": 50,
+    "total": 75,
+    "avg": 1289
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ヴァルヴレイヴ2",
+    "matched": false,
+    "keyword": "車",
+    "chain": [
+     "車",
+     "ドライブ",
+     "ヴァルヴレイヴ2"
+    ],
+    "raw": "・車→ドライブ→ヴァルヴレイヴ2",
+    "result": null
+   },
+   {
+    "machine": "ゴーゴージャグラー",
+    "matched": false,
+    "keyword": "お昼",
+    "chain": [
+     "お昼",
+     "午後",
+     "ゴーゴージャグラー"
+    ],
+    "raw": "・お昼→午後→ゴーゴージャグラー",
+    "result": null
+   }
+  ],
+  "unassigned": [],
+  "highShare": [
+   {
+    "machine": "マギレコ",
+    "plus": 8,
+    "total": 13,
+    "avg": 1108
+   },
+   {
+    "machine": "Lインデックス2",
+    "plus": 8,
+    "total": 15,
+    "avg": 1030
+   },
+   {
+    "machine": "スターハナハナ-30",
+    "plus": 5,
+    "total": 7,
+    "avg": 993
+   },
+   {
+    "machine": "L攻殻機動隊",
+    "plus": 4,
+    "total": 6,
+    "avg": 3733
+   },
+   {
+    "machine": "L邪神ちゃん",
+    "plus": 2,
+    "total": 3,
+    "avg": 2300
+   },
+   {
+    "machine": "キンハナBT",
+    "plus": 8,
+    "total": 12,
+    "avg": 1888
+   },
+   {
+    "machine": "L喰霊-零-Re",
+    "plus": 2,
+    "total": 3,
+    "avg": 1550
+   },
+   {
+    "machine": "LサンダーV",
+    "plus": 3,
+    "total": 3,
+    "avg": 1667
+   }
+  ]
  }
 ]
