@@ -43,6 +43,8 @@ SRC = os.path.join(BASE, 'index.html')
 DEST = os.path.join(PUB, 'kabaneri-unato', 'index.html')
 MAN_SRC = os.path.join(BASE, 'manual.html')
 MAN_DEST = os.path.join(PUB, 'kabaneri-unato', 'manual.html')
+NEWS_SRC = os.path.join(BASE, 'news.html')
+NEWS_DEST = os.path.join(PUB, 'kabaneri-unato', 'news.html')
 
 SITE = 'https://minnanoslot.com/kabaneri-unato/'
 
@@ -167,9 +169,20 @@ def build_manual():
     print(f'書き出し: {MAN_DEST}')
 
 
+def build_news():
+    if not os.path.exists(NEWS_SRC):
+        return
+    news = open(NEWS_SRC, encoding='utf-8').read()
+    if 'cloudflareinsights' not in news:
+        news = news.rstrip() + '\n' + BEACON
+    open(NEWS_DEST, 'w', encoding='utf-8').write(news)
+    print(f'書き出し: {NEWS_DEST}')
+
+
 if __name__ == '__main__':
     build_app()
     build_manual()
+    build_news()
     for name, on in FEATURES.items():
         print(f'{name}: {"あり" if on else "なし"}')
     print(f'公開URL: {SITE}')

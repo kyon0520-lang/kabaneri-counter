@@ -1,0 +1,60 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>お知らせ｜みんなのスロット</title>
+<style>
+  :root{
+    --bg:#0d1c2e; --panel:#16283f; --panel2:#1e3049; --line:#2c4560;
+    --text:#e6f0fa; --muted:#93aac4;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    line-height:1.9;-webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:28px 18px 60px}
+  .back{
+    display:inline-block;font-size:12.5px;color:var(--muted);
+    text-decoration:none;margin-bottom:18px;
+  }
+  h1{font-size:19px;line-height:1.5;margin:0 0 20px;letter-spacing:.02em}
+  .card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:15px 15px 13px;margin-bottom:14px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+  .tag{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:4px 9px;border-radius:6px}
+  .tag.fix{background:rgba(226,69,60,.16);color:#ff9c94}
+  .tag.feat{background:rgba(47,181,106,.18);color:#6fe0a4}
+  .date{font-size:11px;color:var(--muted)}
+  .title{font-size:14.5px;font-weight:700;margin:0 0 8px;color:var(--text)}
+  .lede{font-size:12.5px;color:#c3d2e6;margin:0 0 9px}
+  ul{margin:0;padding-left:1.15em}
+  li{font-size:12.5px;color:#c3d2e6;margin-bottom:5px}
+</style>
+
+<div class="wrap">
+<a class="back" href="./">← カバネリ海門カウンター</a>
+<h1>お知らせ</h1>
+
+<div class="card">
+  <div class="row">
+    <span class="tag fix">修正</span>
+    <span class="date">2026年9月7日</span>
+  </div>
+  <div class="title">銅藍のポイント計算を修正しました</div>
+  <p class="lede">新しく解析が出たことにより、以下の点を修正しました。</p>
+  <ul>
+    <li>銅藍の「発光」「高確発光など」のポイントを15pt→2ptに変更しました（非発光1ptは変更ありません）。カバネチャンス目の規定ポイントは最大14ptと判明しています</li>
+    <li>合算値の「無名＋生駒＋銅藍」にあった平均ポイント表示は、単位が揃わず意味をなさないため削除しました</li>
+    <li>規定pt分布グラフに、銅藍専用の「周期突入時のポイント分布」（2pt刻み）を追加しました</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="row">
+    <span class="tag feat">公開</span>
+    <span class="date">2026年9月2日</span>
+  </div>
+  <div class="title">カバネリ海門カウンターを公開しました</div>
+  <p class="lede">スマスロ カバネリ 海門決戦の発光カウンターを、みんなのスロットで公開しました。</p>
+</div>
+
+</div>

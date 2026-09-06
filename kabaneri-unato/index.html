@@ -502,6 +502,40 @@
   .sheet p{margin:0 0 6px;font-size:14px;font-weight:700}
   .sheet .sub{margin:0 0 14px;font-size:11px;color:var(--muted);font-weight:400;line-height:1.6}
   .sheet .acts{display:flex;gap:8px}
+
+  /* ===== お知らせ（起動時ポップアップ） ===== */
+  .newsmodal{
+    position:fixed;inset:0;z-index:55;padding:24px;
+    background:rgba(6,16,28,.72);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .newsmodal[hidden]{display:none}
+  .newssheet{
+    width:100%;max-width:440px;background:var(--panel);
+    border:1px solid var(--line);border-radius:18px;
+    padding:18px 18px 20px;
+    max-height:82vh;overflow-y:auto;
+  }
+  .newshead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px}
+  .newshead h2{font-size:16.5px;margin:0;letter-spacing:.02em;color:var(--text)}
+  .newshead .sub{font-size:11.5px;color:var(--muted);margin:3px 0 0}
+  .newsx{
+    appearance:none;border:0;background:var(--panel2);color:var(--muted);
+    width:30px;height:30px;border-radius:50%;font-size:15px;line-height:1;cursor:pointer;
+    flex:0 0 auto;display:grid;place-items:center;
+  }
+  .newscard{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:15px 15px 13px;margin-top:14px}
+  .newsrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+  .newstag{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:4px 9px;border-radius:6px}
+  .newstag.fix{background:rgba(226,69,60,.16);color:#ff9c94}
+  .newstag.feat{background:rgba(47,181,106,.18);color:#6fe0a4}
+  .newsdate{font-size:11px;color:var(--muted)}
+  .newstitle{font-size:14.5px;font-weight:700;margin:0 0 8px;color:var(--text)}
+  .newslede{font-size:12.5px;color:#c3d2e6;margin:0 0 9px}
+  .newscard ul{margin:0;padding-left:1.15em}
+  .newscard li{font-size:12.5px;color:#c3d2e6;margin-bottom:5px}
+  .newslink{text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .newslink a{font-size:12px;color:var(--blue);text-decoration:none;font-weight:700}
   
   /* 記録の引き継ぎでも使うので、当選履歴を外しても残す */
   .wlbl{
@@ -711,6 +745,7 @@
   
   <button id="trbtn">記録の引き継ぎ</button>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
+  <a id="newsbtn" href="./news.html" target="_blank" rel="noopener">お知らせ</a>
 </nav>
 
 <main>
@@ -831,6 +866,20 @@
       <input type="number" id="games" inputmode="numeric" min="0" max="99999" step="1" placeholder="0" aria-label="現在のG数">
     </div>
     <div class="rate" id="bellrate">—<em>確率</em></div>
+  </div>
+</div>
+
+<div class="newsmodal" id="newsmodal" hidden>
+  <div class="newssheet" role="dialog" aria-modal="true" aria-labelledby="newstitle">
+    <div class="newshead">
+      <div>
+        <h2 id="newstitle">お知らせ</h2>
+        <p class="sub">カウンターの修正・追加をお伝えします</p>
+      </div>
+      <button class="newsx" id="newsx" aria-label="閉じる">✕</button>
+    </div>
+    <div id="newslist"></div>
+    <div class="newslink"><a href="./news.html" target="_blank" rel="noopener">これまでのお知らせを見る</a></div>
   </div>
 </div>
 
@@ -1412,6 +1461,7 @@ document.getElementById('menubtn').addEventListener('click', () => {
 });
 menuScrim.addEventListener('click', closeMenu);
 document.getElementById('manualbtn').addEventListener('click', closeMenu);
+document.getElementById('newsbtn').addEventListener('click', closeMenu);
 
 /* 有利区間リセット：現在のポイントを0にして、その分を通算ポイントからも差し引く。
    非発光・発光・高確発光・CZ突入の回数はそのまま残す。 */
@@ -2324,6 +2374,56 @@ function closeA2hs(){
 document.getElementById('a2hsok').addEventListener('click', closeA2hs);
 document.getElementById('a2hsx').addEventListener('click', closeA2hs);
 
+/* ---------- お知らせ（起動時ポップアップ） ----------
+   新しい順に先頭へ追加していく。id は日付から自動で作るのではなく固定文字列にする
+   （同じ日に2件出す可能性があるため）。全件は news.html に手で反映する（別ファイル）。
+   一度閉じたら、そのidを見た記録として残し、同じidのうちは二度と出さない。 */
+const NEWS = [
+  {
+    id: '2026-09-07-blue-pt',
+    date: '2026年9月7日',
+    tag: 'fix',
+    title: '銅藍のポイント計算を修正しました',
+    lede: '新しく解析が出たことにより、以下の点を修正しました。',
+    points: [
+      '銅藍の「発光」「高確発光など」のポイントを15pt→2ptに変更しました（非発光1ptは変更ありません）。カバネチャンス目の規定ポイントは最大14ptと判明しています',
+      '合算値の「無名＋生駒＋銅藍」にあった平均ポイント表示は、単位が揃わず意味をなさないため削除しました',
+      '規定pt分布グラフに、銅藍専用の「周期突入時のポイント分布」（2pt刻み）を追加しました',
+    ],
+  },
+];
+const NEWS_SEEN_KEY = 'kabaneri-news-seen-v1';
+
+function newsSeen(){
+  try { return localStorage.getItem(NEWS_SEEN_KEY); } catch(e) { return null; }
+}
+
+function checkNews(){
+  if (!NEWS.length || newsSeen() === NEWS[0].id) return;
+  const n = NEWS[0];
+  document.getElementById('newslist').innerHTML = `
+    <div class="newscard">
+      <div class="newsrow">
+        <span class="newstag ${n.tag}">${n.tag === 'fix' ? '修正' : '公開'}</span>
+        <span class="newsdate">${n.date}</span>
+      </div>
+      <div class="newstitle">${esc(n.title)}</div>
+      <p class="newslede">${esc(n.lede)}</p>
+      <ul>${n.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+    </div>`;
+  document.getElementById('newsmodal').hidden = false;
+}
+
+function closeNews(){
+  document.getElementById('newsmodal').hidden = true;
+  try { localStorage.setItem(NEWS_SEEN_KEY, NEWS[0].id); } catch(e) {}
+}
+
+document.getElementById('newsx').addEventListener('click', closeNews);
+document.getElementById('newsmodal').addEventListener('click', e => {
+  if (e.target.id === 'newsmodal') closeNews();
+});
+
 /* ---------- 起動 ---------- */
 load();
 loadHist();
@@ -2342,9 +2442,14 @@ applyMainView();
 
 
 // 記録を読み込んでから判定する（保存済みの件数で文面が変わるため）
+// お知らせと同時に出すと重なるので、ホーム画面案内を出したときはお知らせを見送る
+// （次に開いたときに出る）
+let a2hsShown = false;
 if (isIOS() && !isStandalone() && storageWorks() && !localStorage.getItem(A2HS_KEY)) {
   showA2hs();
+  a2hsShown = true;
 }
+if (!a2hsShown) checkNews();
 
 
 // 保存できない環境（プライベートモードや埋め込み表示など）は最初に知らせる
