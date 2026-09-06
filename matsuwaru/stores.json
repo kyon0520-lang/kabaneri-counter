@@ -11,7 +11,7 @@
       "since": "2026-02-22",
       "sinceNote": "⚠️ 検索できるデータは、エンドウ店長の就任日以降のものです。",
       "example": "会議",
-      "version": 4,
+      "version": 5,
       "lineupUrl": "https://www.maruhan.co.jp/hall/3044/kisyu.html",
       "lineupName": "マルハン公式の設置機種ページ"
     },
@@ -28,7 +28,7 @@
       "since": "2025-06-18",
       "sinceNote": "⚠️ 検索できるデータは2025年6月18日以降のものです。全台系は毎日あるわけではありません。",
       "example": "ツノッチ",
-      "version": 1,
+      "version": 2,
       "lineupUrl": "https://www.p-world.co.jp/tokyo/espace-kabuki.htm",
       "lineupName": "P-WORLDの設置機種",
       "lineupSource": "pworld",

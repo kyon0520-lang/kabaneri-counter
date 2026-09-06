@@ -658,8 +658,21 @@ function render(D){
 
   const t = D.thisMonth;
   h += `<section id="pane-month" hidden><h2>${t.month.replace('-','年')}月の実施状況</h2>`;
-  h += `<div class="card"><b>実施済み ${t.done.length}機種</b>
-     <div class="ms" style="margin-top:8px">${t.done.map(([m,n])=>`<span class="m">${esc(m)}<em>${n}回</em></span>`).join('')}</div></div>`;
+  if((t.byDate||[]).length){
+    h += `<div class="card">
+      <button class="disc" id="bdbtn" aria-expanded="false" aria-controls="bdbox">
+        <b>日付ごとの全系実施機種</b><span class="dc">${t.byDate.length}日<i class="cv"></i></span></button>
+      <div id="bdbox" hidden style="margin-top:12px">`;
+    h += t.byDate.map(([d,ms])=>`<div class="notyet"><div class="rh"><b>${d.slice(5).replace('-','/')}</b></div>
+      <div class="ms" style="margin-top:2px">${ms.map(([m,u])=>`<span class="m" style="font-size:12px">${esc(m)}${u?`<em>${u}台</em>`:''}</span>`).join('')}</div></div>`).join('');
+    h += `</div></div>`;
+  }
+  h += `<div class="card">
+    <button class="disc" id="donebtn" aria-expanded="false" aria-controls="donebox">
+      <b>実施済み</b><span class="dc">${t.done.length}機種<i class="cv"></i></span></button>
+    <div id="donebox" hidden style="margin-top:12px">
+      <div class="ms">${t.done.map(([m,n])=>`<span class="m">${esc(m)}<em>${n}回</em></span>`).join('')}</div>
+    </div></div>`;
   if(t.notYet.length || (t.never||[]).length){
     // 件数が多いのでたたんでおく。開いたときは省かずに全部出す
     // （20件で切っていたころは、残りがあること自体が画面に出ていなかった）
@@ -697,12 +710,13 @@ function render(D){
   document.getElementById('picker').addEventListener('change', e=>{
     picked = e.target.value; drawPicked();
   });
-  const nyb = document.getElementById('nybtn');
-  if(nyb) nyb.onclick = () => {
-    const box = document.getElementById('nybox'), open = box.hidden;
-    box.hidden = !open;
-    nyb.setAttribute('aria-expanded', open ? 'true' : 'false');
-  };
+  document.querySelectorAll('.disc').forEach(b => {
+    b.onclick = () => {
+      const box = document.getElementById(b.getAttribute('aria-controls')), open = box.hidden;
+      box.hidden = !open;
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+  });
   document.getElementById('ptabs').onclick = e => {
     const b = e.target.closest('button'); if(!b) return;
     document.querySelectorAll('#ptabs button').forEach(x=>x.classList.toggle('on', x===b));

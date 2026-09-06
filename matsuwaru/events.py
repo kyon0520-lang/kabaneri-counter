@@ -335,6 +335,12 @@ for m, n in base.most_common():
     # 実績が3回以下だと間隔の平均は出せないが、未実施であることは変わらないので出す
     avg, sd = gaps.get(m, (None, None))
     notyet.append([m, avg, sd, (today - d2(last[m])).days, last[m], n])
+# 日付ごとの全系機種（新しい日付が先、機種は現在の設置台数が多い順）。
+# 横に添える台数は「現在」ではなく、その日実際に何台だったか（units_on）
+bydate = sorted((d for d in alldays if d.startswith(ym)), reverse=True)
+def _bydate_row(d):
+    ms = sorted(days[d], key=lambda m: (-UNITS.get(m, 0), m))
+    return [d, [[m, units_on(d, m)] for m in ms]]
 thismonth = {
     'month': ym,
     'lineup': ({'fetched': LINEUP['fetched'], 'machines': len(LINEUP['slots']),
@@ -342,6 +348,7 @@ thismonth = {
     'done': [[m, n, last[m]] for m, n in donec.most_common()],
     'notYet': notyet,
     'never': (NEVER if LINEUP else []),
+    'byDate': [_bydate_row(d) for d in bydate],
 }
 
 # --- 台数の傾向（多=20台以上／中=10〜19台／小=9台以下） ---

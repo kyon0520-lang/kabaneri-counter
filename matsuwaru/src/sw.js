@@ -4,7 +4,7 @@
 const CACHE = 'matsuwaru-{{ID}}-v{{VERSION}}';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
                 './icon-192.png', './icon-512.png', './data/index.json',
-                './data/lead.json'];
+                './data/lead.json', './news.html'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
