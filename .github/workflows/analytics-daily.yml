@@ -1,0 +1,43 @@
+name: アクセスレポート
+
+on:
+  schedule:
+    - cron: '0 16 * * *'   # 毎日 UTC16:00 = JST翌01:00。JST日付が完全に締まってから集計する
+  workflow_dispatch:        # 手動実行も可。過去日を指定したいときは target_date を入れる
+    inputs:
+      target_date:
+        description: '集計対象日（JST・YYYY-MM-DD）。空なら前日'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: レポートを作る
+        working-directory: analytics
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
+          TARGET_DATE: ${{ github.event.inputs.target_date }}
+        run: python3 report.py
+
+      - name: 変更をコミット
+        run: |
+          if git diff --quiet -- analytics; then
+            echo "変更なし。コミットしない"
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add analytics
+            git commit -m "アクセスレポート更新 $(date -u +%Y-%m-%d)"
+            git push
+          fi

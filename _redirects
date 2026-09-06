@@ -1,6 +1,20 @@
 # 原本（src/）は配信しない。リポジトリに置いてあるだけで、公開対象ではない。
 /src/*                     /                                 301
 
+# 内部ドキュメントは配信しない（2026-09-04発覚：TODO.md/README.mdが誰でも閲覧できていた）。
+/TODO.md                   /                                 301
+/README.md                 /                                 301
+/matsuwaru/TODO.md         /                                 301
+/matsuwaru/SPEC.md         /                                 301
+/analytics/README.md       /                                 301
+
+# 設定・インフラ関連も配信しない（2026-09-06発覚：wrangler.tomlがD1/KVのIDつきで誰でも閲覧できていた）。
+/wrangler.toml             /                                 301
+/.gitignore                /                                 301
+/analytics/*               /                                 301
+/.github/*                 /                                 301
+/.claude/*                 /                                 301
+
 # 旧URL（/kabaneri/）から新URL（/kabaneri-unato/）への転送。
 # index.html と sw.js は実体を置いてある（サービスワーカーの後片づけが必要なため）。
 /kabaneri/manual.html      /kabaneri-unato/manual.html      301

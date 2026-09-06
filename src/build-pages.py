@@ -12,9 +12,10 @@
 機能フラグを False にすると、その機能を原本から外した版を書き出す（原本は触らない）。
 戻すときは True にして、もう一度実行するだけ。
 
-  SEND_ENABLED  … みんなのスロットへの送信・会員登録・読み出し・マイページ
-  WINS_ENABLED  … 当選履歴カウンター（左端の「当選」つまみごと）
-  CYCLE_ENABLED … 当選履歴の中の周期カウンター（何周期目・周期到達・周期別の当選率）
+  SEND_ENABLED   … みんなのスロットへの送信・会員登録・読み出し・マイページ
+  WINS_ENABLED   … 当選履歴カウンター（左端の「当選」つまみごと）
+  CYCLE_ENABLED  … 当選履歴の中の周期カウンター（何周期目・周期到達・周期別の当選率）
+  ADGATE_ENABLED … 無料利用の日次リワード広告ゲート（いまはダミー広告。AdSense審査中）
 
 CYCLE は WINS の中に入っている。WINS を False にすれば周期も一緒に消えるので、
 CYCLE を単体で False にするのは「当選履歴は残すが周期だけやめる」ときだけ。
@@ -26,9 +27,10 @@ import re
 SEND_ENABLED = False
 WINS_ENABLED = False
 CYCLE_ENABLED = False
+ADGATE_ENABLED = False
 
 # 内側（CYCLE）から順に処理する
-FEATURES = {'SEND': SEND_ENABLED, 'CYCLE': CYCLE_ENABLED, 'WINS': WINS_ENABLED}
+FEATURES = {'SEND': SEND_ENABLED, 'CYCLE': CYCLE_ENABLED, 'WINS': WINS_ENABLED, 'ADGATE': ADGATE_ENABLED}
 
 # 原本に置いた印。CSS/JS は /* */、HTML は <!-- --> で囲む
 #   ==NAME:START==  〜 ==NAME:END==   … その機能を含めるときだけ残る
@@ -107,6 +109,8 @@ def apply_flags(html):
     if not WINS_ENABLED:
         assert 'winpanel' not in html, '当選履歴パネルの参照が残っています'
         assert 'renderWins' not in html, '当選履歴の描画が残っています'
+    if not ADGATE_ENABLED:
+        assert 'adgate' not in html, '広告ゲートの参照が残っています'
     return html
 
 

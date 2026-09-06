@@ -22,6 +22,21 @@ binding = "DB"
 database_name = "minnanoslot"
 database_id = "4b46155d-c2fe-41b4-8ee0-72d0b5fbf7db"
 
+# リワード広告ゲートのプライベートモード対策用（TODO.md「プライベートモード対策」参照）。
+# IPアドレス等から作る一時的な識別子を expirationTtl=24時間 で保管し、24時間で自動的に消す。
+# D1ではなくKVにしたのはこの自動失効のため（D1だと手動の掃除処理が要る）。
+[[kv_namespaces]]
+binding = "ADGATE_KV"
+id = "dca2ae900883497396b527798d986338"
+
+[[env.preview.kv_namespaces]]
+binding = "ADGATE_KV"
+id = "dca2ae900883497396b527798d986338"
+
+[[env.production.kv_namespaces]]
+binding = "ADGATE_KV"
+id = "dca2ae900883497396b527798d986338"
+
 # 送信ドメインは send.minnanoslot.com（2026-08-26 にResendで認証済み）。
 # ルートではなくサブドメインにしてあるのは、ルートのSPFを
 # Cloudflare Email Routing（info@ の受信）が使っているため。

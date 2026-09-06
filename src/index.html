@@ -478,6 +478,43 @@
   .a2hs-note{margin:12px 0 0;font-size:11.5px;color:var(--muted);line-height:1.9}
   .a2hs-note b{color:var(--text)}
 
+  /* ==ADGATE:START== */
+  /* 無料利用の日次リワード広告ゲート（いまはダミー広告） */
+  .adgate{
+    position:fixed;inset:0;z-index:65;background:var(--bg);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .adgate[hidden]{display:none}
+  .adgate-in{max-width:400px;width:100%;position:relative}
+  .adgate-prompt h2{font-size:21px;line-height:1.5;margin:0 0 14px;text-align:center;letter-spacing:.01em}
+  .adgate-desc{font-size:13px;line-height:1.9;color:var(--text);text-align:center;margin:0 0 22px}
+  .adgate-desc b{color:#e8c06a}
+  .adgate-watch{
+    width:100%;background:#2f6bd8;border:1px solid #2f6bd8;color:#fff;
+    border-radius:11px;padding:15px;font-size:15px;font-weight:700;
+    font-family:inherit;cursor:pointer;
+  }
+  .adgate-note{margin:14px 0 0;font-size:11px;color:var(--muted);line-height:1.8;text-align:center}
+  .adgate-play{position:relative}
+  .adgate-video{
+    aspect-ratio:16/9;border-radius:14px;background:#000;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;position:relative;overflow:hidden;border:1px solid var(--line);
+  }
+  .adgate-label{
+    position:absolute;top:10px;left:10px;font-size:10.5px;color:#fff;
+    background:rgba(255,255,255,.15);border-radius:5px;padding:3px 8px;letter-spacing:.05em;
+  }
+  .adgate-timer{font-size:38px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+  .adgate-bar{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.15)}
+  .adgate-bar i{display:block;height:100%;width:0%;background:#3b82f6;transition:width 1s linear}
+  .adgate-x{
+    position:absolute;top:-38px;right:0;background:none;border:0;
+    color:var(--muted);font-size:22px;line-height:1;padding:6px 10px;
+    cursor:pointer;font-family:inherit;
+  }
+  /* ==ADGATE:END== */
+
   /* ==SEND:START== */
   /* 参加（メール登録）まわり */
   .sheet.join .lead{font-size:12.5px;color:var(--muted);line-height:1.85;margin:0 0 12px}
@@ -935,6 +972,20 @@
       </table>
     </div>
     <p class="note">無名・生駒のCZ突入を押したときの現在のポイントを1件ずつ記録しています（銅藍の周期突入は含みません）。全リセットで消えます。</p>
+
+    <h2>周期突入時のポイント分布（銅藍）</h2>
+    <div class="distwrap">
+      <table class="dist">
+        <thead>
+          <tr><th>規定pt</th><th>ポイント数</th><th>振り分け</th><th>周期突入pt</th></tr>
+        </thead>
+        <tbody id="bluedistbody"></tbody>
+        <tfoot>
+          <tr><td colspan="2">平均</td><td id="bluedistavg">—</td><td class="cnt" id="bluedistn">0</td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="note">銅藍の周期突入を押したときの現在のポイントを1件ずつ記録しています。規定ptは解析により判明した最大14ptに合わせ、2pt刻みにしています。全リセットで消えます。</p>
   </section>
 
   <section class="histpanel" id="histpanel">
@@ -979,11 +1030,6 @@
         <div class="k">平均発光率</div>
         <div class="v" id="a-rate">—<em>%</em></div>
         <div class="formula">3キャラの発光回数 ÷ 出現回数（非発光 ＋ 発光）／ 高確発光は含みません</div>
-      </div>
-      <div class="tbox wide">
-        <div class="k">突入1回あたりの平均ポイント</div>
-        <div class="v" id="a-avg">—<em>pt / 回</em></div>
-        <div class="formula">3キャラの突入時に記録されたポイントの平均／銅藍の周期突入も含みます</div>
       </div>
     </div>
   </section>
@@ -1261,6 +1307,30 @@
   </div>
 </div>
 
+<!-- ==ADGATE:START== -->
+<!-- 無料利用の日次リワード広告ゲート。1日1回、動画を最後まで見ると
+     その日はずっと出なくなる。いまはAdSense審査前なのでダミー広告。
+     承認後は adGatePlayDummy() の中身だけ本物の広告に差し替える -->
+<div class="adgate" id="adgate" hidden>
+  <div class="adgate-in" role="dialog" aria-modal="true" aria-labelledby="adgatetitle">
+    <div class="adgate-prompt" id="adgateprompt">
+      <h2 id="adgatetitle">無料で使うには<br>広告を見てください</h2>
+      <p class="adgate-desc">30秒ほどの動画を最後まで見ると、<b>その日はずっと広告なしで使えます</b>（翌日また1回だけ）。</p>
+      <button class="adgate-watch" id="adgatewatch">広告(テスト)を見る</button>
+      <p class="adgate-note">※ いまはテスト用のダミー広告です。実際の広告に差し替わります。</p>
+    </div>
+    <div class="adgate-play" id="adgateplay" hidden>
+      <div class="adgate-video" id="adgatevideo">
+        <span class="adgate-label">広告(テスト)</span>
+        <span class="adgate-timer" id="adgatetimer">30</span>
+        <div class="adgate-bar"><i id="adgatebar"></i></div>
+      </div>
+      <button class="adgate-x" id="adgatex" hidden aria-label="広告を閉じる">×</button>
+    </div>
+  </div>
+</div>
+<!-- ==ADGATE:END== -->
+
 <!-- iPhone の Safari で初めて開いたときだけ出す案内。
      Safari とホーム画面アプリでは保存先が分かれるので、
      記録を保存しはじめる前に気づいてもらう -->
@@ -1306,6 +1376,21 @@
 
 <script>
 const NO_PT = 1, GLOW_PT = 15, HI_PT = 15;   // 高確発光もポイントは発光と同じ（発光率には入れない）
+
+/* 銅藍のポイント計算が誤っていたため2026-09-07の解析で判明、修正した
+   （非発光=1ptのまま、発光・高確=15pt→2pt）。すでに数えている人の値が
+   途中で変わらないよう、当日の0時（端末のローカル日付）を境に切り替える。
+   呼ぶたびに日付を見るので、開きっぱなしのページでも日をまたげば自動で切り替わる。 */
+const BLUE_PT_FIX_DATE = '2026-09-07';
+function localDateStr(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+       + '-' + String(d.getDate()).padStart(2, '0');
+}
+function charPt(id){
+  if (id === 'blue' && localDateStr() >= BLUE_PT_FIX_DATE) return { no:1, glow:2, hi:2 };
+  return { no:NO_PT, glow:GLOW_PT, hi:HI_PT };
+}
 
 const CHARS = [
   { id:'red',   cls:'red',   mark:'無', name:'無名', sub:'赤', hit:'CZ突入',   avg:'平均 pt/CZ' },
@@ -1458,7 +1543,7 @@ function buildCards(){
           <label class="hap" for="hapticsw" aria-hidden="true"></label>
         </div>`;
 
-  const cardHtml = c => `
+  const cardHtml = c => { const p = charPt(c.id); return `
     <section class="card ${c.cls}" data-id="${c.id}">
       <div class="card-head">
         <div class="icon ${c.cls}">${c.mark}</div>
@@ -1470,13 +1555,13 @@ function buildCards(){
       </div>
       <div class="btns">
         ${tap(`<button class="cnt no"   data-type="no">
-          <span class="lbl">非発光</span><span class="num" data-v="no">0</span><span class="pt">+${NO_PT}pt</span>
+          <span class="lbl">非発光</span><span class="num" data-v="no">0</span><span class="pt">+${p.no}pt</span>
         </button>`)}
         ${tap(`<button class="cnt glow" data-type="glow">
-          <span class="lbl">発光</span><span class="num" data-v="glow">0</span><span class="pt">+${GLOW_PT}pt</span>
+          <span class="lbl">発光</span><span class="num" data-v="glow">0</span><span class="pt">+${p.glow}pt</span>
         </button>`)}
         ${tap(`<button class="cnt hi" data-type="hi">
-          <span class="lbl">高確発光など</span><span class="num" data-v="hi">0</span><span class="pt">+${HI_PT}pt</span>
+          <span class="lbl">高確発光など</span><span class="num" data-v="hi">0</span><span class="pt">+${p.hi}pt</span>
         </button>`)}
         ${tap(`<button class="cnt cz"   data-type="cz">
           <span class="lbl">${c.hit}</span><span class="num" data-v="cz">0</span><span class="pt">回</span>
@@ -1497,7 +1582,7 @@ function buildCards(){
         <div class="stat"><div class="k">${c.avg}</div><div class="v" data-v="avg">—</div></div>
       </div>
     </section>
-  `;
+  `; };
 
   const paint = (el, chars) =>
     document.getElementById(el).innerHTML = chars.map(cardHtml).join('');
@@ -1540,7 +1625,7 @@ function add(id, type){
 
   if (type === 'cz') {
     if (d === 1) {                      // 突入 → 現在のポイントを0に
-      czLog.push({ c:id, pt: s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT });
+      { const p = charPt(id); czLog.push({ c:id, pt: s.curNo * p.no + s.curGlow * p.glow + s.curHi * p.hi }); }
       s.lastNo = s.curNo; s.lastGlow = s.curGlow; s.lastHi = s.curHi;
       s.curNo = 0; s.curGlow = 0; s.curHi = 0;
       s.cz++;
@@ -1622,19 +1707,27 @@ function toast(msg, action, label){
 const DIST_STEP = 15, DIST_MAX = 150;
 const DIST_ROWS = [15,30,45,60,75,90,105,120,135,150];
 
-function distIndex(pt){
-  if (pt >= DIST_MAX) return DIST_ROWS.length - 1;
-  const i = Math.floor(pt / DIST_STEP) - 1;
-  return i;                       // 0未満なら「15pt未満」
+// 銅藍は周期突入。規定ptの最大は解析で判明した14pt、2pt刻み（取説参照）
+const BLUE_DIST_STEP = 2, BLUE_DIST_MAX = 14;
+const BLUE_DIST_ROWS = [2,4,6,8,10,12,14];
+
+function distIndex(pt, step = DIST_STEP, max = DIST_MAX, rowsLen = DIST_ROWS.length){
+  if (pt >= max) return rowsLen - 1;
+  const i = Math.floor(pt / step) - 1;
+  return i;                       // 0未満なら「◯pt未満」
 }
 
 /* ポイントの配列から、分布の表の中身を作る。
-   規定pt分布グラフと実戦履歴の両方で同じ見た目を使うための共通処理 */
-function distRowsHtml(pts){
-  const counts = new Array(DIST_ROWS.length).fill(0);
+   規定pt分布グラフと実戦履歴の両方で同じ見た目を使うための共通処理。
+   opts.step/max/rows を渡すと、無名・生駒（15pt刻み）以外の刻みでも使える */
+function distRowsHtml(pts, opts = {}){
+  const step = opts.step || DIST_STEP;
+  const max = opts.max || DIST_MAX;
+  const rows = opts.rows || DIST_ROWS;
+  const counts = new Array(rows.length).fill(0);
   let under = 0;
   pts.forEach(pt => {
-    const i = distIndex(pt);
+    const i = distIndex(pt, step, max, rows.length);
     if (i < 0) under++; else counts[i]++;
   });
 
@@ -1656,9 +1749,9 @@ function distRowsHtml(pts){
     </tr>`;
   };
 
-  let html = under ? row('15pt未満', '0〜14', under) : '';
-  html += DIST_ROWS.map((b, i) =>
-    row(`${b}pt`, i === DIST_ROWS.length - 1 ? '150以上' : `${b}〜${b + DIST_STEP - 1}`, counts[i])
+  let html = under ? row(`${step}pt未満`, `0〜${step - 1}`, under) : '';
+  html += rows.map((b, i) =>
+    row(`${b}pt`, i === rows.length - 1 ? `${b}以上` : `${b}〜${b + step - 1}`, counts[i])
   ).join('');
   return html;
 }
@@ -1715,6 +1808,16 @@ function renderDist(){
   const avg = total ? rows.reduce((a, r) => a + r.pt, 0) / total : 0;
   document.getElementById('distavg').textContent = total ? `${avg.toFixed(1)}pt` : '—';
   document.getElementById('distn').textContent = `${fmt(total)}回`;
+
+  // 銅藍の周期突入だけの分布（2pt刻み・最大14pt）
+  const blueRows = czLog.filter(r => r.c === 'blue');
+  document.getElementById('bluedistbody').innerHTML =
+    distRowsHtml(blueRows.map(r => r.pt), { step: BLUE_DIST_STEP, max: BLUE_DIST_MAX, rows: BLUE_DIST_ROWS });
+
+  const blueTotal = blueRows.length;
+  const blueAvg = blueTotal ? blueRows.reduce((a, r) => a + r.pt, 0) / blueTotal : 0;
+  document.getElementById('bluedistavg').textContent = blueTotal ? `${blueAvg.toFixed(1)}pt` : '—';
+  document.getElementById('bluedistn').textContent = `${fmt(blueTotal)}回`;
 }
 
 /* 入力と規定pt分布グラフの切り替え。履歴と取説はメニューから開く */
@@ -1761,7 +1864,8 @@ function dropPoints(ids){
     const s = state[id];
     snap[id] = { curNo:s.curNo, curGlow:s.curGlow, curHi:s.curHi,
                  lastNo:s.lastNo, lastGlow:s.lastGlow, lastHi:s.lastHi, lost:s.lost };
-    const p = s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT;
+    const cp = charPt(id);
+    const p = s.curNo * cp.no + s.curGlow * cp.glow + s.curHi * cp.hi;
     s.lost += p;
     dropped += p;
     s.curNo = 0; s.curGlow = 0; s.curHi = 0;
@@ -1812,7 +1916,7 @@ function render(){
     set('curNo', fmt(s.curNo));
     set('curGlow', fmt(s.curGlow));
     set('curHi', fmt(s.curHi));
-    set('cur', `${fmt(s.curNo * NO_PT + s.curGlow * GLOW_PT + s.curHi * HI_PT)}<em>pt</em>`);
+    { const p = charPt(c.id); set('cur', `${fmt(s.curNo * p.no + s.curGlow * p.glow + s.curHi * p.hi)}<em>pt</em>`); }
     set('rate', appear ? `${(s.glow / appear * 100).toFixed(1)}<em>%</em>` : '—');
     const a = czAvg([c.id]);
     set('avg', a === null ? '—' : a.toFixed(2));
@@ -1834,16 +1938,13 @@ function render(){
     ? `—<em>pt / CZ</em>`
     : `${tAvg.toFixed(2)}<em>pt / CZ</em>`;
 
-  // 銅藍も入れた3キャラの合算
-  const allIds = CHARS.map(c => c.id);
+  // 銅藍も入れた3キャラの合算（発光率のみ。平均ポイントは銅藍の周期突入が混ざると
+  // 単位がバラバラで意味をなさないため出さない）
   let aNo = 0, aGlow = 0;
-  allIds.forEach(id => { aNo += state[id].no; aGlow += state[id].glow; });
+  CHARS.forEach(c => { aNo += state[c.id].no; aGlow += state[c.id].glow; });
   const aAppear = aNo + aGlow;
   document.getElementById('a-rate').innerHTML = aAppear
     ? `${(aGlow / aAppear * 100).toFixed(1)}<em>%</em>` : `—<em>%</em>`;
-  const aAvg = czAvg(allIds);
-  document.getElementById('a-avg').innerHTML = aAvg === null
-    ? `—<em>pt / 回</em>` : `${aAvg.toFixed(2)}<em>pt / 回</em>`;
 
   renderDist();
   renderBell();
@@ -2597,8 +2698,11 @@ memoScrim.addEventListener('click', closeMemo);
   document.addEventListener('touchstart', e => {
     if (e.touches.length !== 1) { tracking = false; return; }
     const t = e.touches[0];
-    // 入力中やモーダルが開いているときは何もしない
-    if (e.target.closest('input, textarea, .modal')) { tracking = false; return; }
+    // 入力中やモーダルが開いているときは何もしない。
+    // ただしメモ欄は中身のほとんどが入力欄なので、そこから閉じられないと
+    // 戻す手段がほぼ無くなってしまう。メモパネルの中は例外にする
+    if (e.target.closest('.modal')) { tracking = false; return; }
+    if (e.target.closest('input, textarea') && !e.target.closest('#memopanel')) { tracking = false; return; }
     x0 = t.clientX; y0 = t.clientY; tracking = true;
   }, { passive: true });
 
@@ -3395,6 +3499,112 @@ document.getElementById('clearafter').addEventListener('click', () => {
   toast('カウントを0にしました');
 });
 
+/* ---------- 無料利用の日次リワード広告ゲート ---------- */
+/* ==ADGATE:START== */
+/* 1日1回、広告(いまはダミー)を最後まで見ると、その日はずっとゲートが出ない。
+   本番のAdSense動画広告に差し替えるときは adGatePlayDummy() の中身だけ、
+   本物の広告読み込み・視聴完了コールバックに差し替える。他は変えない */
+const ADGATE_KEY = 'kabaneri-adgate-v1';
+const ADGATE_SECONDS = 30;
+let adGateTimer = null;
+
+function todayStr(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+       + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function adGateLocalUnlocked(){
+  try { return localStorage.getItem(ADGATE_KEY) === todayStr(); } catch(e) { return false; }
+}
+
+/* 保存領域が使えない環境（プライベートモード等）向けのフォールバック。
+   IPアドレス等から作る一時的な識別子で、サーバー側(/api/adgate)が
+   同じ判定をする。通信できない・サーバーが落ちている場合は締め出さない方に倒す
+   （このゲートは収益の補助であって、カウンター自体を止めてはいけないため） */
+async function adGateServerUnlocked(){
+  try {
+    const r = await fetch('/api/adgate', { cache: 'no-store' });
+    if (!r.ok) return true;
+    const d = await r.json();
+    return !!d.unlocked;
+  } catch(e) { return true; }
+}
+
+function adGateServerUnlock(){
+  fetch('/api/adgate', { method: 'POST', cache: 'no-store' }).catch(() => {});
+}
+
+function clearAdGateTimer(){
+  if (adGateTimer) { clearInterval(adGateTimer); adGateTimer = null; }
+}
+
+function hideAdGate(){
+  document.getElementById('adgate').hidden = true;
+  clearAdGateTimer();
+}
+
+function adGateUnlock(){
+  if (storageWorks()) {
+    try { localStorage.setItem(ADGATE_KEY, todayStr()); } catch(e) {}
+  } else {
+    adGateServerUnlock();
+  }
+  hideAdGate();
+}
+
+/* ダミー広告本体。カウントダウンと進捗バーで「動画を見ている」状態を模す */
+function adGatePlayDummy(onComplete){
+  const timerEl = document.getElementById('adgatetimer');
+  const barEl = document.getElementById('adgatebar');
+  const xEl = document.getElementById('adgatex');
+  let left = ADGATE_SECONDS;
+  xEl.hidden = true;
+  timerEl.textContent = left;
+  barEl.style.width = '0%';
+
+  adGateTimer = setInterval(() => {
+    left -= 1;
+    timerEl.textContent = Math.max(left, 0);
+    barEl.style.width = `${((ADGATE_SECONDS - left) / ADGATE_SECONDS) * 100}%`;
+    // 最初の5秒はスキップさせない（実際のリワード広告と同じ挙動）
+    if (ADGATE_SECONDS - left >= 5) xEl.hidden = false;
+    if (left <= 0) {
+      clearAdGateTimer();
+      onComplete();
+    }
+  }, 1000);
+}
+
+// 広告の初期画面に戻す（途中で閉じたときも、これから見るときも共通）
+function adGateReset(){
+  clearAdGateTimer();
+  document.getElementById('adgateprompt').hidden = false;
+  document.getElementById('adgateplay').hidden = true;
+}
+
+function showAdGate(){
+  adGateReset();
+  document.getElementById('adgate').hidden = false;
+}
+
+document.getElementById('adgatewatch').addEventListener('click', () => {
+  document.getElementById('adgateprompt').hidden = true;
+  document.getElementById('adgateplay').hidden = false;
+  adGatePlayDummy(adGateUnlock);
+});
+
+// 途中で閉じた場合は解除しない方針。最初の案内に戻すだけで、見直せばまた解除できる
+document.getElementById('adgatex').addEventListener('click', adGateReset);
+
+// 別タブで解除された場合、開きっぱなしのこのタブのゲートも閉じる
+window.addEventListener('storage', (e) => {
+  if (e.key === ADGATE_KEY && !document.getElementById('adgate').hidden && adGateLocalUnlocked()) {
+    hideAdGate();
+  }
+});
+/* ==ADGATE:END== */
+
 /* ---------- ホーム画面への追加案内 ---------- */
 /* iOSは Safari とホーム画面アプリで localStorage が完全に別物になる。
    同じ端末・同じURLなので利用者はまず気づけず、あとから追加した人は
@@ -3468,6 +3678,17 @@ renderWins();
 applyWinView();
 /* ==WINS:END== */
 applyMainView();
+
+/* ==ADGATE:START== */
+if (storageWorks()) {
+  if (!adGateLocalUnlocked()) showAdGate();
+} else {
+  // ローカルに解除状態を覚えられないので、いったんゲートを見せつつ
+  // サーバー側の判定を待つ。解除済みならすぐ閉じる
+  showAdGate();
+  adGateServerUnlocked().then((ok) => { if (ok) hideAdGate(); });
+}
+/* ==ADGATE:END== */
 
 // 記録を読み込んでから判定する（保存済みの件数で文面が変わるため）
 if (isIOS() && !isStandalone() && storageWorks() && !localStorage.getItem(A2HS_KEY)) {

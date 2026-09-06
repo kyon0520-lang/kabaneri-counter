@@ -437,7 +437,7 @@
     <p>CZ発光カウンターの上に <strong>入力</strong>・<strong>合算値</strong>・<strong>規定pt分布グラフ</strong> のタブがあります。一度に出るのは1つだけです。</p>
     <ul class="legend">
       <li><span class="num">入</span><span class="txt"><b>入力</b><span>キャラごとのカードを押して数える画面。ふだんはここです。</span></span></li>
-      <li><span class="num">合</span><span class="txt"><b>合算値</b><span>平均発光率とCZ 1回あたりの平均ポイント。<strong>無名＋生駒</strong>と、<strong>銅藍も入れた3キャラ</strong>の2つを色を分けて並べます。3キャラのほうは銅藍の周期突入も含むので単位が「pt/回」になります。</span></span></li>
+      <li><span class="num">合</span><span class="txt"><b>合算値</b><span><strong>無名＋生駒</strong>の平均発光率とCZ 1回あたりの平均ポイント、<strong>銅藍も入れた3キャラ</strong>の平均発光率を色を分けて並べます。3キャラの平均ポイントは銅藍の周期突入で単位が変わり意味をなさないため出していません。</span></span></li>
       <li><span class="num">グ</span><span class="txt"><b>規定pt分布グラフ</b><span>CZ突入時のポイントの分布。</span></span></li>
     </ul>
     <p>右上の <strong>三本線のボタン</strong> から、<strong>実戦履歴</strong>・<strong>記録の引き継ぎ</strong>・<strong>取扱説明書</strong>を開けます。</p>
@@ -519,8 +519,8 @@
       <li><span class="num">2</span><span class="txt"><b>全リセット</b><span>確認画面のあと、カウント・分布グラフの記録・下段ベル・G数・<strong>メモ</strong>をまとめて消します。保存済みの実戦は残ります。</span></span></li>
     </ul>
 
-    <h3>銅藍の強制周期（150G・300G）</h3>
-    <p>周期到達で強制的に周期が切り替わったときに押します。現在ポイントだけを無効にして、周期突入の回数には数えません。<strong>非発光・発光の回数は残るので発光率には反映されます。</strong></p>
+    <h3>銅藍のポイントだけ他の2キャラと違います</h3>
+    <p>銅藍は無名・生駒と数え方は同じですが、ポイントの重みが違います。<strong>非発光は1pt、発光・高確発光などは2pt</strong>です（無名・生駒は非発光1pt・発光/高確15pt）。解析により、銅藍の1周期の規定ポイントは<strong>最大14pt</strong>と分かっています。</p>
 
     <div class="shot">
       <div class="card">
@@ -531,14 +531,17 @@
         </div>
         <div class="btns five">
           <div class="b"><div class="l">非発光</div><div class="v">88</div><div class="s">+1pt</div></div>
-          <div class="b glow"><div class="l">発光</div><div class="v">12</div><div class="s">+15pt</div></div>
-          <div class="b hi"><div class="l">高確発光など</div><div class="v">7</div><div class="s">+15pt</div></div>
+          <div class="b glow"><div class="l">発光</div><div class="v">12</div><div class="s">+2pt</div></div>
+          <div class="b hi"><div class="l">高確発光など</div><div class="v">7</div><div class="s">+2pt</div></div>
           <div class="b cz"><div class="l">周期突入</div><div class="v">14</div><div class="s">回</div></div>
           <div class="b force"><div class="l">強制周期</div><div class="s">150,300G</div><span class="pin">1</span></div>
         </div>
       </div>
     </div>
     <p class="cap">銅藍のカードだけボタンが5つになります。CZ突入ではなく「周期突入」「平均 pt/周期」と表示されます。</p>
+
+    <h3>銅藍の強制周期（150G・300G）</h3>
+    <p>周期到達で強制的に周期が切り替わったときに押します。現在ポイントだけを無効にして、周期突入の回数には数えません。<strong>非発光・発光の回数は残るので発光率には反映されます。</strong></p>
   </section>
 
   <!-- 6 -->
@@ -605,6 +608,8 @@
       <li><span class="num">3</span><span class="txt"><b>CZ突入pt</b><span>その範囲に入った件数。いちばん下の行に平均ptと総回数が出ます。</span></span></li>
     </ul>
     <p class="cap">15pt未満で突入した記録があるときだけ、先頭に「15pt未満」の行が増えます。</p>
+
+    <p>この下に、<strong>銅藍だけの「周期突入時のポイント分布」</strong>が別の表で並びます。銅藍は規定ptの最大が14ptなので、15pt刻みではなく<strong>2pt刻み（2・4・6・8・10・12・14pt）</strong>で集計します。見方は上の表と同じです。</p>
   </section>
 
   <!-- 7 -->
