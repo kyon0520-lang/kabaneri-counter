@@ -45714,5 +45714,244 @@
     "avg": 1167
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://slotterguild3.com/espace-kabukicho/61673/",
+  "articleDate": "2026-09-04",
+  "targetDate": "2026-09-03",
+  "postDate": "2026-09-02",
+  "tenchou": "@kabupa777",
+  "tweetUrl": "https://twitter.com/kabupa777/status/2095099163285561756",
+  "title": "9月3日(木)｜エスパス新宿歌舞伎町｜③⑨の日で恒例の末尾が平均+4000枚超の好成績に！大量並びも健在で王道の仕掛けも含めてお宝台が多数登場！10日間オススメポスター3機種には全機種に仕掛けアリ！",
+  "results": [
+   {
+    "machine": "ドラハナ閃光",
+    "plus": 12,
+    "total": 14,
+    "avg": 2104
+   },
+   {
+    "machine": "マギアレコード",
+    "plus": 10,
+    "total": 13,
+    "avg": 1550
+   },
+   {
+    "machine": "いせかる",
+    "plus": 2,
+    "total": 3,
+    "avg": 1517
+   },
+   {
+    "machine": "末尾㊴番台",
+    "plus": 7,
+    "total": 9,
+    "avg": 4406
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ドラハナ閃光",
+    "matched": true,
+    "keyword": "ドラキュラ退治",
+    "chain": [
+     "ドラキュラ退治",
+     "ドラ",
+     "ドラハナ閃光!?"
+    ],
+    "raw": "■ドラキュラ退治→ドラ→ドラハナ閃光!?",
+    "result": {
+     "plus": 12,
+     "total": 14,
+     "avg": 2104
+    }
+   }
+  ],
+  "unassigned": [],
+  "highShare": [
+   {
+    "machine": "東京喰種",
+    "plus": 20,
+    "total": 44,
+    "avg": 520
+   },
+   {
+    "machine": "カバネリ海門決戦",
+    "plus": 15,
+    "total": 31,
+    "avg": 518
+   },
+   {
+    "machine": "炎炎ノ消防隊2",
+    "plus": 9,
+    "total": 15,
+    "avg": 1077
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 10,
+    "total": 14,
+    "avg": 1207
+   },
+   {
+    "machine": "ウルトラミラジャグ",
+    "plus": 3,
+    "total": 5,
+    "avg": 640
+   }
+  ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://slotterguild3.com/espace-kabukicho/62016/",
+  "articleDate": "2026-09-05",
+  "targetDate": "2026-09-04",
+  "postDate": "2026-09-03",
+  "tenchou": "@kabupa777",
+  "tweetUrl": null,
+  "title": "9月4日(金)｜エスパス新宿歌舞伎町｜４の日仕掛けの末尾44番台は平均約2000枚のプラス！！高配分機種や10日間ポスターにも優秀4台並びなどの仕掛け多数！",
+  "results": [
+   {
+    "machine": "末尾44番台",
+    "plus": 6,
+    "total": 9,
+    "avg": 1967
+   }
+  ],
+  "assoc": [],
+  "unassigned": [],
+  "highShare": [
+   {
+    "machine": "スマスロ化物語",
+    "plus": 2,
+    "total": 3,
+    "avg": 1450
+   },
+   {
+    "machine": "とある禁書目録2",
+    "plus": 7,
+    "total": 15,
+    "avg": 1163
+   },
+   {
+    "machine": "SAOII",
+    "plus": 9,
+    "total": 20,
+    "avg": 905
+   }
+  ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://slotterguild3.com/espace-kabukicho/62124/",
+  "articleDate": "2026-09-06",
+  "targetDate": "2026-09-05",
+  "postDate": "2026-09-04",
+  "tenchou": "@kabupa777",
+  "tweetUrl": "https://twitter.com/kabupa777/status/2095844343139401820",
+  "title": "9月5日(土)｜エスパス新宿歌舞伎町｜5のつく日×前前前世でジャグラーシリーズから全台系仕掛け発動！さらにジャグラー以外からも高配分・並び仕掛けに加えて列仕掛けも！さらにオススメ機種を筆頭に単品優秀台も多数アリ！",
+  "results": [
+   {
+    "machine": "ハピジャグV Ⅲ",
+    "plus": 6,
+    "total": 7,
+    "avg": 2621
+   },
+   {
+    "machine": "ミスジャグ",
+    "plus": 6,
+    "total": 6,
+    "avg": 1750
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ハピジャグV",
+    "matched": false,
+    "keyword": "メロンソーダ",
+    "chain": [
+     "メロンソーダ",
+     "緑色",
+     "緑色の筐体",
+     "ハピジャグV"
+    ],
+    "raw": "■メロンソーダ→緑色→緑色の筐体→ハピジャグV",
+    "result": null
+   },
+   {
+    "machine": "ハピジャグV",
+    "matched": false,
+    "keyword": "みんなの好きなオ（ス）スメ",
+    "chain": [
+     "みんなの好きなオ（ス）スメ",
+     "縦読みで（リス）",
+     "ハピジャグV"
+    ],
+    "raw": "みんなの好きなオ（ス）スメ→縦読みで（リス）→ハピジャグV",
+    "result": null
+   },
+   {
+    "machine": "ミスジャグ",
+    "matched": true,
+    "keyword": "ケンタッキーの商品",
+    "chain": [
+     "ケンタッキーの商品",
+     "ツイスター",
+     "ツイ（スター）",
+     "ミスジャグ"
+    ],
+    "raw": "■ケンタッキーの商品→ツイスター→ツイ（スター）→ミスジャグ",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 1750
+    }
+   },
+   {
+    "machine": "ミスジャグ",
+    "matched": true,
+    "keyword": "今回",
+    "chain": [
+     "今回",
+     "（こん）かい",
+     "こん（キツネ）",
+     "ミスジャグ"
+    ],
+    "raw": "■今回→（こん）かい→こん（キツネ）→ミスジャグ",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 1750
+    }
+   }
+  ],
+  "unassigned": [],
+  "highShare": [
+   {
+    "machine": "かぐや様",
+    "plus": 3,
+    "total": 5,
+    "avg": 2550
+   },
+   {
+    "machine": "モンキーターンV",
+    "plus": 9,
+    "total": 19,
+    "avg": 1626
+   },
+   {
+    "machine": "L戦国乙女5",
+    "plus": 11,
+    "total": 16,
+    "avg": 816
+   },
+   {
+    "machine": "とある禁書目録2",
+    "plus": 7,
+    "total": 15,
+    "avg": 673
+   }
+  ]
  }
 ]

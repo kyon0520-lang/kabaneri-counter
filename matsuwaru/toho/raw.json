@@ -31901,5 +31901,551 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/03/065447",
+  "articleDate": "2026-09-03",
+  "targetDate": "2026-09-02",
+  "postDate": "2026-09-01",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2094749672875385247",
+  "title": "9月2日のマルハン新宿東宝ビルまとめ✏️5台設置機種中心にバラ含む全系6機種",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "Sアイム",
+    "matched": false,
+    "keyword": "マクドナルド",
+    "chain": [
+     "マクドナルド",
+     "I'm lovin' it"
+    ],
+    "raw": "マクドナルド→ I'm lovin' it",
+    "result": null
+   },
+   {
+    "machine": "防振り",
+    "matched": false,
+    "keyword": "防止",
+    "chain": [
+     "防止",
+     "防御"
+    ],
+    "raw": "防止→防御",
+    "result": null
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": false,
+    "keyword": "エビフィレオ",
+    "chain": [
+     "エビフィレオ",
+     "エビ",
+     "甲殻（攻殻）"
+    ],
+    "raw": "エビフィレオ→エビ→甲殻（攻殻）",
+    "result": null
+   },
+   {
+    "machine": "ウルミラジャグラー",
+    "matched": false,
+    "keyword": "チーズバーガー",
+    "chain": [
+     "チーズバーガー",
+     "チーズ",
+     "牛"
+    ],
+    "raw": "チーズバーガー→チーズ→牛",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "AIさん",
+    "chain": [
+     "AIさん",
+     "愛",
+     "ラブ"
+    ],
+    "raw": "AIさん→愛→ラブ",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "d払",
+    "chain": [
+     "d払",
+     "祓い",
+     "祓"
+    ],
+    "raw": "d払→祓い→祓",
+    "result": null
+   }
+  ],
+  "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/04/073331",
+  "articleDate": "2026-09-04",
+  "targetDate": "2026-09-03",
+  "postDate": "2026-09-02",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2095112178923901326",
+  "title": "9月3日のマルハン新宿東宝ビルまとめ✏️全系+3台並びともに大量！",
+  "results": [
+   {
+    "machine": "モンハンライズ",
+    "plus": 2,
+    "total": 8,
+    "avg": -962
+   },
+   {
+    "machine": "ヴヴヴ",
+    "plus": 3,
+    "total": 5,
+    "avg": 780
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 3083
+   },
+   {
+    "machine": "スターハナハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 2533
+   },
+   {
+    "machine": "シェイクBT",
+    "plus": 2,
+    "total": 3,
+    "avg": 300
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "爪楊枝",
+    "chain": [
+     "爪楊枝",
+     "爪"
+    ],
+    "raw": "爪楊枝→爪",
+    "result": {
+     "plus": 2,
+     "total": 8,
+     "avg": -962
+    }
+   },
+   {
+    "machine": "ヴヴヴ",
+    "matched": true,
+    "keyword": "キルケー",
+    "chain": [
+     "キルケー",
+     "キル",
+     "ハラキリ"
+    ],
+    "raw": "キルケー→キル→ハラキリ",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 780
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "魔女",
+    "chain": [
+     "魔女",
+     "女"
+    ],
+    "raw": "魔女→女",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 3083
+    }
+   },
+   {
+    "machine": "スターハナハナ",
+    "matched": true,
+    "keyword": "キルケーの魔女",
+    "chain": [
+     "キルケーの魔女",
+     "閃光のハサウェイ",
+     "宇宙世紀"
+    ],
+    "raw": "キルケーの魔女→閃光のハサウェイ→宇宙世紀",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2533
+    }
+   },
+   {
+    "machine": "シェイクBT",
+    "matched": true,
+    "keyword": "上野",
+    "chain": [
+     "上野",
+     "コパンダ"
+    ],
+    "raw": "上野→コパンダ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 300
+    }
+   },
+   {
+    "machine": "シェイクBT",
+    "matched": true,
+    "keyword": "玉子キレイに割れなくて",
+    "chain": [
+     "玉子キレイに割れなくて",
+     "ぐちゃぐちゃ",
+     "シェイク"
+    ],
+    "raw": "玉子キレイに割れなくて→ぐちゃぐちゃ→シェイク",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 300
+    }
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "電車でGO",
+    "chain": [
+     "電車でGO",
+     "ゲーム版権"
+    ],
+    "raw": "電車でGO→ゲーム版権",
+    "result": null
+   },
+   {
+    "machine": "デビルメイクライ5",
+    "matched": false,
+    "keyword": "電車でGO",
+    "chain": [
+     "電車でGO",
+     "ゲーム版権"
+    ],
+    "raw": "電車でGO→ゲーム版権",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "爪楊枝",
+    "chain": [
+     "爪楊枝",
+     "妻",
+     "俺の嫁カスタム"
+    ],
+    "raw": "爪楊枝→妻→俺の嫁カスタム",
+    "result": null
+   },
+   {
+    "machine": "ひぐらし2",
+    "matched": false,
+    "keyword": "お昼という時間は過ぎてしまった",
+    "chain": [
+     "お昼という時間は過ぎてしまった",
+     "日が暮れて",
+     "ひぐらし"
+    ],
+    "raw": "お昼という時間は過ぎてしまった→日が暮れて→ひぐらし",
+    "result": null
+   }
+  ],
+  "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/05/072058",
+  "articleDate": "2026-09-05",
+  "targetDate": "2026-09-04",
+  "postDate": "2026-09-03",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2095474446408814949",
+  "title": "9月4日のマルハン新宿東宝ビルまとめ✏️3機種の全系が好調！",
+  "results": [
+   {
+    "machine": "モンハンライズ",
+    "plus": 4,
+    "total": 8,
+    "avg": 2138
+   },
+   {
+    "machine": "SBJ",
+    "plus": 2,
+    "total": 5,
+    "avg": 1460
+   },
+   {
+    "machine": "ドッチ",
+    "plus": 2,
+    "total": 2,
+    "avg": 1200
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "目からウロコ",
+    "chain": [
+     "目からウロコ",
+     "鱗",
+     "爆鱗竜（バゼルギウス）"
+    ],
+    "raw": "目からウロコ→鱗→爆鱗竜（バゼルギウス）",
+    "result": {
+     "plus": 4,
+     "total": 8,
+     "avg": 2138
+    }
+   },
+   {
+    "machine": "SBJ",
+    "matched": true,
+    "keyword": "黒胡椒",
+    "chain": [
+     "黒胡椒",
+     "黒"
+    ],
+    "raw": "黒胡椒→黒",
+    "result": {
+     "plus": 2,
+     "total": 5,
+     "avg": 1460
+    }
+   },
+   {
+    "machine": "ドッチ",
+    "matched": true,
+    "keyword": "あつもり",
+    "chain": [
+     "あつもり",
+     "あつ森",
+     "どうぶつの森"
+    ],
+    "raw": "あつもり→あつ森→どうぶつの森",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 1200
+    }
+   }
+  ],
+  "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/06/083532",
+  "articleDate": "2026-09-06",
+  "targetDate": "2026-09-05",
+  "postDate": "2026-09-04",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2095836877140164621",
+  "title": "9月5日のマルハン新宿東宝ビルまとめ✏️5のつく日はノーマルタイプのベースアップ&amp;お馴染みの全系仕掛け！",
+  "results": [
+   {
+    "machine": "かぐや様",
+    "plus": 3,
+    "total": 9,
+    "avg": 1033
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 3067
+   },
+   {
+    "machine": "いざ番長",
+    "plus": 3,
+    "total": 4,
+    "avg": 4850
+   },
+   {
+    "machine": "シェイク",
+    "plus": 3,
+    "total": 3,
+    "avg": 5367
+   },
+   {
+    "machine": "防振り",
+    "plus": 4,
+    "total": 5,
+    "avg": 1200
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "かぐや様",
+    "matched": true,
+    "keyword": "さかなさかなさかな～",
+    "chain": [
+     "さかなさかなさかな～",
+     "頭が良くなる",
+     "頭脳戦",
+     "かぐや様"
+    ],
+    "raw": "さかなさかなさかな～→頭が良くなる→頭脳戦→かぐや様",
+    "result": {
+     "plus": 3,
+     "total": 9,
+     "avg": 1033
+    }
+   },
+   {
+    "machine": "かぐや様",
+    "matched": true,
+    "keyword": "心配",
+    "chain": [
+     "心配",
+     "心",
+     "ハート",
+     "かぐや様"
+    ],
+    "raw": "心配→心→ハート→かぐや様",
+    "result": {
+     "plus": 3,
+     "total": 9,
+     "avg": 1033
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "ティラミス",
+    "chain": [
+     "ティラミス",
+     "ミス",
+     "ガールズ"
+    ],
+    "raw": "ティラミス→ミス→ガールズ",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 3067
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "写真左下SSID",
+    "chain": [
+     "写真左下SSID",
+     "SS",
+     "ジャグラーガールズSS"
+    ],
+    "raw": "写真左下SSID→SS→ジャグラーガールズSS",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 3067
+    }
+   },
+   {
+    "machine": "いざ番長",
+    "matched": true,
+    "keyword": "さかなさかなさかな〜",
+    "chain": [
+     "さかなさかなさかな〜",
+     "あたまあたまあたま〜",
+     "玉",
+     "いざ番長"
+    ],
+    "raw": "さかなさかなさかな〜→あたまあたまあたま〜→玉→いざ番長",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 4850
+    }
+   },
+   {
+    "machine": "シェイク",
+    "matched": true,
+    "keyword": "サーモン",
+    "chain": [
+     "サーモン",
+     "鮭",
+     "SHAKE"
+    ],
+    "raw": "サーモン→鮭→SHAKE",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 5367
+    }
+   },
+   {
+    "machine": "防振り",
+    "matched": true,
+    "keyword": "密封ボトル",
+    "chain": [
+     "密封ボトル",
+     "防振り"
+    ],
+    "raw": "密封ボトル→防振り",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1200
+    }
+   },
+   {
+    "machine": "防振り",
+    "matched": true,
+    "keyword": "心得",
+    "chain": [
+     "心得",
+     "守る",
+     "ボウフリ"
+    ],
+    "raw": "心得→守る→ボウフリ",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1200
+    }
+   },
+   {
+    "machine": "DMC5",
+    "matched": false,
+    "keyword": "970円くらい",
+    "chain": [
+     "970円くらい",
+     "クライ",
+     "デビルメイクライ"
+    ],
+    "raw": "970円くらい→クライ→デビルメイクライ",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "さかな",
+    "chain": [
+     "さかな",
+     "アバサー"
+    ],
+    "raw": "さかな→アバサー",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
