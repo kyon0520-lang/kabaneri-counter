@@ -32447,5 +32447,191 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/07/081145",
+  "articleDate": "2026-09-07",
+  "targetDate": "2026-09-06",
+  "postDate": "2026-09-05",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2096199317308715325",
+  "title": "9月6日のマルハン新宿東宝ビルまとめ✏️安定感ある末尾仕掛け+全系複数！",
+  "results": [
+   {
+    "machine": "末尾⑥",
+    "plus": 45,
+    "total": 67,
+    "avg": 2143
+   },
+   {
+    "machine": "ミスター",
+    "plus": 3,
+    "total": 5,
+    "avg": 1160
+   },
+   {
+    "machine": "SBJ",
+    "plus": 5,
+    "total": 5,
+    "avg": 7420
+   },
+   {
+    "machine": "スタハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 4067
+   },
+   {
+    "machine": "このすば",
+    "plus": 3,
+    "total": 3,
+    "avg": 3333
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "アナザー末尾⑤",
+    "matched": false,
+    "keyword": "105g",
+    "chain": [
+     "105g",
+     "5"
+    ],
+    "raw": "105g→5",
+    "result": null
+   },
+   {
+    "machine": "アナザー末尾⑤",
+    "matched": false,
+    "keyword": "50th",
+    "chain": [
+     "50th",
+     "5"
+    ],
+    "raw": "50th→5",
+    "result": null
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "9/6",
+    "chain": [
+     "9/6",
+     "黒の日"
+    ],
+    "raw": "9/6→黒の日",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 1160
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "子供の頃",
+    "chain": [
+     "子供の頃",
+     "チルドレン",
+     "Mr.Children"
+    ],
+    "raw": "子供の頃→チルドレン→Mr.Children",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 1160
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "プリングルス",
+    "chain": [
+     "プリングルス",
+     "「Mr.P」"
+    ],
+    "raw": "プリングルス→「Mr.P」",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 1160
+    }
+   },
+   {
+    "machine": "SBJ",
+    "matched": true,
+    "keyword": "9/6",
+    "chain": [
+     "9/6",
+     "黒の日"
+    ],
+    "raw": "9/6→黒の日",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 7420
+    }
+   },
+   {
+    "machine": "SBJ",
+    "matched": true,
+    "keyword": "ストック",
+    "chain": [
+     "ストック",
+     "ストックタイム"
+    ],
+    "raw": "ストック→ストックタイム",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 7420
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "★日清焼きそば★",
+    "chain": [
+     "★日清焼きそば★",
+     "スター"
+    ],
+    "raw": "★日清焼きそば★→スター",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 4067
+    }
+   },
+   {
+    "machine": "このすば",
+    "matched": true,
+    "keyword": "アニバーサリー",
+    "chain": [
+     "アニバーサリー",
+     "祝"
+    ],
+    "raw": "アニバーサリー→祝",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3333
+    }
+   },
+   {
+    "machine": "うみねこ",
+    "matched": false,
+    "keyword": "バーコード",
+    "chain": [
+     "バーコード",
+     "バーコードバトラー",
+     "バトラ",
+     "右代宮 戦人"
+    ],
+    "raw": "バーコード→バーコードバトラー→バトラ→右代宮 戦人",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
