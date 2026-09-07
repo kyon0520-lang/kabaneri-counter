@@ -32633,5 +32633,349 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/08/080655",
+  "articleDate": "2026-09-08",
+  "targetDate": "2026-09-07",
+  "postDate": "2026-09-06",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2096561742470164493",
+  "title": "9月7日のマルハン新宿東宝ビルまとめ✏️全系特化で大量仕掛け！",
+  "results": [
+   {
+    "machine": "モンキーV",
+    "plus": 15,
+    "total": 18,
+    "avg": 2689
+   },
+   {
+    "machine": "やじきた",
+    "plus": 6,
+    "total": 7,
+    "avg": 4543
+   },
+   {
+    "machine": "マギレコ",
+    "plus": 5,
+    "total": 5,
+    "avg": 3240
+   },
+   {
+    "machine": "戦国乙女4",
+    "plus": 2,
+    "total": 4,
+    "avg": 1300
+   },
+   {
+    "machine": "ヴヴヴ",
+    "plus": 2,
+    "total": 3,
+    "avg": 2433
+   },
+   {
+    "machine": "禁書目録2",
+    "plus": 4,
+    "total": 5,
+    "avg": 2140
+   },
+   {
+    "machine": "アバサー",
+    "plus": 1,
+    "total": 2,
+    "avg": 850
+   },
+   {
+    "machine": "エウレカ",
+    "plus": 2,
+    "total": 2,
+    "avg": 2250
+   },
+   {
+    "machine": "ウルミラ",
+    "plus": 5,
+    "total": 5,
+    "avg": 2980
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "モンキーV",
+    "matched": true,
+    "keyword": "月が出た出た",
+    "chain": [
+     "月が出た出た",
+     "炭坑節",
+     "ターン",
+     "モンキー"
+    ],
+    "raw": "月が出た出た→炭坑節→ターン→モンキー",
+    "result": {
+     "plus": 15,
+     "total": 18,
+     "avg": 2689
+    }
+   },
+   {
+    "machine": "モンキーV",
+    "matched": true,
+    "keyword": "炭坑節",
+    "chain": [
+     "炭坑節",
+     "炭",
+     "澄",
+     "モンキー"
+    ],
+    "raw": "炭坑節→炭→澄→モンキー",
+    "result": {
+     "plus": 15,
+     "total": 18,
+     "avg": 2689
+    }
+   },
+   {
+    "machine": "やじきた",
+    "matched": true,
+    "keyword": "7の日",
+    "chain": [
+     "7の日",
+     "7にまつわる",
+     "7台機種",
+     "やじきた"
+    ],
+    "raw": "7の日→7にまつわる→7台機種→やじきた",
+    "result": {
+     "plus": 6,
+     "total": 7,
+     "avg": 4543
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "魔女と野獣",
+    "chain": [
+     "魔女と野獣"
+    ],
+    "raw": "・魔女と野獣",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3240
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "魔女",
+    "chain": [
+     "魔女",
+     "マギレコ"
+    ],
+    "raw": "魔女→マギレコ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3240
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "月見たまご",
+    "chain": [
+     "月見たまご",
+     "みたま",
+     "マギレコ"
+    ],
+    "raw": "月見たまご→みたま→マギレコ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3240
+    }
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": true,
+    "keyword": "最終局面",
+    "chain": [
+     "最終局面",
+     "終わり",
+     "尾張",
+     "戦国乙女"
+    ],
+    "raw": "最終局面→終わり→尾張→戦国乙女",
+    "result": {
+     "plus": 2,
+     "total": 4,
+     "avg": 1300
+    }
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": true,
+    "keyword": "レシート小計4コ",
+    "chain": [
+     "レシート小計4コ",
+     "4台機種"
+    ],
+    "raw": "レシート小計4コ→4台機種",
+    "result": {
+     "plus": 2,
+     "total": 4,
+     "avg": 1300
+    }
+   },
+   {
+    "machine": "ヴヴヴ",
+    "matched": true,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種",
+     "ヴヴヴ"
+    ],
+    "raw": "減台機種→ヴヴヴ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 2433
+    }
+   },
+   {
+    "machine": "禁書目録2",
+    "matched": true,
+    "keyword": "すき焼き風",
+    "chain": [
+     "すき焼き風",
+     "風",
+     "ラッキーエアー",
+     "とある"
+    ],
+    "raw": "すき焼き風→風→ラッキーエアー→とある",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2140
+    }
+   },
+   {
+    "machine": "禁書目録2",
+    "matched": true,
+    "keyword": "月見",
+    "chain": [
+     "月見",
+     "十五夜",
+     "15や",
+     "15文字",
+     "とある"
+    ],
+    "raw": "月見→十五夜→15や→15文字→とある",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2140
+    }
+   },
+   {
+    "machine": "禁書目録2",
+    "matched": true,
+    "keyword": "まっすぐなストロー",
+    "chain": [
+     "まっすぐなストロー",
+     "一方通行",
+     "とある"
+    ],
+    "raw": "まっすぐなストロー→一方通行→とある",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2140
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": true,
+    "keyword": "釣り",
+    "chain": [
+     "釣り",
+     "魚",
+     "アバサー"
+    ],
+    "raw": "釣り→魚→アバサー",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": 850
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": true,
+    "keyword": "増台記念",
+    "chain": [
+     "増台記念",
+     "アバサー"
+    ],
+    "raw": "増台記念→アバサー",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": 850
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "増台記念",
+    "chain": [
+     "増台記念",
+     "アバサー",
+     "エウレカ"
+    ],
+    "raw": "増台記念→アバサー→エウレカ",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 2250
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "7の日",
+    "chain": [
+     "7の日",
+     "7にまつわる",
+     "エウレカセブン"
+    ],
+    "raw": "7の日→7にまつわる→エウレカセブン",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 2250
+    }
+   },
+   {
+    "machine": "ウルミラ",
+    "matched": true,
+    "keyword": "9/7",
+    "chain": [
+     "9/7",
+     "明星チャルメラ発売",
+     "明星",
+     "スター",
+     "ミラクル"
+    ],
+    "raw": "9/7→明星チャルメラ発売→明星→スター→ミラクル",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2980
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]

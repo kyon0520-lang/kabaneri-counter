@@ -46066,5 +46066,226 @@
     "avg": 1667
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://slotterguild3.com/espace-kabukicho/62263/",
+  "articleDate": "2026-09-08",
+  "targetDate": "2026-09-07",
+  "postDate": "2026-09-06",
+  "tenchou": "@kabupa777",
+  "tweetUrl": "https://twitter.com/kabupa777/status/2096569113925603406",
+  "title": "9月7日(月)｜エスパス新宿歌舞伎町｜ポスターリニューアルで迎えた7のつく日！「10日間オススメ機種」を軸に全台系7機種×高配分9機種の超絶仕掛け！平均差枚+200枚オーバーの圧巻な結果に！",
+  "results": [
+   {
+    "machine": "ファンキー2(2F)",
+    "plus": null,
+    "total": null,
+    "avg": 1384
+   },
+   {
+    "machine": "ファンキー2(3F)",
+    "plus": null,
+    "total": null,
+    "avg": 1384
+   },
+   {
+    "machine": "マギレコ",
+    "plus": 9,
+    "total": 13,
+    "avg": 3027
+   },
+   {
+    "machine": "Lゴッドイーター",
+    "plus": 3,
+    "total": 12,
+    "avg": 842
+   },
+   {
+    "machine": "SAO",
+    "plus": 4,
+    "total": 4,
+    "avg": 5275
+   },
+   {
+    "machine": "LBクレアの秘宝伝",
+    "plus": 3,
+    "total": 3,
+    "avg": 5200
+   },
+   {
+    "machine": "ホウオウ天翔30",
+    "plus": 3,
+    "total": 3,
+    "avg": 2417
+   },
+   {
+    "machine": "喰霊零Re",
+    "plus": 1,
+    "total": 3,
+    "avg": 617
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ファンキー2(2F)",
+    "matched": true,
+    "keyword": "ワンピース",
+    "chain": [
+     "ワンピース",
+     "ワン",
+     "ファンキー2"
+    ],
+    "raw": "■ワンピース→ワン→ファンキー2",
+    "result": {
+     "plus": null,
+     "total": null,
+     "avg": 1384
+    }
+   },
+   {
+    "machine": "ファンキー2(3F)",
+    "matched": true,
+    "keyword": "ワンピース",
+    "chain": [
+     "ワンピース",
+     "ワン",
+     "ファンキー2"
+    ],
+    "raw": "■ワンピース→ワン→ファンキー2",
+    "result": {
+     "plus": null,
+     "total": null,
+     "avg": 1384
+    }
+   },
+   {
+    "machine": "マギレコ ※ダブルヒント",
+    "matched": false,
+    "keyword": "中華料理",
+    "chain": [
+     "中華料理",
+     "中華料理万々歳",
+     "マギレコ ■オススメ",
+     "マギレコ ※ダブルヒント"
+    ],
+    "raw": "■中華料理→中華料理万々歳→マギレコ ■オススメ→マギレコ ※ダブルヒント",
+    "result": null
+   },
+   {
+    "machine": "ゴッドイーター",
+    "matched": false,
+    "keyword": "食べる",
+    "chain": [
+     "食べる",
+     "喰らう",
+     "ゴッドイーター"
+    ],
+    "raw": "■食べる→喰らう→ゴッドイーター",
+    "result": null
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "黒胡麻担々麺",
+    "chain": [
+     "黒胡麻担々麺",
+     "黒",
+     "黒の剣士",
+     "SAO"
+    ],
+    "raw": "■黒胡麻担々麺→黒→黒の剣士→SAO",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 5275
+    }
+   },
+   {
+    "machine": "クレアの秘宝伝",
+    "matched": false,
+    "keyword": "わくわく",
+    "chain": [
+     "わくわく",
+     "ワクワクモード",
+     "クレアの秘宝伝"
+    ],
+    "raw": "■わくわく→ワクワクモード→クレアの秘宝伝",
+    "result": null
+   },
+   {
+    "machine": "喰霊零Re",
+    "matched": true,
+    "keyword": "食べる",
+    "chain": [
+     "食べる",
+     "喰らう",
+     "喰霊零Re"
+    ],
+    "raw": "■食べる→喰らう→喰霊零Re",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": 617
+    }
+   }
+  ],
+  "unassigned": [],
+  "highShare": [
+   {
+    "machine": "カバネリ海門決戦",
+    "plus": 16,
+    "total": 31,
+    "avg": 240
+   },
+   {
+    "machine": "L戦国乙女5",
+    "plus": 8,
+    "total": 16,
+    "avg": 544
+   },
+   {
+    "machine": "とある禁書目録2",
+    "plus": 9,
+    "total": 15,
+    "avg": 1903
+   },
+   {
+    "machine": "炎炎ノ消防隊2",
+    "plus": 11,
+    "total": 15,
+    "avg": 1167
+   },
+   {
+    "machine": "青ブタ",
+    "plus": 5,
+    "total": 6,
+    "avg": 2908
+   },
+   {
+    "machine": "ミスジャグ",
+    "plus": 4,
+    "total": 6,
+    "avg": 992
+   },
+   {
+    "machine": "かのかり",
+    "plus": 3,
+    "total": 4,
+    "avg": 3313
+   },
+   {
+    "machine": "スマスロ防振り",
+    "plus": 2,
+    "total": 3,
+    "avg": 1783
+   },
+   {
+    "machine": "モグモグ大海戦",
+    "plus": 2,
+    "total": 3,
+    "avg": 1683
+   }
+  ]
  }
 ]
