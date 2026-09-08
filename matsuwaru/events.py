@@ -563,9 +563,32 @@ def numtie(dates, dg, xfix=None):
             'top': [[m, '・'.join(sorted(why[m], key=lambda x: 0 if x == '名前' else 1)), k]
                     for m, k in who.most_common(4)]}
 
+def numtie_own(dates):
+    """月日ゾロ目のように、日付ごとに数字が違うイベント用のまつわり集計。
+    numtieは全開催で同じ数字（7のつく日＝常に7）を前提にしているが、
+    こちらは日付ごとに「その日自身の数字」（8/8なら8）で判定する。"""
+    hit_days = 0; who = collections.Counter(); why = collections.defaultdict(set)
+    for d in dates:
+        dg = int(d[8:10]) % 10
+        found = False
+        for m in days.get(d, ()):
+            u = units_on(d, m)
+            why_ = []
+            if name_digits(m, dg, ALIAS.get(m, [m])): why_.append('名前')
+            if u is not None and u % 10 == dg: why_.append('%d台' % u)
+            if why_:
+                found = True; who[m] += 1; why[m] |= set(why_)
+        if found: hit_days += 1
+    if not hit_days: return None
+    return {'days': hit_days,
+            'top': [[m, '・'.join(sorted(why[m], key=lambda x: 0 if x == '名前' else 1)), k]
+                    for m, k in who.most_common(4)]}
+
 for p in events:
     p['size'] = size_profile(p['dates'])
     p['numTie'] = numtie(p['dates'], event_digit(p['match']), NUM_EVENT.get(p['key']))
+    if p['numTie'] is None and event_digit(p['match']) is None:
+        p['ownNumTie'] = numtie_own(p['dates'])
     p['norm'] = norm_share(p['dates'])
     p['vari'] = variety_share(p['dates'])
     p['sjug'] = smalljug_share(p['dates'])
