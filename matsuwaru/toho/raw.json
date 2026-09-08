@@ -32977,5 +32977,124 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/09/074352",
+  "articleDate": "2026-09-09",
+  "targetDate": "2026-09-08",
+  "postDate": "2026-09-07",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2096924035284369500",
+  "title": "9月8日のマルハン新宿東宝ビルまとめ✏️8日は素直に山佐機種から狙う！",
+  "results": [
+   {
+    "machine": "ゴッドイーター",
+    "plus": 7,
+    "total": 13,
+    "avg": 3854
+   },
+   {
+    "machine": "マギレコ",
+    "plus": 3,
+    "total": 5,
+    "avg": 820
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ゴッドイーター",
+    "matched": true,
+    "keyword": "致命的",
+    "chain": [
+     "致命的",
+     "命",
+     "ゴルゴ松本",
+     "ゴルゴ13",
+     "13台機種"
+    ],
+    "raw": "致命的→命→ゴルゴ松本→ゴルゴ13→13台機種",
+    "result": {
+     "plus": 7,
+     "total": 13,
+     "avg": 3854
+    }
+   },
+   {
+    "machine": "ゴッドイーター",
+    "matched": true,
+    "keyword": "月見",
+    "chain": [
+     "月見",
+     "ツクヨミ",
+     "ゴッドイーター"
+    ],
+    "raw": "月見→ツクヨミ→ゴッドイーター",
+    "result": {
+     "plus": 7,
+     "total": 13,
+     "avg": 3854
+    }
+   },
+   {
+    "machine": "ゴッドイーター",
+    "matched": true,
+    "keyword": "8日",
+    "chain": [
+     "8日",
+     "山佐プレミアムDAY"
+    ],
+    "raw": "8日→山佐プレミアムDAY",
+    "result": {
+     "plus": 7,
+     "total": 13,
+     "avg": 3854
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "月見バーガー繰り返し",
+    "chain": [
+     "月見バーガー繰り返し",
+     "繰り返す",
+     "まどマギ"
+    ],
+    "raw": "月見バーガー繰り返し→繰り返す→まどマギ",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 820
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "QRコード",
+    "chain": [
+     "QRコード",
+     "コード",
+     "マギアレコード"
+    ],
+    "raw": "QRコード→コード→マギアレコード",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 820
+    }
+   },
+   {
+    "machine": "ハイパーラッシュ",
+    "matched": false,
+    "keyword": "8日",
+    "chain": [
+     "8日",
+     "山佐プレミアムDAY"
+    ],
+    "raw": "8日→山佐プレミアムDAY",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
