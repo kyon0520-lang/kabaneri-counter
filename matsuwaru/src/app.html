@@ -577,6 +577,7 @@ document.addEventListener('click',e=>{
     if(m.digit) return m.digit.includes(day % 10);
     if(m.day) return m.day.includes(day);
     if(m.monthend) return new Date(d.getFullYear(), d.getMonth()+1, 0).getDate() === day;
+    if(m.monthday) return (d.getMonth()+1) === day;   // 月日ゾロ目（1/1・2/2…）
     return false;                        // 不定期は日付から判定できない
   };
   // 日付ぴったりのイベント（21-27WEEK・月末最終日）を◯のつく日より優先する。
