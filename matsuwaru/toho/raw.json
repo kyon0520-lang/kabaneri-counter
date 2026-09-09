@@ -33096,5 +33096,171 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/10/073756",
+  "articleDate": "2026-09-10",
+  "targetDate": "2026-09-09",
+  "postDate": "2026-09-08",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2097286622186537354",
+  "title": "9月9日のマルハン新宿東宝ビルまとめ✏️「ゴージャグ3」を筆頭とした全系+末尾ゾロ目で盛り上がり！",
+  "results": [
+   {
+    "machine": "末尾ゾロ目",
+    "plus": 50,
+    "total": 65,
+    "avg": 2674
+   },
+   {
+    "machine": "ゴージャグ3",
+    "plus": 21,
+    "total": 22,
+    "avg": 1900
+   },
+   {
+    "machine": "マギレコ",
+    "plus": 4,
+    "total": 5,
+    "avg": 5160
+   },
+   {
+    "machine": "南国育ち",
+    "plus": 0,
+    "total": 3,
+    "avg": -2933
+   },
+   {
+    "machine": "このすば",
+    "plus": 2,
+    "total": 3,
+    "avg": 1267
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ゴージャグ3",
+    "matched": true,
+    "keyword": "20:31投稿",
+    "chain": [
+     "20:31投稿",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "20:31投稿→サイ→つのっち",
+    "result": {
+     "plus": 21,
+     "total": 22,
+     "avg": 1900
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "9/9",
+    "chain": [
+     "9/9",
+     "キュゥべえ"
+    ],
+    "raw": "9/9→キュゥべえ",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 5160
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "31分ポスト",
+    "chain": [
+     "31分ポスト",
+     "サイ",
+     "再度(繰り返し)"
+    ],
+    "raw": "31分ポスト→サイ→再度(繰り返し)",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 5160
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "バーガー３日連続",
+    "chain": [
+     "バーガー３日連続",
+     "繰り返し"
+    ],
+    "raw": "バーガー３日連続→繰り返し",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 5160
+    }
+   },
+   {
+    "machine": "南国育ち",
+    "matched": true,
+    "keyword": "調和",
+    "chain": [
+     "調和",
+     "蝶は？",
+     "南国"
+    ],
+    "raw": "調和→蝶は？→南国",
+    "result": {
+     "plus": 0,
+     "total": 3,
+     "avg": -2933
+    }
+   },
+   {
+    "machine": "南国育ち",
+    "matched": true,
+    "keyword": "9/9",
+    "chain": [
+     "9/9",
+     "キュインキュインの日"
+    ],
+    "raw": "9/9→キュインキュインの日",
+    "result": {
+     "plus": 0,
+     "total": 3,
+     "avg": -2933
+    }
+   },
+   {
+    "machine": "このすば",
+    "matched": true,
+    "keyword": "ラブ上等",
+    "chain": [
+     "ラブ上等",
+     "MEGUMI",
+     "めぐみん"
+    ],
+    "raw": "ラブ上等→MEGUMI→めぐみん",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1267
+    }
+   },
+   {
+    "machine": "シャーマンキング",
+    "matched": false,
+    "keyword": "ワッパー",
+    "chain": [
+     "ワッパー",
+     "バーガーキング",
+     "キング"
+    ],
+    "raw": "ワッパー→バーガーキング→キング",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
