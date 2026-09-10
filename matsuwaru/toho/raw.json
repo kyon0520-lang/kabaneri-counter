@@ -33262,5 +33262,134 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/11/073406",
+  "articleDate": "2026-09-11",
+  "targetDate": "2026-09-10",
+  "postDate": "2026-09-09",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2097648765603819762",
+  "title": "9月10日のマルハン新宿東宝ビルまとめ✏️0のつく日の狙いは、もちろん「大都機種」！",
+  "results": [
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 3480
+   },
+   {
+    "machine": "L鏡",
+    "plus": 3,
+    "total": 3,
+    "avg": 4367
+   },
+   {
+    "machine": "喰霊",
+    "plus": 2,
+    "total": 3,
+    "avg": 2633
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "牛スター",
+    "chain": [
+     "牛スター",
+     "ミ「スター」"
+    ],
+    "raw": "牛スター→ミ「スター」",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3480
+    }
+   },
+   {
+    "machine": "L鏡",
+    "matched": true,
+    "keyword": "戻って仕事",
+    "chain": [
+     "戻って仕事",
+     "サラリーマン"
+    ],
+    "raw": "戻って仕事→サラリーマン",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 4367
+    }
+   },
+   {
+    "machine": "L鏡",
+    "matched": true,
+    "keyword": "大都機種",
+    "chain": [
+     "大都機種"
+    ],
+    "raw": "・大都機種",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 4367
+    }
+   },
+   {
+    "machine": "喰霊",
+    "matched": true,
+    "keyword": "ジンジャーエール",
+    "chain": [
+     "ジンジャーエール",
+     "神社",
+     "神楽"
+    ],
+    "raw": "ジンジャーエール→神社→神楽",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 2633
+    }
+   },
+   {
+    "machine": "喰霊",
+    "matched": true,
+    "keyword": "0の日",
+    "chain": [
+     "0の日",
+     "喰霊零"
+    ],
+    "raw": "0の日→喰霊零",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 2633
+    }
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "7社",
+    "chain": [
+     "7社",
+     "7人の少女(0号〜6号)"
+    ],
+    "raw": "7社→7人の少女(0号〜6号)",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "大都機種",
+    "chain": [
+     "大都機種"
+    ],
+    "raw": "・大都機種",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
