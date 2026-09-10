@@ -114,6 +114,31 @@ for r in recs:
         x['category']='機種'; x['machine']=canon.get(m,m)
     out.append(x)
 
+# 結果欄には載っているが、その日は連想（示唆の文章）が一度も無い機種がいる
+# （他の機種の話しかしていない日など）。events.py の全系集計は結果欄も見るので
+# 拾えているが、ここ（検索用データ）は連想からしか作っていなかったため、
+# そういう機種はその日の実績として検索に一切出てこなかった
+# （例: ゾロ目の日ミリオンゴッドが検索に出ない）。
+# 示唆の文章が無いので、入口の語（chain）は機種名そのものにする。
+_sum = re.compile(r'総差枚|勝率')
+_col = re.compile(r'[（(](青|赤|黄|緑|紫|ピンク|白|黒|オレンジ|水色)[）)]')
+_have = {(r['targetDate'], r['machine']) for r in out if r['category'] == '機種'}
+_resultOnly = 0
+for a in raw:
+    t = a.get('targetDate')
+    if not t: continue
+    for r in a.get('results', ()):
+        m = r['machine']
+        if _sum.search(m) or _col.search(m): continue
+        c = canon.get(m) or canon.get(clean(m)) or clean(m)
+        if not c or NON.search(c) or c in DUP or (t, c) in _have: continue
+        _have.add((t, c)); _resultOnly += 1
+        out.append({'targetDate': t, 'postDate': a['postDate'], 'machine': c,
+                     'category': '機種', 'keyword': c, 'chain': [c],
+                     'result': {k: v for k, v in r.items() if k != 'machine'},
+                     'articleUrl': a['articleUrl'], 'tweetUrl': a['tweetUrl']})
+if _resultOnly: print('結果欄のみ（連想なし）で拾った機種: %d件' % _resultOnly)
+
 # 確定した名寄せ表を書き出す。events.py など他の集計が同じ基準を使えるようにするため
 json.dump(canon, open(B + '/data/canon.json', 'w'), ensure_ascii=False, indent=1)
 
@@ -152,19 +177,8 @@ top=collections.Counter(r['machine'] for r in mm).most_common(8)
 print('件数上位:', ', '.join('%s(%d)'%(m,c) for m,c in top))
 
 # 機種と判定した名前の一覧。events.py が同じ基準で絞れるようにする。
-# 連想の見出しに一度も出ず、結果欄にしか名前が出ない機種がある
-# （「3台設置機種が全系」のようにまとめて示唆された日）。
-# ここで拾わないと、その日の全系からその機種が丸ごと抜け落ちる。
+# 結果欄にしか出ない機種も、上ですでに out に足してあるのでここに含まれる。
 _names = {r['machine'] for r in out if r['category'] == '機種'}
-_sum = re.compile(r'総差枚|勝率')
-_col = re.compile(r'[（(](青|赤|黄|緑|紫|ピンク|白|黒|オレンジ|水色)[）)]')
-for a in raw:
-    for r in a.get('results', ()):
-        m = r['machine']
-        if _sum.search(m) or _col.search(m): continue
-        c = canon.get(m) or canon.get(clean(m)) or clean(m)
-        if not c or NON.search(c) or c in DUP: continue
-        _names.add(c)
 json.dump(sorted(_names), open(B + '/data/machines.json', 'w'), ensure_ascii=False, indent=1)
 
 # --- 検索用の軽量インデックス（ページが読むのはこれ） ---
