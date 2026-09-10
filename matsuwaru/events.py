@@ -119,6 +119,14 @@ def cn(m):
 def d2(s):
     y, m, dd = map(int, s.split('-')); return date(y, m, dd)
 
+# 結果欄には載っているが、その日の全系ではない組み合わせ（イレギュラーな記載など）。
+# data/result_exclude.json に手で書く。連想（assoc）にも載っていれば、そちらは対象外
+_rxp = B + '/data/result_exclude.json'
+RESULT_EXCLUDE = collections.defaultdict(set)
+if os.path.exists(_rxp):
+    for _d, _m in _json.load(open(_rxp, encoding='utf-8')).get('exclude', []):
+        RESULT_EXCLUDE[_d].add(_m)
+
 # --- 対象日ごとの全系機種 ---
 days = {}
 for a in raw:
@@ -129,6 +137,7 @@ for a in raw:
     # 「かぐや様（ピンク）」のような色付きは、その日の機種イベントの対象台を示す
     # 一覧表であって全台系の結果ではない。台数は使うが、全系機種としては数えない。
     ms = {cn(r['machine']) for r in a['results'] if not COLOR_TAG.search(r['machine'])}
+    ms -= RESULT_EXCLUDE.get(t, set())
     ms |= {cn(x['machine']) for x in a['assoc'] if x['machine']}
     ms = {m for m in ms if m in MACHINES}
     if not ms: continue

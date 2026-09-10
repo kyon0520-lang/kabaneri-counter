@@ -122,6 +122,11 @@ for r in recs:
 # 示唆の文章が無いので、入口の語（chain）は機種名そのものにする。
 _sum = re.compile(r'総差枚|勝率')
 _col = re.compile(r'[（(](青|赤|黄|緑|紫|ピンク|白|黒|オレンジ|水色)[）)]')
+# その日の全系ではないと分かっている組み合わせ（イレギュラーな記載など）
+_rxp = B + '/data/result_exclude.json'
+_resultExclude = set()
+if os.path.exists(_rxp):
+    _resultExclude = {tuple(x) for x in json.load(open(_rxp, encoding='utf-8')).get('exclude', [])}
 _have = {(r['targetDate'], r['machine']) for r in out if r['category'] == '機種'}
 _resultOnly = 0
 for a in raw:
@@ -131,7 +136,7 @@ for a in raw:
         m = r['machine']
         if _sum.search(m) or _col.search(m): continue
         c = canon.get(m) or canon.get(clean(m)) or clean(m)
-        if not c or NON.search(c) or c in DUP or (t, c) in _have: continue
+        if not c or NON.search(c) or c in DUP or (t, c) in _have or (t, c) in _resultExclude: continue
         _have.add((t, c)); _resultOnly += 1
         out.append({'targetDate': t, 'postDate': a['postDate'], 'machine': c,
                      'category': '機種', 'keyword': c, 'chain': [c],
