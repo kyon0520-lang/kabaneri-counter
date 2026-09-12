@@ -32,7 +32,9 @@
       "lineupUrl": "https://www.p-world.co.jp/tokyo/espace-kabuki.htm",
       "lineupName": "P-WORLDの設置機種",
       "lineupSource": "pworld",
-      "public": false
+      "public": false,
+      "paused": true,
+      "pausedNote": "先方ブログ(スロッターギルド)が2026-09-07を最後に更新停止のため、取り込みを一時停止中。再開したらこのキーを削除する。"
     }
   ]
 }

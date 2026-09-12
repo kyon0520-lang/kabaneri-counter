@@ -34,7 +34,7 @@ jobs:
       - name: 新着を取り込む
         working-directory: matsuwaru
         run: |
-          ids=$(python3 -c "import json;print(' '.join(s['id'] for s in json.load(open('stores.json'))['stores']))")
+          ids=$(python3 -c "import json;print(' '.join(s['id'] for s in json.load(open('stores.json'))['stores'] if not s.get('paused')))")
           fail=0
           for id in $ids; do
             echo "::group::$id"
