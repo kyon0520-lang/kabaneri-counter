@@ -28,18 +28,21 @@ jobs:
         continue-on-error: true   # 入らなくても既存の読みで動く。ここで日次更新を止めない
         run: pip install -r matsuwaru/requirements.txt
 
-      # 新着記事の取得〜名寄せまで。異常時はここで落ちて失敗通知が飛ぶ
-      # stores.json に定義された全店舗をまわす。1店舗でも失敗したらワークフローを失敗させる
+      # 新着記事の取得〜名寄せまで。異常時は失敗通知が飛ぶ
+      # stores.json に定義された全店舗をまわす。1店舗が失敗しても他店舗の取り込み・
+      # 後段のコミットは止めない（1店舗のブログ更新停止が他店舗を巻き込まないように）
       - name: 新着を取り込む
         working-directory: matsuwaru
         run: |
           ids=$(python3 -c "import json;print(' '.join(s['id'] for s in json.load(open('stores.json'))['stores']))")
+          fail=0
           for id in $ids; do
             echo "::group::$id"
-            python3 sync.py "$id" || exit 1
+            python3 sync.py "$id" || fail=1
             echo "::endgroup::"
           done
           python3 src/build-pages.py
+          if [ "$fail" = "1" ]; then exit 1; fi
 
       # 手動実行のときだけ認証情報を確認する（本番には触らない読み取り専用コマンド）
       - name: Cloudflare 接続確認
@@ -50,8 +53,11 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages project list
 
+      # 前段（新着を取り込む）が一部店舗の失敗で exit 1 していても、
+      # 他店舗分の正常な更新は取りこぼさずコミットする
       - name: 変更をコミット
         id: commit
+        if: ${{ !cancelled() }}
         run: |
           if git diff --quiet -- matsuwaru; then
             echo "changed=false" >> "$GITHUB_OUTPUT"

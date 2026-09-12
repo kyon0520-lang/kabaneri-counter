@@ -33391,5 +33391,153 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/12/081110",
+  "articleDate": "2026-09-12",
+  "targetDate": "2026-09-11",
+  "postDate": "2026-09-10",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2098011175351095754",
+  "title": "9月11日のマルハン新宿東宝ビルまとめ✏️全体平均+440枚の強さ！鉄板の末ゾロに加えて全系複数！",
+  "results": [
+   {
+    "machine": "末尾ゾロ目",
+    "plus": 54,
+    "total": 65,
+    "avg": 3482
+   },
+   {
+    "machine": "ニューキンハナ",
+    "plus": 5,
+    "total": 5,
+    "avg": 2640
+   },
+   {
+    "machine": "攻殻機動隊",
+    "plus": 4,
+    "total": 5,
+    "avg": 7300
+   },
+   {
+    "machine": "戦国乙女4",
+    "plus": 3,
+    "total": 4,
+    "avg": 6000
+   },
+   {
+    "machine": "モンハンライズ",
+    "plus": 4,
+    "total": 8,
+    "avg": 3562
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ニューキンハナ",
+    "matched": true,
+    "keyword": "恋しくて",
+    "chain": [
+     "恋しくて",
+     "Begin",
+     "沖縄",
+     "沖スロ"
+    ],
+    "raw": "恋しくて→Begin→沖縄→沖スロ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2640
+    }
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": true,
+    "keyword": "9/11",
+    "chain": [
+     "9/11",
+     "警察相談の日",
+     "警察",
+     "公安9課"
+    ],
+    "raw": "9/11→警察相談の日→警察→公安9課",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 7300
+    }
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": true,
+    "keyword": "最後は",
+    "chain": [
+     "最後は",
+     "終わり",
+     "尾張"
+    ],
+    "raw": "最後は→終わり→尾張",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 6000
+    }
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": true,
+    "keyword": "お祈り",
+    "chain": [
+     "お祈り",
+     "巫女"
+    ],
+    "raw": "お祈り→巫女",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 6000
+    }
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "タルタル",
+    "chain": [
+     "タルタル",
+     "樽",
+     "タル爆弾"
+    ],
+    "raw": "タルタル→樽→タル爆弾",
+    "result": {
+     "plus": 4,
+     "total": 8,
+     "avg": 3562
+    }
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "とんかつ",
+    "chain": [
+     "とんかつ",
+     "とんかつマン"
+    ],
+    "raw": "とんかつ→とんかつマン",
+    "result": null
+   },
+   {
+    "machine": "DMC5",
+    "matched": false,
+    "keyword": "￥550-",
+    "chain": [
+     "￥550-",
+     "5"
+    ],
+    "raw": "￥550-→5",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
