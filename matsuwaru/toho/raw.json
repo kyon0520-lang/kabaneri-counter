@@ -33539,5 +33539,217 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/13/080737",
+  "articleDate": "2026-09-13",
+  "targetDate": "2026-09-12",
+  "postDate": "2026-09-11",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2098373549807567274",
+  "title": "9月12日のマルハン新宿東宝ビルまとめ✏️「ファンキー2」を筆頭にド派手な仕掛けに！取材ありで2台並び仕掛けも確認！",
+  "results": [
+   {
+    "machine": "ファンキー2",
+    "plus": 32,
+    "total": 32,
+    "avg": 2956
+   },
+   {
+    "machine": "アイム",
+    "plus": 4,
+    "total": 5,
+    "avg": 2580
+   },
+   {
+    "machine": "ToLOVEる",
+    "plus": 2,
+    "total": 4,
+    "avg": 1250
+   },
+   {
+    "machine": "タコスロ",
+    "plus": 3,
+    "total": 4,
+    "avg": 3575
+   },
+   {
+    "machine": "エウレカ",
+    "plus": 2,
+    "total": 2,
+    "avg": 400
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ファンキー2",
+    "matched": true,
+    "keyword": "爪楊枝",
+    "chain": [
+     "爪楊枝",
+     "I",
+     "ワン🐶"
+    ],
+    "raw": "爪楊枝→I→ワン🐶",
+    "result": {
+     "plus": 32,
+     "total": 32,
+     "avg": 2956
+    }
+   },
+   {
+    "machine": "ファンキー2",
+    "matched": true,
+    "keyword": "相棒取材",
+    "chain": [
+     "相棒取材",
+     "初取材",
+     "1回目",
+     "ワン🐶"
+    ],
+    "raw": "相棒取材→初取材→1回目→ワン🐶",
+    "result": {
+     "plus": 32,
+     "total": 32,
+     "avg": 2956
+    }
+   },
+   {
+    "machine": "アイム",
+    "matched": true,
+    "keyword": "タイムサービス",
+    "chain": [
+     "タイムサービス",
+     "タイム"
+    ],
+    "raw": "タイムサービス→タイム",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2580
+    }
+   },
+   {
+    "machine": "アイム",
+    "matched": true,
+    "keyword": "にゃっぴー風船",
+    "chain": [
+     "にゃっぴー風船",
+     "船",
+     "軍艦",
+     "軍艦マーチ"
+    ],
+    "raw": "にゃっぴー風船→船→軍艦→軍艦マーチ",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2580
+    }
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": true,
+    "keyword": "にゃっぴー風船",
+    "chain": [
+     "にゃっぴー風船",
+     "キュンキュンバルーン"
+    ],
+    "raw": "にゃっぴー風船→キュンキュンバルーン",
+    "result": {
+     "plus": 2,
+     "total": 4,
+     "avg": 1250
+    }
+   },
+   {
+    "machine": "タコスロ",
+    "matched": true,
+    "keyword": "サルサチップス",
+    "chain": [
+     "サルサチップス",
+     "タコス"
+    ],
+    "raw": "サルサチップス→タコス",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 3575
+    }
+   },
+   {
+    "machine": "タコスロ",
+    "matched": true,
+    "keyword": "タイムサービス",
+    "chain": [
+     "タイムサービス",
+     "TS"
+    ],
+    "raw": "タイムサービス→TS",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 3575
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "相棒",
+    "chain": [
+     "相棒",
+     "2人",
+     "2台機種"
+    ],
+    "raw": "相棒→2人→2台機種",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 400
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "無料",
+    "chain": [
+     "無料",
+     "ゼロ",
+     "ニルヴァーシュ type ZERO"
+    ],
+    "raw": "無料→ゼロ→ニルヴァーシュ type ZERO",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 400
+    }
+   },
+   {
+    "machine": "ひぐらし",
+    "matched": false,
+    "keyword": "チキン",
+    "chain": [
+     "チキン",
+     "鳥",
+     "ゾンサガ"
+    ],
+    "raw": "チキン→鳥→ゾンサガ",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "爪楊枝",
+    "chain": [
+     "爪楊枝",
+     "つま",
+     "妻",
+     "俺の嫁カスタム"
+    ],
+    "raw": "爪楊枝→つま→妻→俺の嫁カスタム",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
