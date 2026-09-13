@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>カバネリチャレンジおみくじ</title>
+<meta name="description" content="カバネリチャレンジの２択をサポートするアプリです。無名か生駒を選んでおみくじをタップしてください。">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="icon" type="image/png" href="../icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="みんなのスロット">
+<meta property="og:title" content="カバネリチャレンジおみくじ">
+<meta property="og:description" content="カバネリチャレンジの２択をサポートするアプリです。無名か生駒を選んでおみくじをタップしてください。">
+<meta property="og:url" content="https://minnanoslot.com/kabaneri-unato/2takuomikuji/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="カバネリチャレンジおみくじ">
+<meta name="twitter:description" content="カバネリチャレンジの２択をサポートするアプリです。">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+
+  :root{
+    --bg: #14100d;
+    --bg-frame: #0c0a08;
+    --surface: #1d1712;
+    --surface-2: #241c15;
+    --surface-3: #2b2118;
+    --line: rgba(201,162,75,0.18);
+    --line-strong: rgba(201,162,75,0.32);
+    --ink: #ede3d3;
+    --ink-dim: #b0a288;
+    --ink-faint: #7c7160;
+    --gold: #c9a24b;
+    --gold-soft: #a8894a;
+    --accent: #8a1f2b;
+    --accent-soft: rgba(138,31,43,0.16);
+    --good: #6b9b78;
+    --good-bg: rgba(107,155,120,0.14);
+    --bad: #b07a6a;
+    --bad-bg: rgba(176,122,106,0.14);
+    --shadow: 0 30px 60px -20px rgba(0,0,0,0.7);
+    --serif: 'Shippori Mincho', 'Hiragino Mincho ProN', serif;
+    --sans: 'Zen Kaku Gothic New', 'Hiragino Sans', sans-serif;
+  }
+  :root[data-persona="ikoma"]{
+    --accent: #2f6e66;
+    --accent-soft: rgba(47,110,102,0.16);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--bg-frame);
+    color: var(--ink);
+    font-family: var(--sans);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding: 28px 16px 48px;
+  }
+
+  .stage{
+    width:100%;
+    max-width:440px;
+  }
+
+  .phone-frame{
+    position:relative;
+    padding:15px;
+    border-radius:28px;
+    background-image: url("bg.png");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,255,255,0.3);
+  }
+
+  .phone{
+    position:relative;
+    background: transparent;
+    border-radius:22px;
+    overflow:hidden;
+    height: 860px;
+    display:flex;
+    flex-direction:column;
+  }
+  .phone::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: rgba(6,10,24,0.68);
+    pointer-events:none;
+    z-index:0;
+  }
+  .phone > header.top,
+  .phone > nav.tabs,
+  .phone > main,
+  .phone > footer.note{
+    position:relative;
+    z-index:1;
+  }
+
+  /* faint ambient embers */
+  .ember{
+    position:absolute;
+    border-radius:50%;
+    background: var(--gold);
+    opacity:0;
+    pointer-events:none;
+    filter: blur(0.5px);
+    animation: drift 7s ease-in infinite;
+  }
+  @keyframes drift{
+    0%{ transform:translateY(0); opacity:0; }
+    10%{ opacity:0.55; }
+    90%{ opacity:0.15; }
+    100%{ transform:translateY(-160px); opacity:0; }
+  }
+
+  header.top{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:20px 20px 14px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .crest{ width:34px; height:34px; flex-shrink:0; color: var(--gold); }
+  .titles{ line-height:1.25; }
+  .site-brand{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:4px;
+  }
+  .site-brand-icon{ width:11px; height:17.5px; color: #f5f2ea; flex-shrink:0; display:block; }
+  .site-brand span{
+    font-family: var(--sans);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.14em;
+    color: #f5f2ea;
+  }
+  .titles .name{
+    font-family: var(--serif);
+    font-weight:800;
+    font-size:19px;
+    letter-spacing:0.02em;
+  }
+  .titles .sub{
+    font-size:11px;
+    color: var(--ink-faint);
+    letter-spacing:0.04em;
+    margin-top:2px;
+  }
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    padding:14px 20px 0;
+    flex-shrink:0;
+  }
+  nav.tabs button{
+    flex:1;
+    background: transparent;
+    border:1px solid var(--line);
+    color: var(--ink-dim);
+    font-family: var(--sans);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.04em;
+    padding:10px 0;
+    border-radius:10px;
+    cursor:pointer;
+    transition: color .15s ease, border-color .15s ease, background .15s ease;
+  }
+  nav.tabs button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  nav.tabs button[aria-selected="true"]{
+    color: var(--ink);
+    border-color: var(--line-strong);
+    background: var(--surface-2);
+  }
+
+  main{
+    flex:1;
+    padding:22px 20px 26px;
+    overflow-y:auto;
+  }
+  section[hidden]{ display:none !important; }
+
+  /* --- Oracle tab --- */
+  .persona-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .persona-chip{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:9px 8px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-dim);
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .persona-chip .dot{ width:7px; height:7px; border-radius:50%; background: var(--ink-faint); }
+
+  .app-desc{
+    text-align:center;
+    font-size:12.5px;
+    line-height:1.7;
+    color: var(--ink-dim);
+    max-width:34ch;
+    margin:14px auto 0;
+  }
+  .persona-chip[aria-pressed="true"]{ border-color: var(--accent); color: var(--ink); }
+  .persona-chip[aria-pressed="true"] .dot{ background: var(--accent); }
+
+  #panel-oracle{
+    display:flex;
+    flex-direction:column;
+    min-height:100%;
+  }
+  #idleView{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+  .tap-hint{
+    margin:18px 0 0;
+    text-align:center;
+    font-family: var(--serif);
+    font-weight:800;
+    font-size:23px;
+    color: var(--gold);
+    letter-spacing:0.04em;
+    text-shadow: 0 0 18px rgba(201,162,75,0.55);
+    animation: tap-pulse 1.7s ease-in-out infinite;
+  }
+  @keyframes tap-pulse{
+    0%, 100%{ opacity:0.3; transform:scale(0.9); }
+    50%{ opacity:1; transform:scale(1.12); }
+  }
+
+  .today-line{
+    text-align:center;
+    font-size:12px;
+    color: var(--ink-faint);
+    letter-spacing:0.03em;
+    margin-bottom:22px;
+    font-variant-numeric: tabular-nums;
+  }
+  .today-line b{ color: var(--gold); font-weight:700; }
+
+  .rune-wrap{
+    display:flex;
+    justify-content:center;
+    margin: 18px 0 22px;
+  }
+  .rune-btn{
+    position:relative;
+    width:128px;
+    padding:7px;
+    border:none;
+    border-radius:5px;
+    background: linear-gradient(155deg, #b5222f, #8a1620);
+    cursor:pointer;
+    box-shadow: 0 18px 40px -18px rgba(0,0,0,0.8), 0 0 50px 6px rgba(255,190,100,0.35);
+    transition: transform .15s ease;
+  }
+  .rune-btn::before{
+    content:"";
+    position:absolute;
+    inset:-56px;
+    z-index:-1;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(255,205,120,0.55) 0%, rgba(255,160,70,0.28) 38%, rgba(255,160,70,0) 72%);
+    filter: blur(3px);
+    animation: glow-pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes glow-pulse{
+    0%,100%{ opacity:0.65; transform:scale(0.94); }
+    50%{ opacity:1; transform:scale(1.08); }
+  }
+  .rune-btn:hover{ transform: translateY(-2px); }
+  .rune-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:4px; }
+  .rune-btn-face{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:196px;
+    background: linear-gradient(175deg, #f7edda, #efddbc);
+    border:2px solid #8a1620;
+    border-radius:3px;
+    box-shadow: inset 0 0 0 1px rgba(58,38,20,0.15);
+  }
+  .rune-btn .rune-label{
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: var(--serif);
+    font-weight:800;
+    font-size:25px;
+    letter-spacing:0.3em;
+    color:#8a1620;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  /* --- Question step --- */
+  .question-card{
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px 20px;
+    text-align:center;
+  }
+  .question-card .asker{
+    font-size:11px;
+    color: var(--ink-faint);
+    letter-spacing:0.08em;
+    margin-bottom:12px;
+  }
+  .question-card .qtext{
+    font-family: var(--serif);
+    font-size:17.5px;
+    line-height:1.6;
+    color: var(--ink);
+    margin-bottom:22px;
+    text-wrap: balance;
+  }
+  .answer-row{ display:flex; gap:10px; }
+  .answer-btn{
+    flex:1;
+    padding:15px 10px;
+    border-radius:12px;
+    border:1px solid var(--line-strong);
+    background: var(--surface-2);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition: border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .answer-btn:hover{ border-color: var(--accent); background: var(--surface-3); transform: translateY(-1px); }
+  .answer-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
+  .reroll{
+    display:block;
+    margin:16px auto 0;
+    background:none;
+    border:none;
+    color: var(--ink-faint);
+    font-size:12px;
+    text-decoration: underline;
+    text-underline-offset:3px;
+    cursor:pointer;
+  }
+
+  .spin-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:280px;
+    gap:16px;
+  }
+  .spin-ring{
+    width:96px; height:96px;
+    border-radius:50%;
+    border:1px dashed var(--line-strong);
+    position:relative;
+  }
+  .spin-ring::before{
+    content:"";
+    position:absolute; inset:-1px;
+    border-radius:50%;
+    border-top:1px solid var(--gold);
+    animation: spin 1s linear infinite;
+  }
+  .spin-label{ font-size:12px; color: var(--ink-faint); letter-spacing:0.14em; }
+
+
+  .result{
+    text-align:center;
+    min-height: 300px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+  }
+
+  /* --- 星空×稲妻の外枠 + 和紙のお告げカード --- */
+  .omikuji-frame{
+    position:relative;
+    width:100%;
+    border-radius:12px;
+    padding:30px 14px 16px;
+    overflow:hidden;
+    background:
+      /* faint speckle */
+      radial-gradient(1.4px 1.4px at 12% 20%, rgba(220,240,255,0.55), transparent 60%),
+      radial-gradient(1.2px 1.2px at 82% 14%, rgba(220,240,255,0.5), transparent 60%),
+      radial-gradient(1.3px 1.3px at 90% 68%, rgba(220,240,255,0.45), transparent 60%),
+      radial-gradient(1.2px 1.2px at 15% 82%, rgba(220,240,255,0.5), transparent 60%),
+      radial-gradient(1.1px 1.1px at 62% 88%, rgba(220,240,255,0.4), transparent 60%),
+      /* electric burst */
+      radial-gradient(circle at 50% 45%, rgba(210,240,255,0.9) 0%, rgba(120,195,245,0.55) 10%, rgba(50,120,190,0.28) 24%, transparent 46%),
+      /* base */
+      radial-gradient(circle at 50% 45%, #123055 0%, #0a1c38 42%, #050d1e 78%, #030812 100%);
+    box-shadow: 0 26px 48px -22px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  .omikuji-bolt{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    filter: drop-shadow(0 0 7px rgba(150,215,255,0.65));
+    pointer-events:none;
+  }
+  .omikuji-corner{
+    position:absolute;
+    width:9px; height:9px;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, #f6e7ae, var(--gold) 60%, var(--gold-soft) 100%);
+    box-shadow: 0 0 0 2px rgba(15,8,35,0.5), 0 0 6px rgba(255,224,150,0.55);
+  }
+  .omikuji-corner.tl{ top:8px; left:8px; }
+  .omikuji-corner.tr{ top:8px; right:8px; }
+  .omikuji-corner.bl{ bottom:8px; left:8px; }
+  .omikuji-corner.br{ bottom:8px; right:8px; }
+
+
+  .omikuji-card{
+    position:relative;
+    background: linear-gradient(175deg, #f7edda, #efddbc);
+    border-radius:6px;
+    padding:28px 20px 22px;
+    box-shadow: 0 10px 26px -12px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(58,38,20,0.18);
+  }
+  .omikuji-card::before{
+    content:"";
+    position:absolute; inset:8px;
+    border:1px solid rgba(58,38,20,0.32);
+    pointer-events:none;
+  }
+
+  .omikuji-header{
+    text-align:center;
+    font-family: var(--serif);
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.5em;
+    color:#3a2614;
+    padding-bottom:11px;
+    margin-bottom:18px;
+    border-bottom:1px solid rgba(58,38,20,0.3);
+  }
+
+  .omikuji-flavor{
+    font-family: var(--serif);
+    font-size:16.5px;
+    line-height:1.85;
+    text-align:center;
+    color: var(--accent);
+    font-weight:700;
+    margin-top:20px;
+  }
+
+  .omikuji-rule{
+    width:56px; height:1px;
+    background: rgba(58,38,20,0.28);
+    margin: 20px auto 18px;
+  }
+
+  .omikuji-seal-row{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .omikuji-seal{
+    width:112px; height:112px;
+    border-radius:50%;
+    border:2.5px solid var(--accent);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+  .omikuji-seal::before{
+    content:"";
+    position:absolute; inset:7px;
+    border:1px solid var(--accent);
+    border-radius:50%;
+    opacity:0.5;
+  }
+  .omikuji-seal span{
+    font-family: var(--serif);
+    font-weight:800;
+    font-size:50px;
+    color: var(--accent);
+  }
+
+  .verdict-actions{
+    display:flex;
+    gap:10px;
+    margin-top:6px;
+  }
+  .verdict-actions button{
+    font-family: var(--sans);
+    font-size:13px;
+    font-weight:700;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    border:1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+  }
+  .verdict-actions button.hit{ border-color: var(--good); color: var(--good); }
+  .verdict-actions button.miss{ border-color: var(--bad); color: var(--bad); }
+  .verdict-actions button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
+  .again{
+    margin-top:14px;
+    background:none;
+    border:none;
+    color: var(--ink-faint);
+    font-size:12px;
+    text-decoration: underline;
+    text-underline-offset:3px;
+    cursor:pointer;
+  }
+
+  /* --- Log tab --- */
+  .stat-grid{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .stat-tile{
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 10px;
+    text-align:center;
+  }
+  .stat-tile .label{ font-size:10.5px; color: var(--ink-faint); letter-spacing:0.03em; }
+  .stat-tile .value{
+    font-family: var(--serif);
+    font-size:22px;
+    font-weight:700;
+    color: var(--gold);
+    margin-top:4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-tile .value small{ font-size:11px; color: var(--ink-dim); font-family: var(--sans); font-weight:500; }
+
+  .log-section-title{
+    font-size:11px;
+    color: var(--ink-faint);
+    letter-spacing:0.06em;
+    margin: 18px 0 8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .log-section-title::after{ content:""; flex:1; height:1px; background: var(--line); }
+
+  .log-list{ display:flex; flex-direction:column; gap:1px; border-radius:12px; overflow:hidden; border:1px solid var(--line); }
+  .log-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 12px;
+    background: var(--surface-2);
+    font-size:13px;
+  }
+  .log-row .time{ color: var(--ink-faint); font-variant-numeric: tabular-nums; width:52px; flex-shrink:0; }
+  .log-row .choice{ font-family: var(--serif); font-weight:700; width:20px; }
+  .log-row .persona-tag{ color: var(--ink-faint); font-size:11px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .badge{
+    font-size:11px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:999px;
+  }
+  .badge.hit{ color: var(--good); background: var(--good-bg); }
+  .badge.miss{ color: var(--bad); background: var(--bad-bg); }
+  .badge.sample{ color: var(--ink-faint); background: var(--surface-3); }
+
+  .empty-state{
+    text-align:center;
+    padding: 28px 12px;
+    color: var(--ink-faint);
+    font-size:13px;
+    border:1px dashed var(--line);
+    border-radius:12px;
+  }
+
+  .sample-note{
+    font-size:11px;
+    color: var(--ink-faint);
+    margin: 4px 0 8px;
+  }
+
+  footer.note{
+    padding:14px 20px 18px;
+    border-top:1px solid var(--line);
+    font-size:10.5px;
+    color: var(--ink-faint);
+    line-height:1.6;
+    flex-shrink:0;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .spin-ring::before{ animation:none; }
+    .ember{ animation:none; opacity:0; }
+    .rune-btn::before{ animation:none; }
+    .tap-hint{ animation:none; opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+ <div class="phone-frame">
+  <div class="phone" id="phone">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="mk" viewBox="0 0 60 96">
+        <g transform="translate(30,48)">
+          <g transform="translate(0,-34) rotate(-8)" fill="none" stroke="#2f7cf6" stroke-width="4" stroke-linecap="round">
+            <path d="M -26 6 A 26 10 0 0 0 26 6"></path>
+            <line x1="-26" y1="0" x2="-26" y2="6"></line>
+            <line x1="26" y1="0" x2="26" y2="6"></line>
+            <ellipse rx="26" ry="10"></ellipse>
+          </g>
+          <g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round">
+            <ellipse rx="22" ry="8"></ellipse>
+            <line x1="-22" y1="0" x2="-22" y2="4.6"></line>
+            <line x1="22" y1="0" x2="22" y2="4.6"></line>
+            <path d="M -22 4.6 A 22 8 0 0 0 22 4.6"></path>
+            <line x1="-24" y1="4.6" x2="-24" y2="11"></line>
+            <line x1="20" y1="4.6" x2="20" y2="11"></line>
+            <path d="M -24 11 A 22 8 0 0 0 20 11"></path>
+            <line x1="-21" y1="11" x2="-21" y2="15.2"></line>
+            <line x1="23" y1="11" x2="23" y2="15.2"></line>
+            <path d="M -21 15.2 A 22 8 0 0 0 23 15.2"></path>
+            <line x1="-24" y1="15.2" x2="-24" y2="21.4"></line>
+            <line x1="20" y1="15.2" x2="20" y2="21.4"></line>
+            <path d="M -24 21.4 A 22 8 0 0 0 20 21.4"></path>
+            <line x1="-21" y1="21.4" x2="-21" y2="26.2"></line>
+            <line x1="23" y1="21.4" x2="23" y2="26.2"></line>
+            <path d="M -21 26.2 A 22 8 0 0 0 23 26.2"></path>
+            <line x1="-23" y1="26.2" x2="-23" y2="31.6"></line>
+            <line x1="21" y1="26.2" x2="21" y2="31.6"></line>
+            <path d="M -23 31.6 A 22 8 0 0 0 21 31.6"></path>
+            <line x1="-22" y1="31.6" x2="-22" y2="36"></line>
+            <line x1="22" y1="31.6" x2="22" y2="36"></line>
+            <path d="M -22 36 A 22 8 0 0 0 22 36"></path>
+          </g>
+        </g>
+      </symbol>
+    </svg>
+    <header class="top">
+      <div class="titles">
+        <div class="site-brand">
+          <svg class="site-brand-icon" viewBox="0 0 60 96" aria-hidden="true"><use href="#mk"></use></svg>
+          <span>みんなのスロット</span>
+        </div>
+        <div class="name">カバネリチャレンジおみくじ</div>
+        <div class="sub">カバネリ２択チャレンジサポートアプリ</div>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button role="tab" id="tab-oracle" aria-selected="true" aria-controls="panel-oracle">おみくじをひく</button>
+      <button role="tab" id="tab-log" aria-selected="false" aria-controls="panel-log">記録</button>
+    </nav>
+
+    <main>
+      <section id="panel-oracle" role="tabpanel" aria-labelledby="tab-oracle">
+        <div class="persona-row">
+          <button class="persona-chip" data-persona="mumei" aria-pressed="true"><span class="dot"></span>無名のおみくじ</button>
+          <button class="persona-chip" data-persona="ikoma" aria-pressed="false"><span class="dot"></span>生駒のおみくじ</button>
+        </div>
+
+        <div id="idleView">
+          <p class="app-desc">カバネリチャレンジの２択をサポートするアプリです。無名か生駒を選んでおみくじをタップしてください。</p>
+          <div class="rune-wrap">
+            <button class="rune-btn" id="drawBtn"><span class="rune-btn-face"><span class="rune-label">おみくじ</span></span></button>
+          </div>
+          <p class="tap-hint">☝️ここをタップ</p>
+        </div>
+        <div class="today-line" id="todayLine">本日 <b>0</b>/<b>0</b> 的中（<b>—</b>%）</div>
+
+        <div id="questionView" hidden>
+          <div class="question-card">
+            <div class="asker" id="askerLabel">無名が尋ねる</div>
+            <div class="qtext" id="questionText"></div>
+            <div class="answer-row">
+              <button class="answer-btn" id="answerABtn"></button>
+              <button class="answer-btn" id="answerBBtn"></button>
+            </div>
+          </div>
+          <button class="reroll" id="rerollBtn">べつの質問にする</button>
+        </div>
+
+        <div id="spinningView" hidden>
+          <div class="spin-wrap">
+            <div class="spin-ring"></div>
+            <div class="spin-label">おみくじ中…</div>
+          </div>
+        </div>
+
+        <div id="resultView" class="result" hidden>
+          <div class="omikuji-frame">
+            <svg class="omikuji-bolt" viewBox="0 0 300 220" preserveAspectRatio="none" aria-hidden="true">
+              <polyline points="150,100 140,55 158,42 148,12" fill="none" stroke="#eaf7ff" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.85"/>
+              <polyline points="150,100 196,66 188,50 228,24" fill="none" stroke="#cdeeff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.75"/>
+              <polyline points="150,100 216,96 208,80 284,72" fill="none" stroke="#cdeeff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.7"/>
+              <polyline points="150,100 198,138 212,132 258,176" fill="none" stroke="#bfe6ff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity="0.65"/>
+              <polyline points="150,100 162,152 146,158 156,206" fill="none" stroke="#bfe6ff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.7"/>
+              <polyline points="150,100 104,140 116,150 66,188" fill="none" stroke="#bfe6ff" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" opacity="0.65"/>
+              <polyline points="150,100 88,104 96,120 20,128" fill="none" stroke="#cdeeff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.7"/>
+              <polyline points="150,100 106,64 116,48 74,26" fill="none" stroke="#cdeeff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity="0.75"/>
+              <polyline points="150,100 172,74 182,60 176,38" fill="none" stroke="#eaf7ff" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="0.5"/>
+              <polyline points="150,100 128,130 118,124 108,158" fill="none" stroke="#eaf7ff" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" opacity="0.5"/>
+            </svg>
+            <span class="omikuji-corner tl"></span>
+            <span class="omikuji-corner tr"></span>
+            <span class="omikuji-corner bl"></span>
+            <span class="omikuji-corner br"></span>
+            <div class="omikuji-card">
+              <div class="omikuji-header">お&#8199;告&#8199;げ</div>
+              <div class="omikuji-seal-row">
+                <div class="omikuji-seal"><span id="pickText">中</span></div>
+              </div>
+              <div class="omikuji-flavor" id="flavorText"></div>
+            </div>
+          </div>
+
+          <div class="verdict-actions">
+            <button class="hit" id="hitBtn">当たった</button>
+            <button class="miss" id="missBtn">外れた</button>
+          </div>
+          <button class="again" id="againBtn">もう一度おみくじをひく</button>
+          <button class="again" id="backHomeBtn">最初の画面に戻る</button>
+        </div>
+      </section>
+
+      <section id="panel-log" role="tabpanel" aria-labelledby="tab-log" hidden>
+        <div class="stat-grid">
+          <div class="stat-tile">
+            <div class="label">本日</div>
+            <div class="value" id="statToday">0<small> /0</small></div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">連続的中</div>
+            <div class="value" id="statStreak">0</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">通算的中率</div>
+            <div class="value" id="statTotal">—</div>
+          </div>
+        </div>
+
+        <div class="log-section-title">実戦記録</div>
+        <div id="realLogWrap"></div>
+
+        <div class="log-section-title">サンプル</div>
+        <p class="sample-note">こう記録が並びます（下の3件はサンプルです）</p>
+        <div class="log-list" id="sampleLog"></div>
+      </section>
+    </main>
+
+    <footer class="note">
+      ※ 中/右の判定は完全ランダムです。お告げは雰囲気を楽しむためのもので、実際の内部抽選を示すものではありません。記録はこの端末内のみに保存されます。
+    </footer>
+  </div>
+ </div>
+</div>
+
+<script>
+(function(){
+  var LIFE_QUESTIONS = [
+    // 生活・験担ぎ系
+    { q: "朝ごはんは食べてきたか？", a: "食べた", b: "食べてない" },
+    { q: "今日の台、自分で選んだか？", a: "選んだ", b: "流れで座った" },
+    { q: "支払いは現金派か、電子マネー派か？", a: "現金", b: "電子マネー" },
+    { q: "今朝は早起きだったか？", a: "早起き", b: "ぎりぎり" },
+    { q: "財布の中に小銭はまだ残っているか？", a: "残ってる", b: "空っぽ" },
+    { q: "今日の靴、右足から履いたか？", a: "右から", b: "左から" },
+    { q: "家を出る前に鏡を見たか？", a: "見た", b: "見てない" },
+    { q: "今日は傘を持ってきたか？", a: "持ってきた", b: "持ってない" },
+    { q: "今日のシャツ、洗濯したてか？", a: "したて", b: "お気に入りの一枚" },
+    { q: "今日は誰かに「いってらっしゃい」と言われたか？", a: "言われた", b: "一人で出た" },
+    { q: "今日の交通手段は電車か、車か？", a: "電車", b: "車" },
+    { q: "座席に座る前、台を軽く叩いたか？", a: "叩いた", b: "叩いてない" },
+    // その場のムード系
+    { q: "さっきまでのツキ、良かったか？", a: "良かった", b: "微妙だった" },
+    { q: "隣の台の音、気になるか？", a: "気になる", b: "気にならない" },
+    { q: "今日はツイてる予感があるか？", a: "ある", b: "ない" },
+    { q: "コーヒーと緑茶、今の気分は？", a: "コーヒー", b: "緑茶" },
+    { q: "今、喉は渇いているか？", a: "渇いている", b: "渇いていない" },
+    { q: "今日の気温、暑いと感じるか？", a: "暑い", b: "ちょうどいい" },
+    { q: "スマホの充電、半分より上か？", a: "上", b: "下" },
+    { q: "今、腹は減っているか？", a: "減っている", b: "満腹" },
+    { q: "さっき欠伸をしたか？", a: "した", b: "してない" },
+    { q: "今日はよく眠れたか？", a: "眠れた", b: "眠れてない" },
+    { q: "この後の予定は詰まっているか？", a: "詰まってる", b: "空いてる" },
+    { q: "今日は誰かと一緒に来たか？", a: "一人", b: "誰かと" },
+    // カバネリ世界観フレーバー系
+    { q: "遠くで汽笛が聞こえた気がするか？", a: "聞こえた", b: "気のせいだった" },
+    { q: "今、風は追い風だと思うか？", a: "追い風", b: "向かい風" },
+    { q: "今日の一手、攻めるべきか守るべきか？", a: "攻める", b: "守る" },
+    { q: "炎は近いと感じるか、遠いと感じるか？", a: "近い", b: "遠い" },
+    { q: "今日は刃を研いできたか？", a: "研いできた", b: "まだ鈍い" },
+    { q: "鉄路の先、光は見えるか？", a: "見える", b: "まだ見えない" },
+    // 実戦スタイル系
+    { q: "今日は残り台数の少ない中で座ったか？", a: "少なかった", b: "余裕があった" },
+    { q: "前任者の様子、良さそうだったか？", a: "良さそうだった", b: "わからない" },
+    { q: "データは毎回リセットして見る派か？", a: "リセット派", b: "そのまま派" },
+    { q: "休憩は挟む派か、ノンストップ派か？", a: "休憩する", b: "ノンストップ" },
+    // 生活・験担ぎ系（追加）
+    { q: "今日はポケットに手を入れて歩いてきたか？", a: "入れてた", b: "入れてない" },
+    { q: "今日は帽子をかぶってきたか？", a: "かぶった", b: "かぶってない" },
+    { q: "財布は新しい方を使っているか？", a: "新しい方", b: "使い慣れた方" },
+    { q: "今日はマスクをしているか？", a: "している", b: "していない" },
+    { q: "家を出る前に忘れ物チェックをしたか？", a: "した", b: "しなかった" },
+    { q: "今日の服、色は明るめか？", a: "明るめ", b: "落ち着いた色" },
+    { q: "昨日はちゃんとお風呂に入ったか？", a: "入った", b: "シャワーだけ" },
+    { q: "今日は歯を磨いてから出たか？", a: "磨いた", b: "忘れた" },
+    { q: "今日のカバン、いつもと違う方か？", a: "いつもと違う", b: "いつも通り" },
+    { q: "今日は時計をつけているか？", a: "つけてる", b: "つけてない" },
+    { q: "今日の髪型、いつもと違うか？", a: "違う", b: "いつも通り" },
+    { q: "出かける前にニュースを見たか？", a: "見た", b: "見てない" },
+    { q: "今日は財布に新札が入っているか？", a: "入ってる", b: "入ってない" },
+    { q: "出かける時、玄関の鍵を2回確認したか？", a: "した", b: "1回で出た" },
+    { q: "今日は右手からドアを開けたか？", a: "右手", b: "左手" },
+    { q: "今朝は目覚ましより先に起きたか？", a: "先に起きた", b: "目覚ましで起きた" },
+    { q: "今日はカレンダーを見てから出たか？", a: "見た", b: "見てない" },
+    { q: "今日の靴下、左右お揃いか？", a: "お揃い", b: "実はバラバラ" },
+    { q: "出かける前に水を飲んできたか？", a: "飲んだ", b: "飲んでない" },
+    { q: "今日は誰かにおはようと言われたか？", a: "言われた", b: "まだない" },
+    { q: "財布とスマホ、先に確認したのはどっちか？", a: "財布", b: "スマホ" },
+    { q: "今日は上着を着てきたか？", a: "着てきた", b: "着てない" },
+    // その場のムード系（追加）
+    { q: "今、肩は凝っているか？", a: "凝ってる", b: "大丈夫" },
+    { q: "さっき誰かと目が合ったか？", a: "合った", b: "特にない" },
+    { q: "今日は集中できている方か？", a: "できてる", b: "散漫気味" },
+    { q: "座り心地、今日は良い方か？", a: "良い", b: "いまいち" },
+    { q: "今、周りの声は気になるか？", a: "気になる", b: "気にならない" },
+    { q: "今日は時間に余裕があるか？", a: "余裕ある", b: "ぎりぎり" },
+    { q: "さっきスマホの通知が来たか？", a: "来た", b: "来てない" },
+    { q: "今、手は冷えているか？", a: "冷えてる", b: "あたたかい" },
+    { q: "今日はBGMが耳に残っているか？", a: "残ってる", b: "特にない" },
+    { q: "さっき伸びをしたか？", a: "した", b: "してない" },
+    { q: "今、姿勢は良い方か？", a: "良い", b: "猫背気味" },
+    { q: "今日は誰かに褒められたか？", a: "褒められた", b: "まだない" }
+  ];
+
+  var FLAVORS = {
+    mumei: {
+      accentName: "無名",
+      askerLabel: "無名が尋ねる",
+      中: [
+        "無名「『{a}』か。ふうん、なら中でいいよ。」",
+        "無名「『{a}』、あんた案外飾らないんだね。中で行く。」",
+        "無名「『{a}』か。迷ってるほうが弱い。中。」",
+        "無名「『{a}』、それだけ？ なら中にしとく。」",
+        "無名「『{a}』か。私はいつも真ん中から斬り込む。中。」",
+        "無名「『{a}』、素直でよろしい。中。」",
+        "無名「『{a}』か。怖がってたら喰われるよ。中。」",
+        "無名「『{a}』、面白いこと言うね。中にしよう。」",
+        "無名「『{a}』か。中でいい。あんたが決めたなら。」",
+        "無名「『{a}』、ふぅん。じゃあ中でいいや。」",
+        "無名「『{a}』か。鉄路のまんなか、私は好きだよ。中。」",
+        "無名「『{a}』、遠慮しなくていいよ。中。」",
+        "無名「『{a}』か。駅を出るなら中からだよ。」",
+        "無名「『{a}』、甲鉄城は揺れてない。なら中でいい。」",
+        "無名「『{a}』か。カバネに背を向けるほうが危ない。中。」",
+        "無名「『{a}』、枷は外してないけど——中で十分。」",
+        "無名「『{a}』か。砦の中、私は静かなほうが好き。」",
+        "無名「『{a}』、隔離されてるくらいでちょうどいい。中。」",
+        "無名「『{a}』か。駿城の中央、揺れが少ない。中。」",
+        "無名「『{a}』、眠くなる前に決める。中。」"
+      ],
+      右: [
+        "無名「『{a}』か。じゃあ右。理由なんていらない。」",
+        "無名「『{a}』、あんたも変わってるね。右にしとく。」",
+        "無名「『{a}』か。弱い方に逃げないで。右。」",
+        "無名「『{a}』、へえ。なら右で試してみる。」",
+        "無名「『{a}』か。右のほうが風が強い、それだけ。」",
+        "無名「『{a}』、それでいいよ。右。」",
+        "無名「『{a}』か。躊躇なんかしてたら喰われるよ。右。」",
+        "無名「『{a}』、なんか面白そう。右にする。」",
+        "無名「『{a}』か。右でいい。あんたが決めたなら。」",
+        "無名「『{a}』、まあいいか。右。」",
+        "無名「『{a}』か。鉄路の外れ、私はそっちで斬る。右。」",
+        "無名「『{a}』、遠慮しなくていいよ。右。」",
+        "無名「『{a}』か。駅を出るなら右からだよ。」",
+        "無名「『{a}』、甲鉄城が右に傾いた。なら右。」",
+        "無名「『{a}』か。カバネに背を向けるほうが危ない。右。」",
+        "無名「『{a}』、枷は外してないけど——右で十分。」",
+        "無名「『{a}』か。砦の外側、右のほうが騒がしい。」",
+        "無名「『{a}』、隔離されてるくらいでちょうどいい。右。」",
+        "無名「『{a}』か。駿城の縁、揺れが大きい。右。」",
+        "無名「『{a}』、眠くなる前に決める。右。」"
+      ]
+    },
+    ikoma: {
+      accentName: "生駒",
+      askerLabel: "生駒が尋ねる",
+      中: [
+        "生駒「『{a}』か……よし、中で行く。守るべきものがある。」",
+        "生駒「『{a}』なんだな。迷ってる暇はない、中だ。」",
+        "生駒「『{a}』か。誇れる自分でいたい——だから中を選ぶ。」",
+        "生駒「『{a}』、わかった。俺が先に行く。中だ。」",
+        "生駒「『{a}』か。仕掛けは整えてある。中で行く。」",
+        "生駒「『{a}』なんだね。ここは俺が引き受ける。中で。」",
+        "生駒「『{a}』か……よし、覚悟を決めた。中だ。」",
+        "生駒「『{a}』、大丈夫。ちゃんと考えてきた。中で行こう。」",
+        "生駒「『{a}』か。もう逃げない。中を征く。」",
+        "生駒「『{a}』なんだ。守りたいものがある。中だ。」",
+        "生駒「『{a}』か。焔の向こうに行くなら、中だ。」",
+        "生駒「『{a}』、これでいい。中で決める。」",
+        "生駒「『{a}』か。ツラヌキ筒は仕込んである。中で仕掛ける。」",
+        "生駒「『{a}』なんだ。甲鉄城のみんなを守る、中で。」",
+        "生駒「『{a}』か。顕金駅で誓ったことを忘れない。中だ。」",
+        "生駒「『{a}』、脱出行はまだ終わってない。中で行く。」",
+        "生駒「『{a}』か。克城には気をつけろ、中で構える。」",
+        "生駒「『{a}』なんだね。金剛郭まではまだ遠い。中だ。」",
+        "生駒「『{a}』か。蒸気の圧は十分だ。中で行こう。」",
+        "生駒「『{a}』、駅を守れなかった分まで。中だ。」"
+      ],
+      右: [
+        "生駒「『{a}』か……よし、右で行く。誰かを守るために。」",
+        "生駒「『{a}』なんだな。迷ってる暇はない、右だ。」",
+        "生駒「『{a}』か。誇れる自分でいたい——だから右を選ぶ。」",
+        "生駒「『{a}』、わかった。俺が先に行く。右だ。」",
+        "生駒「『{a}』か。仕掛けは右で決める。」",
+        "生駒「『{a}』なんだね。ここは俺が引き受ける。右で。」",
+        "生駒「『{a}』か……よし、覚悟を決めた。右だ。」",
+        "生駒「『{a}』、大丈夫。ちゃんと考えてきた。右で行こう。」",
+        "生駒「『{a}』か。もう逃げない。右を征く。」",
+        "生駒「『{a}』なんだ。誰かのためにも、右だ。」",
+        "生駒「『{a}』か。焔の向こうに行くなら、右だ。」",
+        "生駒「『{a}』、これでいい。右で決める。」",
+        "生駒「『{a}』か。ツラヌキ筒は仕込んである。右で仕掛ける。」",
+        "生駒「『{a}』なんだ。甲鉄城のみんなを守る、右で。」",
+        "生駒「『{a}』か。顕金駅で誓ったことを忘れない。右だ。」",
+        "生駒「『{a}』、脱出行はまだ終わってない。右で行く。」",
+        "生駒「『{a}』か。克城には気をつけろ、右で構える。」",
+        "生駒「『{a}』なんだね。金剛郭まではまだ遠い。右だ。」",
+        "生駒「『{a}』か。蒸気の圧は十分だ。右で行こう。」",
+        "生駒「『{a}』、駅を守れなかった分まで。右だ。」"
+      ]
+    }
+  };
+
+  var root = document.documentElement;
+  var persona = "mumei";
+  var currentQuestion = null;
+  var currentAnswer = null;
+  var drawBtn = document.getElementById("drawBtn");
+  var idleView = document.getElementById("idleView");
+  var questionView = document.getElementById("questionView");
+  var spinningView = document.getElementById("spinningView");
+  var resultView = document.getElementById("resultView");
+  var askerLabel = document.getElementById("askerLabel");
+  var questionText = document.getElementById("questionText");
+  var answerABtn = document.getElementById("answerABtn");
+  var answerBBtn = document.getElementById("answerBBtn");
+  var rerollBtn = document.getElementById("rerollBtn");
+  var pickText = document.getElementById("pickText");
+  var flavorText = document.getElementById("flavorText");
+  var hitBtn = document.getElementById("hitBtn");
+  var missBtn = document.getElementById("missBtn");
+  var againBtn = document.getElementById("againBtn");
+  var todayLine = document.getElementById("todayLine");
+
+  var STORE_KEY = "mumei-oracle-log-v1";
+  var pendingEntry = null;
+
+  function loadLog(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveLog(entries){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(entries)); }catch(e){}
+  }
+
+  function todayKey(){
+    var d = new Date();
+    return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+  }
+
+  function pick(list){ return list[Math.floor(Math.random()*list.length)]; }
+
+  // persona chips
+  document.querySelectorAll(".persona-chip").forEach(function(chip){
+    chip.addEventListener("click", function(){
+      persona = chip.getAttribute("data-persona");
+      document.querySelectorAll(".persona-chip").forEach(function(c){
+        c.setAttribute("aria-pressed", c === chip ? "true" : "false");
+      });
+      root.setAttribute("data-persona", persona);
+    });
+  });
+
+
+  // tabs
+  var tabOracle = document.getElementById("tab-oracle");
+  var tabLog = document.getElementById("tab-log");
+  var panelOracle = document.getElementById("panel-oracle");
+  var panelLog = document.getElementById("panel-log");
+  function selectTab(which){
+    var oracleOn = which === "oracle";
+    tabOracle.setAttribute("aria-selected", oracleOn);
+    tabLog.setAttribute("aria-selected", !oracleOn);
+    panelOracle.hidden = !oracleOn;
+    panelLog.hidden = oracleOn;
+    if(!oracleOn) renderLog();
+  }
+  tabOracle.addEventListener("click", function(){ selectTab("oracle"); });
+  tabLog.addEventListener("click", function(){ selectTab("log"); });
+
+  function spawnEmbers(){
+    var phone = document.getElementById("phone");
+    for(var i=0;i<5;i++){
+      var e = document.createElement("div");
+      e.className = "ember";
+      var size = 2 + Math.random()*3;
+      e.style.width = size+"px";
+      e.style.height = size+"px";
+      e.style.left = (20 + Math.random()*60) + "%";
+      e.style.bottom = "160px";
+      e.style.animationDelay = (Math.random()*0.6)+"s";
+      phone.appendChild(e);
+      (function(el){ setTimeout(function(){ el.remove(); }, 7200); })(e);
+    }
+  }
+
+  // シャッフルバッグ方式: 全問を引き切るまで同じ質問を出さない。
+  // 母数が少なくても近接回での重複を体感的にゼロにできる。
+  var questionBag = [];
+  var lastQuestion = null;
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function nextQuestion(){
+    if(questionBag.length === 0){
+      questionBag = shuffle(LIFE_QUESTIONS);
+      // バッグの継ぎ目でも直前と同じ質問が来ないようにする
+      if(lastQuestion && questionBag[0] === lastQuestion && questionBag.length > 1){
+        var idx = 1 + Math.floor(Math.random()*(questionBag.length-1));
+        var tmp = questionBag[0]; questionBag[0] = questionBag[idx]; questionBag[idx] = tmp;
+      }
+    }
+    var q = questionBag.shift();
+    lastQuestion = q;
+    return q;
+  }
+
+  function renderQuestion(){
+    askerLabel.textContent = FLAVORS[persona].askerLabel;
+    questionText.textContent = currentQuestion.q;
+    answerABtn.textContent = currentQuestion.a;
+    answerBBtn.textContent = currentQuestion.b;
+  }
+
+  function showQuestion(){
+    currentQuestion = nextQuestion();
+    renderQuestion();
+    idleView.style.display = "none";
+    resultView.hidden = true;
+    questionView.hidden = false;
+  }
+
+  function chooseAnswer(answerLabel){
+    currentAnswer = answerLabel;
+    questionView.hidden = true;
+    spinningView.hidden = false;
+    spawnEmbers();
+    setTimeout(function(){
+      var side = Math.random() < 0.5 ? "中" : "右";
+      var pool = FLAVORS[persona][side];
+      var template = pick(pool);
+      var line = template.replace("{a}", currentAnswer);
+
+      pickText.textContent = side;
+      flavorText.textContent = line;
+
+      pendingEntry = {
+        ts: Date.now(),
+        choice: side,
+        persona: persona,
+        question: currentQuestion.q,
+        answer: currentAnswer
+      };
+
+      spinningView.hidden = true;
+      resultView.hidden = false;
+    }, 1000);
+  }
+
+  function finishEntry(result){
+    if(!pendingEntry) return;
+    var entries = loadLog();
+    entries.unshift({
+      ts: pendingEntry.ts,
+      choice: pendingEntry.choice,
+      persona: pendingEntry.persona,
+      question: pendingEntry.question,
+      answer: pendingEntry.answer,
+      result: result
+    });
+    saveLog(entries);
+    pendingEntry = null;
+    updateTodayLine();
+    resetToIdle();
+  }
+
+  function resetToIdle(){
+    resultView.hidden = true;
+    questionView.hidden = true;
+    spinningView.hidden = true;
+    idleView.style.display = "";
+  }
+
+  drawBtn.addEventListener("click", showQuestion);
+  answerABtn.addEventListener("click", function(){ chooseAnswer(currentQuestion.a); });
+  answerBBtn.addEventListener("click", function(){ chooseAnswer(currentQuestion.b); });
+  rerollBtn.addEventListener("click", showQuestion);
+  hitBtn.addEventListener("click", function(){ finishEntry("hit"); });
+  missBtn.addEventListener("click", function(){ finishEntry("miss"); });
+  againBtn.addEventListener("click", showQuestion);
+  var backHomeBtn = document.getElementById("backHomeBtn");
+  backHomeBtn.addEventListener("click", resetToIdle);
+
+  function updateTodayLine(){
+    var entries = loadLog();
+    var tk = todayKey();
+    var todays = entries.filter(function(e){
+      var d = new Date(e.ts);
+      return (d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()) === tk;
+    });
+    var hits = todays.filter(function(e){ return e.result === "hit"; }).length;
+    var pct = todays.length ? Math.round(hits/todays.length*100) : null;
+    todayLine.innerHTML = "本日 <b>"+hits+"</b>/<b>"+todays.length+"</b> 的中（<b>"+(pct===null?"—":pct)+"</b>%）";
+  }
+
+  function fmtTime(ts){
+    var d = new Date(ts);
+    function pad(n){ return (n<10?"0":"")+n; }
+    return pad(d.getHours())+":"+pad(d.getMinutes());
+  }
+
+  function rowHtml(entry, isSample){
+    var badgeClass = isSample ? "sample" : (entry.result === "hit" ? "hit" : "miss");
+    var badgeText = isSample ? "サンプル" : (entry.result === "hit" ? "当たり" : "外れ");
+    var answerLabel = entry.answer ? "「"+entry.answer+"」" : "—";
+    return '<div class="log-row">'
+      + '<span class="time">'+fmtTime(entry.ts)+'</span>'
+      + '<span class="choice">'+entry.choice+'</span>'
+      + '<span class="persona-tag">'+answerLabel+'の答え</span>'
+      + '<span class="badge '+badgeClass+'">'+badgeText+'</span>'
+      + '</div>';
+  }
+
+  var SAMPLE = [
+    { ts: Date.now() - 1000*60*24, choice: "右", persona: "ikoma", question: "今日はツイてる予感があるか？", answer: "ある", result: "hit" },
+    { ts: Date.now() - 1000*60*95, choice: "中", persona: "mumei", question: "朝ごはんは食べてきたか？", answer: "食べてない", result: "miss" },
+    { ts: Date.now() - 1000*60*210, choice: "中", persona: "mumei", question: "今朝は早起きだったか？", answer: "早起き", result: "hit" }
+  ];
+
+  function renderLog(){
+    var entries = loadLog();
+
+    // stats
+    var tk = todayKey();
+    var todays = entries.filter(function(e){
+      var d = new Date(e.ts);
+      return (d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()) === tk;
+    });
+    var todayHits = todays.filter(function(e){ return e.result==="hit"; }).length;
+    document.getElementById("statToday").innerHTML = todayHits + "<small> /" + todays.length + "</small>";
+
+    var streak = 0;
+    for(var i=0;i<entries.length;i++){
+      if(entries[i].result === "hit") streak++; else break;
+    }
+    document.getElementById("statStreak").textContent = streak;
+
+    var totalHits = entries.filter(function(e){ return e.result==="hit"; }).length;
+    document.getElementById("statTotal").textContent = entries.length ? Math.round(totalHits/entries.length*100)+"%" : "—";
+
+    // real log
+    var wrap = document.getElementById("realLogWrap");
+    if(entries.length === 0){
+      wrap.innerHTML = '<div class="empty-state">まだ記録がありません。「おみくじをひく」タブで結果を記録してみましょう。</div>';
+    } else {
+      wrap.innerHTML = '<div class="log-list">' + entries.slice(0,20).map(function(e){ return rowHtml(e, false); }).join("") + '</div>';
+    }
+
+    // sample log
+    document.getElementById("sampleLog").innerHTML = SAMPLE.map(function(e){ return rowHtml(e, true); }).join("");
+  }
+
+  updateTodayLine();
+})();
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
+</body>
+</html>
