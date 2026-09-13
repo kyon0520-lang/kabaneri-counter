@@ -53,9 +53,11 @@
     color: var(--ink);
     font-family: var(--sans);
     min-height:100vh;
+    min-height:100dvh;
     display:flex;
     justify-content:center;
-    padding: 28px 16px 48px;
+    align-items:center;
+    padding: 12px;
   }
 
   .stage{
@@ -78,7 +80,7 @@
     background: transparent;
     border-radius:22px;
     overflow:hidden;
-    height: 860px;
+    height: min(860px, calc(100dvh - 54px));
     display:flex;
     flex-direction:column;
   }
