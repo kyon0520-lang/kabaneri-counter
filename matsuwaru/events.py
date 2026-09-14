@@ -670,7 +670,6 @@ def card_say(p):
     if hw: return fill_main(hw, p)
     n = p['days']
     if not n: return None
-    parts = []
     # ① 系統。全体より DIFF_MIN 以上多いもののうち、いちばん離れているもの
     # 全体より離れているだけでなく、その日の半分以上で起きていること。
     # 珍しい系統は母数が小さいぶん差が大きく出るが、「3/12回」を狙い目とは書けない
@@ -681,16 +680,20 @@ def card_say(p):
         diff = rate - 100 * gbase.get(g, 0) / tot
         if diff >= DIFF_MIN and rate >= 50 and (best is None or diff > best[0]):
             best = (diff, g, k)
-    if best: parts.append('%sが%d/%d回' % (best[1], best[2], n))
+    gpart = '%sが%d/%d回' % (best[1], best[2], n) if best else None
     # ② 台数帯。同じ基準で
     sz = p.get('size')
+    spart = None
     if sz and SIZE_ALL:
         bb = None
         for b in ('big', 'mid', 'small'):
             diff = sz[b] - SIZE_ALL[b]
             if diff >= DIFF_MIN and (bb is None or diff > bb[0]):
                 bb = (diff, BAND_NAME[b])
-        if bb: parts.append('%sが軸' % bb[1])
+        if bb: spart = '%sが軸' % bb[1]
+    # 台数帯を先に出したいイベントは event_lead.json に "sizeFirst": true と書く
+    order = (gpart, spart) if not (LEAD.get(p['key']) or {}).get('sizeFirst') else (spart, gpart)
+    parts = [x for x in order if x]
     # ③ どちらも無ければ3台構成を見る
     if not parts and p.get('three') and THREE_ALL:
         t = p['three']
