@@ -121,7 +121,7 @@
     display:flex;
     align-items:center;
     gap:10px;
-    padding:12px 18px 9px;
+    padding:clamp(10px, 2.2dvh, 20px) 18px clamp(8px, 1.6dvh, 14px);
     border-bottom:1px solid var(--line);
     flex-shrink:0;
   }
@@ -157,7 +157,7 @@
   nav.tabs{
     display:flex;
     gap:6px;
-    padding:9px 18px 0;
+    padding:clamp(9px, 1.8dvh, 14px) 18px 0;
     flex-shrink:0;
   }
   nav.tabs button{
@@ -183,7 +183,7 @@
 
   main{
     flex:1;
-    padding:14px 18px 12px;
+    padding:clamp(12px, 2.5dvh, 22px) 18px clamp(10px, 2dvh, 26px);
     overflow-y:auto;
   }
   section[hidden]{ display:none !important; }
@@ -192,7 +192,7 @@
   .persona-row{
     display:flex;
     gap:8px;
-    margin-bottom:10px;
+    margin-bottom:clamp(10px, 2dvh, 18px);
   }
   .persona-chip{
     flex:1;
@@ -214,11 +214,11 @@
 
   .app-desc{
     text-align:center;
-    font-size:12px;
-    line-height:1.5;
+    font-size:clamp(12px, 2.2dvh, 12.5px);
+    line-height:1.6;
     color: var(--ink-dim);
     max-width:34ch;
-    margin:6px auto 0;
+    margin:clamp(6px, 1.2dvh, 14px) auto 0;
   }
   .persona-chip[aria-pressed="true"]{ border-color: var(--accent); color: var(--ink); }
   .persona-chip[aria-pressed="true"] .dot{ background: var(--accent); }
@@ -236,11 +236,11 @@
     justify-content:center;
   }
   .tap-hint{
-    margin:8px 0 0;
+    margin:clamp(8px, 1.8dvh, 18px) 0 0;
     text-align:center;
     font-family: var(--serif);
     font-weight:800;
-    font-size:17px;
+    font-size:clamp(17px, 3.5dvh, 23px);
     color: var(--gold);
     letter-spacing:0.04em;
     text-shadow: 0 0 14px rgba(201,162,75,0.55);
@@ -253,10 +253,10 @@
 
   .today-line{
     text-align:center;
-    font-size:11px;
+    font-size:clamp(11px, 2dvh, 12px);
     color: var(--ink-faint);
     letter-spacing:0.03em;
-    margin-bottom:10px;
+    margin-bottom:clamp(10px, 2dvh, 22px);
     font-variant-numeric: tabular-nums;
   }
   .today-line b{ color: var(--gold); font-weight:700; }
@@ -264,12 +264,12 @@
   .rune-wrap{
     display:flex;
     justify-content:center;
-    margin: 8px 0 10px;
+    margin: clamp(8px, 1.8dvh, 18px) 0 clamp(10px, 2dvh, 22px);
   }
   .rune-btn{
     position:relative;
-    width:96px;
-    padding:5px;
+    width:clamp(96px, 20dvh, 128px);
+    padding:clamp(5px, 1dvh, 7px);
     border:none;
     border-radius:5px;
     background: linear-gradient(155deg, #b5222f, #8a1620);
@@ -297,7 +297,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    height:132px;
+    height:clamp(130px, 27dvh, 196px);
     background: linear-gradient(175deg, #f7edda, #efddbc);
     border:2px solid #8a1620;
     border-radius:3px;
@@ -308,7 +308,7 @@
     text-orientation: upright;
     font-family: var(--serif);
     font-weight:800;
-    font-size:18px;
+    font-size:clamp(18px, 4.2dvh, 25px);
     letter-spacing:0.25em;
     color:#8a1620;
   }
@@ -404,7 +404,7 @@
     position:relative;
     width:100%;
     border-radius:12px;
-    padding:18px 12px 10px;
+    padding:clamp(18px, 3.5dvh, 30px) 12px clamp(10px, 2dvh, 16px);
     overflow:hidden;
     background:
       /* faint speckle */
@@ -444,7 +444,7 @@
     position:relative;
     background: linear-gradient(175deg, #f7edda, #efddbc);
     border-radius:6px;
-    padding:16px 16px 14px;
+    padding:clamp(16px, 3dvh, 28px) 16px clamp(14px, 2.6dvh, 22px);
     box-shadow: 0 10px 26px -12px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(58,38,20,0.18);
   }
   .omikuji-card::before{
@@ -458,22 +458,22 @@
     text-align:center;
     font-family: var(--serif);
     font-weight:700;
-    font-size:13px;
+    font-size:clamp(13px, 2.4dvh, 15px);
     letter-spacing:0.5em;
     color:#3a2614;
-    padding-bottom:7px;
-    margin-bottom:10px;
+    padding-bottom:clamp(7px, 1.4dvh, 11px);
+    margin-bottom:clamp(10px, 2dvh, 18px);
     border-bottom:1px solid rgba(58,38,20,0.3);
   }
 
   .omikuji-flavor{
     font-family: var(--serif);
-    font-size:14.5px;
-    line-height:1.65;
+    font-size:clamp(14.5px, 2.6dvh, 16.5px);
+    line-height:1.7;
     text-align:center;
     color: var(--accent);
     font-weight:700;
-    margin-top:10px;
+    margin-top:clamp(10px, 2dvh, 20px);
   }
 
   .omikuji-rule{
@@ -488,7 +488,7 @@
     align-items:center;
   }
   .omikuji-seal{
-    width:82px; height:82px;
+    width:clamp(82px, 16dvh, 112px); height:clamp(82px, 16dvh, 112px);
     border-radius:50%;
     border:2.5px solid var(--accent);
     display:flex;
@@ -506,14 +506,14 @@
   .omikuji-seal span{
     font-family: var(--serif);
     font-weight:800;
-    font-size:36px;
+    font-size:clamp(36px, 7dvh, 50px);
     color: var(--accent);
   }
 
   .verdict-actions{
     display:flex;
     gap:10px;
-    margin-top:2px;
+    margin-top:clamp(2px, 0.6dvh, 6px);
   }
   .verdict-actions button{
     font-family: var(--sans);
@@ -531,7 +531,7 @@
   .verdict-actions button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
 
   .again{
-    margin-top:6px;
+    margin-top:clamp(6px, 1.2dvh, 14px);
     background:none;
     border:none;
     color: var(--ink-faint);
@@ -615,11 +615,11 @@
   }
 
   footer.note{
-    padding:8px 18px 10px;
+    padding:clamp(8px, 1.6dvh, 14px) 18px clamp(10px, 1.8dvh, 18px);
     border-top:1px solid var(--line);
-    font-size:9.5px;
+    font-size:clamp(9.5px, 1.8dvh, 10.5px);
     color: var(--ink-faint);
-    line-height:1.4;
+    line-height:1.5;
     flex-shrink:0;
   }
 
