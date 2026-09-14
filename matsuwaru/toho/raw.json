@@ -33751,5 +33751,233 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/14/082538",
+  "articleDate": "2026-09-14",
+  "targetDate": "2026-09-13",
+  "postDate": "2026-09-12",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2098735980916424866",
+  "title": "9月13日のマルハン新宿東宝ビルまとめ✏️全系+3台並び対象！",
+  "results": [
+   {
+    "machine": "L炎炎2",
+    "plus": 4,
+    "total": 9,
+    "avg": 3556
+   },
+   {
+    "machine": "スマスロ北斗",
+    "plus": 8,
+    "total": 8,
+    "avg": 2312
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 1850
+   },
+   {
+    "machine": "いせかる",
+    "plus": 3,
+    "total": 3,
+    "avg": 1400
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "L炎炎2",
+    "matched": true,
+    "keyword": "洗濯",
+    "chain": [
+     "洗濯",
+     "選択の時"
+    ],
+    "raw": "洗濯→選択の時",
+    "result": {
+     "plus": 4,
+     "total": 9,
+     "avg": 3556
+    }
+   },
+   {
+    "machine": "L炎炎2",
+    "matched": true,
+    "keyword": "990円",
+    "chain": [
+     "990円",
+     "救急",
+     "消防隊"
+    ],
+    "raw": "990円→救急→消防隊",
+    "result": {
+     "plus": 4,
+     "total": 9,
+     "avg": 3556
+    }
+   },
+   {
+    "machine": "L炎炎2",
+    "matched": true,
+    "keyword": "ジャンプ＋",
+    "chain": [
+     "ジャンプ＋",
+     "＋",
+     "十字目"
+    ],
+    "raw": "ジャンプ＋→＋→十字目",
+    "result": {
+     "plus": 4,
+     "total": 9,
+     "avg": 3556
+    }
+   },
+   {
+    "machine": "スマスロ北斗",
+    "matched": true,
+    "keyword": "ジャンプ",
+    "chain": [
+     "ジャンプ",
+     "ジャンプ版権"
+    ],
+    "raw": "ジャンプ→ジャンプ版権",
+    "result": {
+     "plus": 8,
+     "total": 8,
+     "avg": 2312
+    }
+   },
+   {
+    "machine": "スマスロ北斗",
+    "matched": true,
+    "keyword": "読み耽る",
+    "chain": [
+     "読み耽る",
+     "老ける",
+     "老婆"
+    ],
+    "raw": "読み耽る→老ける→老婆",
+    "result": {
+     "plus": 8,
+     "total": 8,
+     "avg": 2312
+    }
+   },
+   {
+    "machine": "スマスロ北斗",
+    "matched": true,
+    "keyword": "北斗の日",
+    "chain": [
+     "北斗の日"
+    ],
+    "raw": "・北斗の日",
+    "result": {
+     "plus": 8,
+     "total": 8,
+     "avg": 2312
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "白菜",
+    "chain": [
+     "白菜",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "白菜→サイ→つのっち",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 1850
+    }
+   },
+   {
+    "machine": "いせかる",
+    "matched": true,
+    "keyword": "小屋",
+    "chain": [
+     "小屋",
+     "hut",
+     "ハット",
+     "シルクハット🎩"
+    ],
+    "raw": "小屋→hut→ハット→シルクハット🎩",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 1400
+    }
+   },
+   {
+    "machine": "いせかる",
+    "matched": true,
+    "keyword": "ミックス",
+    "chain": [
+     "ミックス",
+     "カルテット"
+    ],
+    "raw": "ミックス→カルテット",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 1400
+    }
+   },
+   {
+    "machine": "ひぐらし2",
+    "matched": false,
+    "keyword": "カグラバチ",
+    "chain": [
+     "カグラバチ",
+     "昼彦",
+     "妖術（蝉）",
+     "ひぐらし"
+    ],
+    "raw": "カグラバチ→昼彦→妖術（蝉）→ひぐらし",
+    "result": null
+   },
+   {
+    "machine": "ひぐらし2",
+    "matched": false,
+    "keyword": "白菜",
+    "chain": [
+     "白菜",
+     "シロ",
+     "オヤシロ",
+     "ひぐらし"
+    ],
+    "raw": "白菜→シロ→オヤシロ→ひぐらし",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "カグラバチ",
+    "chain": [
+     "カグラバチ",
+     "戦国 与次郎",
+     "戦国"
+    ],
+    "raw": "カグラバチ→戦国 与次郎→戦国",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "豆腐",
+    "chain": [
+     "豆腐",
+     "バイオRE"
+    ],
+    "raw": "豆腐→バイオRE",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
