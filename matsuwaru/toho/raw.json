@@ -33979,5 +33979,126 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/15/081732",
+  "articleDate": "2026-09-15",
+  "targetDate": "2026-09-14",
+  "postDate": "2026-09-13",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2099098383944421681",
+  "title": "9月14日のマルハン新宿東宝ビルまとめ✏️4のつく日で「かぐや様」が全系、再導入機種の扱いも◎",
+  "results": [
+   {
+    "machine": "かぐや様",
+    "plus": 3,
+    "total": 9,
+    "avg": -1478
+   },
+   {
+    "machine": "化物語",
+    "plus": 1,
+    "total": 2,
+    "avg": 4800
+   },
+   {
+    "machine": "アバサー",
+    "plus": 2,
+    "total": 2,
+    "avg": 1850
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "かぐや様",
+    "matched": true,
+    "keyword": "胡椒",
+    "chain": [
+     "胡椒",
+     "古月",
+     "月"
+    ],
+    "raw": "胡椒→古月→→月",
+    "result": {
+     "plus": 3,
+     "total": 9,
+     "avg": -1478
+    }
+   },
+   {
+    "machine": "かぐや様",
+    "matched": true,
+    "keyword": "良くあいます",
+    "chain": [
+     "良くあいます",
+     "奇跡的相性",
+     "マリアージュ"
+    ],
+    "raw": "良くあいます→奇跡的相性→マリアージュ",
+    "result": {
+     "plus": 3,
+     "total": 9,
+     "avg": -1478
+    }
+   },
+   {
+    "machine": "化物語",
+    "matched": true,
+    "keyword": "再導入機種",
+    "chain": [
+     "再導入機種"
+    ],
+    "raw": "・再導入機種",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": 4800
+    }
+   },
+   {
+    "machine": "化物語",
+    "matched": true,
+    "keyword": "青かっぱ",
+    "chain": [
+     "青かっぱ",
+     "つけもの",
+     "けもの"
+    ],
+    "raw": "青かっぱ→つけもの→けもの",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": 4800
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": true,
+    "keyword": "魚粉",
+    "chain": [
+     "魚粉",
+     "魚",
+     "アバサー"
+    ],
+    "raw": "魚粉→魚→アバサー",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 1850
+    }
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "再導入機種",
+    "chain": [
+     "再導入機種"
+    ],
+    "raw": "・再導入機種",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
