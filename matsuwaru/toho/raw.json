@@ -34100,5 +34100,159 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "やばたにえん"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/16/081702",
+  "articleDate": "2026-09-16",
+  "targetDate": "2026-09-15",
+  "postDate": "2026-09-14",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2099460698959237379",
+  "title": "9月15日のマルハン新宿東宝ビルまとめ✏️「Lカバネリ」を軸に全系が複数！",
+  "results": [
+   {
+    "machine": "Lカバネリ",
+    "plus": 20,
+    "total": 26,
+    "avg": 4815
+   },
+   {
+    "machine": "戦コレ6",
+    "plus": 4,
+    "total": 6,
+    "avg": 3817
+   },
+   {
+    "machine": "ミスター",
+    "plus": 4,
+    "total": 5,
+    "avg": 1420
+   },
+   {
+    "machine": "Lハナビ",
+    "plus": 4,
+    "total": 4,
+    "avg": 2125
+   },
+   {
+    "machine": "ドッチ",
+    "plus": 0,
+    "total": 2,
+    "avg": -400
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "Lカバネリ",
+    "matched": true,
+    "keyword": "品川駅",
+    "chain": [
+     "品川駅",
+     "駅"
+    ],
+    "raw": "品川駅→駅",
+    "result": {
+     "plus": 20,
+     "total": 26,
+     "avg": 4815
+    }
+   },
+   {
+    "machine": "Lカバネリ",
+    "matched": true,
+    "keyword": "右往左往",
+    "chain": [
+     "右往左往",
+     "右左2択",
+     "カバネリチャレンジ"
+    ],
+    "raw": "右往左往→右左2択→カバネリチャレンジ",
+    "result": {
+     "plus": 20,
+     "total": 26,
+     "avg": 4815
+    }
+   },
+   {
+    "machine": "戦コレ6",
+    "matched": true,
+    "keyword": "9/15",
+    "chain": [
+     "9/15",
+     "関ケ原合戦の日"
+    ],
+    "raw": "9/15→関ケ原合戦の日",
+    "result": {
+     "plus": 4,
+     "total": 6,
+     "avg": 3817
+    }
+   },
+   {
+    "machine": "戦コレ6",
+    "matched": true,
+    "keyword": "右往左往",
+    "chain": [
+     "右往左往",
+     "ウォー",
+     "戦"
+    ],
+    "raw": "右往左往→ウォー→戦",
+    "result": {
+     "plus": 4,
+     "total": 6,
+     "avg": 3817
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "出口を間違うと",
+    "chain": [
+     "出口を間違うと",
+     "ミス"
+    ],
+    "raw": "出口を間違うと→ミス",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1420
+    }
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": true,
+    "keyword": "お昼が遅くなった",
+    "chain": [
+     "お昼が遅くなった",
+     "遅れ"
+    ],
+    "raw": "お昼が遅くなった→遅れ",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 2125
+    }
+   },
+   {
+    "machine": "ドッチ",
+    "matched": true,
+    "keyword": "右往左往",
+    "chain": [
+     "右往左往",
+     "どっち？"
+    ],
+    "raw": "右往左往→どっち？",
+    "result": {
+     "plus": 0,
+     "total": 2,
+     "avg": -400
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
