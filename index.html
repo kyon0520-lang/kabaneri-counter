@@ -32,44 +32,73 @@
   .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
 
   /* ===== TOP ===== */
-  .top{border-bottom:2px solid var(--line);padding:16px 0}
-  .top .row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .brand{font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:.02em;text-decoration:none}
-  .topnav{display:flex;gap:22px;font-size:12.5px;font-weight:700}
-  .topnav a{text-decoration:none}
-  @media (hover:hover){.topnav a:hover{opacity:.6}}
+  .top{position:relative;border-bottom:2px solid var(--line);padding:16px 0}
+  .top .row{display:grid;grid-template-columns:40px 1fr 40px;align-items:center}
+  .brand{
+    grid-column:2;justify-self:center;display:flex;align-items:center;gap:7px;
+    font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:.02em;text-decoration:none;
+  }
+  .brand svg{width:16px;height:25.6px;flex:0 0 auto;color:var(--ink);display:block}
+  .menubtn{
+    grid-column:3;justify-self:end;width:40px;height:40px;padding:0;border:0;background:none;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  }
+  .menubtn span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;transition:transform .2s,opacity .2s}
+  body.nav-open .menubtn span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  body.nav-open .menubtn span:nth-child(2){opacity:0}
+  body.nav-open .menubtn span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-  /* ===== HERO / カルーセル ===== */
+  .topnav{
+    position:absolute;top:100%;left:0;right:0;z-index:40;background:var(--panel);
+    border-bottom:2px solid var(--ink);display:flex;flex-direction:column;padding:4px 20px 12px;
+    opacity:0;visibility:hidden;transform:translateY(-8px);
+    transition:opacity .2s,transform .2s,visibility .2s;
+  }
+  body.nav-open .topnav{opacity:1;visibility:visible;transform:none}
+  .topnav a{padding:13px 0;font-size:14px;font-weight:700;text-decoration:none;border-top:1px solid var(--line)}
+  .topnav a:first-child{border-top:0}
+  @media (prefers-reduced-motion:reduce){.topnav,.menubtn span{transition:none}}
+
+  /* ===== HERO / カルーセル =====
+     doisena.jp（Splide.js）を実測した構造を踏襲：
+     スロットは全部同じ幅のまま横に並び、トラックをtranslateXで動かして
+     「中央に来たスロット」を切り替える。中央だけ中身（.car-inner）が
+     大きくなる（幅/高さが変わる。scaleではない）。ループは前後に複製した
+     スロットを1枚ずつ置き、端に達したら無animationで実体へ跳ぶ古典的な手法 */
   .hero{padding:34px 0 26px}
-  .carousel{display:flex;align-items:center;gap:12px}
+  .carousel{display:flex;flex-direction:column;gap:16px}
+  .car-viewport{overflow:hidden;width:100%}
+  .car-track{display:flex;gap:10px}
+  .car-track.animate{transition:transform .5s cubic-bezier(.4,0,.2,1)}
+  .car-slide{
+    flex:0 0 66.6667%;max-width:560px;aspect-ratio:1/1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  @media (max-width:680px){.car-slide{flex-basis:78%}}
+  .car-inner{
+    display:block;width:79%;height:79%;border-radius:16px;overflow:hidden;
+    border:1.5px solid var(--ink);background:#0a1420;text-decoration:none;
+    transition:width .45s cubic-bezier(.4,0,.2,1),height .45s cubic-bezier(.4,0,.2,1),border-width .3s;
+  }
+  .car-slide.is-active .car-inner{width:98%;height:98%;border-width:3px}
+  .car-inner img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+  @media (prefers-reduced-motion:reduce){
+    .car-track.animate{transition:none}
+    .car-inner{transition:none}
+  }
+
+  .car-caption{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .car-caption b{
+    font-family:var(--display);font-weight:700;font-size:14px;flex:1;text-align:center;
+    transition:opacity .2s ease;
+  }
   .car-arrow{
     flex:0 0 auto;width:40px;height:40px;border-radius:50%;border:2px solid var(--ink);
     display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--panel);
-    cursor:pointer;padding:0;
+    cursor:pointer;padding:0;transition:transform .15s,background .15s,color .15s;
   }
-  .car-arrow:active{transform:scale(.94)}
-  .car-track{flex:1;display:grid;grid-template-columns:0.6fr 1.7fr 0.6fr;gap:12px;align-items:center}
-  @media (max-width:680px){.car-track{grid-template-columns:0.42fr 1fr 0.42fr;gap:7px}}
-  .car-card{
-    border:2px solid var(--ink);border-radius:18px;background:var(--panel-2);overflow:hidden;
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-    text-align:center;text-decoration:none;color:inherit;transition:opacity .25s;
-  }
-  .car-card.side{opacity:.42;border-width:1.5px}
-  .car-card .shot{width:100%;flex:1;display:flex;align-items:center;justify-content:center;padding:10px 10px 0}
-  .car-card .frame{
-    width:74%;aspect-ratio:9/18.3;border-radius:11px;overflow:hidden;border:2.5px solid var(--ink);
-    background:#0a1420;box-shadow:0 8px 16px rgba(0,0,0,.14);
-  }
-  .car-card.main .frame{width:62%;border-width:3px}
-  .car-card .frame img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
-  .car-card b{font-family:var(--display);font-weight:700;font-size:11px;line-height:1.5;display:block;padding:8px 6px 12px}
-  .car-card.main b{font-size:13px}
-
-  .scrolldown{
-    width:52px;height:52px;border-radius:50%;border:2px dashed var(--ink);margin:22px auto 0;
-    display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;color:inherit;
-  }
+  .car-arrow:active{transform:scale(.9)}
+  @media (hover:hover){.car-arrow:hover{background:var(--ink);color:#fff}}
 
   /* ===== 見出し共通 ===== */
   section.blk{padding:56px 0}
@@ -90,9 +119,17 @@
   .work-card{
     display:block;text-decoration:none;color:inherit;
     border:2px solid var(--ink);border-radius:18px;overflow:hidden;background:var(--panel);
-    transition:transform .15s;
+    transition:transform .2s,box-shadow .2s;
   }
   .work-card:active{transform:scale(.98)}
+  @media (hover:hover){
+    .work-card.rv:hover{transform:translateY(-6px);box-shadow:0 14px 26px rgba(0,0,0,.14)}
+    .work-card:hover .frame img{transform:scale(1.06)}
+  }
+  .work-card .frame img{transition:transform .35s ease}
+  @media (prefers-reduced-motion:reduce){
+    .work-card,.work-card .frame img{transition:none}
+  }
   .work-card .art{
     background:var(--panel-2);padding:18px 10px 10px;display:flex;align-items:center;justify-content:center;
   }
@@ -101,10 +138,9 @@
     border:3px solid var(--ink);background:#0a1420;box-shadow:0 8px 16px rgba(0,0,0,.14);
   }
   .work-card .frame img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
-  .work-card .txt{padding:14px 16px 18px}
-  .work-card .tagln{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--ink-2);margin:0 0 6px}
-  .work-card .nm{font-family:var(--display);font-weight:700;font-size:13.5px;margin:0 0 8px;line-height:1.5}
-  .work-card .dsc{font-size:11.5px;color:var(--ink-2);line-height:1.7;margin:0}
+  .work-card .txt{display:block;padding:14px 16px 18px}
+  .work-card .nm{display:block;font-family:var(--display);font-weight:700;font-size:13.5px;margin:0 0 8px;line-height:1.5}
+  .work-card .dsc{display:block;font-size:11.5px;color:var(--ink-2);line-height:1.7;margin:0}
 
   /* ===== PROFILE ===== */
   .profile{
@@ -126,7 +162,7 @@
   @media (hover:hover){.xlink:hover{opacity:.65}}
 
   /* ===== CONTACT ===== */
-  .contact p{font-size:13px;color:var(--ink-2);margin:0 0 18px;max-width:30em}
+  .contact p:not(.outline){font-size:13px;color:var(--ink-2);margin:0 0 18px;max-width:30em}
   .contact a{color:var(--ink);text-decoration:underline}
   .mail-circle{
     width:64px;height:64px;border-radius:50%;border:2px dashed var(--ink);
@@ -151,35 +187,64 @@
 
 <div class="top">
   <div class="wrap row">
-    <a class="brand" href="./">みんなのスロット</a>
-    <nav class="topnav">
-      <a href="#work">ツール一覧</a>
-      <a href="#profile">つくった人について</a>
+    <span aria-hidden="true"></span>
+    <a class="brand" href="./">
+      <svg viewBox="0 0 60 96" fill="none" stroke-width="4" stroke-linecap="round" aria-hidden="true">
+        <g transform="translate(30,48)">
+          <g transform="translate(0,-34) rotate(-8)" stroke="#2f7cf6" stroke-width="4.5"><path d="M -26 6 A 26 10 0 0 0 26 6"/><line x1="-26" y1="0" x2="-26" y2="6"/><line x1="26" y1="0" x2="26" y2="6"/><ellipse rx="26" ry="10"/></g>
+          <g stroke="currentColor" stroke-width="3.5"><ellipse rx="22" ry="8"/><line x1="-22" y1="0" x2="-22" y2="4.6"/><line x1="22" y1="0" x2="22" y2="4.6"/><path d="M -22 4.6 A 22 8 0 0 0 22 4.6"/><line x1="-24" y1="4.6" x2="-24" y2="11"/><line x1="20" y1="4.6" x2="20" y2="11"/><path d="M -24 11 A 22 8 0 0 0 20 11"/><line x1="-21" y1="11" x2="-21" y2="15.2"/><line x1="23" y1="11" x2="23" y2="15.2"/><path d="M -21 15.2 A 22 8 0 0 0 23 15.2"/><line x1="-24" y1="15.2" x2="-24" y2="21.4"/><line x1="20" y1="15.2" x2="20" y2="21.4"/><path d="M -24 21.4 A 22 8 0 0 0 20 21.4"/></g>
+        </g>
+      </svg>
+      <span>みんなのスロット</span>
+    </a>
+    <button type="button" class="menubtn" id="menubtn" aria-label="メニュー" aria-expanded="false" aria-controls="topnav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="wrap">
+    <nav class="topnav" id="topnav">
+      <a href="#concept">CONCEPT</a>
+      <a href="#work">TOOL</a>
+      <a href="#profile">PROFILE</a>
+      <a href="#contact">CONTACT</a>
+      <a href="./privacy.html">プライバシーポリシー</a>
     </nav>
   </div>
 </div>
 
 <section class="hero">
   <div class="wrap">
-    <div class="carousel">
-      <button type="button" class="car-arrow" id="carPrev" aria-label="前のツール">‹</button>
-      <div class="car-track" id="carTrack">
-        <a class="car-card side rv" id="carSlot0" href="./kabaneri-unato/">
-          <span class="shot"><span class="frame"><img src="./img/shot-kabaneri.jpg" alt=""></span></span>
-          <b></b>
-        </a>
-        <a class="car-card main rv" id="carSlot1" href="./kabaneri-unato/2takuomikuji/">
-          <span class="shot"><span class="frame"><img src="./img/shot-omikuji.jpg" alt=""></span></span>
-          <b></b>
-        </a>
-        <a class="car-card side rv" id="carSlot2" href="./matsuwaru/toho/">
-          <span class="shot"><span class="frame"><img src="./img/shot-matsuwaru.jpg" alt=""></span></span>
-          <b></b>
-        </a>
+    <div class="carousel rv">
+      <div class="car-viewport" id="carViewport">
+        <div class="car-track" id="carTrack">
+          <!-- 0: 複製（前へ用） -->
+          <div class="car-slide" data-tool="2">
+            <a class="car-inner" href="./matsuwaru/toho/"><img src="./img/shot-matsuwaru.jpg" alt=""></a>
+          </div>
+          <!-- 1 -->
+          <div class="car-slide" data-tool="0">
+            <a class="car-inner" href="./kabaneri-unato/"><img src="./img/shot-kabaneri.jpg" alt="カバネリ海門発光カウンターの画面"></a>
+          </div>
+          <!-- 2（初期状態で中央） -->
+          <div class="car-slide" data-tool="1">
+            <a class="car-inner" href="./kabaneri-unato/2takuomikuji/"><img src="./img/shot-omikuji.jpg" alt="カバネリチャレンジおみくじの画面"></a>
+          </div>
+          <!-- 3 -->
+          <div class="car-slide" data-tool="2">
+            <a class="car-inner" href="./matsuwaru/toho/"><img src="./img/shot-matsuwaru.jpg" alt="全台系まつわるチェッカーの画面"></a>
+          </div>
+          <!-- 4: 複製（次へ用） -->
+          <div class="car-slide" data-tool="0">
+            <a class="car-inner" href="./kabaneri-unato/"><img src="./img/shot-kabaneri.jpg" alt=""></a>
+          </div>
+        </div>
       </div>
-      <button type="button" class="car-arrow" id="carNext" aria-label="次のツール">›</button>
+      <div class="car-caption">
+        <button type="button" class="car-arrow" id="carPrev" aria-label="前のツール">‹</button>
+        <b id="carLabel"></b>
+        <button type="button" class="car-arrow" id="carNext" aria-label="次のツール">›</button>
+      </div>
     </div>
-    <a class="scrolldown" href="#concept" aria-label="下にスクロール">↓</a>
   </div>
 </section>
 
@@ -193,12 +258,11 @@
 
 <section class="blk work" id="work">
   <div class="wrap">
-    <p class="outline rv">WORK</p>
+    <p class="outline rv">TOOL</p>
     <div class="work-grid">
       <a class="work-card rv" href="./kabaneri-unato/">
         <span class="art"><span class="frame"><img src="./img/shot-kabaneri.jpg" alt="カバネリ海門発光カウンターの画面"></span></span>
         <span class="txt">
-          <span class="tagln">COUNTER</span>
           <span class="nm">カバネリ海門発光カウンター</span>
           <span class="dsc">スマスロ カバネリ 海門決戦の発光・CZ・下段ベルを数えるカウンター。</span>
         </span>
@@ -206,7 +270,6 @@
       <a class="work-card rv" href="./matsuwaru/toho/">
         <span class="art"><span class="frame"><img src="./img/shot-matsuwaru.jpg" alt="全台系まつわるチェッカーの画面"></span></span>
         <span class="txt">
-          <span class="tagln">CHECKER</span>
           <span class="nm">全台系まつわるチェッカー（マルハン新宿東宝ビル店）</span>
           <span class="dsc">店長の示唆から、その日の全台系を逆引きするツール。</span>
         </span>
@@ -214,7 +277,6 @@
       <a class="work-card rv" href="./kabaneri-unato/2takuomikuji/">
         <span class="art"><span class="frame"><img src="./img/shot-omikuji.jpg" alt="カバネリチャレンジおみくじの画面"></span></span>
         <span class="txt">
-          <span class="tagln">OMIKUJI</span>
           <span class="nm">カバネリチャレンジおみくじ</span>
           <span class="dsc">カバネリチャレンジ演出の「中押し・右押し」2択をサポートするおみくじアプリ。</span>
         </span>
@@ -243,7 +305,7 @@
   </div>
 </section>
 
-<section class="blk contact">
+<section class="blk contact" id="contact">
   <div class="wrap">
     <p class="outline rv">CONTACT</p>
     <p class="rv">不具合の報告や使い勝手のご意見など、<a href="mailto:info@minnanoslot.com">info@minnanoslot.com</a> までお気軽にご連絡ください。</p>
@@ -254,8 +316,10 @@
 <footer>
   <div class="wrap row">
     <nav>
-      <a href="#work">ツール一覧</a>
-      <a href="#profile">つくった人について</a>
+      <a href="#concept">CONCEPT</a>
+      <a href="#work">TOOL</a>
+      <a href="#profile">PROFILE</a>
+      <a href="#contact">CONTACT</a>
       <a href="./privacy.html">プライバシーポリシー</a>
     </nav>
     <span class="cr">© みんなのスロット</span>
@@ -263,36 +327,75 @@
 </footer>
 
 <script>
-/* 作品カルーセル：3つのツールを前後に送る */
+/* ヘッダーのハンバーガーメニュー */
+(function () {
+  var btn = document.getElementById('menubtn');
+  var nav = document.getElementById('topnav');
+  if (!btn || !nav) return;
+  function set(open) {
+    document.body.classList.toggle('nav-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    set(!document.body.classList.contains('nav-open'));
+  });
+  nav.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#topnav') && !e.target.closest('#menubtn')) set(false);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+})();
+
+/* 作品カルーセル：doisena.jp（Splide.js）と同じ「トラックをtranslateXで動かす」方式。
+   端の2枚は複製で、境まで送ったら無アニメーションで実体側へ跳んでループする */
 (function () {
   var tools = [
-    { href: './kabaneri-unato/', img: './img/shot-kabaneri.jpg', label: 'カバネリ海門\n発光カウンター', alt: 'カバネリ海門発光カウンターの画面' },
-    { href: './kabaneri-unato/2takuomikuji/', img: './img/shot-omikuji.jpg', label: 'カバネリチャレンジ\nおみくじ〈最新〉', alt: 'カバネリチャレンジおみくじの画面' },
-    { href: './matsuwaru/toho/', img: './img/shot-matsuwaru.jpg', label: '全台系\nまつわるチェッカー', alt: '全台系まつわるチェッカーの画面' }
+    { label: 'カバネリ海門発光カウンター' },
+    { label: 'カバネリチャレンジおみくじ〈最新〉' },
+    { label: '全台系まつわるチェッカー' }
   ];
-  var center = 1;
-  var slots = [document.getElementById('carSlot0'), document.getElementById('carSlot1'), document.getElementById('carSlot2')];
+  var viewport = document.getElementById('carViewport');
+  var track = document.getElementById('carTrack');
+  var slides = Array.prototype.slice.call(track.children); // [clone2, real0, real1, real2, clone0]
+  var label = document.getElementById('carLabel');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pos = 2;       // トラック上の位置（0〜4）
+  var busy = false;
 
-  function render() {
-    var order = [(center - 1 + tools.length) % tools.length, center, (center + 1) % tools.length];
-    order.forEach(function (toolIndex, slotIndex) {
-      var t = tools[toolIndex];
-      var slot = slots[slotIndex];
-      slot.href = t.href;
-      slot.querySelector('img').src = t.img;
-      slot.querySelector('img').alt = t.alt;
-      slot.querySelector('b').innerHTML = t.label.replace(/\n/g, '<br>');
-    });
+  function setPos(p, animate) {
+    var vpWidth = viewport.getBoundingClientRect().width;
+    var slideWidth = slides[0].getBoundingClientRect().width;
+    var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
+    var step = slideWidth + gap;
+    var offset = vpWidth / 2 - (p * step + slideWidth / 2);
+    track.classList.toggle('animate', animate && !reduceMotion);
+    track.style.transform = 'translateX(' + offset + 'px)';
+    slides.forEach(function (s, i) { s.classList.toggle('is-active', i === p); });
+    label.textContent = tools[parseInt(slides[p].dataset.tool, 10)].label;
   }
-  render();
 
-  document.getElementById('carPrev').addEventListener('click', function () {
-    center = (center - 1 + tools.length) % tools.length;
-    render();
-  });
-  document.getElementById('carNext').addEventListener('click', function () {
-    center = (center + 1) % tools.length;
-    render();
+  function goTo(p) {
+    if (busy) return;
+    busy = true;
+    setPos(p, true);
+    setTimeout(function () {
+      if (p === 4) { pos = 1; setPos(1, false); }        // 複製→実体（先頭）へ無音で跳ぶ
+      else if (p === 0) { pos = 3; setPos(3, false); }    // 複製→実体（末尾）へ無音で跳ぶ
+      else { pos = p; }
+      busy = false;
+    }, reduceMotion ? 0 : 500);
+  }
+
+  setPos(pos, false);
+
+  document.getElementById('carPrev').addEventListener('click', function () { goTo(pos - 1); });
+  document.getElementById('carNext').addEventListener('click', function () { goTo(pos + 1); });
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { setPos(pos, false); }, 120);
   });
 })();
 
