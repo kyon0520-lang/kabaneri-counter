@@ -50,9 +50,13 @@ if not urls:
     die('サイトマップから記事URLが取れなかった（書式変更の可能性）')
 
 # --- 2) 未取得の記事だけ取得して解析 ---
+# 1記事の解析失敗（書式変更など）で以降の記事まで止まると、直ってもその1記事に
+# 引っかかり続けて更新全体が長期間止まる（原因調査までサイトが古いまま）。
+# 失敗した記事はスキップして残りは取り込み、最後にまとめて失敗として終了する
+# （通知は出す。失敗した記事はhaveに入らないので、直せば次回取り込まれる）。
 new = [u for u in urls if u not in have]
 print('[%s] 既存 %d件 / 新着 %d件' % (STORE, len(raw), len(new)))
-added = []
+added, errors = [], []
 for u in new:
     ent = u.split('/entry/')[1].replace('/', '-')
     try:
@@ -64,10 +68,12 @@ for u in new:
         except Exception:
             pass
         a = parse_html(src, ent)
+        if not a['assoc']:
+            raise ValueError('連想が1件も取れなかった（記事の書式が変わった可能性）')
     except Exception as e:
-        die('記事の解析に失敗 %s: %s' % (u, e))
-    if not a['assoc']:
-        die('連想が1件も取れなかった %s（記事の書式が変わった可能性）' % u)
+        print('::error::記事の解析に失敗 %s: %s' % (u, e))
+        errors.append(u)
+        continue
     added.append(a); raw.append(a)
     print('  追加: %s  連想%d件 / 全系%d機種' % (a['targetDate'], len(a['assoc']), len(a['results'])))
     time.sleep(1.0)
@@ -92,3 +98,8 @@ for s in ('build.py', 'finalize.py', 'lineup.py', 'events.py'):
         print(r.stderr); die('%s が失敗' % s)
     print(r.stdout.strip().split('\n')[-1])
 print('OK  最新記事: %s (%d日前)' % (latest, gap))
+
+# 解析に失敗した記事があれば、取り込めた分はコミットさせつつ最後に失敗扱いにする
+# （GitHub Actions の失敗通知を出すため。直せば次回そのURLだけ取り込まれる）
+if errors:
+    die('%d件の記事で解析に失敗（上のエラーを参照）。取り込めた分は反映済み' % len(errors))

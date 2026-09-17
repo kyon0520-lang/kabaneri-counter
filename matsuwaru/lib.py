@@ -85,8 +85,13 @@ def parse_html(src, ent):
     # --- 連想セクション: 矢印の有無だけで見出し/連鎖を判定（・の付き方が記事ごとに揺れるため） ---
     assoc, cur, unknown = [], None, []
     tail = lines[sig_i+1:] if sig_i else []
-    # 記事ごとに「・」の意味が反転する（連想行に付く記事と見出しに付く記事がある）
-    bullet_is_chain = any(re.match(r'^[・･]', x) and re.search(ARROW, x) for x in tail)
+    # 記事ごとに「・」の意味が反転する（連想行に付く記事と見出しに付く記事がある）。
+    # ただし見出し・連鎖の両方に「・」が付く記事もある（この場合「・」に意味は無い）。
+    # 「・」が連鎖の意味を持つと判定してよいのは、見出し側が「・」無しで存在するときだけ。
+    # そうでなければ矢印の有無だけで判定する（＝ bullet_is_chain のまま False にしておく）。
+    _tail_bullets = [x for x in tail if re.match(r'^[・･]', x)]
+    _tail_nonbullets = [x.strip() for x in tail if x.strip() and not re.match(r'^[・･]', x)]
+    bullet_is_chain = bool(_tail_nonbullets) and any(re.search(ARROW, x) for x in _tail_bullets)
     for l0 in tail:
         is_bullet = bool(re.match(r'^[・･]', l0))
         l = re.sub(r'^[・･]\s*', '', l0).strip()

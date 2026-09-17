@@ -34254,5 +34254,107 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/17/073134",
+  "articleDate": "2026-09-17",
+  "targetDate": "2026-09-16",
+  "postDate": "2026-09-15",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2099823102956032302",
+  "title": "9月16日のマルハン新宿東宝ビルまとめ✏️鉄板の末尾6+アナザー末尾0+全系な一日！",
+  "results": [
+   {
+    "machine": "末尾⑥",
+    "plus": 54,
+    "total": 67,
+    "avg": 2681
+   },
+   {
+    "machine": "ハッピー",
+    "plus": 7,
+    "total": 7,
+    "avg": 3214
+   },
+   {
+    "machine": "ヴヴヴ",
+    "plus": 3,
+    "total": 3,
+    "avg": 5233
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "アナザー末尾⓪",
+    "matched": false,
+    "keyword": "マルハン亀有",
+    "chain": [
+     "マルハン亀有",
+     "マル",
+     "0"
+    ],
+    "raw": "マルハン亀有→マル→0",
+    "result": null
+   },
+   {
+    "machine": "アナザー末尾⓪",
+    "matched": false,
+    "keyword": "仰天",
+    "chain": [
+     "仰天",
+     "テン",
+     "0"
+    ],
+    "raw": "仰天→テン→0",
+    "result": null
+   },
+   {
+    "machine": "ハッピー",
+    "matched": true,
+    "keyword": "とんてき",
+    "chain": [
+     "とんてき",
+     "ガーリックチップ",
+     "チップとデール",
+     "リス"
+    ],
+    "raw": "とんてき→ガーリックチップ→チップとデール→リス",
+    "result": {
+     "plus": 7,
+     "total": 7,
+     "avg": 3214
+    }
+   },
+   {
+    "machine": "ヴヴヴ",
+    "matched": true,
+    "keyword": "カーシェア",
+    "chain": [
+     "カーシェア",
+     "ドライブ"
+    ],
+    "raw": "カーシェア→ドライブ",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 5233
+    }
+   },
+   {
+    "machine": "シャーマンキング",
+    "matched": false,
+    "keyword": "柔道着",
+    "chain": [
+     "柔道着",
+     "YAWARA!",
+     "ビッグコミックスピリッツ",
+     "グレート・スピリッツ"
+    ],
+    "raw": "柔道着→YAWARA!→ビッグコミックスピリッツ→グレート・スピリッツ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
