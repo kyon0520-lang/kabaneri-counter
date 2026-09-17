@@ -34356,5 +34356,172 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/18/070307",
+  "articleDate": "2026-09-18",
+  "targetDate": "2026-09-17",
+  "postDate": "2026-09-16",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2100185520752230690",
+  "title": "9月17日のマルハン新宿東宝ビルまとめ✏️全系9機種+バラの2機種が全系！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "キンハナ",
+    "matched": false,
+    "keyword": "購入購入",
+    "chain": [
+     "購入購入",
+     "ハナハナ"
+    ],
+    "raw": "購入購入→ハナハナ",
+    "result": null
+   },
+   {
+    "machine": "真打吉宗",
+    "matched": false,
+    "keyword": "呼び出し番号1221",
+    "chain": [
+     "呼び出し番号1221",
+     "12台機種"
+    ],
+    "raw": "呼び出し番号1221→12台機種",
+    "result": null
+   },
+   {
+    "machine": "真打吉宗",
+    "matched": false,
+    "keyword": "カグラバチ",
+    "chain": [
+     "カグラバチ",
+     "刀",
+     "真打"
+    ],
+    "raw": "カグラバチ→刀→真打",
+    "result": null
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": false,
+    "keyword": "野菜カレー",
+    "chain": [
+     "野菜カレー",
+     "ヤサイ",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "野菜カレー→ヤサイ→サイ→つのっち",
+    "result": null
+   },
+   {
+    "machine": "Sアイム",
+    "matched": false,
+    "keyword": "野菜カレー",
+    "chain": [
+     "野菜カレー",
+     "ヤサイ",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "野菜カレー→ヤサイ→サイ→つのっち",
+    "result": null
+   },
+   {
+    "machine": "Sアイム",
+    "matched": false,
+    "keyword": "カグラバチ",
+    "chain": [
+     "カグラバチ",
+     "六平千紘",
+     "6",
+     "6台機種"
+    ],
+    "raw": "カグラバチ→六平千紘→6→6台機種",
+    "result": null
+   },
+   {
+    "machine": "スーパーブラックジャック",
+    "matched": false,
+    "keyword": "スタミナ",
+    "chain": [
+     "スタミナ",
+     "ブラックビスケッツ",
+     "ブラック"
+    ],
+    "raw": "スタミナ→ブラックビスケッツ→ブラック",
+    "result": null
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": false,
+    "keyword": "CHOICE",
+    "chain": [
+     "CHOICE",
+     "ICE",
+     "氷"
+    ],
+    "raw": "CHOICE→ICE→氷",
+    "result": null
+   },
+   {
+    "machine": "スターハナハナ",
+    "matched": false,
+    "keyword": "スタミナ",
+    "chain": [
+     "スタミナ",
+     "スタ"
+    ],
+    "raw": "スタミナ→スタ",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "カグラバチ",
+    "chain": [
+     "カグラバチ",
+     "金魚",
+     "魚"
+    ],
+    "raw": "カグラバチ→金魚→魚",
+    "result": null
+   },
+   {
+    "machine": "Sエウレカ",
+    "matched": false,
+    "keyword": "17日",
+    "chain": [
+     "17日",
+     "7にまつわる"
+    ],
+    "raw": "17日→7にまつわる",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "17日",
+    "chain": [
+     "17日",
+     "7にまつわる"
+    ],
+    "raw": "17日→7にまつわる",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "カレー",
+    "chain": [
+     "カレー",
+     "邪神ちゃんカレー"
+    ],
+    "raw": "カレー→邪神ちゃんカレー",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
