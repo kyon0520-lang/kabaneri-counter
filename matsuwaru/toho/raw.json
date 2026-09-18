@@ -34523,5 +34523,75 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/19/080900",
+  "articleDate": "2026-09-19",
+  "targetDate": "2026-09-18",
+  "postDate": "2026-09-17",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2100547897825878261",
+  "title": "9月18日のマルハン新宿東宝ビルまとめ✏️8のつく日は、マイジャグVの安定感抜群！",
+  "results": [
+   {
+    "machine": "戦コレ6",
+    "plus": 3,
+    "total": 6,
+    "avg": -217
+   },
+   {
+    "machine": "北斗転生2",
+    "plus": 2,
+    "total": 3,
+    "avg": 4967
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "戦コレ6",
+    "matched": true,
+    "keyword": "踊る大捜査線",
+    "chain": [
+     "踊る大捜査線",
+     "織田裕二",
+     "織田信長"
+    ],
+    "raw": "踊る大捜査線→織田裕二→織田信長",
+    "result": {
+     "plus": 3,
+     "total": 6,
+     "avg": -217
+    }
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": true,
+    "keyword": "やよい軒",
+    "chain": [
+     "やよい軒",
+     "ケン"
+    ],
+    "raw": "やよい軒→ケン",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 4967
+    }
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "神社",
+    "chain": [
+     "神社",
+     "神",
+     "邪神"
+    ],
+    "raw": "神社→神→邪神",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
