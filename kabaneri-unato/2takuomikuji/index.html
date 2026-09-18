@@ -832,12 +832,12 @@
 
       <section id="panel-log" role="tabpanel" aria-labelledby="tab-log" hidden>
         <div class="subtabs" role="tablist">
-          <button type="button" role="tab" id="subtab-total" aria-selected="true" aria-controls="sub-total" data-sub="total">通算</button>
+          <button type="button" role="tab" id="subtab-recent" aria-selected="true" aria-controls="sub-recent" data-sub="recent">最新</button>
           <button type="button" role="tab" id="subtab-daily" aria-selected="false" aria-controls="sub-daily" data-sub="daily">日別</button>
-          <button type="button" role="tab" id="subtab-recent" aria-selected="false" aria-controls="sub-recent" data-sub="recent">最新</button>
+          <button type="button" role="tab" id="subtab-total" aria-selected="false" aria-controls="sub-total" data-sub="total">通算</button>
         </div>
 
-        <div class="subpanel" id="sub-total" role="tabpanel" aria-labelledby="subtab-total">
+        <div class="subpanel" id="sub-total" role="tabpanel" aria-labelledby="subtab-total" hidden>
           <div id="totalEmptyWrap" class="empty-state" hidden>まだ記録がありません。「おみくじをひく」タブで結果を記録してみましょう。</div>
           <div id="totalStatsWrap">
             <div class="big-stats">
@@ -873,7 +873,7 @@
 
         <div class="subpanel" id="sub-daily" role="tabpanel" aria-labelledby="subtab-daily" hidden></div>
 
-        <div class="subpanel" id="sub-recent" role="tabpanel" aria-labelledby="subtab-recent" hidden>
+        <div class="subpanel" id="sub-recent" role="tabpanel" aria-labelledby="subtab-recent">
           <div class="log-section-title">実戦記録</div>
           <div id="realLogWrap"></div>
 
