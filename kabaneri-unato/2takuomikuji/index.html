@@ -616,6 +616,65 @@
     margin: 4px 0 8px;
   }
 
+  .subtabs{
+    display:flex;
+    gap:6px;
+    background: var(--surface);
+    border:1px solid var(--line);
+    padding:4px;
+    border-radius:12px;
+    margin-bottom:16px;
+  }
+  .subtabs button{
+    flex:1;
+    border:none;
+    background:transparent;
+    color: var(--ink-faint);
+    font-family: var(--sans);
+    font-size:12.5px;
+    padding:9px 0;
+    border-radius:9px;
+    cursor:pointer;
+  }
+  .subtabs button[aria-selected="true"]{ background: var(--surface-3); color: var(--gold); font-weight:700; }
+
+  .big-stats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .big-tile{
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+    text-align:center;
+  }
+  .big-tile .bv{ font-family: var(--serif); font-size:26px; font-weight:700; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .big-tile .bl{ font-size:11px; color: var(--ink-faint); margin-top:5px; }
+
+  .split-row{ margin-top:14px; }
+  .split-row .sr-label{ display:flex; justify-content:space-between; font-size:11.5px; color: var(--ink-dim); margin-bottom:6px; }
+  .split-row.single .sr-label{ margin-bottom:0; }
+  .split-bar{ height:8px; border-radius:999px; background: var(--surface-3); overflow:hidden; display:flex; }
+  .split-bar span:first-child{ background: var(--gold-soft); }
+  .split-bar span:last-child{ background: var(--accent); opacity:.75; }
+
+  .date-card{
+    background: var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:8px;
+    cursor:pointer;
+  }
+  .date-card .dc-top{ display:flex; justify-content:space-between; align-items:center; font-size:13px; margin-bottom:8px; }
+  .date-card .dc-date{ font-family: var(--serif); font-weight:700; }
+  .date-card .dc-chev{ color: var(--gold); font-size:10px; margin-left:6px; display:inline-block; transition: transform .2s; }
+  .date-card.open .dc-chev{ transform: rotate(90deg); }
+  .date-card .dc-rate{ color: var(--ink-dim); font-size:12px; }
+  .date-card .mini-bar{ height:6px; border-radius:999px; background: var(--surface-3); overflow:hidden; display:flex; }
+  .date-card .mini-bar span:first-child{ background: var(--good); }
+  .date-card .mini-bar span:last-child{ background: var(--bad); opacity:.7; }
+  .date-card .dc-entries{ max-height:0; overflow:hidden; transition:max-height .22s ease; }
+  .date-card.open .dc-entries{ max-height:600px; margin-top:10px; }
+
   footer.note{
     padding:clamp(8px, 1.6dvh, 14px) 18px clamp(10px, 1.8dvh, 18px);
     border-top:1px solid var(--line);
@@ -763,27 +822,43 @@
       </section>
 
       <section id="panel-log" role="tabpanel" aria-labelledby="tab-log" hidden>
-        <div class="stat-grid">
-          <div class="stat-tile">
-            <div class="label">本日</div>
-            <div class="value" id="statToday">0<small> /0</small></div>
-          </div>
-          <div class="stat-tile">
-            <div class="label">連続的中</div>
-            <div class="value" id="statStreak">0</div>
-          </div>
-          <div class="stat-tile">
-            <div class="label">通算的中率</div>
-            <div class="value" id="statTotal">—</div>
+        <div class="subtabs" role="tablist">
+          <button type="button" role="tab" id="subtab-total" aria-selected="true" aria-controls="sub-total" data-sub="total">通算</button>
+          <button type="button" role="tab" id="subtab-daily" aria-selected="false" aria-controls="sub-daily" data-sub="daily">日別</button>
+          <button type="button" role="tab" id="subtab-recent" aria-selected="false" aria-controls="sub-recent" data-sub="recent">最新</button>
+        </div>
+
+        <div class="subpanel" id="sub-total" role="tabpanel" aria-labelledby="subtab-total">
+          <div id="totalEmptyWrap" class="empty-state" hidden>まだ記録がありません。「おみくじをひく」タブで結果を記録してみましょう。</div>
+          <div id="totalStatsWrap">
+            <div class="big-stats">
+              <div class="big-tile"><div class="bv" id="statTotalCount">0</div><div class="bl">通算回数</div></div>
+              <div class="big-tile"><div class="bv" id="statTotalRate">—</div><div class="bl">通算的中率</div></div>
+            </div>
+            <div class="split-row">
+              <div class="sr-label"><span id="splitPersonaA">無名 0回</span><span id="splitPersonaB">生駒 0回</span></div>
+              <div class="split-bar"><span id="splitPersonaBarA" style="width:50%"></span><span id="splitPersonaBarB" style="width:50%"></span></div>
+            </div>
+            <div class="split-row">
+              <div class="sr-label"><span id="splitChoiceA">中 0回</span><span id="splitChoiceB">右 0回</span></div>
+              <div class="split-bar"><span id="splitChoiceBarA" style="width:50%"></span><span id="splitChoiceBarB" style="width:50%"></span></div>
+            </div>
+            <div class="split-row single">
+              <div class="sr-label"><span>最高連続的中</span><span id="statBestStreak">0連</span></div>
+            </div>
           </div>
         </div>
 
-        <div class="log-section-title">実戦記録</div>
-        <div id="realLogWrap"></div>
+        <div class="subpanel" id="sub-daily" role="tabpanel" aria-labelledby="subtab-daily" hidden></div>
 
-        <div class="log-section-title">サンプル</div>
-        <p class="sample-note">こう記録が並びます（下の3件はサンプルです）</p>
-        <div class="log-list" id="sampleLog"></div>
+        <div class="subpanel" id="sub-recent" role="tabpanel" aria-labelledby="subtab-recent" hidden>
+          <div class="log-section-title">実戦記録</div>
+          <div id="realLogWrap"></div>
+
+          <div class="log-section-title">サンプル</div>
+          <p class="sample-note">こう記録が並びます（下の3件はサンプルです）</p>
+          <div class="log-list" id="sampleLog"></div>
+        </div>
       </section>
     </main>
 
@@ -1198,38 +1273,112 @@
     { ts: Date.now() - 1000*60*210, choice: "中", persona: "mumei", question: "今朝は早起きだったか？", answer: "早起き", result: "hit" }
   ];
 
-  function renderLog(){
-    var entries = loadLog();
-
-    // stats
-    var tk = todayKey();
-    var todays = entries.filter(function(e){
-      var d = new Date(e.ts);
-      return (d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()) === tk;
-    });
-    var todayHits = todays.filter(function(e){ return e.result==="hit"; }).length;
-    document.getElementById("statToday").innerHTML = todayHits + "<small> /" + todays.length + "</small>";
-
-    var streak = 0;
-    for(var i=0;i<entries.length;i++){
-      if(entries[i].result === "hit") streak++; else break;
+  function dateKeyOf(ts){
+    var d = new Date(ts);
+    return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+  }
+  function fmtDateLabel(ts){
+    var d = new Date(ts);
+    var w = ["日","月","火","水","木","金","土"][d.getDay()];
+    return (d.getMonth()+1)+"/"+d.getDate()+"("+w+")";
+  }
+  function computeBestStreak(entries){
+    // entries は新しい順で並んでいるので、古い順に走査して最長連続を探す
+    var best = 0, cur = 0;
+    for(var i = entries.length - 1; i >= 0; i--){
+      if(entries[i].result === "hit"){ cur++; if(cur > best) best = cur; }
+      else { cur = 0; }
     }
-    document.getElementById("statStreak").textContent = streak;
+    return best;
+  }
+
+  function renderTotal(entries){
+    var emptyWrap = document.getElementById("totalEmptyWrap");
+    var statsWrap = document.getElementById("totalStatsWrap");
+    if(entries.length === 0){
+      emptyWrap.hidden = false;
+      statsWrap.hidden = true;
+      return;
+    }
+    emptyWrap.hidden = true;
+    statsWrap.hidden = false;
 
     var totalHits = entries.filter(function(e){ return e.result==="hit"; }).length;
-    document.getElementById("statTotal").textContent = entries.length ? Math.round(totalHits/entries.length*100)+"%" : "—";
+    document.getElementById("statTotalCount").textContent = entries.length;
+    document.getElementById("statTotalRate").textContent = Math.round(totalHits/entries.length*100)+"%";
 
-    // real log
+    var mumeiCount = entries.filter(function(e){ return e.persona==="mumei"; }).length;
+    var ikomaCount = entries.length - mumeiCount;
+    var mumeiPct = Math.round(mumeiCount/entries.length*100);
+    document.getElementById("splitPersonaA").textContent = "無名 "+mumeiCount+"回";
+    document.getElementById("splitPersonaB").textContent = "生駒 "+ikomaCount+"回";
+    document.getElementById("splitPersonaBarA").style.width = mumeiPct+"%";
+    document.getElementById("splitPersonaBarB").style.width = (100-mumeiPct)+"%";
+
+    var nakaCount = entries.filter(function(e){ return e.choice==="中"; }).length;
+    var migiCount = entries.length - nakaCount;
+    var nakaPct = Math.round(nakaCount/entries.length*100);
+    document.getElementById("splitChoiceA").textContent = "中 "+nakaCount+"回";
+    document.getElementById("splitChoiceB").textContent = "右 "+migiCount+"回";
+    document.getElementById("splitChoiceBarA").style.width = nakaPct+"%";
+    document.getElementById("splitChoiceBarB").style.width = (100-nakaPct)+"%";
+
+    document.getElementById("statBestStreak").textContent = computeBestStreak(entries)+"連";
+  }
+
+  function renderDaily(entries){
+    var wrap = document.getElementById("sub-daily");
+    if(entries.length === 0){
+      wrap.innerHTML = '<div class="empty-state">まだ記録がありません。「おみくじをひく」タブで結果を記録してみましょう。</div>';
+      return;
+    }
+    var byDate = {};
+    var order = [];
+    entries.forEach(function(e){
+      var k = dateKeyOf(e.ts);
+      if(!byDate[k]){ byDate[k] = []; order.push(k); }
+      byDate[k].push(e);
+    });
+    wrap.innerHTML = order.map(function(k){
+      var list = byDate[k];
+      var hits = list.filter(function(e){ return e.result==="hit"; }).length;
+      var pct = Math.round(hits/list.length*100);
+      return '<div class="date-card">'
+        + '<div class="dc-top"><span class="dc-date">'+fmtDateLabel(list[0].ts)+'<span class="dc-chev">▶</span></span><span class="dc-rate">'+hits+'/'+list.length+'（'+pct+'%）</span></div>'
+        + '<div class="mini-bar"><span style="width:'+pct+'%"></span><span style="width:'+(100-pct)+'%"></span></div>'
+        + '<div class="dc-entries"><div class="log-list">'+list.map(function(e){ return rowHtml(e, false); }).join("")+'</div></div>'
+        + '</div>';
+    }).join("");
+    wrap.querySelectorAll(".date-card").forEach(function(card){
+      card.addEventListener("click", function(){ card.classList.toggle("open"); });
+    });
+  }
+
+  function renderRecent(entries){
     var wrap = document.getElementById("realLogWrap");
     if(entries.length === 0){
       wrap.innerHTML = '<div class="empty-state">まだ記録がありません。「おみくじをひく」タブで結果を記録してみましょう。</div>';
     } else {
       wrap.innerHTML = '<div class="log-list">' + entries.slice(0,20).map(function(e){ return rowHtml(e, false); }).join("") + '</div>';
     }
-
-    // sample log
     document.getElementById("sampleLog").innerHTML = SAMPLE.map(function(e){ return rowHtml(e, true); }).join("");
   }
+
+  function renderLog(){
+    var entries = loadLog();
+    renderTotal(entries);
+    renderDaily(entries);
+    renderRecent(entries);
+  }
+
+  document.querySelectorAll(".subtabs button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".subtabs button").forEach(function(b){ b.setAttribute("aria-selected", "false"); });
+      document.querySelectorAll(".subpanel").forEach(function(p){ p.hidden = true; });
+      btn.setAttribute("aria-selected", "true");
+      document.getElementById("sub-"+btn.dataset.sub).hidden = false;
+    });
+  });
 
   updateTodayLine();
 })();
