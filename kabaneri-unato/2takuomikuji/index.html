@@ -1255,6 +1255,10 @@
     return pad(d.getHours())+":"+pad(d.getMinutes());
   }
 
+  function personaLabel(persona){
+    return persona === "ikoma" ? "生駒" : "無名";
+  }
+
   function rowHtml(entry, isSample){
     var badgeClass = isSample ? "sample" : (entry.result === "hit" ? "hit" : "miss");
     var badgeText = isSample ? "サンプル" : (entry.result === "hit" ? "当たり" : "外れ");
@@ -1262,7 +1266,7 @@
     return '<div class="log-row">'
       + '<span class="time">'+fmtTime(entry.ts)+'</span>'
       + '<span class="choice">'+entry.choice+'</span>'
-      + '<span class="persona-tag">'+answerLabel+'の答え</span>'
+      + '<span class="persona-tag">'+personaLabel(entry.persona)+answerLabel+'の答え</span>'
       + '<span class="badge '+badgeClass+'">'+badgeText+'</span>'
       + '</div>';
   }
