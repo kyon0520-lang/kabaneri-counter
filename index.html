@@ -142,6 +142,45 @@
   .work-card .nm{display:block;font-family:var(--display);font-weight:700;font-size:13.5px;margin:0 0 8px;line-height:1.5}
   .work-card .dsc{display:block;font-size:11.5px;color:var(--ink-2);line-height:1.7;margin:0}
 
+  /* ===== NEWS =====
+     最新1件だけカルーセルの「中央だけ大きくなる」演出と呼応する特集枠、残りは一覧 */
+  .news-tag{
+    display:inline-flex;align-items:center;font-family:var(--display);font-weight:700;font-size:10.5px;
+    padding:3px 9px 4px;border-radius:999px;letter-spacing:.02em;color:#fff;
+  }
+  .news-tag.feat{background:#2f7cf6}
+  .news-tag.add{background:#1e8a4c}
+  .news-tag.fix{background:#b5790a}
+  .news-feat{
+    display:flex;flex-direction:column;gap:14px;border:3px solid var(--ink);border-radius:22px;
+    padding:22px 66px 22px 22px;margin-bottom:4px;text-decoration:none;color:inherit;position:relative;
+    background:var(--panel);transition:transform .2s,box-shadow .2s;
+  }
+  @media (hover:hover){.news-feat.rv:hover{transform:translateY(-4px);box-shadow:0 14px 26px rgba(0,0,0,.14)}}
+  .news-feat .meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .news-feat .date{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+  .news-feat .ttl{font-family:var(--display);font-weight:900;font-size:clamp(17px,3vw,21px);line-height:1.55}
+  .news-feat .lede{font-size:12.5px;color:var(--ink-2);line-height:1.85;max-width:42em;margin:0}
+  .news-feat .arrow{
+    position:absolute;right:20px;bottom:20px;width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--panel);
+    transition:background .15s,color .15s;
+  }
+  @media (hover:hover){.news-feat:hover .arrow{background:var(--ink);color:#fff}}
+  .news-rest{margin-top:4px}
+  .news-row{
+    display:flex;align-items:baseline;gap:12px;text-decoration:none;color:inherit;
+    padding:13px 0;border-top:1px solid var(--line);
+  }
+  .news-row .date{flex:0 0 auto;font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums;width:6.5em}
+  .news-row .ttl{font-family:var(--display);font-weight:700;font-size:13px;line-height:1.6}
+  @media (hover:hover){.news-row:hover .ttl{text-decoration:underline;text-underline-offset:3px}}
+  @media (max-width:480px){
+    .news-feat{padding:20px 56px 20px 18px}
+    .news-row{flex-direction:column;gap:3px}
+    .news-row .date{width:auto}
+  }
+
   /* ===== PROFILE ===== */
   .profile{
     display:flex;gap:26px;align-items:center;flex-wrap:wrap;background:var(--panel);
@@ -205,6 +244,7 @@
     <nav class="topnav" id="topnav">
       <a href="#concept">CONCEPT</a>
       <a href="#work">TOOL</a>
+      <a href="#news">NEWS</a>
       <a href="#profile">PROFILE</a>
       <a href="#contact">CONTACT</a>
       <a href="./privacy.html">プライバシーポリシー</a>
@@ -285,6 +325,35 @@
   </div>
 </section>
 
+<section class="blk news" id="news">
+  <div class="wrap">
+    <p class="outline rv">NEWS</p>
+    <a class="news-feat rv" href="./kabaneri-unato/2takuomikuji/">
+      <div class="meta">
+        <span class="news-tag feat">公開</span>
+        <span class="date">2026年9月18日・カバネリチャレンジおみくじ</span>
+      </div>
+      <div class="ttl">カバネリチャレンジ２択サポートアプリを公開しました</div>
+      <p class="lede">カバネリチャレンジの中と右で迷ったときに、おみくじをタップするだけの「カバネリチャレンジサポートアプリ」を作りました。カバネリチャレンジの２択の参考にどうぞ。</p>
+      <span class="arrow">→</span>
+    </a>
+    <div class="news-rest">
+      <a class="news-row rv" href="./kabaneri-unato/news.html">
+        <span class="date">09.07 修正</span>
+        <span class="ttl">銅藍のポイント計算を修正しました（カバネリ海門発光カウンター）</span>
+      </a>
+      <a class="news-row rv" href="./matsuwaru/toho/news.html">
+        <span class="date">09.06 追加</span>
+        <span class="ttl">イベント傾向チェッカーに「日付ごとの全系実施機種」を追加（全台系まつわるチェッカー）</span>
+      </a>
+      <a class="news-row rv" href="./kabaneri-unato/news.html">
+        <span class="date">09.02 公開</span>
+        <span class="ttl">カバネリ海門カウンターを公開しました（カバネリ海門発光カウンター）</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="blk" id="profile">
   <div class="wrap">
     <p class="outline rv">PROFILE</p>
@@ -318,6 +387,7 @@
     <nav>
       <a href="#concept">CONCEPT</a>
       <a href="#work">TOOL</a>
+      <a href="#news">NEWS</a>
       <a href="#profile">PROFILE</a>
       <a href="#contact">CONTACT</a>
       <a href="./privacy.html">プライバシーポリシー</a>
