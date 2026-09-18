@@ -649,12 +649,21 @@
   .big-tile .bv{ font-family: var(--serif); font-size:26px; font-weight:700; color: var(--gold); font-variant-numeric: tabular-nums; }
   .big-tile .bl{ font-size:11px; color: var(--ink-faint); margin-top:5px; }
 
-  .split-row{ margin-top:14px; }
-  .split-row .sr-label{ display:flex; justify-content:space-between; font-size:11.5px; color: var(--ink-dim); margin-bottom:6px; }
-  .split-row.single .sr-label{ margin-bottom:0; }
-  .split-bar{ height:8px; border-radius:999px; background: var(--surface-3); overflow:hidden; display:flex; }
-  .split-bar span:first-child{ background: var(--gold-soft); }
-  .split-bar span:last-child{ background: var(--accent); opacity:.75; }
+  .rate-group{ margin-top:18px; }
+  .rate-row{ margin-bottom:14px; }
+  .rate-row:last-child{ margin-bottom:0; }
+  .rate-label{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px; }
+  .rate-label .rn{ font-family: var(--serif); font-size:16px; font-weight:700; color: var(--ink); }
+  .rate-label .rv{ font-size:14.5px; color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+  .rate-bar{ height:10px; border-radius:999px; background: var(--surface-3); overflow:hidden; }
+  .rate-bar span{ display:block; height:100%; border-radius:999px; background: var(--good); }
+
+  .best-streak-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
+  }
+  .best-streak-row .bs-label{ font-family: var(--serif); font-size:15px; color: var(--ink-dim); }
+  .best-streak-row .bs-value{ font-family: var(--serif); font-size:24px; font-weight:700; color: var(--gold); font-variant-numeric: tabular-nums; }
 
   .date-card{
     background: var(--surface);
@@ -835,16 +844,29 @@
               <div class="big-tile"><div class="bv" id="statTotalCount">0</div><div class="bl">通算回数</div></div>
               <div class="big-tile"><div class="bv" id="statTotalRate">—</div><div class="bl">通算的中率</div></div>
             </div>
-            <div class="split-row">
-              <div class="sr-label"><span id="splitPersonaA">無名 0回</span><span id="splitPersonaB">生駒 0回</span></div>
-              <div class="split-bar"><span id="splitPersonaBarA" style="width:50%"></span><span id="splitPersonaBarB" style="width:50%"></span></div>
+            <div class="rate-group">
+              <div class="rate-row">
+                <div class="rate-label"><span class="rn">無名</span><span class="rv" id="rateMumei">0/0</span></div>
+                <div class="rate-bar"><span id="rateBarMumei" style="width:0%"></span></div>
+              </div>
+              <div class="rate-row">
+                <div class="rate-label"><span class="rn">生駒</span><span class="rv" id="rateIkoma">0/0</span></div>
+                <div class="rate-bar"><span id="rateBarIkoma" style="width:0%"></span></div>
+              </div>
             </div>
-            <div class="split-row">
-              <div class="sr-label"><span id="splitChoiceA">中 0回</span><span id="splitChoiceB">右 0回</span></div>
-              <div class="split-bar"><span id="splitChoiceBarA" style="width:50%"></span><span id="splitChoiceBarB" style="width:50%"></span></div>
+            <div class="rate-group">
+              <div class="rate-row">
+                <div class="rate-label"><span class="rn">中</span><span class="rv" id="rateNaka">0/0</span></div>
+                <div class="rate-bar"><span id="rateBarNaka" style="width:0%"></span></div>
+              </div>
+              <div class="rate-row">
+                <div class="rate-label"><span class="rn">右</span><span class="rv" id="rateMigi">0/0</span></div>
+                <div class="rate-bar"><span id="rateBarMigi" style="width:0%"></span></div>
+              </div>
             </div>
-            <div class="split-row single">
-              <div class="sr-label"><span>最高連続的中</span><span id="statBestStreak">0連</span></div>
+            <div class="best-streak-row">
+              <span class="bs-label">最高連続的中</span>
+              <span class="bs-value" id="statBestStreak">0連</span>
             </div>
           </div>
         </div>
@@ -1311,21 +1333,19 @@
     document.getElementById("statTotalCount").textContent = entries.length;
     document.getElementById("statTotalRate").textContent = Math.round(totalHits/entries.length*100)+"%";
 
-    var mumeiCount = entries.filter(function(e){ return e.persona==="mumei"; }).length;
-    var ikomaCount = entries.length - mumeiCount;
-    var mumeiPct = Math.round(mumeiCount/entries.length*100);
-    document.getElementById("splitPersonaA").textContent = "無名 "+mumeiCount+"回";
-    document.getElementById("splitPersonaB").textContent = "生駒 "+ikomaCount+"回";
-    document.getElementById("splitPersonaBarA").style.width = mumeiPct+"%";
-    document.getElementById("splitPersonaBarB").style.width = (100-mumeiPct)+"%";
+    function hitsOf(list){ return list.filter(function(e){ return e.result==="hit"; }).length; }
+    function setRate(valId, barId, list){
+      var hits = hitsOf(list);
+      var total = list.length;
+      var pct = total ? Math.round(hits/total*100) : 0;
+      document.getElementById(valId).textContent = hits+"/"+total+(total ? "（"+pct+"%）" : "");
+      document.getElementById(barId).style.width = pct+"%";
+    }
 
-    var nakaCount = entries.filter(function(e){ return e.choice==="中"; }).length;
-    var migiCount = entries.length - nakaCount;
-    var nakaPct = Math.round(nakaCount/entries.length*100);
-    document.getElementById("splitChoiceA").textContent = "中 "+nakaCount+"回";
-    document.getElementById("splitChoiceB").textContent = "右 "+migiCount+"回";
-    document.getElementById("splitChoiceBarA").style.width = nakaPct+"%";
-    document.getElementById("splitChoiceBarB").style.width = (100-nakaPct)+"%";
+    setRate("rateMumei", "rateBarMumei", entries.filter(function(e){ return e.persona==="mumei"; }));
+    setRate("rateIkoma", "rateBarIkoma", entries.filter(function(e){ return e.persona==="ikoma"; }));
+    setRate("rateNaka", "rateBarNaka", entries.filter(function(e){ return e.choice==="中"; }));
+    setRate("rateMigi", "rateBarMigi", entries.filter(function(e){ return e.choice==="右"; }));
 
     document.getElementById("statBestStreak").textContent = computeBestStreak(entries)+"連";
   }
