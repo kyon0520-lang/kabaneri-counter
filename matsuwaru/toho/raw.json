@@ -34593,5 +34593,156 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/20/075638",
+  "articleDate": "2026-09-20",
+  "targetDate": "2026-09-19",
+  "postDate": "2026-09-18",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2100910271862845763",
+  "title": "9月19日のマルハン新宿東宝ビルまとめ✏️九尾新ポスター登場で末尾2本仕立て！",
+  "results": [
+   {
+    "machine": "末尾①",
+    "plus": 47,
+    "total": 67,
+    "avg": 2040
+   },
+   {
+    "machine": "末尾⑤",
+    "plus": 44,
+    "total": 68,
+    "avg": 869
+   },
+   {
+    "machine": "チバリヨ2",
+    "plus": 2,
+    "total": 3,
+    "avg": 6667
+   },
+   {
+    "machine": "化物語",
+    "plus": 2,
+    "total": 2,
+    "avg": 2500
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "末尾⑤",
+    "matched": true,
+    "keyword": "ガーゴイル",
+    "chain": [
+     "ガーゴイル",
+     "ゴいる"
+    ],
+    "raw": "ガーゴイル→ゴいる",
+    "result": {
+     "plus": 44,
+     "total": 68,
+     "avg": 869
+    }
+   },
+   {
+    "machine": "末尾⑤",
+    "matched": true,
+    "keyword": "看板に「五感」",
+    "chain": [
+     "看板に「五感」",
+     "⑤"
+    ],
+    "raw": "看板に「五感」→⑤",
+    "result": {
+     "plus": 44,
+     "total": 68,
+     "avg": 869
+    }
+   },
+   {
+    "machine": "チバリヨ2",
+    "matched": true,
+    "keyword": "九尾",
+    "chain": [
+     "九尾",
+     "うずまきナルト",
+     "渦巻き点滅"
+    ],
+    "raw": "九尾→うずまきナルト→渦巻き点滅",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 6667
+    }
+   },
+   {
+    "machine": "化物語",
+    "matched": true,
+    "keyword": "九尾",
+    "chain": [
+     "九尾",
+     "化物"
+    ],
+    "raw": "九尾→化物",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 2500
+    }
+   },
+   {
+    "machine": "化物語",
+    "matched": true,
+    "keyword": "つけもの",
+    "chain": [
+     "つけもの",
+     "けもの"
+    ],
+    "raw": "つけもの→けもの",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 2500
+    }
+   },
+   {
+    "machine": "うみねこ",
+    "matched": false,
+    "keyword": "九尾",
+    "chain": [
+     "九尾",
+     "狐",
+     "騙す"
+    ],
+    "raw": "九尾→狐→騙す",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "レストラン",
+    "chain": [
+     "レストラン",
+     "ラン"
+    ],
+    "raw": "レストラン→ラン",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "ガーゴイル",
+    "chain": [
+     "ガーゴイル",
+     "スリラーポーズ",
+     "マイケル・ジャクソン",
+     "ムーンウォーク"
+    ],
+    "raw": "ガーゴイル→スリラーポーズ→マイケル・ジャクソン→ムーンウォーク",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
