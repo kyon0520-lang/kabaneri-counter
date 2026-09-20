@@ -8,6 +8,9 @@ on:
     - cron: '17 0 * * *'     # 毎日 09:17 JST
     - cron: '37 1 * * *'     # 毎日 10:37 JST
     - cron: '23 4 * * *'     # 毎日 13:23 JST（取りこぼしの保険）
+    # 「明日は何の日」タブを翌日ぶんに更新するためだけの実行。ブログの新着チェックは
+    # 上の3回で十分なので、ここでは行わない（下の「新着を取り込む」で分岐させている）。
+    - cron: '0 10 * * *'     # 毎日 19:00 JST
   workflow_dispatch:          # 手動実行も可
 
 permissions:
@@ -31,7 +34,9 @@ jobs:
       # 新着記事の取得〜名寄せまで。異常時は失敗通知が飛ぶ
       # stores.json に定義された全店舗をまわす。1店舗が失敗しても他店舗の取り込み・
       # 後段のコミットは止めない（1店舗のブログ更新停止が他店舗を巻き込まないように）
+      # 19:00 JST（「明日は何の日」専用の実行）はブログの新着チェックが目的ではないので飛ばす
       - name: 新着を取り込む
+        if: github.event.schedule != '0 10 * * *'
         working-directory: matsuwaru
         run: |
           ids=$(python3 -c "import json;print(' '.join(s['id'] for s in json.load(open('stores.json'))['stores'] if not s.get('paused')))")
@@ -41,8 +46,14 @@ jobs:
             python3 sync.py "$id" || fail=1
             echo "::endgroup::"
           done
-          python3 src/build-pages.py
           if [ "$fail" = "1" ]; then exit 1; fi
+
+      # ページの再生成（「明日は何の日」の更新もここに含まれる）。
+      # 前段が一部店舗の失敗で失敗していても、正常な店舗の分は取りこぼさず反映する
+      - name: ページを再生成する
+        if: ${{ !cancelled() }}
+        working-directory: matsuwaru
+        run: python3 src/build-pages.py
 
       # 手動実行のときだけ認証情報を確認する（本番には触らない読み取り専用コマンド）
       - name: Cloudflare 接続確認

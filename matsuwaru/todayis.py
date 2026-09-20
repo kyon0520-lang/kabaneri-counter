@@ -59,7 +59,8 @@ def main():
         data = parse(get(url))
         data['date'] = target.strftime('%Y-%m-%d')
         data['sourceUrl'] = url
-        data['generated'] = now.strftime('%Y-%m-%d %H:%M')
+        # 取得時刻はあえて持たない。入れると内容が同じでも実行のたびにJSONが変わり、
+        # git diffが毎回検知されて無駄なコミット・デプロイが走ってしまうため
         for s in stores:
             out = os.path.join(B, s['id'], 'data', 'todayis.json')
             os.makedirs(os.path.dirname(out), exist_ok=True)
