@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-"""翌日が「何の日」かを netlab.click から取得し、data/todayis.json に書き出す。
-   イベント傾向チェッカーの「明日は何の日」タブ用。おまけ機能なので、
+"""翌日が「何の日」かを netlab.click から取得し、各店舗の data/todayis.json に書き出す。
+   イベント傾向チェッカーの「明日は何の日」タブ用。全店舗で同じ内容だが、
+   /matsuwaru/data/* は旧URL向けの301リダイレクトが既にあるため（_redirects）、
+   他のJSONと同様に店舗ごとのdata/配下に複製して置く。おまけ機能なので、
    先方の書式変更などで失敗しても他のパイプラインは止めない（前回分のまま据え置き）。"""
 import urllib.request, re, os, json, html
 from datetime import datetime, timedelta, timezone
@@ -52,15 +54,17 @@ def main():
     now = datetime.now(timezone(timedelta(hours=9)))
     target = now + timedelta(days=1)
     url = 'https://netlab.click/todayis/%02d%02d' % (target.month, target.day)
-    out = os.path.join(B, 'data', 'todayis.json')
+    stores = json.load(open(os.path.join(B, 'stores.json'), encoding='utf-8'))['stores']
     try:
         data = parse(get(url))
         data['date'] = target.strftime('%Y-%m-%d')
         data['sourceUrl'] = url
         data['generated'] = now.strftime('%Y-%m-%d %H:%M')
-        os.makedirs(os.path.dirname(out), exist_ok=True)
-        json.dump(data, open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-        print('OK  明日は何の日(%s): 主要%d件・その他%d件' % (data['date'], len(data['main']), len(data['sub'])))
+        for s in stores:
+            out = os.path.join(B, s['id'], 'data', 'todayis.json')
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            json.dump(data, open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+        print('OK  明日は何の日(%s): 主要%d件・その他%d件（%d店舗ぶん）' % (data['date'], len(data['main']), len(data['sub']), len(stores)))
     except Exception as e:
         print('::warning::明日は何の日の取得に失敗（%s）。前回分のデータのまま据え置き' % e)
 

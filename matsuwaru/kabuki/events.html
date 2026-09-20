@@ -737,7 +737,7 @@ function render(D){
 // 「明日は何の日」タブ。events.json とは別に todayis.json を並行して取りに行く。
 // events.json の読み込みより先に届いても後に届いても、両方から呼べるようにしてある
 let TD = null;
-fetch('../data/todayis.json', {cache:'no-store'}).then(r=>r.json()).then(t=>{ TD = t; renderTodayis(); })
+fetch('data/todayis.json', {cache:'no-store'}).then(r=>r.json()).then(t=>{ TD = t; renderTodayis(); })
   .catch(()=>{ TD = false; renderTodayis(); });
 
 function renderTodayis(){
