@@ -223,6 +223,7 @@ h2:first-of-type{margin-top:4px}
   <div class="mtabs" id="ptabs" role="tablist">
     <button data-t="trend" class="on">イベント傾向</button>
     <button data-t="month">月間全系実施機種</button>
+    <button data-t="todayis">明日は何の日</button>
   </div>
 </div>
 
@@ -704,10 +705,15 @@ function render(D){
   }
 
   h += `</section>`;
+
+  h += `<section id="pane-todayis" hidden><h2>明日は何の日</h2>
+    <div id="todayis-body"><p class="note">読み込み中…</p></div></section>`;
+
   h += `<div class="foot">出典：<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a><br>
     集計は実際に全台系が行われた日で行っています。<br>最終更新 ${D.generated}</div>`;
   document.getElementById('main').innerHTML = h;
   drawPicked();
+  renderTodayis();
   document.getElementById('picker').addEventListener('change', e=>{
     picked = e.target.value; drawPicked();
   });
@@ -723,7 +729,48 @@ function render(D){
     document.querySelectorAll('#ptabs button').forEach(x=>x.classList.toggle('on', x===b));
     document.getElementById('pane-trend').hidden = b.dataset.t !== 'trend';
     document.getElementById('pane-month').hidden = b.dataset.t !== 'month';
+    document.getElementById('pane-todayis').hidden = b.dataset.t !== 'todayis';
     closeSheet(); scrollTo(0, 0);
+  };
+}
+
+// 「明日は何の日」タブ。events.json とは別に todayis.json を並行して取りに行く。
+// events.json の読み込みより先に届いても後に届いても、両方から呼べるようにしてある
+let TD = null;
+fetch('../data/todayis.json', {cache:'no-store'}).then(r=>r.json()).then(t=>{ TD = t; renderTodayis(); })
+  .catch(()=>{ TD = false; renderTodayis(); });
+
+function renderTodayis(){
+  const box = document.getElementById('todayis-body');
+  if(!box || TD === null) return;
+  if(TD === false || !TD.main || !TD.main.length){
+    box.innerHTML = '<p class="note">データを取得できませんでした。</p>';
+    return;
+  }
+  const dstr = TD.date ? TD.date.slice(5).replace('-','/') : '';
+  const badge = '<span style="display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;'
+    + 'border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:7px">祝日</span>';
+  let h = `<div class="card">
+    <div class="sec">${esc(dstr)}の記念日</div>
+    <div style="display:flex;flex-direction:column;gap:9px">`
+    + TD.main.map((m,i)=>`<div style="font-size:${i===0?15:13.5}px;font-weight:${i===0?700:400}">${esc(m)}${i===0&&TD.holiday?badge:''}</div>`).join('')
+    + `</div>`;
+  if(TD.sub && TD.sub.length){
+    h += `<button class="disc" id="tdbtn" aria-expanded="false" aria-controls="tdbox"
+        style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">
+        <b>他にもある記念日</b><span class="dc">${TD.sub.length}件<i class="cv"></i></span></button>
+      <div id="tdbox" hidden style="margin-top:10px">
+        <div class="ms">${TD.sub.map(s=>`<span class="m" style="font-size:12px">${esc(s)}</span>`).join('')}</div>
+      </div>`;
+  }
+  h += `</div>`;
+  if(TD.sourceUrl) h += `<p class="note">出典：<a href="${esc(TD.sourceUrl)}" target="_blank" rel="noopener">netlab.click</a></p>`;
+  box.innerHTML = h;
+  const b = document.getElementById('tdbtn');
+  if(b) b.onclick = () => {
+    const bx = document.getElementById('tdbox'), open = bx.hidden;
+    bx.hidden = !open;
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
   };
 }
 </script>

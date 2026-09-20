@@ -2,7 +2,7 @@
 """stores.json をもとに、店舗ごとのページ一式を生成する。
    原本は src/app.html と src/manifest.webmanifest と src/sw.js。
    生成物（<店舗id>/index.html など）は直接編集しないこと。"""
-import json, os, re, shutil, html
+import json, os, re, shutil, html, subprocess, sys
 
 B = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(B, 'src')
@@ -41,3 +41,6 @@ cards = '\n'.join(
 idx = open(os.path.join(SRC, 'stores.html'), encoding='utf-8').read().replace('{{CARDS}}', cards)
 open(os.path.join(B, 'index.html'), 'w', encoding='utf-8').write(idx)
 print('生成: /matsuwaru/  (店舗一覧 %d件)' % len(cfg))
+
+# 「明日は何の日」データ（全店舗共通）。失敗しても非致命なので戻り値は見ない
+subprocess.run([sys.executable, os.path.join(B, 'todayis.py')])
