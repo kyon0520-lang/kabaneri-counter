@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-"""翌日が「何の日」かを netlab.click から取得し、各店舗の data/todayis.json に書き出す。
-   イベント傾向チェッカーの「明日は何の日」タブ用。全店舗で同じ内容だが、
+"""「何の日」を netlab.click から取得し、各店舗の data/todayis.json に書き出す。
+   イベント傾向チェッカーの「明日は何の日」タブ用。19時までは今日ぶん、19時を過ぎたら
+   翌日ぶんを取得する（main()参照）。全店舗で同じ内容だが、
    /matsuwaru/data/* は旧URL向けの301リダイレクトが既にあるため（_redirects）、
    他のJSONと同様に店舗ごとのdata/配下に複製して置く。おまけ機能なので、
    先方の書式変更などで失敗しても他のパイプラインは止めない（前回分のまま据え置き）。"""
@@ -52,7 +53,10 @@ def parse(src):
 
 def main():
     now = datetime.now(timezone(timedelta(hours=9)))
-    target = now + timedelta(days=1)
+    # 19時までは今日ぶん、19時を過ぎたら翌日ぶんに切り替える（events.htmlのafterPostと同じ考え方）。
+    # これが無いと、実行時刻に関係なく常に「翌日」を計算してしまい、19時の実行を待たずに
+    # 朝の実行（9:17など）の時点で翌日ぶんが表に出てしまう
+    target = now + timedelta(days=1) if now.hour >= 19 else now
     url = 'https://netlab.click/todayis/%02d%02d' % (target.month, target.day)
     stores = json.load(open(os.path.join(B, 'stores.json'), encoding='utf-8'))['stores']
     try:
