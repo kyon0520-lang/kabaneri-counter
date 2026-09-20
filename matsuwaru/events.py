@@ -594,6 +594,8 @@ def numtie_own(dates):
                     for m, k in who.most_common(4)]}
 
 for p in events:
+    # 「日付ごとに見る」シート用。新しい日付が先。thisMonthのbyDateと同じ行の形にする
+    p['byDate'] = [_bydate_row(d) for d in sorted(p['dates'], reverse=True)]
     p['size'] = size_profile(p['dates'])
     p['numTie'] = numtie(p['dates'], event_digit(p['match']), NUM_EVENT.get(p['key']))
     if p['numTie'] is None and event_digit(p['match']) is None:
