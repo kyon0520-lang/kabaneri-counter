@@ -34744,5 +34744,151 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/21/074701",
+  "articleDate": "2026-09-21",
+  "targetDate": "2026-09-20",
+  "postDate": "2026-09-19",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2101272671292203161",
+  "title": "9月20日のマルハン新宿東宝ビルまとめ✏️0のつく日は「大都機種」と「30Φ」を狙いが良い！",
+  "results": [
+   {
+    "machine": "沖ドキゴージャス",
+    "plus": 10,
+    "total": 17,
+    "avg": 953
+   },
+   {
+    "machine": "ドラハナ",
+    "plus": 9,
+    "total": 11,
+    "avg": 1827
+   },
+   {
+    "machine": "ワールドダイスター",
+    "plus": 3,
+    "total": 8,
+    "avg": 62
+   },
+   {
+    "machine": "化物語",
+    "plus": 2,
+    "total": 2,
+    "avg": 3750
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "沖ドキゴージャス",
+    "matched": true,
+    "keyword": "チョコプラポスターに「ドキドキ」（ガラポンのところ）",
+    "chain": [
+     "チョコプラポスターに「ドキドキ」（ガラポンのところ）"
+    ],
+    "raw": "・チョコプラポスターに「ドキドキ」（ガラポンのところ）",
+    "result": {
+     "plus": 10,
+     "total": 17,
+     "avg": 953
+    }
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "エビチリ",
+    "chain": [
+     "エビチリ",
+     "11個",
+     "11台機種"
+    ],
+    "raw": "エビチリ→11個→11台機種",
+    "result": {
+     "plus": 9,
+     "total": 11,
+     "avg": 1827
+    }
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "ヤムチャ・ランチ",
+    "chain": [
+     "ヤムチャ・ランチ",
+     "ドラゴンボール"
+    ],
+    "raw": "ヤムチャ・ランチ→ドラゴンボール",
+    "result": {
+     "plus": 9,
+     "total": 11,
+     "avg": 1827
+    }
+   },
+   {
+    "machine": "ワールドダイスター",
+    "matched": true,
+    "keyword": "エビチリ",
+    "chain": [
+     "エビチリ",
+     "チリ",
+     "イースター島"
+    ],
+    "raw": "エビチリ→チリ→イースター島",
+    "result": {
+     "plus": 3,
+     "total": 8,
+     "avg": 62
+    }
+   },
+   {
+    "machine": "ワールドダイスター",
+    "matched": true,
+    "keyword": "サトウ登場",
+    "chain": [
+     "サトウ登場",
+     "共演"
+    ],
+    "raw": "サトウ登場→共演",
+    "result": {
+     "plus": 3,
+     "total": 8,
+     "avg": 62
+    }
+   },
+   {
+    "machine": "化物語",
+    "matched": true,
+    "keyword": "ザーサイ",
+    "chain": [
+     "ザーサイ",
+     "つけもの",
+     "けもの"
+    ],
+    "raw": "ザーサイ→つけもの→けもの",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 3750
+    }
+   },
+   {
+    "machine": "化物語",
+    "matched": true,
+    "keyword": "9/20空の日",
+    "chain": [
+     "9/20空の日",
+     "羽川翼"
+    ],
+    "raw": "9/20空の日→羽川翼",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 3750
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
