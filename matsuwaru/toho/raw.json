@@ -34890,5 +34890,132 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/22/065858",
+  "articleDate": "2026-09-22",
+  "targetDate": "2026-09-21",
+  "postDate": "2026-09-20",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2101635076354125955",
+  "title": "9月21日のマルハン新宿東宝ビルまとめ✏️マイジャグVの全系はじめバラを含む8機種が全系！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "マイジャグV",
+    "matched": false,
+    "keyword": "M022（ワッパーのシール）",
+    "chain": [
+     "M022（ワッパーのシール）",
+     "Mにゃんにゃん"
+    ],
+    "raw": "M022（ワッパーのシール）→Mにゃんにゃん",
+    "result": null
+   },
+   {
+    "machine": "マイジャグV",
+    "matched": false,
+    "keyword": "MAY（ワッパー包装紙アイコン）",
+    "chain": [
+     "MAY（ワッパー包装紙アイコン）",
+     "MY"
+    ],
+    "raw": "MAY（ワッパー包装紙アイコン）→MY",
+    "result": null
+   },
+   {
+    "machine": "マイジャグV",
+    "matched": false,
+    "keyword": "連日",
+    "chain": [
+     "連日",
+     "毎日",
+     "マイ"
+    ],
+    "raw": "連日→毎日→マイ",
+    "result": null
+   },
+   {
+    "machine": "かぐや様",
+    "matched": false,
+    "keyword": "朝9時集合",
+    "chain": [
+     "朝9時集合",
+     "9台機種"
+    ],
+    "raw": "朝9時集合→9台機種",
+    "result": null
+   },
+   {
+    "machine": "ディスクUR",
+    "matched": false,
+    "keyword": "DT（ワッパー包装紙）",
+    "chain": [
+     "DT（ワッパー包装紙）",
+     "ダンスタイム"
+    ],
+    "raw": "DT（ワッパー包装紙）→ダンスタイム",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "プレゼン",
+    "chain": [
+     "プレゼン",
+     "プレゼント",
+     "プレゼントちゃんす"
+    ],
+    "raw": "プレゼン→プレゼント→プレゼントちゃんす",
+    "result": null
+   },
+   {
+    "machine": "ケロット5",
+    "matched": false,
+    "keyword": "雨",
+    "chain": [
+     "雨",
+     "カエル"
+    ],
+    "raw": "雨→カエル",
+    "result": null
+   },
+   {
+    "machine": "ギアスC.C.",
+    "matched": false,
+    "keyword": "Coca-Cola",
+    "chain": [
+     "Coca-Cola",
+     "C.C"
+    ],
+    "raw": "Coca-Cola→C.C",
+    "result": null
+   },
+   {
+    "machine": "番長ZERO",
+    "matched": false,
+    "keyword": "上野",
+    "chain": [
+     "上野",
+     "パンダ"
+    ],
+    "raw": "上野→パンダ",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "上野",
+    "chain": [
+     "上野",
+     "パンダ",
+     "かえでスタンプ、着ぐるみ"
+    ],
+    "raw": "上野→パンダ→かえでスタンプ、着ぐるみ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
