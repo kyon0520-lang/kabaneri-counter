@@ -35017,5 +35017,109 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/23/071659",
+  "articleDate": "2026-09-23",
+  "targetDate": "2026-09-22",
+  "postDate": "2026-09-21",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2101997449586081913",
+  "title": "9月22日のマルハン新宿東宝ビルまとめ✏️11・22日は末尾ゾロ目が鉄板！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "スマスロ北斗",
+    "matched": false,
+    "keyword": "ジャンプ",
+    "chain": [
+     "ジャンプ",
+     "週刊少年ジャンプ連載"
+    ],
+    "raw": "ジャンプ→週刊少年ジャンプ連載",
+    "result": null
+   },
+   {
+    "machine": "ウルミラジャグラー",
+    "matched": false,
+    "keyword": "創業ビーフ",
+    "chain": [
+     "創業ビーフ",
+     "牛🐮",
+     "べコたん"
+    ],
+    "raw": "創業ビーフ→牛🐮→べコたん",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "ジャンプ",
+    "chain": [
+     "ジャンプ",
+     "週刊少年ジャンプ連載"
+    ],
+    "raw": "ジャンプ→週刊少年ジャンプ連載",
+    "result": null
+   },
+   {
+    "machine": "かりかの",
+    "matched": false,
+    "keyword": "カレー",
+    "chain": [
+     "カレー",
+     "絶品カレー完成させます"
+    ],
+    "raw": "カレー→絶品カレー完成させます",
+    "result": null
+   },
+   {
+    "machine": "見える子ちゃん",
+    "matched": false,
+    "keyword": "紅しょうが容器",
+    "chain": [
+     "紅しょうが容器",
+     "中身みえる"
+    ],
+    "raw": "紅しょうが容器→中身みえる",
+    "result": null
+   },
+   {
+    "machine": "ギアスC.C.",
+    "matched": false,
+    "keyword": "紅しょうが",
+    "chain": [
+     "紅しょうが",
+     "紅",
+     "紅蓮"
+    ],
+    "raw": "紅しょうが→紅→紅蓮",
+    "result": null
+   },
+   {
+    "machine": "マンキン",
+    "matched": false,
+    "keyword": "月曜日",
+    "chain": [
+     "月曜日",
+     "マンデー"
+    ],
+    "raw": "月曜日→マンデー",
+    "result": null
+   },
+   {
+    "machine": "マンキン",
+    "matched": false,
+    "keyword": "ジャンプ",
+    "chain": [
+     "ジャンプ",
+     "週刊少年ジャンプ連載"
+    ],
+    "raw": "ジャンプ→週刊少年ジャンプ連載",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
