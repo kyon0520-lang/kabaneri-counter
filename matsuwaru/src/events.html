@@ -277,6 +277,14 @@ h2:first-of-type{margin-top:4px}
   </div>
 </div>
 
+<div class="sheetwrap" id="altsheet" aria-hidden="true">
+  <div class="veil" id="altveil"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="旧9の日の機種">
+    <div class="shd"><b id="altsheettitle"></b><button id="altsheetclose">閉じる</button></div>
+    <div class="sbody" id="altsheetbody"></div>
+  </div>
+</div>
+
 <script>
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -548,6 +556,8 @@ function detail(p){
       + (p.byDate && p.byDate.length
          ? `<button class="allbtn" id="datebtn" style="margin-top:8px;border-style:dashed">`
            + `日付ごとに見る（${p.byDate.length}${p.g === '不定期イベント' ? '回' : '日'}ぶん）</button>` : '')
+      + (p.altView && p.altView.top && p.altView.top.length
+         ? `<button class="allbtn" id="altbtn" style="margin-top:8px">${esc(p.altView.label)}</button>` : '')
     : '<p class="note" style="margin:0">実績がまだありません。</p>';
   const irr = p.g === '不定期イベント';
   const dates = irr && p.dates
@@ -573,9 +583,10 @@ const SEGS = [
 const NZ = s => String(s).normalize('NFKC').toLowerCase().replace(/[\s　]/g,'')
                  .replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60));
 let seg = 0;
+let sheetP = null;   // altView（旧9の日など）を開いているときはそのデータを指す
 
 function drawSheet(){
-  const p = DB.events.find(x=>x.key===picked) || DB.events[0];
+  const p = sheetP || DB.events.find(x=>x.key===picked) || DB.events[0];
   document.getElementById('sheettitle').textContent = fullLabel(p) + 'に選ばれた機種';
   document.getElementById('sheetsegs').innerHTML = SEGS.map(([n],i)=>
     `<button data-i="${i}" class="${i===seg?'on':''}">${n}</button>`).join('');
@@ -602,7 +613,8 @@ function lockHeight(){
   seg = keepSeg; qEl.value = keepQ; drawSheet();
   body.style.minHeight = h + 'px';
 }
-function openSheet(){
+function openSheet(altP){
+  sheetP = altP || null;
   seg = 0;
   document.getElementById('sheetq').value = '';
   drawSheet();
@@ -616,6 +628,7 @@ function closeSheet(){
   document.getElementById('sheet').setAttribute('aria-hidden','true');
   document.getElementById('sheetbody').style.minHeight = '';
   document.body.style.overflow = '';
+  sheetP = null;
 }
 // 画面の向きを変えたら測り直す
 addEventListener('resize', () => {
@@ -628,7 +641,7 @@ document.getElementById('sheetsegs').onclick = e => {
   const b = e.target.closest('button'); if(!b) return;
   seg = +b.dataset.i; drawSheet(); document.getElementById('sheetbody').scrollTop = 0;
 };
-document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeSheet(); closeDateSheet(); } });
+document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeSheet(); closeDateSheet(); closeAltSheet(); } });
 
 // 「日付ごとに見る」シート。検索・絞り込みはなく、開催日ごとの機種を並べるだけ
 function openDateSheet(p){
@@ -650,15 +663,49 @@ function closeDateSheet(){
 document.getElementById('dateveil').onclick = closeDateSheet;
 document.getElementById('datesheetclose').onclick = closeDateSheet;
 
+// 「旧9の日の機種を見る」など、母イベントの一部だけを別枠で見せるシート。
+// 中は「選ばれた機種」カードと同じ2つのボタン（全機種／日付ごと）を、
+// altViewのデータだけに絞って出す。実体は既存のsheet・datesheetをそのまま使い回す
+function openAltSheet(p){
+  const av = p.altView, label = av.label.replace(/の機種を見る$/, '');
+  document.getElementById('altsheettitle').textContent = label;
+  document.getElementById('altsheetbody').innerHTML =
+    (av.top && av.top.length
+      ? `<div class="ms">${topChips(av.top, true, av.days)}</div>`
+        + (av.top.length > 3
+           ? `<button class="allbtn" id="altallbtn">すべての機種を見る（${av.top.length}）</button>` : '')
+      : '<p class="note" style="margin:0">実績がまだありません。</p>')
+    + (av.byDate && av.byDate.length
+       ? `<button class="allbtn" id="altdatebtn" style="margin-top:8px;border-style:dashed">`
+         + `日付ごとに見る（${av.byDate.length}日ぶん）</button>` : '');
+  document.getElementById('altsheet').classList.add('on');
+  document.getElementById('altsheet').setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  const ab = document.getElementById('altallbtn');
+  if(ab) ab.onclick = () => openSheet({label, sub:'', top: av.top, days: av.days});
+  const adb = document.getElementById('altdatebtn');
+  if(adb) adb.onclick = () => openDateSheet({label, sub:'', byDate: av.byDate});
+}
+function closeAltSheet(){
+  document.getElementById('altsheet').classList.remove('on');
+  document.getElementById('altsheet').setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+document.getElementById('altveil').onclick = closeAltSheet;
+document.getElementById('altsheetclose').onclick = closeAltSheet;
+
 function drawPicked(){
   const cur = DB.events.find(x=>x.key===picked) || DB.events[0];
   document.getElementById('detail').innerHTML = detail(cur);
   closeSheet();
   closeDateSheet();
+  closeAltSheet();
   const b = document.getElementById('allbtn');
-  if(b) b.onclick = openSheet;
+  if(b) b.onclick = () => openSheet();
   const db = document.getElementById('datebtn');
   if(db) db.onclick = () => openDateSheet(cur);
+  const ab = document.getElementById('altbtn');
+  if(ab) ab.onclick = () => openAltSheet(cur);
 }
 
 function render(D){

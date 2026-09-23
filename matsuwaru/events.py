@@ -320,6 +320,7 @@ for group, items in DEFS.items():
         p.update({'g': group, 'key': it['key'], 'sub': it.get('sub', ''),
                   'match': it['match']})
         p['dates'] = ds
+        if it.get('altView'): p['_altViewDef'] = it['altView']
         events.append(p)
 print('   不定期による置き換え %d日' % len(_claimed.get('不定期イベント', ())))
 
@@ -596,6 +597,17 @@ def numtie_own(dates):
 for p in events:
     # 「日付ごとに見る」シート用。新しい日付が先。thisMonthのbyDateと同じ行の形にする
     p['byDate'] = [_bydate_row(d) for d in sorted(p['dates'], reverse=True)]
+    # altView：定義に日付の絞り込みが指定されていれば、その日だけの部分集合を
+    # 別枠（例：旧9の日）として同じ形（top・byDate）で持たせる
+    avd = p.pop('_altViewDef', None)
+    if avd:
+        aday = avd.get('day')
+        adates = [d for d in p['dates'] if aday is None or int(d[-2:]) == aday]
+        aprof = profile(adates, avd.get('label', ''))
+        if aprof:
+            p['altView'] = {'label': avd.get('label', ''), 'days': aprof['days'],
+                             'top': aprof['top'],
+                             'byDate': [_bydate_row(d) for d in sorted(adates, reverse=True)]}
     p['size'] = size_profile(p['dates'])
     p['numTie'] = numtie(p['dates'], event_digit(p['match']), NUM_EVENT.get(p['key']))
     if p['numTie'] is None and event_digit(p['match']) is None:
