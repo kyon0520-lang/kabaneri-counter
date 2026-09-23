@@ -594,48 +594,64 @@ def numtie_own(dates):
             'top': [[m, '・'.join(sorted(why[m], key=lambda x: 0 if x == '名前' else 1)), k]
                     for m, k in who.most_common(4)]}
 
-for p in events:
-    # 「日付ごとに見る」シート用。新しい日付が先。thisMonthのbyDateと同じ行の形にする
-    p['byDate'] = [_bydate_row(d) for d in sorted(p['dates'], reverse=True)]
-    # altView：定義に日付の絞り込みが指定されていれば、その日だけの部分集合を
-    # 別枠（例：旧9の日）として同じ形（top・byDate）で持たせる
-    avd = p.pop('_altViewDef', None)
-    if avd:
-        aday = avd.get('day')
-        adates = [d for d in p['dates'] if aday is None or int(d[-2:]) == aday]
-        aprof = profile(adates, avd.get('label', ''))
-        if aprof:
-            p['altView'] = {'label': avd.get('label', ''), 'days': aprof['days'],
-                             'top': aprof['top'],
-                             'byDate': [_bydate_row(d) for d in sorted(adates, reverse=True)]}
-    p['size'] = size_profile(p['dates'])
-    p['numTie'] = numtie(p['dates'], event_digit(p['match']), NUM_EVENT.get(p['key']))
-    if p['numTie'] is None and event_digit(p['match']) is None:
-        p['ownNumTie'] = numtie_own(p['dates'])
-    p['norm'] = norm_share(p['dates'])
-    p['vari'] = variety_share(p['dates'])
-    p['sjug'] = smalljug_share(p['dates'])
-    p['three'] = three_share(p['dates'])
-    p['ten'] = ten_share(p['dates'])
-    p['sig'] = signature(p['key'], p['dates'])
-    if LEAD.get(p['key']): p['lead'] = LEAD[p['key']]
-    p['groups'] = group_counts(p['dates'])
-    p['gmain'] = group_main(p['dates'])
+# イベントの「傾向」を組み立てるのに要る統計一式。日付群さえ渡せば、母イベントでも
+# その部分集合（altViewなど）でも同じやり方で出せるようにまとめてある
+def build_stats(dates, key, match):
+    st = {}
+    st['size'] = size_profile(dates)
+    st['numTie'] = numtie(dates, event_digit(match), NUM_EVENT.get(key))
+    if st['numTie'] is None and event_digit(match) is None:
+        st['ownNumTie'] = numtie_own(dates)
+    st['norm'] = norm_share(dates)
+    st['vari'] = variety_share(dates)
+    st['sjug'] = smalljug_share(dates)
+    st['three'] = three_share(dates)
+    st['ten'] = ten_share(dates)
+    st['sig'] = signature(key, dates)
+    st['groups'] = group_counts(dates)
+    st['gmain'] = group_main(dates)
     # 多台数が入った日と、その機種（何がその1回を作ったのかを見せる）
     bl, bigdays = {}, set()
-    for d in p['dates']:
+    for d in dates:
         for m in days.get(d, ()):
             u = units_on(d, m)
             if not u or u < 20: continue
             bigdays.add(d)
             cur = bl.get(m)
             bl[m] = [m, max(u, cur[1]) if cur else u, (cur[2] + 1) if cur else 1]
-    p['bigList'] = sorted(bl.values(), key=lambda x: -x[1])[:4]
+    st['bigList'] = sorted(bl.values(), key=lambda x: -x[1])[:4]
     # 中台数が入らなかった日が、多台数を選んだ日と一致するか
-    nomid = [d for d in p['dates']
+    nomid = [d for d in dates
              if not any((units_on(d, m) or 0) >= 10 and (units_on(d, m) or 0) < 20
                         for m in days.get(d, ()))]
-    p['midFills'] = bool(nomid) and all(d in bigdays for d in nomid)
+    st['midFills'] = bool(nomid) and all(d in bigdays for d in nomid)
+    return st
+
+for p in events:
+    # 「日付ごとに見る」シート用。新しい日付が先。thisMonthのbyDateと同じ行の形にする
+    p['byDate'] = [_bydate_row(d) for d in sorted(p['dates'], reverse=True)]
+    p.update(build_stats(p['dates'], p['key'], p['match']))
+    if LEAD.get(p['key']): p['lead'] = LEAD[p['key']]
+    # altView：定義に日付の絞り込みが指定されていれば、その日だけの部分集合を
+    # 別枠（例：旧9の日）として、母イベントと同じ統計一式（top・byDate・傾向）で持たせる。
+    # 手書きのlead（母イベント全体向けの文章）はこの部分集合には合わないので引き継がない
+    avd = p.pop('_altViewDef', None)
+    if avd:
+        aday = avd.get('day')
+        adates = [d for d in p['dates'] if aday is None or int(d[-2:]) == aday]
+        aprof = profile(adates, avd.get('label', ''))
+        if aprof:
+            av = {'label': avd.get('label', ''), 'days': aprof['days'], 'small': aprof['small'],
+                  'top': aprof['top'],
+                  'byDate': [_bydate_row(d) for d in sorted(adates, reverse=True)]}
+            av.update(build_stats(adates, p['key'], p['match']))
+            p['altView'] = av
+            # trend: 「選ばれた機種」は母イベント（全体）のままだが、詳細ページの
+            # 「傾向」だけはこの部分集合の統計で出したいときに指定する
+            if avd.get('trend'):
+                tr = {'days': av['days'], 'small': av['small']}
+                tr.update(build_stats(adates, p['key'], p['match']))
+                p['trend'] = tr
 
 # イベント概要（data/event_notes.json に key → 文章。無ければ空）
 _np = B + '/data/event_notes.json'

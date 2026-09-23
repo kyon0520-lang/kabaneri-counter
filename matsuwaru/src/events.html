@@ -562,12 +562,15 @@ function detail(p){
   const irr = p.g === '不定期イベント';
   const dates = irr && p.dates
     ? `<p class="dates">開催日：${p.dates.map(d=>d.slice(5).replace('-','/')).join('・')}</p>` : '';
-  const warn = p.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
+  // trend：「傾向」だけは全体ではなく一部の日付だけで見たいイベント（例：九尾の日は旧19日ぶんだけ）用。
+  // 無ければこれまで通り自分自身の統計を使う
+  const tr = p.trend || p;
+  const warn = tr.small ? '<p class="dates">※開催回数が少なく、傾向とまでは言えません。</p>' : '';
   const note = p.note ? `<p class="ov">${esc(p.note)}</p>` : '';
   return `<div class="card detail">
     <div class="dhd"><b>${esc(fullLabel(p))}</b><span class="tag">過去${p.days}${irr?'回':'日'}</span></div>
     ${note}<div class="sec">選ばれた機種</div>${ms}${dates}${warn}
-    ${sizeBlock(p.size, DB.sizeAll, p, DB)}</div>`;
+    ${sizeBlock(tr.size, DB.sizeAll, tr, DB)}</div>`;
 }
 
 // ── 全機種のシート ───────────────────────────────
