@@ -35121,5 +35121,127 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "ダンち"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/24/071954",
+  "articleDate": "2026-09-24",
+  "targetDate": "2026-09-23",
+  "postDate": "2026-09-22",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2102359839523614956",
+  "title": "9月23日のマルハン新宿東宝ビルまとめ✏️ミリゴにリコリコが全系！",
+  "results": [
+   {
+    "machine": "ゴッド",
+    "plus": 19,
+    "total": 28,
+    "avg": null
+   },
+   {
+    "machine": "リコリコ（※1台稼働停止中）",
+    "plus": 14,
+    "total": 19,
+    "avg": null
+   },
+   {
+    "machine": "Sこのすば",
+    "plus": 3,
+    "total": 3,
+    "avg": null
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ゴッド",
+    "matched": true,
+    "keyword": "野菜",
+    "chain": [
+     "野菜",
+     "831",
+     "ゴッド高モード示唆出目"
+    ],
+    "raw": "野菜→831→ゴッド高モード示唆出目",
+    "result": {
+     "plus": 19,
+     "total": 28,
+     "avg": null
+    }
+   },
+   {
+    "machine": "ゴッド",
+    "matched": true,
+    "keyword": "野菜一日これ一本",
+    "chain": [
+     "野菜一日これ一本",
+     "しょうが",
+     "ジンジャー",
+     "神社"
+    ],
+    "raw": "野菜一日これ一本→しょうが→ジンジャー→神社",
+    "result": {
+     "plus": 19,
+     "total": 28,
+     "avg": null
+    }
+   },
+   {
+    "machine": "リコリコ",
+    "matched": false,
+    "keyword": "自転車かっ飛ばす",
+    "chain": [
+     "自転車かっ飛ばす",
+     "銭形",
+     "カリオストロの城",
+     "クラリス"
+    ],
+    "raw": "自転車かっ飛ばす→銭形→カリオストロの城→クラリス",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": true,
+    "keyword": "野菜一日これ一本",
+    "chain": [
+     "野菜一日これ一本",
+     "キャベツ"
+    ],
+    "raw": "野菜一日これ一本→キャベツ",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": null
+    }
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": true,
+    "keyword": "だいふく",
+    "chain": [
+     "だいふく",
+     "福"
+    ],
+    "raw": "だいふく→福",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": null
+    }
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "バイオマスプラ",
+    "chain": [
+     "バイオマスプラ",
+     "バイオ"
+    ],
+    "raw": "バイオマスプラ→バイオ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
