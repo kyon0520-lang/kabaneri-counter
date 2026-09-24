@@ -315,12 +315,19 @@ for group, items in DEFS.items():
     if group.startswith('_'): continue
     for it in items:
         ds = match_dates(it['match'], it['key'], group)
+        # focusDay：このイベントの本体は特定の日だけで見せ、ルール上の全日は altView に回す
+        # （九尾の日＝本体は19日のみ、旧9の日＝9/19/29の全部）
+        full_ds = ds
+        if it.get('focusDay'):
+            ds = [d for d in ds if int(d[-2:]) == it['focusDay']]
         p = profile(ds, it['label'])
         if not p: continue
         p.update({'g': group, 'key': it['key'], 'sub': it.get('sub', ''),
                   'match': it['match']})
         p['dates'] = ds
-        if it.get('altView'): p['_altViewDef'] = it['altView']
+        if it.get('altView'):
+            p['_altViewDef'] = it['altView']
+            p['_altFull'] = full_ds
         events.append(p)
 print('   不定期による置き換え %d日' % len(_claimed.get('不定期イベント', ())))
 
@@ -636,9 +643,11 @@ for p in events:
     # 別枠（例：旧9の日）として、母イベントと同じ統計一式（top・byDate・傾向）で持たせる。
     # 手書きのlead（母イベント全体向けの文章）はこの部分集合には合わないので引き継がない
     avd = p.pop('_altViewDef', None)
+    afull = p.pop('_altFull', None)
+    if afull: p.pop('lead', None)   # 手書きleadは全日向けの文章なので、19日だけの本体には使わない
     if avd:
         aday = avd.get('day')
-        adates = [d for d in p['dates'] if aday is None or int(d[-2:]) == aday]
+        adates = [d for d in (afull or p['dates']) if aday is None or int(d[-2:]) == aday]
         aprof = profile(adates, avd.get('label', ''))
         if aprof:
             av = {'label': avd.get('label', ''), 'days': aprof['days'], 'small': aprof['small'],
@@ -646,12 +655,6 @@ for p in events:
                   'byDate': [_bydate_row(d) for d in sorted(adates, reverse=True)]}
             av.update(build_stats(adates, p['key'], p['match']))
             p['altView'] = av
-            # trend: 「選ばれた機種」は母イベント（全体）のままだが、詳細ページの
-            # 「傾向」だけはこの部分集合の統計で出したいときに指定する
-            if avd.get('trend'):
-                tr = {'days': av['days'], 'small': av['small']}
-                tr.update(build_stats(adates, p['key'], p['match']))
-                p['trend'] = tr
 
 # イベント概要（data/event_notes.json に key → 文章。無ければ空）
 _np = B + '/data/event_notes.json'
