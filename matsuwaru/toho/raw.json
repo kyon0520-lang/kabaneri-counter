@@ -35243,5 +35243,139 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/25/073612",
+  "articleDate": "2026-09-25",
+  "targetDate": "2026-09-24",
+  "postDate": "2026-09-23",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2102722223446610108",
+  "title": "9月24日のマルハン新宿東宝ビルまとめ✏️全系3機種+バラ1機種が活躍！",
+  "results": [
+   {
+    "machine": "ドラハナ",
+    "plus": 10,
+    "total": 11,
+    "avg": 2755
+   },
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 3520
+   },
+   {
+    "machine": "アレックス",
+    "plus": 4,
+    "total": 4,
+    "avg": 2450
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "ごはん",
+    "chain": [
+     "ごはん",
+     "孫悟飯",
+     "ドラゴンボール"
+    ],
+    "raw": "ごはん→孫悟飯→ドラゴンボール",
+    "result": {
+     "plus": 10,
+     "total": 11,
+     "avg": 2755
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "コーン",
+    "chain": [
+     "コーン",
+     "コンたろ"
+    ],
+    "raw": "コーン→コンたろ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3520
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "15時で閉まっていた",
+    "chain": [
+     "15時で閉まっていた",
+     "ミスった"
+    ],
+    "raw": "15時で閉まっていた→ミスった",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3520
+    }
+   },
+   {
+    "machine": "アレックス",
+    "matched": true,
+    "keyword": "卵（周年ポスター）",
+    "chain": [
+     "卵（周年ポスター）",
+     "アレックス"
+    ],
+    "raw": "卵（周年ポスター）→アレックス",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 2450
+    }
+   },
+   {
+    "machine": "アレックス",
+    "matched": true,
+    "keyword": "ごま",
+    "chain": [
+     "ごま",
+     "セサミストリート",
+     "鳥"
+    ],
+    "raw": "ごま→セサミストリート→鳥",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 2450
+    }
+   },
+   {
+    "machine": "とんスキ",
+    "matched": false,
+    "keyword": "豚",
+    "chain": [
+     "豚",
+     "とん"
+    ],
+    "raw": "豚→とん",
+    "result": null
+   },
+   {
+    "machine": "とんスキ",
+    "matched": false,
+    "keyword": "お水",
+    "chain": [
+     "お水",
+     "スイ",
+     "登場キャラ",
+     "とんでもスキル"
+    ],
+    "raw": "お水→スイ→登場キャラ→とんでもスキル",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
