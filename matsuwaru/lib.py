@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 """記事HTMLの解析（parse.py / sync.py から共用）"""
-import re, html, os, unicodedata
+import re, html, os, unicodedata, json
+
+# ブログ側の日付の書き間違いを直す（記事ID → 正しい対象日）。date_overrides.json に手で書く
+_ovp = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'date_overrides.json')
+DATE_OVERRIDE = {k: v for k, v in json.load(open(_ovp, encoding='utf-8')).items()
+                 if not k.startswith('_')} if os.path.exists(_ovp) else {}
 
 def totext(s):
     m = re.search(r'<div class="entry-content[^"]*">(.*?)</div>\s*<(?:footer|div class="entry-footer)', s, re.S)
@@ -129,7 +134,7 @@ def parse_html(src, ent):
     events = [n for n, pat in IRREGULAR if re.search(pat, flat)]
 
     return {'events': events, 'articleUrl': 'https://sloslo-blog.hatenablog.com/entry/' + ent.replace('-', '/', 3).replace('-', '/'),
-            'articleDate': article_date, 'targetDate': target, 'postDate': post_date,
+            'articleDate': article_date, 'targetDate': DATE_OVERRIDE.get(ent, target), 'postDate': post_date,
             'tenchou': tenchou, 'tweetUrl': tweet_url, 'title': title.split(' - ')[0],
             'results': [results[k] for k in order], 'assoc': assoc, 'unassigned': unknown}
 
