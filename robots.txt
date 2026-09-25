@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /api/
+Disallow: /mypage/
+
+Sitemap: https://minnanoslot.com/sitemap.xml
