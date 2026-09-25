@@ -35377,5 +35377,121 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/26/080943",
+  "articleDate": "2026-09-26",
+  "targetDate": "2026-09-25",
+  "postDate": "2026-09-24",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2103085055719690730",
+  "title": "9月25日のマルハン新宿東宝ビルまとめ✏️39台設置の東京喰種がメインの仕掛けに！",
+  "results": [
+   {
+    "machine": "東京喰種",
+    "plus": 32,
+    "total": 39,
+    "avg": 4590
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 2183
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "東京喰種",
+    "matched": true,
+    "keyword": "チェンソーマンレゼ",
+    "chain": [
+     "チェンソーマンレゼ",
+     "街のカフェでアルバイト",
+     "カフェ"
+    ],
+    "raw": "チェンソーマンレゼ→街のカフェでアルバイト→カフェ",
+    "result": {
+     "plus": 32,
+     "total": 39,
+     "avg": 4590
+    }
+   },
+   {
+    "machine": "東京喰種",
+    "matched": true,
+    "keyword": "レゼ",
+    "chain": [
+     "レゼ",
+     "REぜ",
+     "リゼ"
+    ],
+    "raw": "レゼ→REぜ→リゼ",
+    "result": {
+     "plus": 32,
+     "total": 39,
+     "avg": 4590
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "わさび",
+    "chain": [
+     "わさび",
+     "緑"
+    ],
+    "raw": "わさび→緑",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 2183
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "感激",
+    "chain": [
+     "感激",
+     "西城秀樹",
+     "サイ",
+     "ガールズ"
+    ],
+    "raw": "感激→西城秀樹→サイ→ガールズ",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 2183
+    }
+   },
+   {
+    "machine": "虚構推理",
+    "matched": false,
+    "keyword": "チェンソーマン",
+    "chain": [
+     "チェンソーマン",
+     "藤本タツキ",
+     "『さよなら絵梨』",
+     "事実なのか虚構なのか"
+    ],
+    "raw": "チェンソーマン→藤本タツキ→『さよなら絵梨』→事実なのか虚構なのか",
+    "result": null
+   },
+   {
+    "machine": "虚構推理",
+    "matched": false,
+    "keyword": "たぬき",
+    "chain": [
+     "たぬき",
+     "化ける",
+     "怪異"
+    ],
+    "raw": "たぬき→化ける→怪異",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
