@@ -35493,5 +35493,169 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/27/081030",
+  "articleDate": "2026-09-27",
+  "targetDate": "2026-09-26",
+  "postDate": "2026-09-25",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2099823102956032302",
+  "title": "9月26日のマルハン新宿東宝ビルまとめ✏️鉄板の末尾6+アナザー末尾7+全系な一日！",
+  "results": [
+   {
+    "machine": "末尾⑥",
+    "plus": 50,
+    "total": 67,
+    "avg": 2493
+   },
+   {
+    "machine": "SAO2",
+    "plus": 4,
+    "total": 12,
+    "avg": 775
+   },
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 2360
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "アナザー末尾⑦",
+    "matched": false,
+    "keyword": "あおな",
+    "chain": [
+     "あおな",
+     "あお⑦"
+    ],
+    "raw": "あおな→あお⑦",
+    "result": null
+   },
+   {
+    "machine": "アナザー末尾⑦",
+    "matched": false,
+    "keyword": "松屋さんの上",
+    "chain": [
+     "松屋さんの上",
+     "写真：松屋看板の上",
+     "7:00"
+    ],
+    "raw": "松屋さんの上→写真：松屋看板の上→7:00",
+    "result": null
+   },
+   {
+    "machine": "アナザー末尾⑦",
+    "matched": false,
+    "keyword": "松屋さんの上",
+    "chain": [
+     "松屋さんの上",
+     "末⑥の上の数字",
+     "7"
+    ],
+    "raw": "松屋さんの上→末⑥の上の数字→7",
+    "result": null
+   },
+   {
+    "machine": "SAO2",
+    "matched": true,
+    "keyword": "ダブル",
+    "chain": [
+     "ダブル",
+     "2"
+    ],
+    "raw": "ダブル→2",
+    "result": {
+     "plus": 4,
+     "total": 12,
+     "avg": 775
+    }
+   },
+   {
+    "machine": "SAO2",
+    "matched": true,
+    "keyword": "がんバくん(誤字)",
+    "chain": [
+     "がんバくん(誤字)",
+     "ガン",
+     "ガンゲイル"
+    ],
+    "raw": "がんバくん(誤字)→ガン→ガンゲイル",
+    "result": {
+     "plus": 4,
+     "total": 12,
+     "avg": 775
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "かんバくん",
+    "chain": [
+     "かんバくん",
+     "がんバくん",
+     "ミス",
+     "ミスター"
+    ],
+    "raw": "かんバくん→がんバくん→ミス→ミスター",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2360
+    }
+   },
+   {
+    "machine": "DMC5",
+    "matched": false,
+    "keyword": "ねぎし",
+    "chain": [
+     "ねぎし",
+     "石塚ビル2F",
+     "ビル"
+    ],
+    "raw": "ねぎし→石塚ビル2F→ビル",
+    "result": null
+   },
+   {
+    "machine": "DMC5",
+    "matched": false,
+    "keyword": "冷静",
+    "chain": [
+     "冷静",
+     "クール",
+     "デビルメイクライ"
+    ],
+    "raw": "冷静→クール→デビルメイクライ",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "小躍り",
+    "chain": [
+     "小躍り",
+     "久遠ダンス",
+     "戦国恋姫"
+    ],
+    "raw": "小躍り→久遠ダンス→戦国恋姫",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "がんこ",
+    "chain": [
+     "がんこ",
+     "負けん気",
+     "魔剣"
+    ],
+    "raw": "がんこ→負けん気→魔剣",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
