@@ -378,22 +378,22 @@ function trendParts(z, all, p, D){
     ? `小台数（4〜9台）のジャグラーが<n>${sj.k}/${sj.n}回</n>`
       + (sj.top && sj.top.length ? `（メインは${sj.top[0][0]}）` : '') : '';
   if(ups.length || dn || jugSmall || (p.lead && p.lead.group)){
-    const g1 = ups.length === 0 ? '' : ups.length === 1
-      ? (up.k === n ? `${up.g}がこれまでの開催すべて <n>${up.k}/${n}回</n>`
-                    : `${up.g} <n>${up.k}/${n}回</n>`)
-      : `${ups[0].g} <n>${ups[0].k}/${n}回</n>、${ups[1].g} <n>${ups[1].k}/${n}回</n>`;
-    const main = g1 ? (jugTxt ? `${g1}。${jugTxt}` : g1)
-      : (jugTxt || (dn ? `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ` : ''));
-    const sub = (dn && (g1 || jugTxt)) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '';
-    const numAll = p.numTie && p.numTie.days === p.days;
-    // groupPin: 指定した系統を必ず系統行に出す（件数は集計から取る）
-    let gAdd = p.lead && p.lead.group ? fillMain(p.lead.group, p) : '';
+    // 系統・小台数ジャグラー・groupPin（指定した系統を必ず出す）は、割合の高い順に並べる
+    const items = ups.map(x => ({r: x.k / n,
+      t: (ups.length === 1 && x.k === n) ? `${x.g}がこれまでの開催すべて <n>${x.k}/${n}回</n>`
+                                         : `${x.g} <n>${x.k}/${n}回</n>`}));
+    if(jugSmall) items.push({r: sj.k / sj.n, t: jugTxt});
     const pin = p.lead && p.lead.groupPin;
-    if(pin){
-      const pv = (p.groups||[]).find(x=>x[0] === pin);
-      if(pv) gAdd = `${pin} <n>${pv[1]}/${n}回</n>` + (gAdd ? `。${gAdd}` : '');
-    }
-    rows.push({t:'系統', main: gAdd ? `${gAdd}。${main}` : main,
+    const pv = pin && (p.groups||[]).find(x=>x[0] === pin);
+    if(pv) items.push({r: pv[1] / n, t: `${pin} <n>${pv[1]}/${n}回</n>`});
+    items.sort((a,b)=>b.r-a.r);
+    const g1 = items.map(x=>x.t).join('、');
+    const main = g1 || (dn ? `${dn.g}が<n class="dn">${dn.k}/${n}回</n>と少なめ` : '');
+    const sub = (dn && g1) ? `${dn.g}は${dn.k}/${n}回と少なめ` : '';
+    const numAll = p.numTie && p.numTie.days === p.days;
+    // 手書きの group（末尾が軸、など割合で表せないもの）は先頭に置く
+    const gAdd = p.lead && p.lead.group ? fillMain(p.lead.group, p) : '';
+    rows.push({t:'系統', main: gAdd ? (main ? `${gAdd}。${main}` : gAdd) : main,
                sub, w: (up && up.k === n && !numAll) ? -0.5 : 1});
   }
 
