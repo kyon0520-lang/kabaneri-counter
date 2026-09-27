@@ -725,6 +725,21 @@
     .rune-btn::before{ animation:none; }
     .tap-hint{ animation:none; opacity:1; transform:none; }
   }
+  /* このツールについて（details）。JSを使わない開閉 */
+  .about-tool{margin:0 0 14px;border:1px solid var(--line);border-radius:12px;background:rgba(29,23,18,.72)}
+  .about-tool summary{list-style:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--ink-dim)}
+  .about-tool summary::-webkit-details-marker{display:none}
+  .about-tool summary .ic{flex:0 0 auto;width:16px;height:16px;color:var(--gold-soft);transition:transform .18s}
+  .about-tool[open] summary{color:var(--ink)}
+  .about-tool[open] summary .ic{transform:rotate(180deg)}
+  .about-tool .body{padding:0 14px 14px;font-size:12px;line-height:1.85;color:var(--ink-dim)}
+  .about-tool .body h3{font-size:11.5px;color:var(--gold);margin:14px 0 4px;font-weight:700;letter-spacing:.04em}
+  .about-tool .body h3:first-child{margin-top:0}
+  .about-tool .body p{margin:0 0 6px}
+  .about-tool .body dl{margin:0}
+  .about-tool .body dt{color:var(--ink);font-weight:700;margin-top:8px}
+  .about-tool .body dd{margin:1px 0 0}
+  .about-tool .body a{color:var(--gold-soft)}
 </style>
 </head>
 <body>
@@ -917,6 +932,26 @@
           <div class="log-list" id="sampleLog"></div>
         </div>
       </section>
+        <details class="about-tool">
+          <summary>このアプリについて
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </summary>
+          <div class="body">
+            <h3>どんなアプリか</h3>
+            <p>カバネリチャレンジの中押し・右押しの2択で迷ったときに、おみくじをタップして参考にするための小さなアプリです。無名か生駒を選んでおみくじをひくと、2択の質問に答えたあと、「中」か「右」のお告げが出ます。</p>
+            <h3>お告げについて</h3>
+            <p>中・右の判定は完全ランダムです。お告げは雰囲気を楽しむためのもので、実際の内部抽選を示すものではありません。迷ったときの気分の後押しとしてお使いください。</p>
+            <h3>よくある質問</h3>
+            <dl>
+              <dt>記録はどこに保存される？</dt>
+              <dd>この端末の中だけです。サーバーには送りません。iPhoneはSafariとホーム画面のアプリで保存先が別になるので、ホーム画面に追加してから使うのが確実です。</dd>
+              <dt>的中率が高い（低い）のは意味がある？</dt>
+              <dd>回数が少ないうちは偶然の範囲で大きくブレます。20回なら、本当は50%でもおよそ28〜72%の間に出ます。</dd>
+              <dt>使い方をもっと詳しく知りたい</dt>
+              <dd><a href="/column/omikuji-guide">カバネリチャレンジおみくじの使い方</a>にまとめています。</dd>
+            </dl>
+          </div>
+        </details>
     </main>
 
     <footer class="note">
