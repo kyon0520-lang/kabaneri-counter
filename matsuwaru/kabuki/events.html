@@ -193,6 +193,23 @@ h2:first-of-type{margin-top:4px}
 .foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
   font-size:11px;color:var(--sub);line-height:1.8}
 .foot a{color:var(--accent)}
+/* このツールについて（details）。app.html / events.html 共通 */
+.about-tool{margin:0 0 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.about-tool summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;font-weight:700;color:var(--ink)}
+.about-tool summary::-webkit-details-marker{display:none}
+.about-tool summary .ic{flex:0 0 auto;width:18px;height:18px;color:var(--sub);transition:transform .18s}
+.about-tool[open] summary .ic{transform:rotate(180deg)}
+.about-tool .body{padding:0 16px 16px;font-size:13px;line-height:1.9;color:var(--sub)}
+.about-tool .body h3{font-size:12px;color:var(--ink);margin:16px 0 6px;font-weight:700}
+.about-tool .body h3:first-child{margin-top:2px}
+.about-tool .body p{margin:0 0 8px}
+.about-tool .body dl{margin:0}
+.about-tool .body dt{color:var(--ink);font-weight:700;font-size:12.5px;margin-top:10px}
+.about-tool .body dd{margin:2px 0 0}
+.about-tool .body a{color:var(--accent)}
+/* events.html のみ：<main id="main"> の外に置くための外枠（main と同じ幅・余白） */
+.about-wrap{max-width:680px;margin:0 auto;padding:18px 20px 0}
+.about-wrap .about-tool{margin:0}
 </style>
 </head>
 <body>
@@ -229,6 +246,23 @@ h2:first-of-type{margin-top:4px}
 
 <!-- 読み込み中の骨組み。実物（見出し → 選択欄 → カード）と同じ位置に置く。
      ここが「読み込み中…」の1行だけだと、届いた瞬間に見出しも中身も動く -->
+<div class="about-wrap"><details class="about-tool">
+  <summary>このツールについて
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </summary>
+  <div class="body">
+    <h3>どんなツールか</h3>
+    <p>エスパス日拓新宿歌舞伎町店で、「0のつく日」などのイベントごとに、これまでどの機種が全台系に選ばれてきたかを見られるツールです。日付ごとの実施機種や、翌日のイベントも確認できます。</p>
+    <h3>データについて</h3>
+    <p><a href="https://slotterguild3.com/" target="_blank" rel="noopener">スロッターギルド</a>の記事をもとに、毎朝自動で取り込み・集計しています。集計は、実際に全台系が行われた日で行っています。</p>
+    <h3>よくある質問</h3>
+    <dl>
+      <dt>まつわるチェッカーとの違いは？</dt>
+      <dd>まつわるチェッカーは示唆の言葉から、こちらは日付やイベントから機種を調べます。あわせて見ると手がかりが増えます。</dd>
+    </dl>
+  </div>
+</details></div>
+
 <main id="main"><div class="skel" aria-hidden="true">
   <div class="skh"></div>
   <div class="skpick"></div>
