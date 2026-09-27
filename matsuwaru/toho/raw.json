@@ -35657,5 +35657,463 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/28/080932",
+  "articleDate": "2026-09-28",
+  "targetDate": "2026-09-27",
+  "postDate": "2026-09-26",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2103809356760592721",
+  "title": "9月27日のマルハン新宿東宝ビルまとめ✏️全系×12機種+バラエティ2機種の超全系特化日！",
+  "results": [
+   {
+    "machine": "沖ドキDUOアンコール",
+    "plus": 11,
+    "total": 17,
+    "avg": 4041
+   },
+   {
+    "machine": "北斗",
+    "plus": 7,
+    "total": 8,
+    "avg": 3275
+   },
+   {
+    "machine": "ハッピー",
+    "plus": 7,
+    "total": 7,
+    "avg": 2943
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 3350
+   },
+   {
+    "machine": "アイム",
+    "plus": 5,
+    "total": 5,
+    "avg": 1620
+   },
+   {
+    "machine": "ウルミラ",
+    "plus": 4,
+    "total": 5,
+    "avg": 1360
+   },
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 2240
+   },
+   {
+    "machine": "ToLOVEる",
+    "plus": 2,
+    "total": 4,
+    "avg": 3800
+   },
+   {
+    "machine": "スト6",
+    "plus": 3,
+    "total": 3,
+    "avg": 667
+   },
+   {
+    "machine": "このすば",
+    "plus": 3,
+    "total": 3,
+    "avg": 3567
+   },
+   {
+    "machine": "ドッチ",
+    "plus": 0,
+    "total": 2,
+    "avg": -800
+   },
+   {
+    "machine": "エウレカ",
+    "plus": 2,
+    "total": 2,
+    "avg": 600
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": true,
+    "keyword": "セブン＆i",
+    "chain": [
+     "セブン＆i",
+     "＆",
+     "デュオ"
+    ],
+    "raw": "セブン＆i→＆→デュオ",
+    "result": {
+     "plus": 11,
+     "total": 17,
+     "avg": 4041
+    }
+   },
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": true,
+    "keyword": "およがせ麺",
+    "chain": [
+     "およがせ麺",
+     "海",
+     "沖"
+    ],
+    "raw": "およがせ麺→海→沖",
+    "result": {
+     "plus": 11,
+     "total": 17,
+     "avg": 4041
+    }
+   },
+   {
+    "machine": "北斗",
+    "matched": true,
+    "keyword": "七転び八起き・7の日",
+    "chain": [
+     "七転び八起き・7の日",
+     "8台機種"
+    ],
+    "raw": "七転び八起き・7の日→8台機種",
+    "result": {
+     "plus": 7,
+     "total": 8,
+     "avg": 3275
+    }
+   },
+   {
+    "machine": "北斗",
+    "matched": true,
+    "keyword": "七転び八起き",
+    "chain": [
+     "七転び八起き",
+     "七",
+     "北斗七星"
+    ],
+    "raw": "七転び八起き→七→北斗七星",
+    "result": {
+     "plus": 7,
+     "total": 8,
+     "avg": 3275
+    }
+   },
+   {
+    "machine": "ハッピー",
+    "matched": true,
+    "keyword": "500円",
+    "chain": [
+     "500円",
+     "5",
+     "5台ジャグラー"
+    ],
+    "raw": "500円→5→5台ジャグラー",
+    "result": {
+     "plus": 7,
+     "total": 7,
+     "avg": 2943
+    }
+   },
+   {
+    "machine": "ハッピー",
+    "matched": true,
+    "keyword": "50円オフ",
+    "chain": [
+     "50円オフ",
+     "嬉しい",
+     "ハッピー"
+    ],
+    "raw": "50円オフ→嬉しい→ハッピー",
+    "result": {
+     "plus": 7,
+     "total": 7,
+     "avg": 2943
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "製造 埼玉工場",
+    "chain": [
+     "製造 埼玉工場",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "製造 埼玉工場→サイ→つのっち",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 3350
+    }
+   },
+   {
+    "machine": "アイム",
+    "matched": true,
+    "keyword": "500円",
+    "chain": [
+     "500円",
+     "5",
+     "5台ジャグラー"
+    ],
+    "raw": "500円→5→5台ジャグラー",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 1620
+    }
+   },
+   {
+    "machine": "アイム",
+    "matched": true,
+    "keyword": "製造 埼玉工場",
+    "chain": [
+     "製造 埼玉工場",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "製造 埼玉工場→サイ→つのっち",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 1620
+    }
+   },
+   {
+    "machine": "アイム",
+    "matched": true,
+    "keyword": "セブン＆i",
+    "chain": [
+     "セブン＆i",
+     "アイ"
+    ],
+    "raw": "セブン＆i→アイ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 1620
+    }
+   },
+   {
+    "machine": "ウルミラ",
+    "matched": true,
+    "keyword": "500円",
+    "chain": [
+     "500円",
+     "5",
+     "5台ジャグラー"
+    ],
+    "raw": "500円→5→5台ジャグラー",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1360
+    }
+   },
+   {
+    "machine": "ウルミラ",
+    "matched": true,
+    "keyword": "バター",
+    "chain": [
+     "バター",
+     "牛乳",
+     "牛"
+    ],
+    "raw": "バター→牛乳→牛",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1360
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "500円",
+    "chain": [
+     "500円",
+     "5",
+     "5台ジャグラー"
+    ],
+    "raw": "500円→5→5台ジャグラー",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2240
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "缶詰",
+    "chain": [
+     "缶詰",
+     "かんづめ",
+     "爪",
+     "クロー",
+     "黒"
+    ],
+    "raw": "缶詰→かんづめ→爪→クロー→黒",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2240
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "バターコーン",
+    "chain": [
+     "バターコーン",
+     "コンたろ"
+    ],
+    "raw": "バターコーン→コンたろ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2240
+    }
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": true,
+    "keyword": "セブン＆i",
+    "chain": [
+     "セブン＆i",
+     "アイ",
+     "愛"
+    ],
+    "raw": "セブン＆i→アイ→愛",
+    "result": {
+     "plus": 2,
+     "total": 4,
+     "avg": 3800
+    }
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": true,
+    "keyword": "およがせ",
+    "chain": [
+     "およがせ",
+     "泳げたいやきくん",
+     "たいやき"
+    ],
+    "raw": "およがせ→泳げたいやきくん→たいやき",
+    "result": {
+     "plus": 2,
+     "total": 4,
+     "avg": 3800
+    }
+   },
+   {
+    "machine": "スト6",
+    "matched": true,
+    "keyword": "ポスト",
+    "chain": [
+     "ポスト",
+     "スト"
+    ],
+    "raw": "ポスト→スト",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 667
+    }
+   },
+   {
+    "machine": "スト6",
+    "matched": true,
+    "keyword": "チャーハン",
+    "chain": [
+     "チャーハン",
+     "中華",
+     "春麗"
+    ],
+    "raw": "チャーハン→中華→春麗",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 667
+    }
+   },
+   {
+    "machine": "このすば",
+    "matched": true,
+    "keyword": "9/27",
+    "chain": [
+     "9/27",
+     "世界観光の日",
+     "世界"
+    ],
+    "raw": "9/27→世界観光の日→世界",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3567
+    }
+   },
+   {
+    "machine": "ドッチ",
+    "matched": true,
+    "keyword": "バターが行方不明",
+    "chain": [
+     "バターが行方不明",
+     "消えたか？消えてないのか？",
+     "どっち"
+    ],
+    "raw": "バターが行方不明→消えたか？消えてないのか？→どっち",
+    "result": {
+     "plus": 0,
+     "total": 2,
+     "avg": -800
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "およがせ～～～",
+    "chain": [
+     "およがせ～～～",
+     "波"
+    ],
+    "raw": "およがせ～～～→波",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 600
+    }
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "七転び八起き",
+    "chain": [
+     "七転び八起き",
+     "七つ"
+    ],
+    "raw": "七転び八起き→七つ",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "キャラ誕",
+    "chain": [
+     "キャラ誕",
+     "愛城華恋"
+    ],
+    "raw": "キャラ誕→愛城華恋",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
