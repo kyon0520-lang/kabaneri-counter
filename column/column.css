@@ -67,3 +67,46 @@ th{background:var(--panel);font-weight:700;white-space:nowrap}
   h2{font-size:17.5px}
   body{font-size:15px}
 }
+
+/* ---- 色つきの表（読み物のデータ表。文字は表のまま、棒は飾り） ---- */
+.vt table{font-size:13.5px}
+.vt th{background:#161616;color:#fff;border-color:#161616}
+.vt td{vertical-align:middle}
+.vt tr:nth-child(even) td{background:#fafaf8}
+.vt .nm{font-weight:700;white-space:nowrap}
+.vt .num{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:700}
+.vt .sub{display:block;font-size:11.5px;color:#5a5a5a;font-weight:400;white-space:nowrap}
+.vt .ms{font-size:12.5px;line-height:1.6}
+.vt .ms b{font-weight:700}
+.vt .ms .mc{display:block;white-space:nowrap;color:#1f5fae}
+.vt .thsub{display:block;font-size:11px;font-weight:400;opacity:.8}
+.vt .big{display:block;color:#1f5fae;font-size:16px;line-height:1.35}
+.vt .rk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;
+  color:#fff;font-size:11px;font-weight:700;margin-right:7px;vertical-align:1px;font-variant-numeric:tabular-nums;flex:0 0 auto}
+.vt .rk.plain{background:none;color:#8a8984;border:1px solid #d0d0d0}
+.dbar{display:block;position:relative;height:10px;background:#f0efec;border-radius:4px;margin-top:6px;min-width:130px}
+.dbar::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:#161616}
+.dbar > i{position:absolute;top:0;bottom:0}
+.dbar > i.up{left:50%;background:#2a78d6;border-radius:0 4px 4px 0}
+.dbar > i.down{right:50%;background:#e34948;border-radius:4px 0 0 4px}
+.tag{display:inline-block;font-size:11px;font-weight:700;line-height:1.6;padding:0 7px;border-radius:999px;margin-left:6px;vertical-align:1px;color:#161616}
+.tag.up{background:#dbe8f8}
+.tag.down{background:#f9dcdb}
+.vlegend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:#5a5a5a;margin:-2px 0 8px}
+.vlegend span{display:inline-flex;align-items:center;gap:6px}
+.vlegend i{display:inline-block;width:14px;height:8px;border-radius:2px}
+@media (max-width:520px){
+  .vt table{font-size:12.5px}
+  .vt th,.vt td{padding:8px 6px}
+  .vt th{white-space:normal;line-height:1.4}
+  .vt .nm{white-space:normal;word-break:keep-all}
+  .vt .sub{font-size:10.5px;white-space:normal}
+  .vt .ms{font-size:11.5px}
+    .dbar{min-width:84px}
+  .tag{margin-left:2px;padding:0 5px;font-size:10px}
+  .vt .rk{width:18px;height:18px;font-size:10px;margin-right:4px}
+  .vt .big{font-size:15px}
+  .vt .dcol{min-width:74px}
+  .vt .sub.nw{white-space:nowrap}
+  .vt .rk{display:flex;margin:0 0 3px}
+}
