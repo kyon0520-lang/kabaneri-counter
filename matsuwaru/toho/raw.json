@@ -36115,5 +36115,201 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "あかまる取材"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/29/071819",
+  "articleDate": "2026-09-29",
+  "targetDate": "2026-09-28",
+  "postDate": "2026-09-27",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2104171764997894496",
+  "title": "9月28日のマルハン新宿東宝ビルまとめ✏️増台・再導入&amp;減台機種はアツい！",
+  "results": [
+   {
+    "machine": "ヴヴヴ2",
+    "plus": 21,
+    "total": 41,
+    "avg": 3249
+   },
+   {
+    "machine": "マギレコ",
+    "plus": 8,
+    "total": 9,
+    "avg": 3789
+   },
+   {
+    "machine": "Lハナビ",
+    "plus": 5,
+    "total": 5,
+    "avg": 2200
+   },
+   {
+    "machine": "SAO",
+    "plus": 3,
+    "total": 3,
+    "avg": 2633
+   },
+   {
+    "machine": "番長4",
+    "plus": 3,
+    "total": 3,
+    "avg": 4300
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "カツ煮",
+    "chain": [
+     "カツ煮",
+     "かつ(V)に(2)",
+     "Ｖ２"
+    ],
+    "raw": "カツ煮→かつ(V)に(2)→Ｖ２",
+    "result": {
+     "plus": 21,
+     "total": 41,
+     "avg": 3249
+    }
+   },
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "ウッス",
+    "chain": [
+     "ウッス",
+     "マギウスマーク"
+    ],
+    "raw": "ウッス→マギウスマーク",
+    "result": {
+     "plus": 21,
+     "total": 41,
+     "avg": 3249
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "あかまる",
+    "chain": [
+     "あかまる",
+     "まる",
+     "〇",
+     "円島"
+    ],
+    "raw": "あかまる→まる→〇→円島",
+    "result": {
+     "plus": 8,
+     "total": 9,
+     "avg": 3789
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "増台機種",
+    "chain": [
+     "増台機種"
+    ],
+    "raw": "・増台機種",
+    "result": {
+     "plus": 8,
+     "total": 9,
+     "avg": 3789
+    }
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": true,
+    "keyword": "七味",
+    "chain": [
+     "七味",
+     "七"
+    ],
+    "raw": "七味→七",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2200
+    }
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": true,
+    "keyword": "増台機種",
+    "chain": [
+     "増台機種"
+    ],
+    "raw": "・増台機種",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2200
+    }
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "箸としゃもじの二刀流",
+    "chain": [
+     "箸としゃもじの二刀流",
+     "SAO"
+    ],
+    "raw": "箸としゃもじの二刀流→SAO",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2633
+    }
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種"
+    ],
+    "raw": "・減台機種",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2633
+    }
+   },
+   {
+    "machine": "番長4",
+    "matched": true,
+    "keyword": "ウッス",
+    "chain": [
+     "ウッス",
+     "押忍"
+    ],
+    "raw": "ウッス→押忍",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 4300
+    }
+   },
+   {
+    "machine": "番長4",
+    "matched": true,
+    "keyword": "再導入機種",
+    "chain": [
+     "再導入機種"
+    ],
+    "raw": "・再導入機種",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 4300
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
