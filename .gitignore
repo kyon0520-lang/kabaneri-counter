@@ -2,3 +2,6 @@
 .wrangler/
 __pycache__/
 *.pyc
+
+# 手元の試験用の設定（wrangler pages dev が読む）。公開しない
+.dev.vars

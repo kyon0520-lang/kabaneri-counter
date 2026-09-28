@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>COLUMN管理｜みんなのスロット</title>
+<link rel="icon" type="image/png" href="/img/favicon-32.png">
+<style>
+  :root{
+    --bg:#f4f4f2; --panel:#fff; --ink:#161616; --ink-2:#5a5a5a; --ink-3:#8b8b8b;
+    --line:#dcdcd8; --accent:#2f6bd8; --accent-soft:#e7eefc; --danger:#c8372d; --danger-soft:#fbe9e7;
+    --ok:#1f7a45; --ok-soft:#e3f3e9; --warn:#8a6100; --warn-soft:#fff4d6;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:15px;line-height:1.7}
+  button,input,textarea,select{font:inherit;color:inherit}
+  a{color:var(--accent)}
+  .top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line)}
+  .top .in{max-width:880px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;min-height:52px}
+  .top h1{font-size:16px;margin:0;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top .who{font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40vw}
+  .main{max-width:880px;margin:0 auto;padding:16px 16px 210px}
+  .sec{margin:0 0 26px}
+  .sec > h2{font-size:13px;letter-spacing:.06em;color:var(--ink-2);margin:0 0 8px;display:flex;align-items:center;gap:8px}
+  .sec > h2 .n{background:#e6e6e2;border-radius:99px;padding:0 8px;font-size:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px}
+  .list{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .item{display:flex;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--line);text-decoration:none;color:inherit;width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;cursor:pointer}
+  .item:first-child{border-top:0}
+  .item:active{background:#f0f0ec}
+  .item .tx{flex:1;min-width:0}
+  .item .t{font-weight:700;font-size:14.5px;line-height:1.55;display:block}
+  .item .s{font-size:12px;color:var(--ink-3);display:block;margin-top:2px}
+  .item .go{color:var(--ink-3);font-size:18px}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:99px;padding:1px 8px;margin-right:6px;vertical-align:1px}
+  .pill.sch{background:var(--warn-soft);color:var(--warn)}
+  .pill.new{background:var(--accent-soft);color:var(--accent)}
+  .pill.off{background:#eee;color:var(--ink-2)}
+  .acts{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 12px}
+  .btn{appearance:none;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 14px;font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+  .btn:active{transform:scale(.98)}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.dan{color:var(--danger);border-color:#efc2bd}
+  .btn.dan.fill{background:var(--danger);color:#fff;border-color:var(--danger)}
+  .btn.sm{padding:6px 10px;font-size:13px;border-radius:8px}
+  .btn[disabled]{opacity:.45;pointer-events:none}
+  .note{font-size:13px;color:var(--ink-2);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 16px}
+  .note.warn{background:var(--warn-soft);border-color:#f0dc9c;color:#5c4300}
+  .note.err{background:var(--danger-soft);border-color:#efc2bd;color:#8a2119}
+  .note.ok{background:var(--ok-soft);border-color:#b9dfc7;color:#15532f}
+  .note b{font-weight:800}
+  .empty{padding:16px 14px;color:var(--ink-3);font-size:13px}
+
+  /* 入力欄 */
+  .fld{display:block;margin:0 0 14px}
+  .fld > span{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;font-size:12.5px;font-weight:700;color:var(--ink-2);margin:0 0 5px}
+  .fld > span em{font-style:normal;font-weight:400;color:var(--ink-3)}
+  .fld input[type=text],.fld input[type=email],.fld input[type=date],.fld textarea,.fld select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;font-size:16px;line-height:1.6}
+  .fld textarea{resize:vertical;min-height:72px}
+  .fld .pre{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+  .fld .pre b{padding:0 0 0 12px;color:var(--ink-3);font-weight:400;font-size:14px;white-space:nowrap}
+  .fld .pre input{border:0 !important}
+  .fld .hint{font-size:12px;color:var(--ink-3);margin-top:4px}
+  .fld .bad{color:var(--danger)}
+  .chk{display:flex;flex-wrap:wrap;gap:8px}
+  .chk label{display:flex;gap:6px;align-items:center;border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font-size:13px}
+  details.rules{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:0 14px;margin:0 0 16px;font-size:13.5px}
+  details.rules summary{padding:12px 0;font-weight:700;cursor:pointer}
+  details.rules ul{margin:0 0 12px;padding-left:1.3em}
+  details.rules li{margin:0 0 4px}
+
+  /* 仕上がり（そのまま直せる） */
+  .pv-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:18px 0 6px}
+  .pv-head b{font-size:13px;color:var(--ink-2)}
+  .pv-head span{font-size:12px;color:var(--ink-3)}
+  .pv{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .pv iframe{display:block;width:100%;border:0;min-height:60vh}
+
+  /* 下の道具 */
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.97);border-top:1px solid var(--line);
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(6px)}
+  .bar .in{max-width:880px;margin:0 auto}
+  .tools{display:flex;gap:6px;overflow-x:auto;padding:0 0 8px;scrollbar-width:none}
+  .tools::-webkit-scrollbar{display:none}
+  .tools .btn{flex:0 0 auto;padding:7px 11px;font-size:13px;border-radius:8px}
+  .tools .sepv{flex:0 0 1px;background:var(--line);margin:2px 2px}
+  .bar .msg{font-size:12px;color:var(--ink-3);margin:0 0 6px;min-height:1em}
+  .bar .row{display:flex;gap:8px}
+  .bar .row .btn{flex:1;padding:12px 10px}
+
+  /* 確認・ダイアログ */
+  .ov{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center}
+  @media (min-width:700px){.ov{align-items:center}}
+  .sheet{background:var(--panel);width:100%;max-width:720px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+  @media (min-width:700px){.sheet{border-radius:16px}}
+  .sheet h3{margin:0 0 12px;font-size:17px}
+  .sheet p{margin:0 0 12px}
+  .sheet .btns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+  .sheet .btns .btn{min-width:110px}
+  .diff{border:1px solid var(--line);border-radius:10px;margin:0 0 10px;overflow:hidden}
+  .diff .h{font-size:12px;font-weight:700;padding:6px 10px;background:#f4f4f2;color:var(--ink-2)}
+  .diff .b{padding:8px 10px;font-size:14px;white-space:pre-wrap;word-break:break-all}
+  .diff del{background:#fbd9d5;color:#8a2119;text-decoration:line-through}
+  .diff ins{background:#d4f0dd;color:#15532f;text-decoration:none}
+  .diff .old{color:var(--ink-3)}
+  .opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 8px;cursor:pointer}
+  .opt input{margin-top:5px}
+  .opt b{display:block}
+  .opt small{color:var(--ink-3);font-size:12.5px}
+  .opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+  .checks{margin:0 0 12px;padding:0;list-style:none;font-size:13.5px}
+  .checks li{padding:3px 0}
+  .busy{position:fixed;inset:0;z-index:60;background:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;font-weight:700}
+  .spin{width:28px;height:28px;border:3px solid #d5dcea;border-top-color:var(--accent);border-radius:50%;animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .login{max-width:420px;margin:8vh auto 0}
+  .login .card{padding:20px 18px}
+  .login h2{margin:0 0 6px;font-size:18px}
+</style>
+</head>
+<body>
+<div id="app"><div class="busy"><div class="spin"></div>読み込み中…</div></div>
+<noscript>この画面を使うには JavaScript を有効にしてください。</noscript>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

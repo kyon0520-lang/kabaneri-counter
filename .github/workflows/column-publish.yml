@@ -1,0 +1,43 @@
+name: COLUMN即時公開
+
+# COLUMN 管理画面（minnanoslot.com/admin/）で「いますぐ公開」したときに、本番へ出す。
+# 管理画面は GitHub の main に直接コミットするので、そのコミット（column/ などの変更）をきっかけに
+# main の最新をデプロイする。Mac から push したときも同じように動く（本番に出る中身は同じ main）。
+#
+# まつわる更新（matsuwaru-daily.yml）や予約公開（column-scheduled.yml）のコミットは
+# GITHUB_TOKEN で push されるため、このワークフローは動かない（それぞれが自分でデプロイする）。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'column/**'
+      - 'index.html'
+      - 'src/top.html'
+      - 'sitemap.xml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: column-publish
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # きっかけのコミットではなく、動き始めた時点の main の最新を出す
+      # （続けて保存したときや、まつわる更新が挟まったときに、古い中身で上書きしないため）
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # 本番反映。リポジトリ直下から実行する（別ディレクトリからだと本番が壊れる）
+      - name: Cloudflare Pages へデプロイ
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy . --project-name=kabaneri-counter --branch=main

@@ -175,6 +175,41 @@ SEND_ENABLED = False   # みんなのスロットへの送信を外した版を�
 
 **いまは False（保存のみの版）です。** 記録の引き継ぎは送信とは別物なので残しています。
 
+## COLUMN 管理画面（`/admin/`）
+
+`https://minnanoslot.com/admin/` で、COLUMN の記事をスマホからでも直せます（2026-09-28 作成）。
+
+- **入口**: 既存のメールログイン（`functions/api/_auth.js`）。Cloudflare Pages の環境変数 `ADMIN_EMAIL` に
+  入っているアドレスだけが入れる。管理画面だけはログインから14日で入り直し。確認は API の1回ごとに
+  `functions/api/admin/_middleware.js` でする（画面を隠すだけにしていない）
+- **原本**: 公開中の `column/*.html` が正。管理画面はこのファイルを直接書き換える。
+  `column-src/` のスクリプトは新しい記事の初稿づくり専用で、公開中のファイルは上書きしない
+  （どうしても作り直すときだけ `COLUMN_FORCE=1`）
+- **保存**: API が GitHub にコミットする（`ADMIN_GH_TOKEN` = このリポジトリだけ・Contents の読み書きだけの
+  fine-grained token。**リポジトリには絶対に書かない**）
+  - いますぐ公開 → main にコミット → `.github/workflows/column-publish.yml` がデプロイ（2〜3分）
+  - 予約 → `scheduled/YYYY-MM-DD-<slug>` ブランチにコミット → その日の 08:47 に `column-scheduled.yml` が公開
+  - タイトル・ひとこと紹介を変えたとき、新しい記事、非公開に戻すときは、一覧・全記事の「ほかのCOLUMN」・
+    トップの COLUMN 欄（`src/top.html` と `index.html`）・`sitemap.xml` も同じコミットで直す
+- **下書き**: D1 の `column_drafts`（`src/schema-admin.sql`）。リポジトリは PUBLIC なので、書きかけはここに置く
+- **書き換えられるファイル**: `column/*.html`・`src/top.html`・`index.html`・`sitemap.xml` だけ。
+  記事にスクリプトなどが入っていないかもサーバー側で確かめる（`functions/api/admin/_guard.js`）
+- **直せる所**: 段落・見出し・箇条書き・囲み。表・図・特殊な飾りを含む段落は固定（上下の移動だけ）
+
+| ファイル | 役割 |
+|---|---|
+| `admin/index.html` `admin/app.js` | 画面 |
+| `admin/lib.js` | 記事・一覧・トップ・sitemap の読み書き。何も直さず組み立て直すと元と同じになる |
+| `src/test-admin-lib.mjs` | その試験。`node src/test-admin-lib.mjs`（実際の `column/` を使う） |
+| `functions/api/admin/*.js` | API（一覧・ファイル読み込み・保存・予約の操作・下書き） |
+
+**Mac で作業するときの注意**: 管理画面は main に直接コミットするので、デプロイ・push の前に
+必ず `git pull --rebase` する。古い手元のまま `wrangler pages deploy .` すると、管理画面で直した文章が
+本番から一時的に消える（次の自動デプロイで戻る）。
+
+手元で試すときは、`.dev.vars` に `ADMIN_EMAIL`・`ADMIN_GH_TOKEN`・`DEV_LOGIN=1` と、GitHub の代わりの
+試験用サーバーの `ADMIN_GH_API` を書いて `npx wrangler pages dev .`（`.dev.vars` は公開しない）。
+
 ## アクセス解析
 
 Cloudflare Web Analytics を使っています。計測タグは `build-pages.py` が各ページに入れます。

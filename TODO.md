@@ -878,6 +878,36 @@ Webサイトを包んだだけのアプリはApp Store審査で落ちやすい�
 
 ---
 
+## COLUMN 管理画面（`/admin/`）— **2026-09-28 作成。本番の準備待ち**
+
+COLUMN の文章を、スマホからでも自分で直せる画面。仕組みは README の「COLUMN 管理画面」。
+依頼書は `/Users/Shared/kabaneri-counter/handoff/column-admin/request.md`。
+
+**決めたこと（9/28）**: 入口は既存のメールログインを流用し、`ADMIN_EMAIL` のアドレスだけ通す／
+文章の原本は**公開中の `column/*.html`**（`column-src/` のスクリプトは新しい記事の初稿づくり専用。
+公開中のファイルは上書きしない止め具を付けた）／予約の一覧と取り消し・非公開に戻す・新しい記事の下書きも入れる。
+下書きは PUBLIC なリポジトリに置かず D1（`column_drafts`）に置く。
+
+- [x] 画面と API（`admin/`、`functions/api/admin/`）、即時公開の Actions（`column-publish.yml`）
+- [x] 手元で通しの試験（GitHub の代わりの試験用サーバーで：直す・予約・予約の直しと日付変更・
+      予約をすぐ公開・取り消し・新しい記事の予約・非公開に戻す、守りの試験14項目）
+- [ ] **ユーザー作業**: GitHub の fine-grained token を発行（このリポジトリだけ・Contents の読み書きだけ。
+      **Workflows の権限は付けない**）→ Cloudflare Pages の本番の環境変数（秘密）に `ADMIN_GH_TOKEN` と
+      `ADMIN_EMAIL` を登録。トークンの期限は最長1年なので、期限の前に作り直す
+- [ ] D1 に下書きの表を作る: `npx wrangler d1 execute minnanoslot --remote --file=src/schema-admin.sql`
+- [ ] 本番で1本、少しだけ直して公開してみる
+
+**気をつけること**
+- 管理画面は main に直接コミットする。Mac で作業するときは、**デプロイ・push の前に必ず `git pull --rebase`**
+  （古い手元のまま `wrangler pages deploy .` すると、管理画面で直した文章が本番から一時的に消える）
+- 新しい記事やタイトルの変更の**予約を2本以上同時に入れない**。どれもトップ・一覧・ほかのCOLUMN を
+  書き換えるので、あとから取り込む方が衝突して止まる（予約公開の Actions がエラーになる）。画面でも注意を出す
+- 表が要る記事（集計の記事）は、これまでどおり Mac のスクリプトで初稿を作り、公開してから管理画面で仕上げる
+- **表は管理画面では直せない（固定）**。9/28 にユーザーが「表の直しは依頼する」と決めた（マスの文字だけ直せる案は見送り）。
+  直すときは `column-src/` のスクリプトか、公開中の HTML を直接直す（スクリプトは公開中のファイルを上書きしないので、`COLUMN_FORCE=1` の前に管理画面での直しが消えないか確かめる）
+
+---
+
 ## サイト側
 
 - **トップページを本編に戻す**: `python3 src/top-mode.py full` のあとデプロイ。

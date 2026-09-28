@@ -1,0 +1,12 @@
+# Cloudflare Pages の応答ヘッダー。
+# COLUMN 管理画面（/admin/）は検索に出さず、ほかのサイトの中に埋め込ませず、控えも残させない。
+# 画面のスクリプトは自分のサイトのものだけ動かす（管理画面で何かを書き換えられる入口を増やさない）。
+/admin
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+  Referrer-Policy: same-origin
+  X-Content-Type-Options: nosniff
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
