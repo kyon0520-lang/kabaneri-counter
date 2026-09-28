@@ -110,3 +110,12 @@ th{background:var(--panel);font-weight:700;white-space:nowrap}
   .vt .sub.nw{white-space:nowrap}
   .vt .rk{display:flex;margin:0 0 3px}
 }
+/* 確率の表：50%以上は青字、5%未満は灰色 */
+.vt.st td.pc{text-align:right}
+.vt td.pc.hi{color:#1f5fae}
+.vt td.pc.lo{color:#8a8984;font-weight:400}
+/* 記事内の画像（アプリの紹介など） */
+.fig{margin:22px auto 26px;max-width:420px;text-align:center}
+.fig img{display:block;width:100%;height:auto;border-radius:14px;border:2px solid #161616}
+.fig figcaption{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 12px;margin-top:10px;font-size:13px;color:#5a5a5a}
+.figbtn{display:inline-block;font-weight:700;font-size:13px;color:#fff;background:#161616;border-radius:999px;padding:6px 16px;text-decoration:none}
