@@ -36311,5 +36311,183 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/09/30/081537",
+  "articleDate": "2026-09-30",
+  "targetDate": "2026-09-29",
+  "postDate": "2026-09-28",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2104534235608739976",
+  "title": "9月29日のマルハン新宿東宝ビルまとめ✏️末尾仕掛け2本に加えて、いつも通り全系あり！",
+  "results": [
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 1280
+   },
+   {
+    "machine": "スタハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 800
+   },
+   {
+    "machine": "いざ番長",
+    "plus": 1,
+    "total": 3,
+    "avg": 167
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "末尾①",
+    "matched": false,
+    "keyword": "サッカー日本代表",
+    "chain": [
+     "サッカー日本代表",
+     "FIFAランキング17位",
+     "末尾①"
+    ],
+    "raw": "サッカー日本代表→FIFAランキング17位→末尾①",
+    "result": null
+   },
+   {
+    "machine": "末尾①",
+    "matched": false,
+    "keyword": "No.1（アーモンドチョコ）",
+    "chain": [
+     "No.1（アーモンドチョコ）",
+     "末尾①"
+    ],
+    "raw": "No.1（アーモンドチョコ）→末尾①",
+    "result": null
+   },
+   {
+    "machine": "末尾⑦",
+    "matched": false,
+    "keyword": "サッカー日本代表",
+    "chain": [
+     "サッカー日本代表",
+     "FIFAランキング17位",
+     "末尾①"
+    ],
+    "raw": "サッカー日本代表→FIFAランキング17位→末尾①",
+    "result": null
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "スタコラサッサ",
+    "chain": [
+     "スタコラサッサ",
+     "スタ"
+    ],
+    "raw": "スタコラサッサ→スタ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 1280
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "キュービ（キャラ）",
+    "chain": [
+     "キュービ（キャラ）",
+     "キツネ"
+    ],
+    "raw": "キュービ（キャラ）→キツネ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 1280
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "スタコラサッサ",
+    "chain": [
+     "スタコラサッサ",
+     "スタ"
+    ],
+    "raw": "スタコラサッサ→スタ",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 800
+    }
+   },
+   {
+    "machine": "いざ番長",
+    "matched": true,
+    "keyword": "サッカー日本代表",
+    "chain": [
+     "サッカー日本代表",
+     "サムライブルー",
+     "侍"
+    ],
+    "raw": "サッカー日本代表→サムライブルー→侍",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": 167
+    }
+   },
+   {
+    "machine": "いざ番長",
+    "matched": true,
+    "keyword": "侍（写真看板）",
+    "chain": [
+     "侍（写真看板）",
+     "いざ番長"
+    ],
+    "raw": "侍（写真看板）→いざ番長",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": 167
+    }
+   },
+   {
+    "machine": "うみねこ",
+    "matched": false,
+    "keyword": "招き猫の日",
+    "chain": [
+     "招き猫の日",
+     "ねこ"
+    ],
+    "raw": "招き猫の日→ねこ",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "パッケージにさくらの花びら",
+    "chain": [
+     "パッケージにさくらの花びら",
+     "源さくら"
+    ],
+    "raw": "パッケージにさくらの花びら→源さくら",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "招き猫の日",
+    "chain": [
+     "招き猫の日",
+     "福",
+     "倒福アタック"
+    ],
+    "raw": "招き猫の日→福→倒福アタック",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
