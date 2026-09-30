@@ -36489,5 +36489,275 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/01/072812",
+  "articleDate": "2026-10-01",
+  "targetDate": "2026-09-30",
+  "postDate": "2026-09-29",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2104896538871017775",
+  "title": "9月30日のマルハン新宿東宝ビルまとめ✏️ハナ系4機種を筆頭に全系特化な一日！",
+  "results": [
+   {
+    "machine": "キンハナ",
+    "plus": 14,
+    "total": 14,
+    "avg": 2443
+   },
+   {
+    "machine": "ドラハナ",
+    "plus": 11,
+    "total": 11,
+    "avg": 3827
+   },
+   {
+    "machine": "ニューキンハナ",
+    "plus": 4,
+    "total": 5,
+    "avg": 900
+   },
+   {
+    "machine": "スタハナ",
+    "plus": 2,
+    "total": 3,
+    "avg": 2467
+   },
+   {
+    "machine": "SAO",
+    "plus": 3,
+    "total": 3,
+    "avg": 8467
+   },
+   {
+    "machine": "東リベ",
+    "plus": 2,
+    "total": 3,
+    "avg": 1933
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "キンハナ",
+    "matched": true,
+    "keyword": "キングマック",
+    "chain": [
+     "キングマック",
+     "キング"
+    ],
+    "raw": "キングマック→キング",
+    "result": {
+     "plus": 14,
+     "total": 14,
+     "avg": 2443
+    }
+   },
+   {
+    "machine": "キンハナ",
+    "matched": true,
+    "keyword": "ギリギリ",
+    "chain": [
+     "ギリギリ",
+     "言葉2回繰り返し",
+     "ハナハナ"
+    ],
+    "raw": "ギリギリ→言葉2回繰り返し→ハナハナ",
+    "result": {
+     "plus": 14,
+     "total": 14,
+     "avg": 2443
+    }
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "ギリギリ",
+    "chain": [
+     "ギリギリ",
+     "ハナハナ"
+    ],
+    "raw": "ギリギリ→ハナハナ",
+    "result": {
+     "plus": 11,
+     "total": 11,
+     "avg": 3827
+    }
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "暗記パン",
+    "chain": [
+     "暗記パン",
+     "どらえもんの道具",
+     "ドラ"
+    ],
+    "raw": "暗記パン→どらえもんの道具→ドラ",
+    "result": {
+     "plus": 11,
+     "total": 11,
+     "avg": 3827
+    }
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "セブンイレブン",
+    "chain": [
+     "セブンイレブン",
+     "イレブン",
+     "11台"
+    ],
+    "raw": "セブンイレブン→イレブン→11台",
+    "result": {
+     "plus": 11,
+     "total": 11,
+     "avg": 3827
+    }
+   },
+   {
+    "machine": "ニューキンハナ",
+    "matched": true,
+    "keyword": "ギリギリ",
+    "chain": [
+     "ギリギリ",
+     "ハナハナ"
+    ],
+    "raw": "ギリギリ→ハナハナ",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 900
+    }
+   },
+   {
+    "machine": "ニューキンハナ",
+    "matched": true,
+    "keyword": "キングマック来店",
+    "chain": [
+     "キングマック来店",
+     "キング"
+    ],
+    "raw": "キングマック来店→キング",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 900
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "ギリギリ",
+    "chain": [
+     "ギリギリ",
+     "ハナハナ"
+    ],
+    "raw": "ギリギリ→ハナハナ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 2467
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "Onion",
+    "chain": [
+     "Onion",
+     "オニオン",
+     "メーカー名"
+    ],
+    "raw": "Onion→オニオン→メーカー名",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 2467
+    }
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "キャラ誕",
+    "chain": [
+     "キャラ誕",
+     "アスナ🎂"
+    ],
+    "raw": "キャラ誕→アスナ🎂",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 8467
+    }
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "Cooked",
+    "chain": [
+     "Cooked",
+     "Cooking",
+     "アスナとクッキングデートチャンス"
+    ],
+    "raw": "Cooked→Cooking→アスナとクッキングデートチャンス",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 8467
+    }
+   },
+   {
+    "machine": "東リベ",
+    "matched": true,
+    "keyword": "早朝",
+    "chain": [
+     "早朝",
+     "総長"
+    ],
+    "raw": "早朝→総長",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1933
+    }
+   },
+   {
+    "machine": "リゼロ2",
+    "matched": false,
+    "keyword": "コンビニ飯",
+    "chain": [
+     "コンビニ飯",
+     "コンビニから転生"
+    ],
+    "raw": "コンビニ飯→コンビニから転生",
+    "result": null
+   },
+   {
+    "machine": "リゼロ2",
+    "matched": false,
+    "keyword": "ギリギリ",
+    "chain": [
+     "ギリギリ",
+     "ギREギRE"
+    ],
+    "raw": "ギリギリ→ギREギRE",
+    "result": null
+   },
+   {
+    "machine": "タクトオーパス",
+    "matched": false,
+    "keyword": "試験で落ちないよう",
+    "chain": [
+     "試験で落ちないよう",
+     "試験をパス",
+     "パス"
+    ],
+    "raw": "試験で落ちないよう→試験をパス→パス",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
