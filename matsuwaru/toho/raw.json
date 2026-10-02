@@ -36973,5 +36973,121 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/03/072218",
+  "articleDate": "2026-10-03",
+  "targetDate": "2026-10-02",
+  "postDate": "2026-10-01",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2105621347292664120",
+  "title": "10月2日のマルハン新宿東宝ビルまとめ✏️マギレコ、DMC5、ジャグラーガールズ3機種の全系！",
+  "results": [
+   {
+    "machine": "マギレコ",
+    "plus": 8,
+    "total": 9,
+    "avg": 4156
+   },
+   {
+    "machine": "DMC5",
+    "plus": 2,
+    "total": 3,
+    "avg": 1167
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 2317
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "クエン酸",
+    "chain": [
+     "クエン酸",
+     "9円",
+     "9台円島",
+     "マギレコ"
+    ],
+    "raw": "クエン酸→9円→9台円島→マギレコ",
+    "result": {
+     "plus": 8,
+     "total": 9,
+     "avg": 4156
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "付箋の色",
+    "chain": [
+     "付箋の色",
+     "ソウルジェム",
+     "マギレコ"
+    ],
+    "raw": "付箋の色→ソウルジェム→マギレコ",
+    "result": {
+     "plus": 8,
+     "total": 9,
+     "avg": 4156
+    }
+   },
+   {
+    "machine": "DMC5",
+    "matched": true,
+    "keyword": "夏日",
+    "chain": [
+     "夏日",
+     "25℃以上",
+     "25",
+     "ニコ",
+     "デビルメイクライ"
+    ],
+    "raw": "夏日→25℃以上→25→ニコ→デビルメイクライ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1167
+    }
+   },
+   {
+    "machine": "DMC5",
+    "matched": true,
+    "keyword": "コンボ",
+    "chain": [
+     "コンボ",
+     "コンボチャンス",
+     "デビルメイクライ"
+    ],
+    "raw": "コンボ→コンボチャンス→デビルメイクライ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1167
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "U.F.O",
+    "chain": [
+     "U.F.O",
+     "ピンクレディー",
+     "ガールズ"
+    ],
+    "raw": "U.F.O→ピンクレディー→ガールズ",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 2317
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
