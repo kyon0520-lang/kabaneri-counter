@@ -249,7 +249,7 @@ body.memo-open .memoscrim{display:block}
 .newslink{text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
 .newslink a{font-size:12px;color:var(--accent);text-decoration:none;font-weight:700}
 /* このツールについて（details）。app.html / events.html 共通 */
-.about-tool{margin:0 0 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.about-tool{margin:12px 0 0;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
 .about-tool summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;font-weight:700;color:var(--ink)}
 .about-tool summary::-webkit-details-marker{display:none}
 .about-tool summary .ic{flex:0 0 auto;width:18px;height:18px;color:var(--sub);transition:transform .18s}
@@ -314,26 +314,6 @@ body.memo-open .memoscrim{display:block}
 </div>
 
 <main>
-<details class="about-tool">
-  <summary>このツールについて
-    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-  </summary>
-  <div class="body">
-    <h3>どんなツールか</h3>
-    <p>マルハン新宿東宝ビル店で前夜にX（旧Twitter）へ投稿される「示唆」から、過去に全台系（全台高設定）になった機種を逆引きするツールです。今日の全台系を言い当てるものではなく、過去の実績を調べる道具です。</p>
-    <h3>データについて</h3>
-    <p><a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a>の記事をもとに、毎朝自動で取り込み・集計しています。検索できるのは、現在の店長の就任日以降の分です。</p>
-    <h3>よくある質問</h3>
-    <dl>
-      <dt>「見つかりません」と出た</dt>
-      <dd>別のタブ（日付・投稿時刻・来店・末尾系）に入っている可能性があります。画面が該当タブを案内します。</dd>
-      <dt>短い語で引いても出ない</dt>
-      <dd>長い言葉は表記の違いで外れやすいので、短い語で引き直してみてください。</dd>
-      <dt>使い方をもっと詳しく知りたい</dt>
-      <dd><a href="/column/matsuwaru-guide">全台系まつわるチェッカーの使い方</a>にまとめています。</dd>
-    </dl>
-  </div>
-</details>
   <!-- 今日／明日の傾向カード。data/lead.json が届いた時点で中身が入れ替わる -->
   <div id="today"><div class="tskel" aria-hidden="true">
     <div class="h"><span class="b" style="width:78px;height:23px;border-radius:999px"></span>
@@ -382,12 +362,29 @@ body.memo-open .memoscrim{display:block}
     </div><div class="skfoot"><span class="skb"></span></div></div>
   </div></div>
   <div class="foot">
-    <p class="src">出典：<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a></p>
-    <p>本ページは同ブログの記事をもとに、マルハン新宿東宝ビル店の示唆と機種の対応を検索できる形にまとめたものです。
-    連想の考察を含む記事内容の著作権は同ブログに帰属します。
-    各件の「記事を見る」から元記事をご確認ください。</p>
-    <p>⚠️ 検索できるデータは、エンドウ店長の就任日以降のものです。</p>
     <p id="gen"></p>
+  <details class="about-tool">
+    <summary>このツールについて
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </summary>
+    <div class="body">
+      <h3>どんなツールか</h3>
+      <p>マルハン新宿東宝ビル店で前夜にX（旧Twitter）へ投稿される「示唆」から、過去に全台系（全台高設定）になった機種を逆引きするツールです。今日の全台系を言い当てるものではなく、過去の実績を調べる道具です。</p>
+      <h3>出典・データについて</h3>
+      <p>出典：<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a></p>
+      <p>本ページは同ブログの記事をもとに、マルハン新宿東宝ビル店の示唆と機種の対応を検索できる形にまとめたものです。毎朝自動で取り込み・集計しています。検索できるのは、現在の店長の就任日以降の分です。</p>
+      <p>連想の考察を含む記事内容の著作権は同ブログに帰属します。各件の「記事を見る」から元記事をご確認ください。</p>
+      <h3>よくある質問</h3>
+      <dl>
+        <dt>「見つかりません」と出た</dt>
+        <dd>別のタブ（日付・投稿時刻・来店・末尾系）に入っている可能性があります。画面が該当タブを案内します。</dd>
+        <dt>短い語で引いても出ない</dt>
+        <dd>長い言葉は表記の違いで外れやすいので、短い語で引き直してみてください。</dd>
+      <dt>使い方をもっと詳しく知りたい</dt>
+      <dd><a href="/column/matsuwaru-guide">全台系まつわるチェッカーの使い方</a>にまとめています。</dd>
+      </dl>
+    </div>
+  </details>
   </div>
 </main>
 

@@ -194,7 +194,7 @@ h2:first-of-type{margin-top:4px}
   font-size:11px;color:var(--sub);line-height:1.8}
 .foot a{color:var(--accent)}
 /* このツールについて（details）。app.html / events.html 共通 */
-.about-tool{margin:0 0 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
+.about-tool{margin:12px 0 0;border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
 .about-tool summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13.5px;font-weight:700;color:var(--ink)}
 .about-tool summary::-webkit-details-marker{display:none}
 .about-tool summary .ic{flex:0 0 auto;width:18px;height:18px;color:var(--sub);transition:transform .18s}
@@ -207,9 +207,6 @@ h2:first-of-type{margin-top:4px}
 .about-tool .body dt{color:var(--ink);font-weight:700;font-size:12.5px;margin-top:10px}
 .about-tool .body dd{margin:2px 0 0}
 .about-tool .body a{color:var(--accent)}
-/* events.html のみ：<main id="main"> の外に置くための外枠（main と同じ幅・余白） */
-.about-wrap{max-width:680px;margin:0 auto;padding:18px 20px 0}
-.about-wrap .about-tool{margin:0}
 </style>
 </head>
 <body>
@@ -246,7 +243,7 @@ h2:first-of-type{margin-top:4px}
 
 <!-- 読み込み中の骨組み。実物（見出し → 選択欄 → カード）と同じ位置に置く。
      ここが「読み込み中…」の1行だけだと、届いた瞬間に見出しも中身も動く -->
-<div class="about-wrap"><details class="about-tool">
+<template id="abouttpl"><details class="about-tool">
   <summary>このツールについて
     <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
   </summary>
@@ -263,7 +260,7 @@ h2:first-of-type{margin-top:4px}
       <dd><a href="/column/events-guide">イベント傾向チェッカーの見かた</a>や、<a href="/column/toho-event-medals">イベントごとの平均差枚</a>にまとめています。</dd>
     </dl>
   </div>
-</details></div>
+</details></template>
 
 <main id="main"><div class="skel" aria-hidden="true">
   <div class="skh"></div>
@@ -829,8 +826,7 @@ function render(D){
   h += `<section id="pane-todayis" hidden><h2>明日は何の日</h2>
     <div id="todayis-body"><p class="note">読み込み中…</p></div></section>`;
 
-  h += `<div class="foot">出典：<a href="https://sloslo-blog.hatenablog.com/" target="_blank" rel="noopener">マルハン新宿東宝ビルの追っかけブログ</a><br>
-    集計は実際に全台系が行われた日で行っています。<br>最終更新 ${D.generated}</div>`;
+  h += `<div class="foot">最終更新 ${D.generated}${document.getElementById('abouttpl').innerHTML}</div>`;
   document.getElementById('main').innerHTML = h;
   drawPicked();
   renderTodayis();
