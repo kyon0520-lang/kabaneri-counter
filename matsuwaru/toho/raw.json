@@ -36759,5 +36759,219 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "東京大戦"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/02/081309",
+  "articleDate": "2026-10-02",
+  "targetDate": "2026-10-01",
+  "postDate": "2026-09-30",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2105259034580549689",
+  "title": "10月1日のマルハン新宿東宝ビルまとめ✏️ 全系特化で全体も強化！",
+  "results": [
+   {
+    "machine": "ゴージャグ3",
+    "plus": 21,
+    "total": 22,
+    "avg": 1850
+   },
+   {
+    "machine": "ウルミラ",
+    "plus": 5,
+    "total": 5,
+    "avg": 2900
+   },
+   {
+    "machine": "真打吉宗",
+    "plus": 10,
+    "total": 12,
+    "avg": 3342
+   },
+   {
+    "machine": "北斗",
+    "plus": 7,
+    "total": 8,
+    "avg": 2388
+   },
+   {
+    "machine": "シェイク",
+    "plus": 2,
+    "total": 3,
+    "avg": 500
+   },
+   {
+    "machine": "東リベ",
+    "plus": 1,
+    "total": 3,
+    "avg": -1500
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ゴージャグ3",
+    "matched": true,
+    "keyword": "不戦の約定",
+    "chain": [
+     "不戦の約定",
+     "天膳",
+     "10全",
+     "10文字"
+    ],
+    "raw": "不戦の約定→天膳→10全→10文字",
+    "result": {
+     "plus": 21,
+     "total": 22,
+     "avg": 1850
+    }
+   },
+   {
+    "machine": "ウルミラ",
+    "matched": true,
+    "keyword": "一旦",
+    "chain": [
+     "一旦",
+     "いったん",
+     "べコたん"
+    ],
+    "raw": "一旦→いったん→べコたん",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2900
+    }
+   },
+   {
+    "machine": "真打吉宗",
+    "matched": true,
+    "keyword": "不戦の約定",
+    "chain": [
+     "不戦の約定",
+     "甲賀忍法帖",
+     "徳川",
+     "吉宗"
+    ],
+    "raw": "不戦の約定→甲賀忍法帖→徳川→吉宗",
+    "result": {
+     "plus": 10,
+     "total": 12,
+     "avg": 3342
+    }
+   },
+   {
+    "machine": "北斗",
+    "matched": true,
+    "keyword": "ショーシャンクの空に",
+    "chain": [
+     "ショーシャンクの空に",
+     "天を見上げる",
+     "昇天"
+    ],
+    "raw": "ショーシャンクの空に→天を見上げる→昇天",
+    "result": {
+     "plus": 7,
+     "total": 8,
+     "avg": 2388
+    }
+   },
+   {
+    "machine": "北斗",
+    "matched": true,
+    "keyword": "不戦の約定",
+    "chain": [
+     "不戦の約定",
+     "天膳",
+     "10全",
+     "10文字"
+    ],
+    "raw": "不戦の約定→天膳→10全→10文字",
+    "result": {
+     "plus": 7,
+     "total": 8,
+     "avg": 2388
+    }
+   },
+   {
+    "machine": "シェイク",
+    "matched": true,
+    "keyword": "マックシェイク",
+    "chain": [
+     "マックシェイク",
+     "SHAKE"
+    ],
+    "raw": "マックシェイク→SHAKE",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 500
+    }
+   },
+   {
+    "machine": "東リベ",
+    "matched": true,
+    "keyword": "10/1",
+    "chain": [
+     "10/1",
+     "都民の日",
+     "東京"
+    ],
+    "raw": "10/1→都民の日→東京",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": -1500
+    }
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "倍マック",
+    "chain": [
+     "倍マック",
+     "倍",
+     "バイ"
+    ],
+    "raw": "倍マック→倍→バイ",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "月見",
+    "chain": [
+     "月見",
+     "月"
+    ],
+    "raw": "月見→月",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "キャラ誕生日",
+    "chain": [
+     "キャラ誕生日",
+     "星見純那"
+    ],
+    "raw": "キャラ誕生日→星見純那",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "不戦の約定",
+    "chain": [
+     "不戦の約定",
+     "天膳",
+     "10全",
+     "10文字"
+    ],
+    "raw": "不戦の約定→天膳→10全→10文字",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
