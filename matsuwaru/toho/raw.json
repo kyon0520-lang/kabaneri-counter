@@ -37089,5 +37089,121 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/05/075611",
+  "articleDate": "2026-10-05",
+  "targetDate": "2026-10-04",
+  "postDate": "2026-10-03",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2106346071752581191",
+  "title": "10月4日のマルハン新宿東宝ビルまとめ✏️4のつく日で「からくり2」が全系、ポストのヒントは必見",
+  "results": [
+   {
+    "machine": "からくり2",
+    "plus": 10,
+    "total": 14,
+    "avg": 4714
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 6,
+    "total": 6,
+    "avg": 3667
+   },
+   {
+    "machine": "サンダー",
+    "plus": 3,
+    "total": 3,
+    "avg": 2767
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "からくり2",
+    "matched": true,
+    "keyword": "別班",
+    "chain": [
+     "別班",
+     "VIVAVT",
+     "日曜劇場",
+     "劇場",
+     "激情"
+    ],
+    "raw": "別班→VIVAVT→日曜劇場→劇場→激情",
+    "result": {
+     "plus": 10,
+     "total": 14,
+     "avg": 4714
+    }
+   },
+   {
+    "machine": "からくり2",
+    "matched": true,
+    "keyword": "10/4",
+    "chain": [
+     "10/4",
+     "トーホー",
+     "東宝の日",
+     "映画",
+     "シアター（劇場）",
+     "激情"
+    ],
+    "raw": "10/4→トーホー→東宝の日→映画→シアター（劇場）→激情",
+    "result": {
+     "plus": 10,
+     "total": 14,
+     "avg": 4714
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "黒胡椒",
+    "chain": [
+     "黒胡椒",
+     "コショウ",
+     "ペッパー警部",
+     "ピンクレディ",
+     "ガールズ"
+    ],
+    "raw": "黒胡椒→コショウ→ペッパー警部→ピンクレディ→ガールズ",
+    "result": {
+     "plus": 6,
+     "total": 6,
+     "avg": 3667
+    }
+   },
+   {
+    "machine": "サンダー",
+    "matched": true,
+    "keyword": "三田製麺所",
+    "chain": [
+     "三田製麺所",
+     "三田",
+     "サンダー"
+    ],
+    "raw": "三田製麺所→三田→サンダー",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2767
+    }
+   },
+   {
+    "machine": "吉宗",
+    "matched": false,
+    "keyword": "毎月恒例",
+    "chain": [
+     "毎月恒例",
+     "高齢",
+     "爺"
+    ],
+    "raw": "毎月恒例→高齢→爺",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
