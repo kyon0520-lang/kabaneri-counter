@@ -37205,5 +37205,199 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/06/080450",
+  "articleDate": "2026-10-06",
+  "targetDate": "2026-10-05",
+  "postDate": "2026-10-04",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2106708467935519113",
+  "title": "10月5日のマルハン新宿東宝ビルまとめ✏️最新機種のマイジャグⅥが新台初日に全系！",
+  "results": [
+   {
+    "machine": "マイジャグⅥ",
+    "plus": 10,
+    "total": 10,
+    "avg": 2760
+   },
+   {
+    "machine": "モンハンライズ",
+    "plus": 6,
+    "total": 8,
+    "avg": 1875
+   },
+   {
+    "machine": "シャーマンキング",
+    "plus": 1,
+    "total": 3,
+    "avg": -1000
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "マイジャグⅥ",
+    "matched": true,
+    "keyword": "野菜足りていない",
+    "chain": [
+     "野菜足りていない",
+     "野菜トラないと",
+     "虎"
+    ],
+    "raw": "野菜足りていない→野菜トラないと→虎",
+    "result": {
+     "plus": 10,
+     "total": 10,
+     "avg": 2760
+    }
+   },
+   {
+    "machine": "マイジャグⅥ",
+    "matched": true,
+    "keyword": "カレーライス",
+    "chain": [
+     "カレーライス",
+     "米"
+    ],
+    "raw": "カレーライス→米",
+    "result": {
+     "plus": 10,
+     "total": 10,
+     "avg": 2760
+    }
+   },
+   {
+    "machine": "マイジャグⅥ",
+    "matched": true,
+    "keyword": "パリパリチキン6切れ",
+    "chain": [
+     "パリパリチキン6切れ",
+     "マイ6"
+    ],
+    "raw": "パリパリチキン6切れ→マイ6",
+    "result": {
+     "plus": 10,
+     "total": 10,
+     "avg": 2760
+    }
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "高速シンカー",
+    "chain": [
+     "高速シンカー",
+     "シンカ",
+     "進化",
+     "ポケモン",
+     "モンスター"
+    ],
+    "raw": "高速シンカー→シンカ→進化→ポケモン→モンスター",
+    "result": {
+     "plus": 6,
+     "total": 8,
+     "avg": 1875
+    }
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "カレーライス",
+    "chain": [
+     "カレーライス",
+     "ライズ"
+    ],
+    "raw": "カレーライス→ライズ",
+    "result": {
+     "plus": 6,
+     "total": 8,
+     "avg": 1875
+    }
+   },
+   {
+    "machine": "シャーマンキング",
+    "matched": true,
+    "keyword": "オーバー",
+    "chain": [
+     "オーバー",
+     "Over soul"
+    ],
+    "raw": "オーバー→Over soul",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": -1000
+    }
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "和太鼓",
+    "chain": [
+     "和太鼓",
+     "勝負あり！ドンドン"
+    ],
+    "raw": "和太鼓→勝負あり！ドンドン",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種"
+    ],
+    "raw": "・減台機種",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "高速シンカー",
+    "chain": [
+     "高速シンカー",
+     "高津臣吾",
+     "クローザー",
+     "終わり",
+     "尾張"
+    ],
+    "raw": "高速シンカー→高津臣吾→クローザー→終わり→尾張",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種"
+    ],
+    "raw": "・減台機種",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "チキン",
+    "chain": [
+     "チキン",
+     "鳥放題"
+    ],
+    "raw": "チキン→鳥放題",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "広場",
+    "chain": [
+     "広場",
+     "ムツゴロウ広場"
+    ],
+    "raw": "広場→ムツゴロウ広場",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
