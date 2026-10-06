@@ -37399,5 +37399,142 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/07/073650",
+  "articleDate": "2026-10-07",
+  "targetDate": "2026-10-06",
+  "postDate": "2026-10-05",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2099823102956032302",
+  "title": "10月6日のマルハン新宿東宝ビルまとめ✏️6のつく日鉄板の末尾6にアナザー末尾4+全系な一日！",
+  "results": [
+   {
+    "machine": "末尾⑥",
+    "plus": 51,
+    "total": 67,
+    "avg": 2528
+   },
+   {
+    "machine": "SAO2",
+    "plus": 7,
+    "total": 12,
+    "avg": 2600
+   },
+   {
+    "machine": "インデックス2",
+    "plus": 3,
+    "total": 5,
+    "avg": 1400
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "SAO2",
+    "matched": true,
+    "keyword": "種子島",
+    "chain": [
+     "種子島",
+     "火縄銃",
+     "銃"
+    ],
+    "raw": "種子島→火縄銃→銃",
+    "result": {
+     "plus": 7,
+     "total": 12,
+     "avg": 2600
+    }
+   },
+   {
+    "machine": "SAO2",
+    "matched": true,
+    "keyword": "12品目",
+    "chain": [
+     "12品目",
+     "12台"
+    ],
+    "raw": "12品目→12台",
+    "result": {
+     "plus": 7,
+     "total": 12,
+     "avg": 2600
+    }
+   },
+   {
+    "machine": "インデックス2",
+    "matched": true,
+    "keyword": "ごぼう",
+    "chain": [
+     "ごぼう",
+     "五芒星",
+     "魔法陣"
+    ],
+    "raw": "ごぼう→五芒星→魔法陣",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 1400
+    }
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "キャラ誕",
+    "chain": [
+     "キャラ誕",
+     "星川リリイ🎂"
+    ],
+    "raw": "キャラ誕→星川リリイ🎂",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "種子島",
+    "chain": [
+     "種子島",
+     "火縄銃"
+    ],
+    "raw": "種子島→火縄銃",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "種子島",
+    "chain": [
+     "種子島",
+     "火縄銃",
+     "鈴木 蛍 孫一"
+    ],
+    "raw": "種子島→火縄銃→鈴木 蛍 孫一",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "消費期限 10.⑦",
+    "chain": [
+     "消費期限 10.⑦",
+     "七"
+    ],
+    "raw": "消費期限 10.⑦→七",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "ごぼう",
+    "chain": [
+     "ごぼう",
+     "五芒星",
+     "スター"
+    ],
+    "raw": "ごぼう→五芒星→スター",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
