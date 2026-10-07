@@ -48,6 +48,18 @@ NEWS_DEST = os.path.join(PUB, 'kabaneri-unato', 'news.html')
 
 SITE = 'https://minnanoslot.com/kabaneri-unato/'
 
+# AdSense のコード（自動広告はオフなので、これだけでは広告は出ない）。審査はこのコードがあるページを見る
+ADSENSE = ('<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+           '?client=ca-pub-8933350487899087" crossorigin="anonymous"></script>')
+
+
+def site_head(html, title_tag, url):
+    """title の直後に、正式なアドレス（canonical）と AdSense のコードを入れる。
+    www 付きや .html 付きのアドレスと同じページだと Google に伝えるため"""
+    assert title_tag in html, f'{title_tag} が見つかりません'
+    add = f'\n<link rel="canonical" href="{url}">\n{ADSENSE}'
+    return html.replace(title_tag, title_tag + add, 1)
+
 HEAD_ADD = f'''<link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="icon" type="image/png" href="./icon-192.png">
@@ -143,6 +155,7 @@ def build_app():
 
     assert TITLE in src, 'title タグが見つかりません'
     out = src.replace(TITLE, HEAD_ADD + TITLE, 1)
+    out = site_head(out, TITLE, SITE)
 
     # 実ファイルのアイコンを使うので、その場描きのアイコン登録だけを差し替える
     # （範囲を広く取ると、あいだに書いた処理まで消えるので終端を明示する）
@@ -163,6 +176,7 @@ def build_manual():
     man = open(MAN_SRC, encoding='utf-8').read()
     man = apply_flags(man)
     man = renumber_manual(man)
+    man = site_head(man, '<title>カバネリ海門カウンター 取扱説明書</title>', SITE + 'manual')
     if 'cloudflareinsights' not in man:
         man = man.rstrip() + '\n' + BEACON
     open(MAN_DEST, 'w', encoding='utf-8').write(man)
@@ -173,6 +187,7 @@ def build_news():
     if not os.path.exists(NEWS_SRC):
         return
     news = open(NEWS_SRC, encoding='utf-8').read()
+    news = site_head(news, '<title>お知らせ｜みんなのスロット</title>', SITE + 'news')
     if 'cloudflareinsights' not in news:
         news = news.rstrip() + '\n' + BEACON
     open(NEWS_DEST, 'w', encoding='utf-8').write(news)

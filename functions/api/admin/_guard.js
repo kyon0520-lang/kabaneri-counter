@@ -3,7 +3,7 @@
  *
  * 画面側でも形を整えてから送るが、ここでもう一度確かめる。
  * - 書き換えてよいファイルを決めておく（functions/ や設定ファイルには触らせない）
- * - 記事のページには、決まった2つ（構造化データと、アクセス解析のタグ）以外のスクリプトを入れさせない
+ * - 記事のページには、決まった3つ（構造化データ、アクセス解析のタグ、AdSense のコード）以外のスクリプトを入れさせない
  * - トップページは、スクリプトなどが増えていないことを、いまの版と比べて確かめる
  */
 import { GhError } from './_github.js';
@@ -16,6 +16,7 @@ export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ALLOWED_SCRIPTS = [
   /<script type="application\/ld\+json">[^<]*<\/script>/g,
   /<script defer src="https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js" data-cf-beacon='\{"token": "[0-9a-f]+"\}'><\/script>/g,
+  /<script async src="https:\/\/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-8933350487899087" crossorigin="anonymous"><\/script>/g,
 ];
 const DANGER = [
   /<script/gi, /<[^>]*\son[a-z]+\s*=/gi, /javascript:/gi,
