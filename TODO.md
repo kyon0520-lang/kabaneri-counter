@@ -726,8 +726,9 @@ AdSense記載の定型（第三者Cookie・Googleの広告ポリシーへのリ�
   - [x] 10/7: canonical と AdSense のコード（自動広告オフ）を、トップ・カウンター・取説・お知らせ・おみくじ・プライバシー・運営者情報・COLUMN 全部に追加。
     カウンター側は `build-pages.py` の `site_head()` が入れる。COLUMN の管理画面の確認（`_guard.js`）にも AdSense のコードを許可に追加。
     `column-src/build_column.py` の `head()` にも追加
-  - [ ] まつわるのページ（canonical・AdSense・お知らせと歌舞伎の noindex）→ 依頼 `/Users/Shared/kabaneri-counter/handoff/matsuwaru-seo/request.md`
-  - [ ] **ブログ運営者への許諾連絡（ユーザー作業・最優先）**。取れたら説明文に「運営者の許可を得て掲載」と書く
+  - [x] 10/7: まつわるのページ（canonical・AdSense・お知らせと歌舞伎の noindex）— まつわるのセッションが対応。本番で全7ページを確認済み
+    （東宝のまつわる・イベント傾向は noindex なし、お知らせと歌舞伎は noindex）
+  - 許諾連絡は**できない**（10/7 ユーザー: 運営者の連絡先が見つからない）。許諾以外の手で、他人のデータ由来に見える度合いを下げる
   - [x] 10/7: Search Console で `https://www.minnanoslot.com/` の「インデックス登録をリクエスト」済み（数日〜2週間で本来のアドレスにまとまる見込み。まとまったかは URL 検査の「Google が選択した正規 URL」で見る）
   - [ ] COLUMN を週2本ペースで再開。ブログのデータに頼らない独自の計算・検証を中心に（使い方記事は増やさない）
   - [ ] ツールページの説明文を増やす（イベント傾向395字・東宝597字・おみくじ787字）
