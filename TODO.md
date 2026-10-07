@@ -728,7 +728,7 @@ AdSense記載の定型（第三者Cookie・Googleの広告ポリシーへのリ�
     `column-src/build_column.py` の `head()` にも追加
   - [ ] まつわるのページ（canonical・AdSense・お知らせと歌舞伎の noindex）→ 依頼 `/Users/Shared/kabaneri-counter/handoff/matsuwaru-seo/request.md`
   - [ ] **ブログ運営者への許諾連絡（ユーザー作業・最優先）**。取れたら説明文に「運営者の許可を得て掲載」と書く
-  - [ ] 反映後、Search Console で `https://www.minnanoslot.com/` の URL 検査 →「インデックス登録をリクエスト」（転送に早く気づかせる）
+  - [x] 10/7: Search Console で `https://www.minnanoslot.com/` の「インデックス登録をリクエスト」済み（数日〜2週間で本来のアドレスにまとまる見込み。まとまったかは URL 検査の「Google が選択した正規 URL」で見る）
   - [ ] COLUMN を週2本ペースで再開。ブログのデータに頼らない独自の計算・検証を中心に（使い方記事は増やさない）
   - [ ] ツールページの説明文を増やす（イベント傾向395字・東宝597字・おみくじ787字）
   - 承認されたら privacy.html「3. 広告」の「予定」表現を見直す（コードはもう全ページに入っている）
