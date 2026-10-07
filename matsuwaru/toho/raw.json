@@ -37536,5 +37536,159 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/08/070021",
+  "articleDate": "2026-10-08",
+  "targetDate": "2026-10-07",
+  "postDate": "2026-10-06",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2107433253531689033",
+  "title": "10月7日のマルハン新宿東宝ビルまとめ✏️20台設置超えの2機種を含む全系大量！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "Lカバネリ",
+    "matched": false,
+    "keyword": "のり",
+    "chain": [
+     "のり",
+     "海藻",
+     "回想"
+    ],
+    "raw": "のり→海藻→回想",
+    "result": null
+   },
+   {
+    "machine": "Lカバネリ",
+    "matched": false,
+    "keyword": "3878",
+    "chain": [
+     "3878",
+     "3＋8＋7＋8＝26",
+     "26台機種"
+    ],
+    "raw": "3878→3＋8＋7＋8＝26→26台機種",
+    "result": null
+   },
+   {
+    "machine": "ゴージャグ3",
+    "matched": false,
+    "keyword": "加工15時、消費5時",
+    "chain": [
+     "加工15時、消費5時",
+     "ゴーゴー"
+    ],
+    "raw": "加工15時、消費5時→ゴーゴー",
+    "result": null
+   },
+   {
+    "machine": "スマスロ北斗",
+    "matched": false,
+    "keyword": "オリジンロゴ",
+    "chain": [
+     "オリジンロゴ",
+     "縦読みでリン"
+    ],
+    "raw": "オリジンロゴ→縦読みでリン",
+    "result": null
+   },
+   {
+    "machine": "スマスロ北斗",
+    "matched": false,
+    "keyword": "7",
+    "chain": [
+     "7",
+     "北斗七星"
+    ],
+    "raw": "7→北斗七星",
+    "result": null
+   },
+   {
+    "machine": "アレックス",
+    "matched": false,
+    "keyword": "チキン竜田",
+    "chain": [
+     "チキン竜田",
+     "鳥"
+    ],
+    "raw": "チキン竜田→鳥",
+    "result": null
+   },
+   {
+    "machine": "SAO",
+    "matched": false,
+    "keyword": "キャラ誕生日",
+    "chain": [
+     "キャラ誕生日",
+     "キリト"
+    ],
+    "raw": "キャラ誕生日→キリト",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": false,
+    "keyword": "水あめ",
+    "chain": [
+     "水あめ",
+     "水",
+     "アクア"
+    ],
+    "raw": "水あめ→水→アクア",
+    "result": null
+   },
+   {
+    "machine": "ドッチ",
+    "matched": false,
+    "keyword": "感謝",
+    "chain": [
+     "感謝",
+     "サンキュー",
+     "パンサー",
+     "動物"
+    ],
+    "raw": "感謝→サンキュー→パンサー→動物",
+    "result": null
+   },
+   {
+    "machine": "虚構推理",
+    "matched": false,
+    "keyword": "10/7",
+    "chain": [
+     "10/7",
+     "ミステリー記念日",
+     "推理"
+    ],
+    "raw": "10/7→ミステリー記念日→推理",
+    "result": null
+   },
+   {
+    "machine": "番長ZERO",
+    "matched": false,
+    "keyword": "ちくわ",
+    "chain": [
+     "ちくわ",
+     "竹輪",
+     "竹",
+     "パンダ"
+    ],
+    "raw": "ちくわ→竹輪→竹→パンダ",
+    "result": null
+   },
+   {
+    "machine": "番長ZERO",
+    "matched": false,
+    "keyword": "のり弁当",
+    "chain": [
+     "のり弁当",
+     "弁当"
+    ],
+    "raw": "のり弁当→弁当",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
