@@ -188,6 +188,9 @@ def build_news():
         return
     news = open(NEWS_SRC, encoding='utf-8').read()
     news = site_head(news, '<title>お知らせ｜みんなのスロット</title>', SITE + 'news')
+    # お知らせは更新履歴だけの短いページなので、検索には出さない（まつわる側のお知らせと揃える）
+    news = news.replace('<title>お知らせ｜みんなのスロット</title>',
+                        '<title>お知らせ｜みんなのスロット</title>\n<meta name="robots" content="noindex">', 1)
     if 'cloudflareinsights' not in news:
         news = news.rstrip() + '\n' + BEACON
     open(NEWS_DEST, 'w', encoding='utf-8').write(news)
