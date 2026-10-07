@@ -13,7 +13,7 @@
       "aboutSince": "現在の店長の就任日",
       "columns": true,
       "example": "会議",
-      "version": 5,
+      "version": 6,
       "lineupUrl": "https://www.maruhan.co.jp/hall/3044/kisyu.html",
       "lineupName": "マルハン公式の設置機種ページ"
     },
@@ -31,7 +31,7 @@
       "sinceNote": "⚠️ 検索できるデータは2025年6月18日以降のものです。全台系は毎日あるわけではありません。",
       "aboutSince": "2025年6月18日",
       "example": "ツノッチ",
-      "version": 2,
+      "version": 3,
       "lineupUrl": "https://www.p-world.co.jp/tokyo/espace-kabuki.htm",
       "lineupName": "P-WORLDの設置機種",
       "lineupSource": "pworld",

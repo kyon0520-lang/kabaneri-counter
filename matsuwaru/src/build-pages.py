@@ -27,6 +27,10 @@ ABOUT_GUIDE = {
 def guide(t, kind, s):
     return t.replace('{{ABOUT_GUIDE}}', ABOUT_GUIDE[kind] if s.get('columns') else '')
 
+# 一覧に載せていない店舗（public:false）は、全ページを検索の対象から外す。公開に切り替えたら自動で外れる
+def robots(t, s):
+    return t.replace('{{ROBOTS}}', '' if s.get('public', True) else '<meta name="robots" content="noindex">\n')
+
 def fill(t, s):
     for k, v in s.items():
         t = t.replace('{{%s}}' % k.upper(), html.escape(str(v), quote=False) if isinstance(v, str) else str(v))
@@ -35,8 +39,8 @@ def fill(t, s):
 for s in cfg:
     d = os.path.join(B, s['id'])
     os.makedirs(os.path.join(d, 'data'), exist_ok=True)
-    open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(fill(guide(app, 'app', s), s))
-    open(os.path.join(d, 'events.html'), 'w', encoding='utf-8').write(fill(guide(evp, 'events', s), s))
+    open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(fill(robots(guide(app, 'app', s), s), s))
+    open(os.path.join(d, 'events.html'), 'w', encoding='utf-8').write(fill(robots(guide(evp, 'events', s), s), s))
     open(os.path.join(d, 'news.html'), 'w', encoding='utf-8').write(fill(news, s))
     open(os.path.join(d, 'manifest.webmanifest'), 'w', encoding='utf-8').write(fill(man, s))
     open(os.path.join(d, 'sw.js'), 'w', encoding='utf-8').write(fill(sw, s))
