@@ -37762,5 +37762,98 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/09/080912",
+  "articleDate": "2026-10-09",
+  "targetDate": "2026-10-08",
+  "postDate": "2026-10-07",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2107795752177291352",
+  "title": "10月8日のマルハン新宿東宝ビルまとめ✏️コンプリート3台とゴッドイーターが持つ圧倒的なポテンシャル！！",
+  "results": [
+   {
+    "machine": "ゴッドイーター",
+    "plus": 7,
+    "total": 13,
+    "avg": 5108
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 4,
+    "total": 6,
+    "avg": 1333
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ゴッドイーター",
+    "matched": true,
+    "keyword": "山佐プレミアムデー",
+    "chain": [
+     "山佐プレミアムデー"
+    ],
+    "raw": "・山佐プレミアムデー",
+    "result": {
+     "plus": 7,
+     "total": 13,
+     "avg": 5108
+    }
+   },
+   {
+    "machine": "ゴッドイーター",
+    "matched": true,
+    "keyword": "半赫",
+    "chain": [
+     "半赫",
+     "喰種",
+     "喰らう"
+    ],
+    "raw": "半赫→喰種→喰らう",
+    "result": {
+     "plus": 7,
+     "total": 13,
+     "avg": 5108
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "服のボタンが6つ",
+    "chain": [
+     "服のボタンが6つ",
+     "6台機種"
+    ],
+    "raw": "服のボタンが6つ→6台機種",
+    "result": {
+     "plus": 4,
+     "total": 6,
+     "avg": 1333
+    }
+   },
+   {
+    "machine": "ケロット5",
+    "matched": false,
+    "keyword": "プレミアム山佐デー",
+    "chain": [
+     "プレミアム山佐デー"
+    ],
+    "raw": "・プレミアム山佐デー",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "アップルパイ",
+    "chain": [
+     "アップルパイ",
+     "クッキングたいむ"
+    ],
+    "raw": "アップルパイ→クッキングたいむ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
