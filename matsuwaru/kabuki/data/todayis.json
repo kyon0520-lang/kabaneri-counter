@@ -42,5 +42,32 @@
  ],
  "holiday": false,
  "date": "2026-10-08",
- "sourceUrl": "https://netlab.click/todayis/1008"
+ "sourceUrl": "https://netlab.click/todayis/1008",
+ "chara": [
+  [
+   "叢",
+   "閃乱カグラ"
+  ],
+  [
+   "河野燕",
+   "ハイスクール・フリート"
+  ],
+  [
+   "メディナ・オルティナノス",
+   "ソードアート・オンライン"
+  ],
+  [
+   "イルダ・エンリケス",
+   "ゴッドイーター"
+  ],
+  [
+   "神代利世",
+   "東京喰種"
+  ],
+  [
+   "ホオグロ",
+   "東京喰種"
+  ]
+ ],
+ "charaUrl": "https://sulocale.sulopachinews.com/archives/209"
 }

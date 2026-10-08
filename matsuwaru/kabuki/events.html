@@ -911,7 +911,18 @@ function renderTodayis(){
       </div>`;
   }
   h += `</div>`;
-  if(TD.sourceUrl) h += `<p class="note">出典：<a href="${esc(TD.sourceUrl)}" target="_blank" rel="noopener">netlab.click</a></p>`;
+  // キャラ誕。パチ・スロに出てくるキャラの誕生日（名前と作品）
+  if(TD.chara && TD.chara.length){
+    h += `<div class="card">
+      <div class="sec">${esc(dstr)}のキャラ誕<span style="margin-left:6px;font-weight:400">${TD.chara.length}人</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">`
+      + TD.chara.map(([n,w])=>`<div style="font-size:13.5px">${esc(n)}<span style="color:var(--sub);font-size:12px">（${esc(w)}）</span></div>`).join('')
+      + `</div></div>`;
+  }
+  const src = [];
+  if(TD.sourceUrl) src.push(`記念日：<a href="${esc(TD.sourceUrl)}" target="_blank" rel="noopener">netlab.click</a>`);
+  if(TD.chara && TD.chara.length && TD.charaUrl) src.push(`キャラ誕：<a href="${esc(TD.charaUrl)}" target="_blank" rel="noopener">スロカレ</a>`);
+  if(src.length) h += `<p class="note">出典：${src.join('／')}</p>`;
   box.innerHTML = h;
   const b = document.getElementById('tdbtn');
   if(b) b.onclick = () => {

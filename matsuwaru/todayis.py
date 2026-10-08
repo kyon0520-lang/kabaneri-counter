@@ -4,7 +4,9 @@
    翌日ぶんを取得する（main()参照）。全店舗で同じ内容だが、
    /matsuwaru/data/* は旧URL向けの301リダイレクトが既にあるため（_redirects）、
    他のJSONと同様に店舗ごとのdata/配下に複製して置く。おまけ機能なので、
-   先方の書式変更などで失敗しても他のパイプラインは止めない（前回分のまま据え置き）。"""
+   先方の書式変更などで失敗しても他のパイプラインは止めない（前回分のまま据え置き）。
+   あわせて、パチ・スロのキャラの誕生日（キャラ誕）を sulocale の誕生日一覧から取る。
+   こちらは失敗してもキャラ誕が空になるだけで、記念日は出す。"""
 import urllib.request, re, os, json, html
 from datetime import datetime, timedelta, timezone
 
@@ -51,6 +53,46 @@ def parse(src):
 
     return {'main': main, 'sub': sub, 'holiday': holiday}
 
+CHARA_URL = 'https://sulocale.sulopachinews.com/archives/209'
+
+# 日付の見出し。<a href="/archives/イベント/MMDD"><span class="labeltext …">N日</span>
+# （途中で改行が入っている日がある。本文中の /archives/イベント/… は見出しではないので labeltext で見分ける）
+CHARA_HEAD = re.compile(r'<a href="/archives/イベント\s*/(\d{4})"\s*>\s*<span class="labeltext')
+
+def parse_chara(src, month, day):
+    """誕生日一覧（1年分が1ページ）から、その日のキャラを [[名前, 作品], ...] で返す。
+       見出しから次の見出し（月末は音声・月の区切り）までがその日の分で、
+       名前（<a>作品</a>）が <br> 区切りで並ぶ。同じキャラが2回書かれていることがあるので重複は落とす"""
+    heads = list(CHARA_HEAD.finditer(src))
+    key = '%02d%02d' % (month, day)
+    k = next((n for n, h in enumerate(heads) if h.group(1) == key), None)
+    if k is None:
+        raise ValueError('キャラ誕の %d/%d が見つからない（書式変更の可能性）' % (month, day))
+    s = src.find('</a>', heads[k].end()) + 4
+    e = heads[k + 1].start() if k + 1 < len(heads) else len(src)
+    sec = src[s:e]
+    for stop in ('<audio', '<script', '</div>'):
+        x = sec.find(stop)
+        if x >= 0: sec = sec[:x]
+    sec = re.sub(r'<p[^>]*>\s*$', '', sec)                    # 次の見出しの書き出し
+    sec = re.sub(r'<noscript>.*?</noscript>', '', sec, flags=re.S)
+    out, seen = [], set()
+    for part in re.split(r'<br\s*/?>|</p>\s*<p[^>]*>', sec):
+        # 作品名はリンクの文字から取る（「ガールフレンド(仮)」のように括弧を含む作品があるため）
+        links = [m for m in re.finditer(r'<a[^>]*href="([^"]*)"[^>]*>(.*?)</a>', part, re.S)
+                 if not m.group(1).endswith('.wav')]
+        if not links: continue
+        name = re.sub(r'[（(\s]+$', '', clean_text(part[:links[-1].start()]))
+        work = clean_text(links[-1].group(2))
+        # 「ナーくん（「スロットアプリ」<a>泰平に萌えろ!!</a>）」のようにリンクが作品名の一部だけの書き方
+        if name.count('（') > name.count('）'):
+            c = name.rfind('（')
+            name, work = name[:c].strip(), name[c + 1:] + work
+        if not name or not work: continue
+        if (name, work) in seen: continue
+        seen.add((name, work)); out.append([name, work])
+    return out
+
 def main():
     now = datetime.now(timezone(timedelta(hours=9)))
     # 19時までは今日ぶん、19時を過ぎたら翌日ぶんに切り替える（events.htmlのafterPostと同じ考え方）。
@@ -63,13 +105,18 @@ def main():
         data = parse(get(url))
         data['date'] = target.strftime('%Y-%m-%d')
         data['sourceUrl'] = url
+        try:
+            data['chara'] = parse_chara(get(CHARA_URL), target.month, target.day)
+            data['charaUrl'] = CHARA_URL
+        except Exception as e:
+            print('::warning::キャラ誕の取得に失敗（%s）。キャラ誕なしで出す' % e)
         # 取得時刻はあえて持たない。入れると内容が同じでも実行のたびにJSONが変わり、
         # git diffが毎回検知されて無駄なコミット・デプロイが走ってしまうため
         for s in stores:
             out = os.path.join(B, s['id'], 'data', 'todayis.json')
             os.makedirs(os.path.dirname(out), exist_ok=True)
             json.dump(data, open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-        print('OK  明日は何の日(%s): 主要%d件・その他%d件（%d店舗ぶん）' % (data['date'], len(data['main']), len(data['sub']), len(stores)))
+        print('OK  明日は何の日(%s): 主要%d件・その他%d件・キャラ誕%d件（%d店舗ぶん）' % (data['date'], len(data['main']), len(data['sub']), len(data.get('chara', [])), len(stores)))
     except Exception as e:
         print('::warning::明日は何の日の取得に失敗（%s）。前回分のデータのまま据え置き' % e)
 
