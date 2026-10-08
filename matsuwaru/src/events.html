@@ -163,6 +163,7 @@ h2:first-of-type{margin-top:4px}
 .notyet .rh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:7px}
 .notyet .rh b{font-size:14px;color:#ffd4dc}
 .notyet .rh span{font-size:11px;color:var(--hot);white-space:nowrap;font-weight:700}
+.notyet .rh .nyu{font-size:11px;font-weight:700;color:var(--sub);margin-left:7px}
 .rowlist{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
 .row{display:block;padding:12px 16px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0}
@@ -606,6 +607,43 @@ function detail(p){
     ${sizeBlock(tr.size, DB.sizeAll, tr, DB)}</div>`;
 }
 
+// ── 今月未実施の機種（台数帯で絞り込む） ──────────────
+// 台数は現在の設置台数。台数帯の区切りは全機種のシートと同じ
+const NYSEGS = [
+  ['すべて', () => true],
+  ['多台数', u => u >= 20, '20台〜'],
+  ['中台数', u => u >= 10 && u <= 19, '10〜19台'],
+  ['小台数', u => u > 0 && u <= 9, '9台以下'],
+];
+let nyseg = 0, NYD = null;   // NYD は render() で受け取った events.json
+function drawNotYet(){
+  const D = NYD, t = D.thisMonth, f = NYSEGS[nyseg][1];
+  const cnt = s => t.notYet.filter(r => s[1](r[6]||0)).length + (t.never||[]).filter(r => s[1](r[1]||0)).length;
+  document.getElementById('nysegs').innerHTML = NYSEGS.map((s,i)=>
+    `<button data-i="${i}" class="${i===nyseg?'on':''}">${s[0]} ${cnt(s)}</button>`).join('');
+  // 台数の多い順（同じ台数なら元の並び＝実績の多い順）
+  const rows = t.notYet.filter(r => f(r[6]||0)).sort((a,b)=>(b[6]||0)-(a[6]||0));
+  const never = (t.never||[]).filter(r => f(r[1]||0)).sort((a,b)=>(b[1]||0)-(a[1]||0));
+  let h = NYSEGS[nyseg][2] ? `<p class="dates" style="margin:0 0 8px">${NYSEGS[nyseg][0]}（${NYSEGS[nyseg][2]}・現在の設置台数）</p>` : '';
+  h += rows.map(([m,avg,sd,gap,last,n,u])=>{
+    const steady = avg && sd && sd < avg*0.6;
+    // 実績が3回以下だと間隔の平均が出せない。回数だけ出して、経過日数で見てもらう
+    const body = avg
+      ? `平均${avg}日おき<em>ばらつき±${sd}日${steady?' 安定':''}</em>`
+      : `これまで${n}回<em>間隔を出すには実績が足りません</em>`;
+    return `<div class="notyet"><div class="rh"><b>${esc(m)}${u?`<small class="nyu">${u}台</small>`:''}</b>
+      <span>${last.slice(5).replace('-','/')}から${gap}日</span></div>
+      <span class="m${steady?' mid':''}" style="font-size:12px">${body}</span></div>`;
+  }).join('');
+  if(never.length){
+    const since = (D.since||'').replace(/-/g,'/').slice(0,7);
+    h += `<div class="notyet"><div class="rh"><b>${since}以降 全系になっていない機種</b></div>
+      <div class="ms" style="margin-top:2px">${never.map(([m,u])=>
+        `<span class="m" style="font-size:12px">${esc(m)}${u?`<em>${u}台</em>`:''}</span>`).join('')}</div></div>`;
+  }
+  document.getElementById('nylist').innerHTML = h || '<p class="note" style="margin:0">あてはまる機種がありません。</p>';
+}
+
 // ── 全機種のシート ───────────────────────────────
 // 台数はそのイベントの日にいちばん多かった台数。0は当日の記録が無い機種
 const SEGS = [
@@ -799,23 +837,8 @@ function render(D){
     h += `<div class="card">
       <button class="disc" id="nybtn" aria-expanded="false" aria-controls="nybox">
         <b>今月未実施の機種</b><span class="dc">${nyn}機種<i class="cv"></i></span></button>
-      <div id="nybox" hidden style="margin-top:12px">`;
-    h += t.notYet.map(([m,avg,sd,gap,last,n])=>{
-      const steady = avg && sd && sd < avg*0.6;
-      // 実績が3回以下だと間隔の平均が出せない。回数だけ出して、経過日数で見てもらう
-      const body = avg
-        ? `平均${avg}日おき<em>ばらつき±${sd}日${steady?' 安定':''}</em>`
-        : `これまで${n}回<em>間隔を出すには実績が足りません</em>`;
-      return `<div class="notyet"><div class="rh"><b>${esc(m)}</b>
-        <span>${last.slice(5).replace('-','/')}から${gap}日</span></div>
-        <span class="m${steady?' mid':''}" style="font-size:12px">${body}</span></div>`;
-    }).join('');
-    if((t.never||[]).length){
-      const since = (D.since||'').replace(/-/g,'/').slice(0,7);
-      h += `<div class="notyet"><div class="rh"><b>${since}以降 全系になっていない機種</b></div>
-        <div class="ms" style="margin-top:2px">${t.never.map(([m,u])=>
-          `<span class="m" style="font-size:12px">${esc(m)}${u?`<em>${u}台</em>`:''}</span>`).join('')}</div></div>`;
-    }
+      <div id="nybox" hidden style="margin-top:12px">
+      <div class="segs" id="nysegs"></div><div id="nylist"></div>`;
     const lu = t.lineup ? `現在の設置機種${t.lineup.machines}機種（${t.lineup.fetched}時点・毎週の入れ替え後に更新）と照らし合わせ、撤去済みの機種は除いています。` : '';
     h += `<p class="note" style="margin-bottom:0">間隔のばらつきが大きい機種が多く、厳密なローテーションではありません。「まだ来ていない＝次に来る」ではない点にご注意ください。ばらつきが小さい機種ほど、経過日数が参考になります。${lu}${(t.never||[]).length ? '公式の設置機種にあって、この期間に全系の記録がない機種は最後にまとめています。' : ''}それ以前のことは分かりません。</p>`;
     h += `</div></div>`;
@@ -830,6 +853,13 @@ function render(D){
   document.getElementById('main').innerHTML = h;
   drawPicked();
   renderTodayis();
+  if(document.getElementById('nysegs')){
+    NYD = D; drawNotYet();
+    document.getElementById('nysegs').onclick = e => {
+      const b = e.target.closest('button'); if(!b) return;
+      nyseg = +b.dataset.i; drawNotYet();
+    };
+  }
   document.getElementById('picker').addEventListener('change', e=>{
     picked = e.target.value; drawPicked();
   });

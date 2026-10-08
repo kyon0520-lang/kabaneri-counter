@@ -348,7 +348,8 @@ for m, n in base.most_common():
     if INSTALLED is not None and m not in INSTALLED: continue   # 撤去済みは出さない
     # 実績が3回以下だと間隔の平均は出せないが、未実施であることは変わらないので出す
     avg, sd = gaps.get(m, (None, None))
-    notyet.append([m, avg, sd, (today - d2(last[m])).days, last[m], n])
+    # 末尾は現在の設置台数（今月未実施を台数帯で絞り込むため）
+    notyet.append([m, avg, sd, (today - d2(last[m])).days, last[m], n, UNITS.get(m, 0)])
 # 日付ごとの全系機種（新しい日付が先、機種は現在の設置台数が多い順）。
 # 横に添える台数は「現在」ではなく、その日実際に何台だったか（units_on）
 bydate = sorted((d for d in alldays if d.startswith(ym)), reverse=True)
