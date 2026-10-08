@@ -3210,6 +3210,26 @@
     ],
     "raw": "コーラ→コーラリアン",
     "result": null
+   },
+   {
+    "machine": "ダリフラ",
+    "matched": false,
+    "keyword": "入替機種",
+    "chain": [
+     "入替機種"
+    ],
+    "raw": "入替機種",
+    "result": null
+   },
+   {
+    "machine": "吉宗",
+    "matched": false,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種"
+    ],
+    "raw": "減台機種",
+    "result": null
    }
   ],
   "unassigned": []
@@ -24750,6 +24770,20 @@
     }
    },
    {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "SAO増台記念",
+    "chain": [
+     "SAO増台記念"
+    ],
+    "raw": "SAO増台記念",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 6880
+    }
+   },
+   {
     "machine": "ToLOVEる",
     "matched": true,
     "keyword": "回避",
@@ -24762,6 +24796,20 @@
      "plus": 3,
      "total": 4,
      "avg": 3275
+    }
+   },
+   {
+    "machine": "このすば",
+    "matched": true,
+    "keyword": "きゃべつ",
+    "chain": [
+     "きゃべつ"
+    ],
+    "raw": "きゃべつ",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 1933
     }
    },
    {
@@ -34631,6 +34679,20 @@
   ],
   "assoc": [
    {
+    "machine": "末尾①",
+    "matched": true,
+    "keyword": "爪楊枝置き方が①",
+    "chain": [
+     "爪楊枝置き方が①"
+    ],
+    "raw": "・爪楊枝置き方が①",
+    "result": {
+     "plus": 47,
+     "total": 67,
+     "avg": 2040
+    }
+   },
+   {
     "machine": "末尾⑤",
     "matched": true,
     "keyword": "ガーゴイル",
@@ -37430,6 +37492,16 @@
    }
   ],
   "assoc": [
+   {
+    "machine": "アナザー末尾④",
+    "matched": false,
+    "keyword": "画像４品",
+    "chain": [
+     "画像４品"
+    ],
+    "raw": "・画像４品",
+    "result": null
+   },
    {
     "machine": "SAO2",
     "matched": true,

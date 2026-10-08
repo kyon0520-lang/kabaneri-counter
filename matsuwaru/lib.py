@@ -97,16 +97,28 @@ def parse_html(src, ent):
     _tail_bullets = [x for x in tail if re.match(r'^[・･]', x)]
     _tail_nonbullets = [x.strip() for x in tail if x.strip() and not re.match(r'^[・･]', x)]
     bullet_is_chain = bool(_tail_nonbullets) and any(re.search(ARROW, x) for x in _tail_bullets)
-    for l0 in tail:
+    _strip = lambda x: re.sub(r'^[・･]\s*', '', x).strip()
+    _rest = [_strip(x) for x in tail]
+    cur_has = False        # いまの見出しに連鎖が1つでも付いたか
+    for i, l0 in enumerate(tail):
         is_bullet = bool(re.match(r'^[・･]', l0))
-        l = re.sub(r'^[・･]\s*', '', l0).strip()
+        l = _rest[i]
         if not l:
             continue
-        if bullet_is_chain and is_bullet and not re.search(ARROW, l) and len(l) <= 30:
+        nxt = next((x for x in _rest[i+1:] if x), '')
+        # 見出しも連鎖も全部「・」付きの記事で、矢印なしの1語の示唆が見出しの直後に来るとき
+        # （「・アナザー末尾④」「・画像４品」「・SAO2」「・種子島→…」）。
+        # 見出しにまだ連鎖が無く、次の行も矢印なし（＝この行の下に連鎖がぶら下がらない）なら、
+        # この行は見出しではなく示唆ワード。全系の機種名そのものの行は見出しとして扱う
+        single = (not bullet_is_chain and cur and not cur_has and not re.search(ARROW, l)
+                  and len(l) <= 30 and '。' not in l and nxt and not re.search(ARROW, nxt)
+                  and norm(l) not in results)
+        if single or (bullet_is_chain and is_bullet and not re.search(ARROW, l) and len(l) <= 30):
             # 矢印なしの示唆ワード単独行（機種に直結）
             if cur:
                 assoc.append({'machine': cur, 'matched': norm(cur) in results,
                               'keyword': l, 'chain': [l], 'raw': l0})
+                cur_has = True
             continue
         if re.search(ARROW, l):
             # 行頭がいきなり矢印で始まる記事がある（「→2日連続パンチョ」など）。
@@ -120,10 +132,11 @@ def parse_html(src, ent):
             rec = {'machine': cur, 'matched': bool(k and k in results),
                    'keyword': chain[0], 'chain': chain, 'raw': l}
             (assoc if cur else unknown).append(rec)
+            if cur: cur_has = True
         elif len(l) <= 30 and '。' not in l:
-            cur = l
+            cur, cur_has = l, False
         elif '。' in l and len(l) > 30:
-            cur = None  # 解説文に入ったら区切る
+            cur, cur_has = None, False  # 解説文に入ったら区切る
 
     # 差枚実績を機種名で突き合わせて補完
     for a in assoc:
