@@ -37855,5 +37855,186 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/10/072051",
+  "articleDate": "2026-10-10",
+  "targetDate": "2026-10-09",
+  "postDate": "2026-09-28",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2104534235608739976",
+  "title": "10月9日のマルハン新宿東宝ビルまとめ✏️ノーマルの末尾仕掛け+全系を含む⑨台並び",
+  "results": [
+   {
+    "machine": "末尾⑧（ジャグ・ハナ系）",
+    "plus": 19,
+    "total": 21,
+    "avg": 1786
+   },
+   {
+    "machine": "モンハンシリーズ（679-686、1208番台）",
+    "plus": 7,
+    "total": 9,
+    "avg": 3289
+   },
+   {
+    "machine": "ジャグラーシリーズ（1096-1104番台）",
+    "plus": 9,
+    "total": 9,
+    "avg": 2367
+   },
+   {
+    "machine": "SBJ、ToLOVEる（598-606番台）",
+    "plus": 6,
+    "total": 9,
+    "avg": 2633
+   },
+   {
+    "machine": "東京喰種（739-747番台）",
+    "plus": 6,
+    "total": 9,
+    "avg": 3056
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "末尾⑧（ジャグ・ハナ系以外）",
+    "matched": false,
+    "keyword": "写真チョコ8個",
+    "chain": [
+     "写真チョコ8個",
+     "末尾⑧"
+    ],
+    "raw": "写真チョコ8個→末尾⑧",
+    "result": null
+   },
+   {
+    "machine": "モンハンシリーズ（679-686、1208番台）",
+    "matched": true,
+    "keyword": "ガリバー",
+    "chain": [
+     "ガリバー",
+     "狩場ー"
+    ],
+    "raw": "ガリバー→狩場ー",
+    "result": {
+     "plus": 7,
+     "total": 9,
+     "avg": 3289
+    }
+   },
+   {
+    "machine": "モンハンシリーズ（679-686、1208番台）",
+    "matched": true,
+    "keyword": "小麦",
+    "chain": [
+     "小麦",
+     "コムギ",
+     "ハンター×ハンター"
+    ],
+    "raw": "小麦→コムギ→ハンター×ハンター",
+    "result": {
+     "plus": 7,
+     "total": 9,
+     "avg": 3289
+    }
+   },
+   {
+    "machine": "モンハンシリーズ（679-686、1208番台）",
+    "matched": true,
+    "keyword": "びっくりドンキー",
+    "chain": [
+     "びっくりドンキー",
+     "モンスターガリバーディッシュ",
+     "モンスター"
+    ],
+    "raw": "びっくりドンキー→モンスターガリバーディッシュ→モンスター",
+    "result": {
+     "plus": 7,
+     "total": 9,
+     "avg": 3289
+    }
+   },
+   {
+    "machine": "ジャグラーシリーズ（1096-1104番台）",
+    "matched": true,
+    "keyword": "セブンイレブン",
+    "chain": [
+     "セブンイレブン",
+     "7台機種"
+    ],
+    "raw": "セブンイレブン→7台機種",
+    "result": {
+     "plus": 9,
+     "total": 9,
+     "avg": 2367
+    }
+   },
+   {
+    "machine": "ジャグラーシリーズ（1096-1104番台）",
+    "matched": true,
+    "keyword": "セブンイレブン",
+    "chain": [
+     "セブンイレブン",
+     "7台11文字"
+    ],
+    "raw": "セブンイレブン→7台11文字",
+    "result": {
+     "plus": 9,
+     "total": 9,
+     "avg": 2367
+    }
+   },
+   {
+    "machine": "ジャグラーシリーズ（1096-1104番台）",
+    "matched": true,
+    "keyword": "九尾ちゃん",
+    "chain": [
+     "九尾ちゃん",
+     "緑"
+    ],
+    "raw": "九尾ちゃん→緑",
+    "result": {
+     "plus": 9,
+     "total": 9,
+     "avg": 2367
+    }
+   },
+   {
+    "machine": "SBJ、ToLOVEる（598-606番台）",
+    "matched": true,
+    "keyword": "10/9",
+    "chain": [
+     "10/9",
+     "さいころキャラメルの日",
+     "サイコロ",
+     "ダイス"
+    ],
+    "raw": "10/9→さいころキャラメルの日→サイコロ→ダイス",
+    "result": {
+     "plus": 6,
+     "total": 9,
+     "avg": 2633
+    }
+   },
+   {
+    "machine": "SBJ、ToLOVEる（598-606番台）",
+    "matched": true,
+    "keyword": "お菓子",
+    "chain": [
+     "お菓子",
+     "もぐもぐタイム",
+     "もぐもぐたい焼きタイム"
+    ],
+    "raw": "お菓子→もぐもぐタイム→もぐもぐたい焼きタイム",
+    "result": {
+     "plus": 6,
+     "total": 9,
+     "avg": 2633
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
