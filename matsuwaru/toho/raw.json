@@ -38036,5 +38036,342 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/11/073341",
+  "articleDate": "2026-10-11",
+  "targetDate": "2026-10-10",
+  "postDate": "2026-10-09",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2108520417862504539",
+  "title": "10月10日のマルハン新宿東宝ビルまとめ✏️総差枚54万枚オーバー（平均800枚オーバー）の全国トップクラスの出玉！",
+  "results": [
+   {
+    "machine": "末尾ゾロ目",
+    "plus": 52,
+    "total": 65,
+    "avg": 3337
+   },
+   {
+    "machine": "ファンキー2",
+    "plus": 31,
+    "total": 32,
+    "avg": 3266
+   },
+   {
+    "machine": "ゴッド",
+    "plus": 21,
+    "total": 28,
+    "avg": 4525
+   },
+   {
+    "machine": "戦国乙女5",
+    "plus": 12,
+    "total": 14,
+    "avg": 5521
+   },
+   {
+    "machine": "戦コレ6",
+    "plus": 3,
+    "total": 6,
+    "avg": 3100
+   },
+   {
+    "machine": "攻殻機動隊",
+    "plus": 5,
+    "total": 5,
+    "avg": 2660
+   },
+   {
+    "machine": "マンキン",
+    "plus": 3,
+    "total": 3,
+    "avg": 3167
+   },
+   {
+    "machine": "いざ番長",
+    "plus": 2,
+    "total": 3,
+    "avg": 1700
+   },
+   {
+    "machine": "シェイクBT",
+    "plus": 0,
+    "total": 3,
+    "avg": -1433
+   },
+   {
+    "machine": "アバサー",
+    "plus": 1,
+    "total": 2,
+    "avg": -150
+   },
+   {
+    "machine": "かのかり",
+    "plus": 1,
+    "total": 2,
+    "avg": 6400
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ファンキー2",
+    "matched": true,
+    "keyword": "10/10",
+    "chain": [
+     "10/10",
+     "101",
+     "101匹ワンちゃん"
+    ],
+    "raw": "10/10→101→101匹ワンちゃん",
+    "result": {
+     "plus": 31,
+     "total": 32,
+     "avg": 3266
+    }
+   },
+   {
+    "machine": "ゴッド",
+    "matched": true,
+    "keyword": "GOUDOU（合同）",
+    "chain": [
+     "GOUDOU（合同）",
+     "GOD"
+    ],
+    "raw": "GOUDOU（合同）→GOD",
+    "result": {
+     "plus": 21,
+     "total": 28,
+     "avg": 4525
+    }
+   },
+   {
+    "machine": "ゴッド",
+    "matched": true,
+    "keyword": "オリジン",
+    "chain": [
+     "オリジン",
+     "ジン",
+     "神"
+    ],
+    "raw": "オリジン→ジン→神",
+    "result": {
+     "plus": 21,
+     "total": 28,
+     "avg": 4525
+    }
+   },
+   {
+    "machine": "ゴッド",
+    "matched": true,
+    "keyword": "レバーは苦手",
+    "chain": [
+     "レバーは苦手",
+     "レバー違う"
+    ],
+    "raw": "レバーは苦手→レバー違う",
+    "result": {
+     "plus": 21,
+     "total": 28,
+     "avg": 4525
+    }
+   },
+   {
+    "machine": "戦国乙女5",
+    "matched": true,
+    "keyword": "10月10日",
+    "chain": [
+     "10月10日",
+     "銭湯の日",
+     "戦闘の日"
+    ],
+    "raw": "10月10日→銭湯の日→戦闘の日",
+    "result": {
+     "plus": 12,
+     "total": 14,
+     "avg": 5521
+    }
+   },
+   {
+    "machine": "戦国乙女5",
+    "matched": true,
+    "keyword": "円形",
+    "chain": [
+     "円形",
+     "バームクーヘン"
+    ],
+    "raw": "円形→バームクーヘン",
+    "result": {
+     "plus": 12,
+     "total": 14,
+     "avg": 5521
+    }
+   },
+   {
+    "machine": "戦国乙女5",
+    "matched": true,
+    "keyword": "こしあん来店",
+    "chain": [
+     "こしあん来店"
+    ],
+    "raw": "・こしあん来店",
+    "result": {
+     "plus": 12,
+     "total": 14,
+     "avg": 5521
+    }
+   },
+   {
+    "machine": "戦コレ6",
+    "matched": true,
+    "keyword": "10月10日",
+    "chain": [
+     "10月10日",
+     "銭湯の日",
+     "戦闘の日"
+    ],
+    "raw": "10月10日→銭湯の日→戦闘の日",
+    "result": {
+     "plus": 3,
+     "total": 6,
+     "avg": 3100
+    }
+   },
+   {
+    "machine": "戦コレ6",
+    "matched": true,
+    "keyword": "円形",
+    "chain": [
+     "円形",
+     "バームクーヘン"
+    ],
+    "raw": "円形→バームクーヘン",
+    "result": {
+     "plus": 3,
+     "total": 6,
+     "avg": 3100
+    }
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": true,
+    "keyword": "海老",
+    "chain": [
+     "海老",
+     "甲殻類"
+    ],
+    "raw": "海老→甲殻類",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2660
+    }
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": true,
+    "keyword": "円形",
+    "chain": [
+     "円形",
+     "バームクーヘン"
+    ],
+    "raw": "円形→バームクーヘン",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2660
+    }
+   },
+   {
+    "machine": "マンキン",
+    "matched": true,
+    "keyword": "おかず",
+    "chain": [
+     "おかず",
+     "カズ",
+     "キングカズ"
+    ],
+    "raw": "おかず→カズ→キングカズ",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3167
+    }
+   },
+   {
+    "machine": "いざ番長",
+    "matched": true,
+    "keyword": "オリジン",
+    "chain": [
+     "オリジン",
+     "弁当図柄"
+    ],
+    "raw": "オリジン→弁当図柄",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1700
+    }
+   },
+   {
+    "machine": "シェイクBT",
+    "matched": true,
+    "keyword": "鮭",
+    "chain": [
+     "鮭",
+     "SHAKE"
+    ],
+    "raw": "鮭→SHAKE",
+    "result": {
+     "plus": 0,
+     "total": 3,
+     "avg": -1433
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": true,
+    "keyword": "10月10日",
+    "chain": [
+     "10月10日",
+     "まぐろの日",
+     "魚"
+    ],
+    "raw": "10月10日→まぐろの日→魚",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": -150
+    }
+   },
+   {
+    "machine": "かのかり",
+    "matched": true,
+    "keyword": "ハートマーク（写真ナプキン）",
+    "chain": [
+     "ハートマーク（写真ナプキン）",
+     "ハート"
+    ],
+    "raw": "ハートマーク（写真ナプキン）→ハート",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": 6400
+    }
+   },
+   {
+    "machine": "ギアスC.C.",
+    "matched": false,
+    "keyword": "バーコード",
+    "chain": [
+     "バーコード",
+     "コード"
+    ],
+    "raw": "バーコード→コード",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
