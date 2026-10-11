@@ -38373,5 +38373,78 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/12/073040",
+  "articleDate": "2026-10-12",
+  "targetDate": "2026-10-11",
+  "postDate": "2026-10-10",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2108904179590959606",
+  "title": "10月11日のマルハン新宿東宝ビルまとめ✏️鉄板の末ゾロに加えて、多台数設置の全系あり！",
+  "results": [
+   {
+    "machine": "末尾ゾロ目",
+    "plus": 51,
+    "total": 65,
+    "avg": 2882
+   },
+   {
+    "machine": "モンキーV（2台稼働停止中）",
+    "plus": 13,
+    "total": 18,
+    "avg": 2800
+   },
+   {
+    "machine": "キンハナ",
+    "plus": 13,
+    "total": 14,
+    "avg": 2286
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "モンキーV",
+    "matched": false,
+    "keyword": "21:55投稿",
+    "chain": [
+     "21:55投稿",
+     "5",
+     "モンキー5"
+    ],
+    "raw": "21:55投稿→5→モンキー5",
+    "result": null
+   },
+   {
+    "machine": "キンハナ",
+    "matched": true,
+    "keyword": "新規開拓",
+    "chain": [
+     "新規開拓",
+     "開拓",
+     "パイオニア"
+    ],
+    "raw": "新規開拓→開拓→パイオニア",
+    "result": {
+     "plus": 13,
+     "total": 14,
+     "avg": 2286
+    }
+   },
+   {
+    "machine": "ギアス",
+    "matched": false,
+    "keyword": "ゴマ",
+    "chain": [
+     "ゴマ",
+     "不老長寿",
+     "C.C."
+    ],
+    "raw": "ゴマ→不老長寿→C.C.",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
