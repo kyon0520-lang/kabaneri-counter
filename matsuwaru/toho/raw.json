@@ -38446,5 +38446,115 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/13/082551",
+  "articleDate": "2026-10-13",
+  "targetDate": "2026-10-12",
+  "postDate": "2026-10-11",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2109245742426832923",
+  "title": "10月12日のマルハン新宿東宝ビルまとめ✏️10台以上設置機種から2機種全系あり！",
+  "results": [
+   {
+    "machine": "かぐや様",
+    "plus": 7,
+    "total": 14,
+    "avg": 1493
+   },
+   {
+    "machine": "ドラハナ",
+    "plus": 11,
+    "total": 11,
+    "avg": 2518
+   },
+   {
+    "machine": "Lハナビ",
+    "plus": 3,
+    "total": 5,
+    "avg": 1240
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "かぐや様",
+    "matched": true,
+    "keyword": "うどん",
+    "chain": [
+     "うどん",
+     "ドーンだYO"
+    ],
+    "raw": "うどん→ドーンだYO",
+    "result": {
+     "plus": 7,
+     "total": 14,
+     "avg": 1493
+    }
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "食事休憩",
+    "chain": [
+     "食事休憩",
+     "ランチ",
+     "ドラゴンボール"
+    ],
+    "raw": "食事休憩→ランチ→ドラゴンボール",
+    "result": {
+     "plus": 11,
+     "total": 11,
+     "avg": 2518
+    }
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": true,
+    "keyword": "ゴールデン街を抜けて",
+    "chain": [
+     "ゴールデン街を抜けて",
+     "キンハナの向こう",
+     "ドラハナ"
+    ],
+    "raw": "ゴールデン街を抜けて→キンハナの向こう→ドラハナ",
+    "result": {
+     "plus": 11,
+     "total": 11,
+     "avg": 2518
+    }
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": true,
+    "keyword": "32分投稿",
+    "chain": [
+     "32分投稿",
+     "遅れ"
+    ],
+    "raw": "32分投稿→遅れ",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 1240
+    }
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": true,
+    "keyword": "うどん",
+    "chain": [
+     "うどん",
+     "どんちゃん"
+    ],
+    "raw": "うどん→どんちゃん",
+    "result": {
+     "plus": 3,
+     "total": 5,
+     "avg": 1240
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
