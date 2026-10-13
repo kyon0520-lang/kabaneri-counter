@@ -38556,5 +38556,129 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/14/071936",
+  "articleDate": "2026-10-14",
+  "targetDate": "2026-10-13",
+  "postDate": "2026-10-12",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2109607560462623164",
+  "title": "10月13日のマルハン新宿東宝ビルまとめ✏️増台&amp;入れ替え機種は全系狙い必須！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ヴヴヴ",
+    "matched": false,
+    "keyword": "増台機種",
+    "chain": [
+     "増台機種"
+    ],
+    "raw": "・増台機種",
+    "result": null
+   },
+   {
+    "machine": "ヴヴヴ",
+    "matched": false,
+    "keyword": "いちご",
+    "chain": [
+     "いちご",
+     "赤と白",
+     "ヴヴヴ筐体の色"
+    ],
+    "raw": "いちご→赤と白→ヴヴヴ筐体の色",
+    "result": null
+   },
+   {
+    "machine": "ウルミラジャグラー",
+    "matched": false,
+    "keyword": "ミルク",
+    "chain": [
+     "ミルク",
+     "ミラクル"
+    ],
+    "raw": "ミルク→ミラクル",
+    "result": null
+   },
+   {
+    "machine": "ウルミラジャグラー",
+    "matched": false,
+    "keyword": "ミルク",
+    "chain": [
+     "ミルク",
+     "牛乳",
+     "牛"
+    ],
+    "raw": "ミルク→牛乳→牛",
+    "result": null
+   },
+   {
+    "machine": "ドッチ",
+    "matched": false,
+    "keyword": "半袖か長袖かどっち",
+    "chain": [
+     "半袖か長袖かどっち",
+     "どっち"
+    ],
+    "raw": "半袖か長袖かどっち→どっち",
+    "result": null
+   },
+   {
+    "machine": "バーサス",
+    "matched": false,
+    "keyword": "復活導入",
+    "chain": [
+     "復活導入"
+    ],
+    "raw": "・復活導入",
+    "result": null
+   },
+   {
+    "machine": "バーサス",
+    "matched": false,
+    "keyword": "半袖か長袖かどっち",
+    "chain": [
+     "半袖か長袖かどっち",
+     "半袖VS長袖"
+    ],
+    "raw": "半袖か長袖かどっち→半袖VS長袖",
+    "result": null
+   },
+   {
+    "machine": "リゼロ2nd",
+    "matched": false,
+    "keyword": "食欲",
+    "chain": [
+     "食欲",
+     "強欲"
+    ],
+    "raw": "食欲→強欲",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタァ",
+    "matched": false,
+    "keyword": "クロワッサン",
+    "chain": [
+     "クロワッサン",
+     "クロディーヌ"
+    ],
+    "raw": "クロワッサン→クロディーヌ",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "セブン",
+    "chain": [
+     "セブン",
+     "北斗七星"
+    ],
+    "raw": "セブン→北斗七星",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
