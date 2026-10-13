@@ -143,12 +143,15 @@ for a in raw:
     if not ms: continue
     days[t] = sorted(ms)
     # その日の台数（入れ替えで変わるので、現在の設置台数ではなく実施当日の値を使う）
+    # 「（1096-1104番台）」のように番台の範囲で書かれた結果は並びの台数なので、機種の台数には使わない
+    # （10/9 の⑨台並び。ハッピー7台を含む9台が「ジャグラーシリーズ」として載っていた）
+    _row = lambda s: re.search(r'\d+\s*[-‐－〜~]\s*\d+[^）)]*番台', s)
     u = {}
     for r in a['results']:
         m = cn(r['machine'])
-        if m in MACHINES and r.get('total'): u[m] = r['total']
+        if m in MACHINES and r.get('total') and not _row(r['machine']): u[m] = r['total']
     for x in a['assoc']:
-        if not x.get('machine'): continue
+        if not x.get('machine') or _row(x['machine']): continue
         m = cn(x['machine']); res = x.get('result') or {}
         if m in MACHINES and res.get('total'): u.setdefault(m, res['total'])
     UHIST[t] = u
