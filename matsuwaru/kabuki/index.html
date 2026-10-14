@@ -498,7 +498,8 @@ function card(r,q){
   return `<div class="card">
     <div class="chain">${chainHTML(r,q)}</div>
     <div class="meta"><span class="dt">${a[0]}</span>
-      <a href="${a[1]}" target="_blank" rel="noopener">記事を見る</a></div>
+      ${/^https?:/.test(a[1]) ? `<a href="${a[1]}" target="_blank" rel="noopener">記事を見る</a>`
+        : '<span class="dt">記事なし（手入力）</span>'}</div>
   </div>`;
 }
 

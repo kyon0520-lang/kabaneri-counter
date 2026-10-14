@@ -151,3 +151,27 @@ def parse_html(src, ent):
             'tenchou': tenchou, 'tweetUrl': tweet_url, 'title': title.split(' - ')[0],
             'results': [results[k] for k in order], 'assoc': assoc, 'unassigned': unknown}
 
+
+
+def add_manual(raw, store_dir):
+    """data/manual_days.json の日（ブログに記事が無い日）を raw に足す。足した件数を返す。
+       既にある日（articleUrl が同じ）は中身を置き換えるので、手で直したら次の実行で反映される"""
+    import json as _j, os as _o
+    p = _o.path.join(store_dir, 'data', 'manual_days.json')
+    if not _o.path.exists(p): return 0
+    n = 0
+    for d in _j.load(open(p, encoding='utf-8')).get('days', []):
+        url = 'manual:' + d['targetDate']
+        res = {norm(r['machine']): r for r in d.get('results', [])}
+        a = {'events': d.get('events', []), 'articleUrl': url, 'articleDate': d['targetDate'],
+             'targetDate': d['targetDate'], 'postDate': d.get('postDate'),
+             'tenchou': d.get('tenchou', ''), 'tweetUrl': d.get('tweetUrl'),
+             'title': d.get('note', '手入力'), 'results': d.get('results', []),
+             'assoc': [{'machine': m, 'matched': norm(m) in res, 'keyword': ch[0], 'chain': ch,
+                        'raw': '→'.join(ch),
+                        'result': ({k: res[norm(m)][k] for k in ('plus', 'total', 'avg')}
+                                   if norm(m) in res else None)} for m, ch in d.get('assoc', [])],
+             'unassigned': [], 'units': d.get('units', {}), 'manual': True}
+        raw[:] = [x for x in raw if x['articleUrl'] != url] + [a]
+        n += 1
+    return n

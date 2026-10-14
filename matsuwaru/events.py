@@ -154,6 +154,9 @@ for a in raw:
         if not x.get('machine') or _row(x['machine']): continue
         m = cn(x['machine']); res = x.get('result') or {}
         if m in MACHINES and res.get('total'): u.setdefault(m, res['total'])
+    # 手入力の日（data/manual_days.json）は台数だけを units で持てる
+    for m, n in (a.get('units') or {}).items():
+        if cn(m) in MACHINES: u[cn(m)] = n
     UHIST[t] = u
 alldays = sorted(days)
 

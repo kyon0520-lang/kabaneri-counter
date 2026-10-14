@@ -3,7 +3,7 @@
    異常時は終了コード1で落とす（GitHub Actions の失敗通知を出すため）。"""
 import urllib.request, re, os, sys, json, time, subprocess
 from datetime import date, timedelta, datetime, timezone
-from lib import parse_html
+from lib import parse_html, add_manual
 
 import sys, os, json as _json
 import os as _os
@@ -78,6 +78,8 @@ for u in new:
     print('  追加: %s  連想%d件 / 全系%d機種' % (a['targetDate'], len(a['assoc']), len(a['results'])))
     time.sleep(1.0)
 
+# ブログに記事が無い日の手入力分（data/manual_days.json）
+add_manual(raw, B)
 raw.sort(key=lambda a: a['articleDate'])
 json.dump(raw, open(B + '/raw.json', 'w'), ensure_ascii=False, indent=1)
 

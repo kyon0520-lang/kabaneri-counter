@@ -37154,6 +37154,68 @@
  },
  {
   "events": [],
+  "articleUrl": "manual:2026-10-03",
+  "articleDate": "2026-10-03",
+  "targetDate": "2026-10-03",
+  "postDate": "2026-10-02",
+  "tenchou": "",
+  "tweetUrl": null,
+  "title": "ブログに10/3の記事が無いため、ユーザーの手入力。マイジャグVの48台は、10/5の入替（マイジャグⅥ導入）より前の台数",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "マイジャグV",
+    "matched": false,
+    "keyword": "米",
+    "chain": [
+     "米",
+     "マイ"
+    ],
+    "raw": "米→マイ",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "お好きでしょ",
+    "chain": [
+     "お好きでしょ",
+     "好き"
+    ],
+    "raw": "お好きでしょ→好き",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": false,
+    "keyword": "三陸の恵み",
+    "chain": [
+     "三陸の恵み",
+     "めぐみん"
+    ],
+    "raw": "三陸の恵み→めぐみん",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "サンマ",
+    "chain": [
+     "サンマ",
+     "魚"
+    ],
+    "raw": "サンマ→魚",
+    "result": null
+   }
+  ],
+  "unassigned": [],
+  "units": {
+   "マイジャグV": 48
+  },
+  "manual": true
+ },
+ {
+  "events": [],
   "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/05/075611",
   "articleDate": "2026-10-05",
   "targetDate": "2026-10-04",

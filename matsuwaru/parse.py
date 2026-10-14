@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """cache/*.html から raw.json を全再構築（通常は sync.py を使う）"""
 import glob, json, os
-from lib import parse_html
+from lib import parse_html, add_manual
 import sys, os, json as _json
 import os as _os
 _ROOT = _os.path.dirname(_os.path.abspath(__file__))
@@ -15,6 +15,8 @@ out = []
 for f in sorted(glob.glob(CACHE + '/*.html')):
     out.append(parse_html(open(f, encoding='utf-8', errors='replace').read(),
                           os.path.basename(f).replace('.html', '')))
+add_manual(out, B)   # ブログに記事が無い日の手入力分
+out.sort(key=lambda a: a['articleDate'])
 json.dump(out, open(B + '/raw.json', 'w'), ensure_ascii=False, indent=1)
 print('記事 %d件 / 全系機種 %d件 / 連想 %d件' % (len(out),
       sum(len(a['results']) for a in out), sum(len(a['assoc']) for a in out)))
