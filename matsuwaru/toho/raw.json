@@ -38742,5 +38742,158 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "やばたにえん"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/15/072504",
+  "articleDate": "2026-10-15",
+  "targetDate": "2026-10-14",
+  "postDate": "2026-10-13",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2109969953046819113",
+  "title": "10月14日のマルハン新宿東宝ビルまとめ✏️月イチやばたにえんで全系複数が登場！",
+  "results": [
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 5,
+    "total": 6,
+    "avg": 3133
+   },
+   {
+    "machine": "炎炎2",
+    "plus": 5,
+    "total": 6,
+    "avg": 5600
+   },
+   {
+    "machine": "防振り",
+    "plus": 5,
+    "total": 5,
+    "avg": 4800
+   },
+   {
+    "machine": "ニューキンハナ",
+    "plus": 5,
+    "total": 5,
+    "avg": 1800
+   },
+   {
+    "machine": "やじきた",
+    "plus": 4,
+    "total": 4,
+    "avg": 4100
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "ウマ娘",
+    "chain": [
+     "ウマ娘",
+     "娘",
+     "ガールズ"
+    ],
+    "raw": "ウマ娘→娘→ガールズ",
+    "result": {
+     "plus": 5,
+     "total": 6,
+     "avg": 3133
+    }
+   },
+   {
+    "machine": "炎炎2",
+    "matched": true,
+    "keyword": "浅草",
+    "chain": [
+     "浅草",
+     "紅丸",
+     "炎炎"
+    ],
+    "raw": "浅草→紅丸→炎炎",
+    "result": {
+     "plus": 5,
+     "total": 6,
+     "avg": 5600
+    }
+   },
+   {
+    "machine": "炎炎2",
+    "matched": true,
+    "keyword": "森の茶屋",
+    "chain": [
+     "森の茶屋",
+     "森",
+     "森羅万象"
+    ],
+    "raw": "森の茶屋→森→森羅万象",
+    "result": {
+     "plus": 5,
+     "total": 6,
+     "avg": 5600
+    }
+   },
+   {
+    "machine": "防振り",
+    "matched": true,
+    "keyword": "ガード下",
+    "chain": [
+     "ガード下",
+     "ガード",
+     "防御"
+    ],
+    "raw": "ガード下→ガード→防御",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 4800
+    }
+   },
+   {
+    "machine": "ニューキンハナ",
+    "matched": true,
+    "keyword": "チキンカツ",
+    "chain": [
+     "チキンカツ",
+     "キン勝つ",
+     "キング"
+    ],
+    "raw": "チキンカツ→キン勝つ→キング",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 1800
+    }
+   },
+   {
+    "machine": "やじきた",
+    "matched": true,
+    "keyword": "浅草～上野",
+    "chain": [
+     "浅草～上野",
+     "道中記"
+    ],
+    "raw": "浅草～上野→道中記",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 4100
+    }
+   },
+   {
+    "machine": "見える子",
+    "matched": false,
+    "keyword": "目玉焼き２つ",
+    "chain": [
+     "目玉焼き２つ",
+     "目"
+    ],
+    "raw": "目玉焼き２つ→目",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
