@@ -717,13 +717,16 @@ document.getElementById('sheetsegs').onclick = e => {
 };
 document.addEventListener('keydown', e => { if(e.key === 'Escape'){ closeSheet(); closeDateSheet(); closeAltSheet(); } });
 
+// 日付ごとの台数。一部の島だけだった日などは注記を添える（data/unit_notes.json）
+const unitTag = (u, nt) => (u || nt) ? `<em>${u ? u + '台' : ''}${nt ? `（${esc(nt)}）` : ''}</em>` : '';
+
 // 「日付ごとに見る」シート。検索・絞り込みはなく、開催日ごとの機種を並べるだけ
 function openDateSheet(p){
   document.getElementById('datesheettitle').textContent = fullLabel(p) + 'の日付ごとの実施機種';
   document.getElementById('datesheetlist').innerHTML = p.byDate.map(([d, ms]) =>
     `<div class="notyet"><div class="rh"><b>${d.slice(5).replace('-','/')}</b></div>
-      <div class="ms" style="margin-top:2px">${ms.map(([m, u]) =>
-        `<span class="m" style="font-size:12px">${esc(m)}${u ? `<em>${u}台</em>` : ''}</span>`).join('')}</div></div>`
+      <div class="ms" style="margin-top:2px">${ms.map(([m, u, nt]) =>
+        `<span class="m" style="font-size:12px">${esc(m)}${unitTag(u, nt)}</span>`).join('')}</div></div>`
   ).join('');
   document.getElementById('datesheet').classList.add('on');
   document.getElementById('datesheet').setAttribute('aria-hidden', 'false');
@@ -821,7 +824,7 @@ function render(D){
         <b>日付ごとの全系実施機種</b><span class="dc">${t.byDate.length}日<i class="cv"></i></span></button>
       <div id="bdbox" hidden style="margin-top:12px">`;
     h += t.byDate.map(([d,ms])=>`<div class="notyet"><div class="rh"><b>${d.slice(5).replace('-','/')}</b></div>
-      <div class="ms" style="margin-top:2px">${ms.map(([m,u])=>`<span class="m" style="font-size:12px">${esc(m)}${u?`<em>${u}台</em>`:''}</span>`).join('')}</div></div>`).join('');
+      <div class="ms" style="margin-top:2px">${ms.map(([m,u,nt])=>`<span class="m" style="font-size:12px">${esc(m)}${unitTag(u, nt)}</span>`).join('')}</div></div>`).join('');
     h += `</div></div>`;
   }
   h += `<div class="card">

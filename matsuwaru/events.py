@@ -356,9 +356,14 @@ for m, n in base.most_common():
 # 日付ごとの全系機種（新しい日付が先、機種は現在の設置台数が多い順）。
 # 横に添える台数は「現在」ではなく、その日実際に何台だったか（units_on）
 bydate = sorted((d for d in alldays if d.startswith(ym)), reverse=True)
+# 台数の後ろに添える注記（data/unit_notes.json）。あれば3つめの要素として載せる
+_unp = B + '/data/unit_notes.json'
+UNIT_NOTES = ({k: v for k, v in _json.load(open(_unp, encoding='utf-8')).items() if not k.startswith('_')}
+              if os.path.exists(_unp) else {})
 def _bydate_row(d):
     ms = sorted(days[d], key=lambda m: (-UNITS.get(m, 0), m))
-    return [d, [[m, units_on(d, m)] for m in ms]]
+    nt = UNIT_NOTES.get(d, {})
+    return [d, [[m, units_on(d, m)] + ([nt[m]] if m in nt else []) for m in ms]]
 thismonth = {
     'month': ym,
     'lineup': ({'fetched': LINEUP['fetched'], 'machines': len(LINEUP['slots']),
