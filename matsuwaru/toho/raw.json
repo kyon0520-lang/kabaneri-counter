@@ -38895,5 +38895,261 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "あかまる取材"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/16/070823",
+  "articleDate": "2026-10-16",
+  "targetDate": "2026-10-15",
+  "postDate": "2026-10-14",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2110332359447110076",
+  "title": "10月15日のマルハン新宿東宝ビルまとめ✏️41台設置ヴヴヴ2がド派手な全系！",
+  "results": [
+   {
+    "machine": "ヴヴヴ2",
+    "plus": 21,
+    "total": 41,
+    "avg": 3249
+   },
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 2200
+   },
+   {
+    "machine": "エウレカ",
+    "plus": 3,
+    "total": 3,
+    "avg": 4300
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "キャラ誕生日",
+    "chain": [
+     "キャラ誕生日",
+     "時縞ハルト"
+    ],
+    "raw": "キャラ誕生日→時縞ハルト",
+    "result": {
+     "plus": 21,
+     "total": 41,
+     "avg": 3249
+    }
+   },
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "スコーン写真",
+    "chain": [
+     "スコーン写真",
+     "VVV"
+    ],
+    "raw": "スコーン写真→VVV",
+    "result": {
+     "plus": 21,
+     "total": 41,
+     "avg": 3249
+    }
+   },
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "エビフライ写真",
+    "chain": [
+     "エビフライ写真",
+     "V"
+    ],
+    "raw": "エビフライ写真→V",
+    "result": {
+     "plus": 21,
+     "total": 41,
+     "avg": 3249
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "ウマ娘",
+    "chain": [
+     "ウマ娘",
+     "トゥインクル",
+     "星が輝く",
+     "スター"
+    ],
+    "raw": "ウマ娘→トゥインクル→星が輝く→スター",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2200
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "スコーン",
+    "chain": [
+     "スコーン",
+     "コーン",
+     "コンたろ"
+    ],
+    "raw": "スコーン→コーン→コンたろ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2200
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "朝",
+    "chain": [
+     "朝",
+     "モーニンググローリー"
+    ],
+    "raw": "朝→モーニンググローリー",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 4300
+    }
+   }
+  ],
+  "unassigned": []
+ },
+ {
+  "events": [
+   "あかまる取材"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/16/072018",
+  "articleDate": "2026-10-16",
+  "targetDate": "2026-10-15",
+  "postDate": "2026-10-14",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2110332359447110076",
+  "title": "10月15日のマルハン新宿東宝ビルまとめ✏️41台設置ヴヴヴ2がド派手な全系！！！",
+  "results": [
+   {
+    "machine": "ヴヴヴ2",
+    "plus": 24,
+    "total": 41,
+    "avg": 3963
+   },
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 2480
+   },
+   {
+    "machine": "エウレカ",
+    "plus": 2,
+    "total": 2,
+    "avg": 950
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "キャラ誕生日",
+    "chain": [
+     "キャラ誕生日",
+     "時縞ハルト"
+    ],
+    "raw": "キャラ誕生日→時縞ハルト",
+    "result": {
+     "plus": 24,
+     "total": 41,
+     "avg": 3963
+    }
+   },
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "スコーン写真",
+    "chain": [
+     "スコーン写真",
+     "VVV"
+    ],
+    "raw": "スコーン写真→VVV",
+    "result": {
+     "plus": 24,
+     "total": 41,
+     "avg": 3963
+    }
+   },
+   {
+    "machine": "ヴヴヴ2",
+    "matched": true,
+    "keyword": "エビフライ写真",
+    "chain": [
+     "エビフライ写真",
+     "V"
+    ],
+    "raw": "エビフライ写真→V",
+    "result": {
+     "plus": 24,
+     "total": 41,
+     "avg": 3963
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "ウマ娘",
+    "chain": [
+     "ウマ娘",
+     "トゥインクル",
+     "星が輝く",
+     "スター"
+    ],
+    "raw": "ウマ娘→トゥインクル→星が輝く→スター",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2480
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "スコーン",
+    "chain": [
+     "スコーン",
+     "コーン",
+     "コンたろ"
+    ],
+    "raw": "スコーン→コーン→コンたろ",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 2480
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "朝",
+    "chain": [
+     "朝",
+     "モーニンググローリー"
+    ],
+    "raw": "朝→モーニンググローリー",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 950
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
