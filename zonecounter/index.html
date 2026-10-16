@@ -52,7 +52,7 @@ button:disabled{opacity:.35;cursor:default}
 .cv .cvh{padding-right:30px}
 .xbtn{background:none;border:0;color:var(--sub);padding:0;width:26px;height:26px;border-radius:13px;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
 .cv .xbtn{position:absolute;top:10px;right:10px}
-.bell .xbtn{flex:0 0 26px}
+.bell .xbtn{flex:0 0 22px;width:22px}
 .cvh{display:flex;justify-content:space-between;align-items:baseline}
 .cvn{font-size:14px;font-weight:700}
 .cvp{font-size:26px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1}
@@ -61,23 +61,24 @@ button:disabled{opacity:.35;cursor:default}
 .cvb button{padding:13px 0;font-size:15px;font-weight:700;border:0}
 .cvb .cvu{background:var(--miss-bg);color:var(--sub);font-size:14px}
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(18,18,18,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:9px 16px calc(9px + env(safe-area-inset-bottom))}
-.bellg{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 6px;max-width:680px}
-.bellg span{font-size:11px;color:var(--sub)}
-.bellg input{width:100px;height:30px;border-radius:9px;padding:0 6px;font-size:16px;text-align:center;font-variant-numeric:tabular-nums;border-color:#e0b24a66}
+.dockin{max-width:440px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.bellg{flex:0 0 72px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bellg span{font-size:10px;color:var(--sub);white-space:nowrap}
+.bellg input{width:100%;height:36px;border-radius:9px;padding:0 4px;font-size:16px;text-align:center;font-variant-numeric:tabular-nums;border-color:#e0b24a66}
 .bellg input::-webkit-outer-spin-button,.bellg input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-#roles{max-width:680px;margin:0 auto;max-height:174px;overflow-y:auto}
-.bell{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+#roles{flex:1;min-width:0;max-height:174px;overflow-y:auto}
+.bell{display:flex;gap:6px;align-items:center;margin-bottom:6px}
 .bell:last-child{margin-bottom:0}
 .bell .mode{flex:0 0 auto;display:flex}
-.bell .mode button{height:42px;width:34px;padding:0;font-size:17px;color:var(--sub);border-radius:10px 0 0 10px}
+.bell .mode button{height:42px;width:32px;padding:0;font-size:17px;color:var(--sub);border-radius:10px 0 0 10px}
 .bell .mode.r button{border-radius:0 10px 10px 0}
 .bell .mode button.on{background:var(--accent);border-color:var(--accent);color:#10151d}
-.bell .rbtn{flex:1;min-width:0;height:42px;border-radius:0;padding:0 8px;border-color:#e0b24a88;display:flex;align-items:center;justify-content:center;gap:10px}
-.bell .rbtn .lbl{font-size:12px;color:#e8c06a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bell .rbtn .num{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.bell .rbtn{flex:1;min-width:0;height:42px;border-radius:0;padding:0 4px;border-color:#e0b24a88;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.1}
+.bell .rbtn .lbl{max-width:100%;font-size:10px;color:#e8c06a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bell .rbtn .num{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
 .bell .rbtn.minus{border-color:#e2453c88}
 .bell .rbtn.minus .num{color:#ff8078}
-.bell .rate{flex:0 0 66px;text-align:right;font-size:16px;font-weight:700;color:#e8c06a;line-height:1.15;font-variant-numeric:tabular-nums}
+.bell .rate{flex:0 0 52px;text-align:right;font-size:14px;font-weight:700;color:#e8c06a;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
 .bell .rate em{display:block;font-style:normal;font-size:9px;font-weight:400;color:var(--sub)}
 .msg{min-height:20px;font-size:12px;color:var(--sub);text-align:center;margin-top:10px}
 .msg.err{color:var(--danger)}
@@ -275,8 +276,10 @@ body.menuopen{overflow:hidden}
  </div>
 </div>
 <div class="dock hidden" id="bellbar">
-  <div class="bellg"><span>現在のG数</span><input type="number" id="bellg" inputmode="numeric" min="0" max="99999" step="1" placeholder="0" aria-label="現在のG数"></div>
-  <div id="roles"></div>
+  <div class="dockin">
+    <div class="bellg"><span>現在のG数</span><input type="number" id="bellg" inputmode="numeric" min="0" max="99999" step="1" placeholder="0" aria-label="現在のG数"></div>
+    <div id="roles"></div>
+  </div>
 </div>
 <script>
 (function(){
