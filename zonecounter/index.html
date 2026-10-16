@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#121212">
+<meta name="robots" content="noindex, nofollow">
+<title>ゾーン当選率カウンター</title>
+<style>
+:root{
+  --gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+  --bg:#121212; --panel:#1b1b1b; --ink:#ececec; --sub:#9b9b9b;
+  --line:#2e2e2e; --accent:#7ba7e8; --hit:#4aa52e; --self:#d9902a; --miss:#9b9b9b; --danger:#ef6a5e;
+  --hit-bg:#18270f; --self-bg:#2b1a08; --miss-bg:#262626;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);line-height:1.5;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:680px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 60px)}
+body.hasbar .wrap{padding-bottom:calc(env(safe-area-inset-bottom) + 110px)}
+h1{font-size:17px;margin:0 0 14px;letter-spacing:.02em}
+h2{font-size:13px;margin:18px 0 8px;color:var(--sub);font-weight:700}
+select,input,button{font:inherit;color:inherit}
+select,input{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+button{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:10px 14px;cursor:pointer}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.35;cursor:default}
+.bar{display:flex;gap:8px;margin-bottom:12px}
+.bar select{flex:1}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
+.tabs button{padding:11px 0;font-weight:700;color:var(--sub)}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:#10151d}
+.card{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:14px;margin-bottom:12px}
+.gin{display:flex;align-items:baseline;justify-content:center;flex-wrap:wrap;gap:8px}
+.gin input{width:160px;flex:0 0 auto;text-align:center;font-size:56px;font-weight:700;padding:0;background:transparent;border:0;border-radius:0}
+.gin input::placeholder{color:#444}
+.gin input:focus{outline:none;box-shadow:0 3px 0 var(--accent)}
+.gin input::-webkit-outer-spin-button,.gin input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.gin input[type=number]{-moz-appearance:textfield}
+.gunit{font-size:24px;font-weight:700;color:var(--sub)}
+.gprompt{flex-basis:100%;text-align:center;font-size:12px;color:var(--sub);line-height:1.4;margin-top:2px}
+.target{text-align:center;margin:10px 0 14px;font-size:15px;color:var(--sub)}
+.target b{color:var(--accent);font-size:18px}
+.target.ng b{color:var(--danger)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns button{padding:20px 0;font-size:16px;font-weight:700;border:0}
+.hit{background:var(--hit-bg);color:var(--hit)} .miss{background:var(--miss-bg);color:var(--miss)} .self{background:var(--self-bg);color:var(--self)}
+#convs{margin-top:12px}
+.cv{position:relative}
+.cv .cvh{padding-right:30px}
+.xbtn{background:none;border:0;color:var(--sub);padding:0;width:26px;height:26px;border-radius:13px;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
+.cv .xbtn{position:absolute;top:10px;right:10px}
+.bell .xbtn{flex:0 0 26px}
+.cvh{display:flex;justify-content:space-between;align-items:baseline}
+.cvn{font-size:14px;font-weight:700}
+.cvp{font-size:26px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1}
+.cvs{font-size:11px;color:var(--sub);margin:2px 0 8px;font-variant-numeric:tabular-nums}
+.cvb{display:grid;grid-template-columns:1fr 1fr 48px;gap:8px}
+.cvb button{padding:13px 0;font-size:15px;font-weight:700;border:0}
+.cvb .cvu{background:var(--miss-bg);color:var(--sub);font-size:14px}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(18,18,18,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:9px 16px calc(9px + env(safe-area-inset-bottom))}
+.bellg{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 6px;max-width:680px}
+.bellg span{font-size:11px;color:var(--sub)}
+.bellg input{width:100px;height:30px;border-radius:9px;padding:0 6px;font-size:16px;text-align:center;font-variant-numeric:tabular-nums;border-color:#e0b24a66}
+.bellg input::-webkit-outer-spin-button,.bellg input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+#roles{max-width:680px;margin:0 auto;max-height:174px;overflow-y:auto}
+.bell{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.bell:last-child{margin-bottom:0}
+.bell .mode{flex:0 0 auto;display:flex}
+.bell .mode button{height:42px;width:34px;padding:0;font-size:17px;color:var(--sub);border-radius:10px 0 0 10px}
+.bell .mode.r button{border-radius:0 10px 10px 0}
+.bell .mode button.on{background:var(--accent);border-color:var(--accent);color:#10151d}
+.bell .rbtn{flex:1;min-width:0;height:42px;border-radius:0;padding:0 8px;border-color:#e0b24a88;display:flex;align-items:center;justify-content:center;gap:10px}
+.bell .rbtn .lbl{font-size:12px;color:#e8c06a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bell .rbtn .num{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.bell .rbtn.minus{border-color:#e2453c88}
+.bell .rbtn.minus .num{color:#ff8078}
+.bell .rate{flex:0 0 66px;text-align:right;font-size:16px;font-weight:700;color:#e8c06a;line-height:1.15;font-variant-numeric:tabular-nums}
+.bell .rate em{display:block;font-style:normal;font-size:9px;font-weight:400;color:var(--sub)}
+.msg{min-height:20px;font-size:12px;color:var(--sub);text-align:center;margin-top:10px}
+.msg.err{color:var(--danger)}
+.gauge{display:flex;gap:3px;margin:16px 0 0}
+.gauge .gz{flex:1;min-width:0}
+.gauge .gz i{display:block;height:10px;border-radius:5px;background:#262626}
+.gauge .gz.past i{background:var(--accent)}
+.gauge .gz.now i{background:var(--hit)}
+.gauge .gz em{float:right;font-style:normal}
+.gauge .gz span{display:block;font-size:10px;color:var(--sub);margin-top:3px;font-variant-numeric:tabular-nums}
+.gauge .gz.now span{color:var(--ink);font-weight:700}
+.last{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--sub);padding:0 4px}
+.last button{background:none;border:0;padding:6px 8px;font-size:12px;font-weight:700;color:var(--accent)}
+.last button:disabled{color:var(--sub)}
+.hrow{display:flex;gap:12px;padding:0 0 14px}
+.hrow:last-child{padding-bottom:0}
+.hln{display:flex;flex-direction:column;align-items:center;flex:0 0 12px}
+.hdot{width:12px;height:12px;border-radius:50%;margin-top:6px;flex:0 0 auto}
+.hdot.zone{background:var(--hit)} .hdot.self{background:var(--self)}
+.hln i{flex:1;width:2px;background:var(--line);margin-top:4px}
+.hrow:last-child .hln i{display:none}
+.hmain{flex:1;min-width:0}
+.hmain .t{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.hmain .t span{font-size:12px;font-weight:400;color:var(--sub);margin-left:8px}
+.hmain input.memo{width:100%;margin-top:2px;padding:4px 6px;margin-left:-6px;font-size:13px;color:var(--sub);background:transparent;border:1px solid transparent;border-radius:8px}
+.hmain input.memo:focus{background:var(--bg);border-color:var(--line);color:var(--ink);outline:none}
+.hmain input.memo::placeholder{color:#5f7893}
+.hrow .x{align-self:flex-start;padding:4px 10px;font-size:12px;color:var(--sub);background:none;border:0}
+.rings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 6px}
+.ring{text-align:center}
+.ring svg{width:100%;max-width:132px;display:block;margin:0 auto}
+.rz{font-size:12px;font-weight:700;margin-top:2px}
+.rn{font-size:10px;color:var(--sub);font-variant-numeric:tabular-nums}
+.distwrap{overflow-x:auto}
+table.dist{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px}
+table.dist th:nth-child(1), table.dist td:nth-child(1){width:84px}
+table.dist th:nth-child(3), table.dist td:nth-child(3){width:64px}
+table.dist th,table.dist td{border:1px solid var(--line);padding:7px 4px;text-align:center}
+table.dist th{background:rgba(123,167,232,.14);font-size:11px;font-weight:600;white-space:nowrap}
+table.dist td.zn{font-weight:700;white-space:nowrap}
+table.dist td.cnt{font-variant-numeric:tabular-nums;white-space:nowrap}
+table.dist tr.has td{background:rgba(123,167,232,.06)}
+td.dbar{padding:4px 6px}
+.barwrap{display:flex;align-items:center;gap:6px}
+.bartrack{flex:1;min-width:0;height:14px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,.05)}
+.barfill{height:14px;border-radius:3px;background:var(--accent)}
+.barpct{flex:0 0 44px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.st{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.6}
+.hh{display:flex;justify-content:space-between;align-items:center}
+.more{background:none;border:0;padding:4px 0 4px 12px;font-size:12px;font-weight:700;color:var(--accent)}
+.empty{color:var(--sub);font-size:14px;text-align:center;padding:24px 0}
+.erow{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.erow input{flex:1;width:0;text-align:center}
+.erow span{color:var(--sub);white-space:nowrap}
+.erow.range{justify-content:center;margin-bottom:6px}
+.erow.range input{flex:0 0 72px}
+.erow.range .sep{margin:0 8px}
+.danger{color:var(--danger)}
+.iconbtn{flex:0 0 46px;width:46px;padding:0;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.menu{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+body.menuopen{overflow:hidden}
+.mwrap{max-width:680px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 40px)}
+.mhead{display:flex;align-items:center;justify-content:space-between;height:44px;margin-bottom:10px}
+.mhead .mt{font-size:17px;font-weight:700}
+.mhead button{width:40px;height:40px;padding:0;border-radius:20px;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--sub)}
+.mhead button.invis{visibility:hidden}
+.mlabel{font-size:11px;color:var(--sub);font-weight:700;letter-spacing:.06em;margin:22px 6px 8px}
+.mgroup{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.mgroup.pad{padding:14px}
+.mrow{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:16px;text-align:left;font-size:15px}
+.mrow:last-child{border-bottom:0}
+.mrow:active{background:#222;transform:none}
+.mrow .mname{flex:1}
+.mrow .ms{color:var(--sub);font-size:13px;max-width:50%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mrow .ch{color:var(--sub);font-size:18px;line-height:1}
+.mrow.add{color:var(--accent);font-weight:700}
+.mrow.danger{color:var(--danger)}
+.mdesc{font-size:12px;color:var(--sub);margin:0 6px 12px;line-height:1.7}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ゾーン当選率カウンター</h1>
+  <div class="bar">
+    <select id="machine" aria-label="機種"></select>
+    <button id="menuBtn" class="iconbtn" aria-label="メニュー"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14"/></svg></button>
+  </div>
+
+  <div id="body" class="hidden">
+    <div class="tabs">
+      <button id="tabCount" class="on">カウント</button>
+      <button id="tabRate">ゾーン当選率</button>
+    </div>
+
+    <section id="viewCount">
+      <div class="card">
+        <div class="gin">
+          <input id="g" type="number" inputmode="numeric" min="0" step="1" placeholder="0" aria-label="現在のG数">
+          <span class="gunit">G</span>
+          <span class="gprompt">現在のG数を入力してください</span>
+        </div>
+        <div class="gauge" id="gauge"></div>
+        <div class="target" id="target"></div>
+        <div class="btns" id="kinds">
+          <button class="hit" data-k="zone">ゾーン当選</button>
+          <button class="self" data-k="self">自力当選</button>
+        </div>
+        <div id="pending" class="hidden">
+          <div class="target" id="pendingTitle"></div>
+          <div class="tagpick" id="tagPick"></div>
+          <input id="memoIn" type="text" maxlength="60" placeholder="メモ(任意)" style="width:100%;margin-bottom:10px">
+          <div class="btns">
+            <button id="cancel" class="miss">キャンセル</button>
+            <button id="confirm" class="hit">履歴に追加</button>
+          </div>
+        </div>
+        <div class="msg" id="msg"></div>
+      </div>
+      <div class="last"><span id="last"></span><button id="undo">↩ 戻す</button></div>
+      <div id="convs"></div>
+    </section>
+
+    <section id="viewRate" class="hidden">
+      <h2>ゾーン当選率</h2>
+      <div class="card" id="rates"></div>
+      <h2 class="hh"><span>当選履歴</span><button id="histMore" class="more hidden"></button></h2>
+      <div class="card" id="history"></div>
+    </section>
+
+  </div>
+  <div id="none" class="empty">「＋機種」で機種を追加してください</div>
+</div>
+<div class="menu hidden" id="menu" role="dialog" aria-modal="true" aria-label="メニュー">
+ <div class="mwrap">
+  <div class="mhead"><button id="menuBack" aria-label="戻る">‹</button><span class="mt" id="menuTitle">メニュー</span><button id="menuClose" aria-label="閉じる">✕</button></div>
+
+  <div class="mpage" data-page="root">
+    <div class="mgroup"><button class="mrow add" id="addMachine"><span class="mname">＋ 機種を追加</span></button></div>
+    <div id="mrootm">
+      <div class="mlabel">この機種の設定</div>
+      <div class="mgroup">
+        <button class="mrow" data-go="name"><span class="mname">機種名</span><span class="ms" id="ms-name"></span><span class="ch">›</span></button>
+        <button class="mrow" data-go="zones"><span class="mname">ゾーン</span><span class="ms" id="ms-zones"></span><span class="ch">›</span></button>
+        <button class="mrow" data-go="tags"><span class="mname">当選契機</span><span class="ms" id="ms-tags"></span><span class="ch">›</span></button>
+        <button class="mrow" data-go="convs"><span class="mname">カウントカード</span><span class="ms" id="ms-convs"></span><span class="ch">›</span></button>
+        <button class="mrow" data-go="roles"><span class="mname">小役カウンター</span><span class="ms" id="ms-roles"></span><span class="ch">›</span></button>
+      </div>
+      <div class="mlabel">データ</div>
+      <div class="mgroup">
+        <button class="mrow danger" id="reset"><span class="mname">記録をすべてリセット</span></button>
+        <button class="mrow danger" id="delMachine"><span class="mname">この機種を削除</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mpage hidden" data-page="name">
+    <div class="mgroup pad"><div class="erow" style="margin:0"><input id="machineName" placeholder="機種名" maxlength="40" style="text-align:left"></div></div>
+  </div>
+
+  <div class="mpage hidden" data-page="zones">
+    <p class="mdesc">G数を入れると、どのゾーンに入るかを自動で判定します。範囲は「数字の何G前から何G後まで」で決まります。</p>
+    <div class="mgroup pad">
+      <div class="mlabel" style="margin:0 0 8px">範囲(ゾーンの数字を基準に)</div>
+      <div class="erow range"><span>前</span><input id="beforeIn" type="number" inputmode="numeric" min="0"><span>G</span><span class="sep">〜</span><span>後</span><input id="afterIn" type="number" inputmode="numeric" min="0"><span>G</span></div>
+      <div class="mlabel" style="margin:14px 0 8px">ゾーン</div>
+      <div id="zoneEdit"></div>
+      <div class="erow" style="margin:0"><button id="addZone" style="flex:1">＋ゾーンを追加</button></div>
+    </div>
+  </div>
+
+  <div class="mpage hidden" data-page="tags">
+    <p class="mdesc">当選を記録するときに選べる候補です。</p>
+    <div class="mgroup pad">
+      <div id="tagEdit"></div>
+      <div class="erow" style="margin:0"><button id="addTag" style="flex:1">＋当選契機を追加</button></div>
+    </div>
+  </div>
+
+  <div class="mpage hidden" data-page="convs">
+    <p class="mdesc">当選・非当選を数えて、率を出すカードです。カウント画面に並びます。</p>
+    <div class="mgroup pad">
+      <div id="convEdit"></div>
+      <div class="erow" style="margin:0"><button id="addConv" style="flex:1">＋カードを追加</button></div>
+    </div>
+  </div>
+
+  <div class="mpage hidden" data-page="roles">
+    <p class="mdesc">画面下で回数と確率(1/○○)を数える小役です。確率は「現在のG数」をもとに計算します。</p>
+    <div class="mgroup pad">
+      <div id="roleEdit"></div>
+      <div class="erow" style="margin:0"><button id="addRole" style="flex:1">＋小役を追加</button></div>
+    </div>
+  </div>
+ </div>
+</div>
+<div class="dock hidden" id="bellbar">
+  <div class="bellg"><span>現在のG数</span><input type="number" id="bellg" inputmode="numeric" min="0" max="99999" step="1" placeholder="0" aria-label="現在のG数"></div>
+  <div id="roles"></div>
+</div>
+<script>
+(function(){
+  var KEY = 'zoneCounter.v2';
+  var KINDS = { zone: 'ゾーン当選', self: '自力当選' };
+  var state = load();
+  var tab = 'count';
+  var HIST_MAX = 5;
+  var histAll = false;
+  var pending = null; // { g, kind } 備考入力待ちの当選
+
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function load(){
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY));
+      if (s && Array.isArray(s.machines)){
+        // 旧バージョンの「非当選」記録は廃止(通過は当選位置から自動計算)
+        s.machines.forEach(function(m){
+          m.trials = m.trials.filter(function(t){ return t.kind !== 'miss'; });
+          if (!Array.isArray(m.tags)) m.tags = [];
+          if (!m.convs){
+            var oc = m.counters || { rare: [], weak: [] };
+            m.convs = [{ id: uid() + 'r', label: 'レア役変換', seq: oc.rare || [] }, { id: uid() + 'w', label: '弱リコリス目高確', seq: oc.weak || [] }];
+          }
+          delete m.counters;
+          if (!m.roles){
+            var ob = m.bell || { n: 0, g: 0 };
+            m.roles = [{ id: uid() + 'b', label: '共通ベル', n: ob.n || 0 }];
+            m.totalG = ob.g || 0;
+          }
+          if (m.totalG == null) m.totalG = 0;
+          delete m.bell;
+          if (m.win !== 2){ m.before = 0; m.after = 70; m.win = 2; }   // 100なら100〜170
+          m.zones.forEach(function(z){ if (z.at == null) z.at = z.from || 0; });
+        });
+        if (s.machines.length) return s;
+      }
+    } catch(e){}
+    var m0 = { id: uid(), name: 'リコリス・リコイル', zones: defaultZones([100, 250, 400, 600, 750, 850]), before: 0, after: 70, win: 2, tags: ['ノーマルCZ', '幼少期CZ', '直撃'], convs: [{ id: uid() + 'r', label: 'レア役変換', seq: [] }, { id: uid() + 'w', label: '弱リコリス目高確', seq: [] }], roles: [{ id: uid() + 'b', label: '共通ベル', n: 0 }], totalG: 0, trials: [] };
+    return { machines: [m0], currentId: m0.id };
+  }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+  function cur(){
+    for (var i = 0; i < state.machines.length; i++) if (state.machines[i].id === state.currentId) return state.machines[i];
+    return state.machines[0] || null;
+  }
+  function defaultZones(list){
+    return (list || [100, 200, 300]).map(function(at){ return { id: uid() + at, at: at }; });
+  }
+  function zoneLabel(z){ return z.at + 'Gゾーン'; }
+  // ゾーンは「その数字の before G前 〜 after G後」(例: 100Gゾーン = 100〜170G。両端を含む)
+  function zFrom(m, z){ return Math.max(0, z.at - m.before); }
+  function zTo(m, z){ return z.at + m.after + 1; }   // 終了(含まない側の値)
+  function zoneOf(m, g){
+    for (var i = 0; i < m.zones.length; i++){
+      var z = m.zones[i];
+      if (g >= zFrom(m, z) && g < zTo(m, z)) return z;
+    }
+    return null;
+  }
+  function readG(){
+    var v = $('g').value;
+    if (v === '' || !/^\d+$/.test(v)) return null;
+    return parseInt(v, 10);
+  }
+
+  function render(){
+    var m = cur();
+    if (m) state.currentId = m.id;
+    $('machine').innerHTML = state.machines.map(function(x){
+      return '<option value="' + x.id + '"' + (m && x.id === m.id ? ' selected' : '') + '>' + esc(x.name) + '</option>';
+    }).join('');
+    $('machine').disabled = !m;
+    $('body').classList.toggle('hidden', !m);
+    $('none').classList.toggle('hidden', !!m);
+    renderMenu(m);
+    if (!m) return;
+
+    $('tabCount').classList.toggle('on', tab === 'count');
+    $('tabRate').classList.toggle('on', tab === 'rate');
+    $('viewCount').classList.toggle('hidden', tab !== 'count');
+    $('viewRate').classList.toggle('hidden', tab !== 'rate');
+    $('undo').disabled = m.trials.length === 0;
+    var lt = m.trials[m.trials.length - 1];
+    $('last').textContent = lt ? '直前: ' + lt.g + 'G ' + KINDS[lt.kind] : '直前: まだ記録がありません';
+    renderTarget(m);
+    renderConv(m);
+    renderBell(m);
+    if (tab === 'rate'){ renderHistory(m); renderRates(m); }
+  }
+
+  function renderConv(m){
+    $('convs').innerHTML = m.convs.map(function(c){
+      var arr = c.seq, w = arr.reduce(function(a, v){ return a + v; }, 0), n = arr.length;
+      return '<div class="card cv" data-c="' + c.id + '"><button class="xbtn" data-x="1" aria-label="このカードを削除">✕</button><div class="cvh"><span class="cvn">' + esc(c.label) + '</span>' +
+        '<span class="cvp">' + (n ? (w / n * 100).toFixed(1) + '%' : '--') + '</span></div>' +
+        '<div class="cvs">当選 ' + w + ' / 計 ' + n + '</div>' +
+        '<div class="cvb"><button class="hit" data-r="1">当選</button><button class="miss" data-r="0">非当選</button>' +
+        '<button class="cvu" data-u="1" aria-label="1つ戻す"' + (n ? '' : ' disabled') + '>↩</button></div></div>';
+    }).join('');
+  }
+  $('convs').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    var m = cur(); if (!m) return;
+    var id = b.closest('.cv').dataset.c, c = m.convs.filter(function(x){ return x.id === id; })[0];
+    if (!c) return;
+    if (b.dataset.x){
+      if (!confirm('「' + c.label + '」を削除しますか?' + (c.seq.length ? '記録も消えます。' : ''))) return;
+      m.convs = m.convs.filter(function(x){ return x !== c; });
+      save(); render(); return;
+    }
+    if (b.dataset.u){ c.seq.pop(); }
+    else if (b.dataset.r){ c.seq.push(+b.dataset.r); if (navigator.vibrate) navigator.vibrate(10); }
+    else return;
+    save(); renderConv(m);
+  });
+
+  var roleMode = {};   // 小役ごとの ＋/− の選択(画面上だけで持つ)
+  function renderBell(m){
+    var show = tab === 'count' && m.roles.length > 0;
+    $('bellbar').classList.toggle('hidden', !show);
+    document.body.classList.toggle('hasbar', show);
+    if (document.activeElement !== $('bellg')) $('bellg').value = m.totalG || '';
+    $('roles').innerHTML = m.roles.map(function(r){
+      var md = roleMode[r.id] || 1;
+      return '<div class="bell" data-r="' + r.id + '">' +
+        '<div class="mode"><button class="' + (md === 1 ? 'on' : '') + '" data-mode="1" aria-label="プラス">＋</button></div>' +
+        '<button class="rbtn' + (md === -1 ? ' minus' : '') + '" data-count="1"><span class="lbl">' + esc(r.label) + '</span><span class="num">' + r.n + '</span></button>' +
+        '<div class="mode r"><button class="' + (md === -1 ? 'on' : '') + '" data-mode="-1" aria-label="マイナス">−</button></div>' +
+        '<div class="rate">' + (r.n > 0 && m.totalG > 0 ? '1/' + (m.totalG / r.n).toFixed(1) : '—') + '<em>確率</em></div>' +
+        '<button class="xbtn" data-x="1" aria-label="この小役を削除">✕</button></div>';
+    }).join('');
+  }
+  $('roles').addEventListener('click', function(e){
+    var m = cur(), b = e.target.closest('button'); if (!m || !b) return;
+    var id = b.closest('.bell').dataset.r, r = m.roles.filter(function(x){ return x.id === id; })[0];
+    if (!r) return;
+    if (b.dataset.x){
+      if (!confirm('「' + r.label + '」を削除しますか?' + (r.n ? '回数も消えます。' : ''))) return;
+      m.roles = m.roles.filter(function(x){ return x !== r; });
+      save(); render(); return;
+    }
+    if (b.dataset.mode){ roleMode[id] = +b.dataset.mode; }
+    else if (b.dataset.count){
+      var next = r.n + (roleMode[id] || 1); if (next < 0) return;
+      r.n = next; if (navigator.vibrate) navigator.vibrate(10); save();
+    } else return;
+    renderBell(m);
+  });
+  $('bellg').addEventListener('input', function(e){
+    var m = cur(); if (!m) return;
+    m.totalG = Math.max(0, Math.floor(+e.target.value || 0));
+    save(); renderBell(m);
+  });
+
+  var menuOpen = false, menuPage = 'root';
+  var PAGE_TITLES = { root: 'メニュー', name: '機種名', zones: 'ゾーン', tags: '当選契機', convs: 'カウントカード', roles: '小役カウンター' };
+  function resetSigs(){ $('zoneEdit').dataset.sig = $('tagEdit').dataset.sig = $('convEdit').dataset.sig = $('roleEdit').dataset.sig = ''; }
+  function openMenu(){ menuOpen = true; menuPage = 'root'; $('menu').classList.remove('hidden'); document.body.classList.add('menuopen'); resetSigs(); render(); $('menu').scrollTop = 0; }
+  function closeMenu(){ menuOpen = false; $('menu').classList.add('hidden'); document.body.classList.remove('menuopen'); }
+  function goPage(p){ menuPage = p; resetSigs(); renderMenu(cur()); $('menu').scrollTop = 0; }
+  function renderMenu(m){
+    if (!menuOpen) return;
+    $('menuTitle').textContent = PAGE_TITLES[menuPage];
+    $('menuBack').classList.toggle('invis', menuPage === 'root');
+    document.querySelectorAll('.mpage').forEach(function(p){ p.classList.toggle('hidden', p.dataset.page !== menuPage); });
+    $('mrootm').classList.toggle('hidden', !m);
+    if (!m) return;
+    $('ms-name').textContent = m.name;
+    $('ms-zones').textContent = m.zones.map(function(z){ return z.at; }).join('・');
+    $('ms-tags').textContent = m.tags.length + '件';
+    $('ms-convs').textContent = m.convs.length + '枚';
+    $('ms-roles').textContent = m.roles.length + '個';
+    if (menuPage !== 'root') renderEdit(m);
+  }
+  $('menuBtn').addEventListener('click', openMenu);
+  $('menuClose').addEventListener('click', closeMenu);
+  $('menuBack').addEventListener('click', function(){ goPage('root'); });
+  $('menu').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-go]'); if (b) goPage(b.dataset.go);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && menuOpen){ if (menuPage === 'root') closeMenu(); else goPage('root'); }
+  });
+
+  function renderTarget(m){
+    var g = readG(), el = $('target');
+    var gp = document.querySelector('.gprompt'); if (gp) gp.style.visibility = g === null ? 'visible' : 'hidden';
+    var z = g === null ? null : zoneOf(m, g);
+    var idx = z ? m.zones.indexOf(z) : -1;
+    var gv = g === null ? -1 : g;
+    $('gauge').innerHTML = m.zones.map(function(zz, i){
+      return '<div class="gz' + (i === idx ? ' now' : (idx >= 0 ? i < idx : zTo(m, zz) <= gv) ? ' past' : '') + '"><i></i><span>' + zz.at + '</span></div>';
+    }).join('');
+    if (g === null){ el.className = 'target'; el.innerHTML = '&nbsp;'; return; }
+    el.className = 'target' + (z ? '' : ' ng');
+    el.innerHTML = z ? '現在 <b>' + zoneLabel(z) + '</b>' : '→ <b>ゾーン外</b>(自力当選のみ記録できます)';
+  }
+
+  function renderHistory(m){
+    var all = m.trials.slice().reverse();
+    var rows = histAll ? all : all.slice(0, HIST_MAX);
+    var more = $('histMore');
+    more.classList.toggle('hidden', all.length <= HIST_MAX);
+    more.textContent = histAll ? '最近5件だけ表示' : 'すべて見る(' + all.length + '件) ›';
+    $('history').innerHTML = rows.length ? rows.map(function(t){
+      var z = t.kind === 'zone' ? zoneOf(m, t.g) : null;
+      return '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div>' +
+        '<div class="hmain"><div class="t">' + t.g + 'G<span>' + KINDS[t.kind] + (z ? ' · ' + zoneLabel(z) : '') + '</span>' + (t.tag ? '<span class="htag">' + esc(t.tag) + '</span>' : '') + '</div>' +
+        '<input class="memo" data-id="' + t.id + '" value="' + esc(t.memo || '') + '" placeholder="メモを追加" maxlength="60"></div>' +
+        '<button class="x" data-del="' + t.id + '" aria-label="削除">✕</button></div>';
+    }).join('') : '<div class="empty">まだ記録がありません</div>';
+  }
+
+  function renderRates(m){
+    var self = m.trials.filter(function(t){ return t.kind === 'self'; }).length;
+    var stats = m.zones.map(function(z){
+      // ゾーン当選の位置より手前のゾーンは、当たらず通過した(非当選)として数える
+      var w = 0, x = 0;
+      m.trials.forEach(function(t){
+        // 自力当選は、当たったゾーン自体は数えず、手前のゾーンだけ非当選にする
+        if (t.kind === 'zone' && zoneOf(m, t.g) === z) w++;
+        else if (zTo(m, z) <= t.g) x++;
+      });
+      var n = w + x;
+      return { z: z, w: w, n: n, pct: n ? w / n * 100 : null };
+    });
+    if (!stats.length){ $('rates').innerHTML = '<div class="empty">設定でゾーンを追加してください</div>'; return; }
+    var best = Math.max.apply(null, stats.map(function(r){ return r.pct || 0; }));
+    var C = 2 * Math.PI * 40;
+    $('rates').innerHTML = '<div class="rings">' + stats.map(function(r){
+      var has = r.pct !== null;
+      var col = has && best > 0 && r.pct === best ? 'var(--hit)' : 'var(--accent)';
+      return '<div class="ring"><svg viewBox="0 0 100 100" role="img" aria-label="' + zoneLabel(r.z) + ' ' + (has ? r.pct.toFixed(1) + '%' : '未集計') + '">' +
+        '<circle cx="50" cy="50" r="40" fill="none" stroke="#262626" stroke-width="9"/>' +
+        (has && r.pct > 0 ? '<circle cx="50" cy="50" r="40" fill="none" stroke="' + col + '" stroke-width="9" stroke-linecap="round" stroke-dasharray="' +
+          (C * r.pct / 100).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 50 50)"/>' : '') +
+        '<text x="50" y="58" text-anchor="middle" font-size="' + (has ? (r.pct >= 100 ? 15 : 19) : 22) + '" font-weight="700" fill="' + (has ? 'var(--ink)' : 'var(--sub)') + '">' +
+        (has ? r.pct.toFixed(1) + '%' : '--') + '</text></svg>' +
+        '<div class="rz">' + zoneLabel(r.z) + '</div><div class="rn">当選 ' + r.w + ' / 通過 ' + r.n + '</div></div>';
+    }).join('') + '</div>' +
+      '<div class="st">自力当選 ' + self + ' 回(当たったゾーンは数えず、手前のゾーンのみ非当選)</div>';
+  }
+
+  function renderEdit(m){
+    var mn = $('machineName');
+    if (document.activeElement !== mn) mn.value = m.name;
+    var te = $('tagEdit'), tsig = m.id + '|' + m.tags.length;
+    if (te.dataset.sig !== tsig){
+      te.dataset.sig = tsig;
+      te.innerHTML = m.tags.map(function(t, i){
+        return '<div class="erow"><input data-tg="' + i + '" value="' + esc(t) + '" maxlength="20" style="text-align:left">' +
+          '<button data-dt="' + i + '" class="danger" aria-label="削除">✕</button></div>';
+      }).join('');
+    }
+    var bi = $('beforeIn'), ai = $('afterIn');
+    if (document.activeElement !== bi) bi.value = m.before;
+    if (document.activeElement !== ai) ai.value = m.after;
+    var ce = $('convEdit'), csig = m.id + '|' + m.convs.map(function(c){ return c.id; }).join(',');
+    if (ce.dataset.sig !== csig){
+      ce.dataset.sig = csig;
+      ce.innerHTML = m.convs.map(function(c){
+        return '<div class="erow" data-ec="' + c.id + '"><input data-cl="1" value="' + esc(c.label) + '" maxlength="20" style="text-align:left">' +
+          '<button data-dc="' + c.id + '" class="danger" aria-label="削除">✕</button></div>';
+      }).join('') || '<div class="st">カードはありません</div>';
+    }
+    var re = $('roleEdit'), rsig = m.id + '|' + m.roles.map(function(r){ return r.id; }).join(',');
+    if (re.dataset.sig !== rsig){
+      re.dataset.sig = rsig;
+      re.innerHTML = m.roles.map(function(r){
+        return '<div class="erow" data-er="' + r.id + '"><input data-rl="1" value="' + esc(r.label) + '" maxlength="20" style="text-align:left">' +
+          '<button data-dr="' + r.id + '" class="danger" aria-label="削除">✕</button></div>';
+      }).join('') || '<div class="st">小役カウンターはありません</div>';
+    }
+    var ze = $('zoneEdit');
+    var sig = m.id + '|' + m.zones.map(function(z){ return z.id; }).join(',');
+    if (ze.dataset.sig === sig) return;
+    ze.dataset.sig = sig;
+    ze.innerHTML = m.zones.map(function(z){
+      return '<div class="erow" data-ez="' + z.id + '"><input data-f="at" type="number" inputmode="numeric" min="0" value="' + z.at + '">' +
+        '<span>Gゾーン</span>' +
+        '<button data-dz="' + z.id + '" class="danger" aria-label="削除">✕</button></div>';
+    }).join('');
+  }
+
+  function setMsg(text, err){ var el = $('msg'); el.textContent = text; el.className = 'msg' + (err ? ' err' : ''); }
+
+  $('machine').addEventListener('change', function(e){ state.currentId = e.target.value; showPending(null); save(); $('zoneEdit').dataset.sig = $('tagEdit').dataset.sig = $('convEdit').dataset.sig = $('roleEdit').dataset.sig = ''; setMsg(''); render(); });
+
+  $('addMachine').addEventListener('click', function(){
+    var name = prompt('機種名を入力してください');
+    if (!name || !name.trim()) return;
+    var m = { id: uid(), name: name.trim(), zones: defaultZones(), before: 0, after: 70, win: 2, tags: [], convs: [], roles: [], totalG: 0, trials: [] };
+    state.machines.push(m); state.currentId = m.id;
+    $('zoneEdit').dataset.sig = $('tagEdit').dataset.sig = $('convEdit').dataset.sig = $('roleEdit').dataset.sig = '';
+    save(); render();
+  });
+
+  $('tabCount').addEventListener('click', function(){ tab = 'count'; render(); });
+  $('tabRate').addEventListener('click', function(){ tab = 'rate'; render(); });
+
+  $('g').addEventListener('input', function(){ var m = cur(); if (m) renderTarget(m); });
+
+  var tagOpen = false;
+  function renderTagPick(){
+    var m = cur(), el = $('tagPick');
+    var tags = m ? m.tags : [];
+    var sel = pending ? pending.tag : '';
+    var html = '<button class="tagsel' + (sel ? ' has' : '') + '" data-open="1">' +
+      '<span>' + (sel ? esc(sel) : '当選契機を選ぶ') + '</span><span class="car">' + (tagOpen ? '▲' : '▼') + '</span></button>';
+    if (tagOpen){
+      html += '<div class="taglist">' + (tags.length
+        ? '<button class="none" data-ti="-1">選択しない</button>' + tags.map(function(t, i){
+            return '<button data-ti="' + i + '"' + (sel === t ? ' class="on"' : '') + '>' + esc(t) + '</button>';
+          }).join('')
+        : '<div class="empty">当選契機の候補は設定で追加できます</div>') + '</div>';
+    }
+    el.innerHTML = html;
+  }
+  $('tagPick').addEventListener('click', function(e){
+    if (!pending) return;
+    if (e.target.closest('button[data-open]')){ tagOpen = !tagOpen; renderTagPick(); return; }
+    var b = e.target.closest('button[data-ti]'); if (!b) return;
+    var i = +b.dataset.ti;
+    pending.tag = i < 0 ? '' : cur().tags[i];
+    tagOpen = false;
+    renderTagPick();
+  });
+
+  function showPending(p){
+    pending = p;
+    $('kinds').classList.toggle('hidden', !!p);
+    $('pending').classList.toggle('hidden', !p);
+    $('g').disabled = !!p;
+    if (p){
+      $('pendingTitle').innerHTML = '<b>' + p.g + 'G ' + KINDS[p.kind] + '</b>';
+      $('memoIn').value = '';
+      p.tag = '';
+      tagOpen = false;
+      renderTagPick();
+    }
+  }
+
+  $('kinds').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-k]');
+    if (!b) return;
+    var m = cur(); if (!m) return;
+    var g = readG();
+    if (g === null){ setMsg('G数を入力してください', true); return; }
+    var kind = b.dataset.k;
+    if (kind === 'zone' && !zoneOf(m, g)){ setMsg(g + 'G はどのゾーンにも入っていません(自力当選なら記録できます)', true); return; }
+    setMsg('');
+    showPending({ g: g, kind: kind });
+  });
+
+  function confirmPending(){
+    var m = cur(); if (!m || !pending) return;
+    m.trials.push({ id: uid(), g: pending.g, kind: pending.kind, tag: pending.tag || '', memo: $('memoIn').value.trim(), at: Date.now() });
+    if (navigator.vibrate) navigator.vibrate(15);
+    setMsg('履歴に追加しました: ' + pending.g + 'G ' + KINDS[pending.kind]);
+    $('g').value = '';
+    showPending(null);
+    save(); render();
+  }
+  $('confirm').addEventListener('click', confirmPending);
+  $('memoIn').addEventListener('keydown', function(e){ if (e.key === 'Enter') confirmPending(); });
+  $('cancel').addEventListener('click', function(){ showPending(null); });
+
+  $('undo').addEventListener('click', function(){
+    var m = cur(); if (!m || !m.trials.length) return;
+    var t = m.trials.pop();
+    setMsg('取り消しました: ' + t.g + 'G ' + KINDS[t.kind]);
+    save(); render();
+  });
+
+  $('histMore').addEventListener('click', function(){ histAll = !histAll; render(); });
+  $('history').addEventListener('input', function(e){
+    var id = e.target.dataset.id; if (!id) return;
+    var m = cur();
+    m.trials.forEach(function(t){ if (t.id === id) t.memo = e.target.value; });
+    save();
+  });
+  $('history').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-del]'); if (!b) return;
+    if (!confirm('この記録を削除しますか?')) return;
+    var m = cur();
+    m.trials = m.trials.filter(function(t){ return t.id !== b.dataset.del; });
+    save(); render();
+  });
+
+  $('machineName').addEventListener('input', function(e){
+    var m = cur(); if (!m) return;
+    m.name = e.target.value || '(無名)';
+    save();
+    var opt = $('machine').selectedOptions[0]; if (opt) opt.textContent = m.name;
+  });
+
+  $('addZone').addEventListener('click', function(){
+    var m = cur(); if (!m) return;
+    var last = m.zones[m.zones.length - 1];
+    m.zones.push({ id: uid(), at: last ? last.at + 100 : 100 });
+    save(); render();
+  });
+
+  $('addRole').addEventListener('click', function(){
+    var m = cur(); if (!m) return;
+    m.roles.push({ id: uid(), label: '小役' + (m.roles.length + 1), n: 0 });
+    save(); render();
+  });
+  $('roleEdit').addEventListener('input', function(e){
+    if (!e.target.dataset.rl) return;
+    var m = cur(), id = e.target.closest('[data-er]').dataset.er;
+    m.roles.forEach(function(r){ if (r.id === id) r.label = e.target.value || '(無名)'; });
+    save(); renderBell(m);
+  });
+  $('roleEdit').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-dr]'); if (!b) return;
+    var m = cur(), r = m.roles.filter(function(x){ return x.id === b.dataset.dr; })[0];
+    if (!r || (r.n && !confirm('「' + r.label + '」とその回数を削除しますか?'))) return;
+    m.roles = m.roles.filter(function(x){ return x !== r; });
+    save(); render();
+  });
+
+  $('addConv').addEventListener('click', function(){
+    var m = cur(); if (!m) return;
+    m.convs.push({ id: uid(), label: 'カウント' + (m.convs.length + 1), seq: [] });
+    save(); render();
+  });
+  $('convEdit').addEventListener('input', function(e){
+    if (!e.target.dataset.cl) return;
+    var m = cur(), id = e.target.closest('[data-ec]').dataset.ec;
+    m.convs.forEach(function(c){ if (c.id === id) c.label = e.target.value || '(無名)'; });
+    save(); renderConv(m);
+  });
+  $('convEdit').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-dc]'); if (!b) return;
+    var m = cur(), c = m.convs.filter(function(x){ return x.id === b.dataset.dc; })[0];
+    if (!c || (c.seq.length && !confirm('「' + c.label + '」とその記録を削除しますか?'))) return;
+    m.convs = m.convs.filter(function(x){ return x !== c; });
+    save(); render();
+  });
+
+  $('addTag').addEventListener('click', function(){
+    var m = cur(); if (!m) return;
+    m.tags.push('契機' + (m.tags.length + 1));
+    save(); render();
+  });
+  $('tagEdit').addEventListener('input', function(e){
+    var i = e.target.dataset.tg; if (i === undefined) return;
+    cur().tags[+i] = e.target.value;
+    save();
+  });
+  $('tagEdit').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-dt]'); if (!b) return;
+    cur().tags.splice(+b.dataset.dt, 1);
+    save(); render();
+  });
+
+  $('zoneEdit').addEventListener('input', function(e){
+    var f = e.target.dataset.f; if (!f) return;
+    var id = e.target.closest('[data-ez]').dataset.ez;
+    var m = cur(), v = e.target.value;
+    m.zones.forEach(function(z){ if (z.id === id) z.at = Math.max(0, parseInt(v, 10) || 0); });
+    save(); renderTarget(m);
+  });
+  // 入力が終わったらG数の小さい順に並べ替える
+  $('zoneEdit').addEventListener('change', function(){
+    var m = cur(); m.zones.sort(function(a, b){ return a.at - b.at; });
+    save(); render();
+  });
+  ['before', 'after'].forEach(function(k){
+    $(k + 'In').addEventListener('input', function(e){
+      var m = cur(); if (!m) return;
+      m[k] = Math.max(0, parseInt(e.target.value, 10) || 0);
+      save(); renderTarget(m);
+    });
+  });
+
+  $('zoneEdit').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-dz]'); if (!b) return;
+    var m = cur();
+    m.zones = m.zones.filter(function(z){ return z.id !== b.dataset.dz; });
+    save(); render();
+  });
+
+  $('reset').addEventListener('click', function(){
+    var m = cur(); if (!m) return;
+    if (confirm('「' + m.name + '」の記録をすべて消しますか?')){ m.trials = []; m.convs.forEach(function(c){ c.seq = []; }); m.roles.forEach(function(r){ r.n = 0; }); m.totalG = 0; closeMenu(); save(); render(); }
+  });
+
+  $('delMachine').addEventListener('click', function(){
+    var m = cur(); if (!m) return;
+    if (!confirm('「' + m.name + '」を削除しますか?記録も消えます。')) return;
+    state.machines = state.machines.filter(function(x){ return x.id !== m.id; });
+    state.currentId = state.machines[0] ? state.machines[0].id : null;
+    resetSigs();
+    closeMenu();
+    save(); render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
