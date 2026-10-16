@@ -39151,5 +39151,114 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/17/073818",
+  "articleDate": "2026-10-17",
+  "targetDate": "2026-10-16",
+  "postDate": "2026-10-15",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2099823102956032302",
+  "title": "10月16日のマルハン新宿東宝ビルまとめ✏️鉄板の末尾6は流石の優秀さ！今回のアナザー末尾は3！",
+  "results": [
+   {
+    "machine": "末尾⑥",
+    "plus": 58,
+    "total": 67,
+    "avg": 3715
+   },
+   {
+    "machine": "ミスター",
+    "plus": 4,
+    "total": 5,
+    "avg": 2500
+   },
+   {
+    "machine": "DMC5",
+    "plus": 2,
+    "total": 3,
+    "avg": 3333
+   },
+   {
+    "machine": "スタハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 3133
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "アナザー末尾③",
+    "matched": false,
+    "keyword": "文明",
+    "chain": [
+     "文明",
+     "文明堂",
+     "三時のおやつ"
+    ],
+    "raw": "文明→文明堂→三時のおやつ",
+    "result": null
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "第2弾スタート！",
+    "chain": [
+     "第2弾スタート！",
+     "スター"
+    ],
+    "raw": "第2弾スタート！→スター",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2500
+    }
+   },
+   {
+    "machine": "DMC5",
+    "matched": true,
+    "keyword": "あっという「間の金曜日」",
+    "chain": [
+     "あっという「間の金曜日」",
+     "魔の金曜日",
+     "悪魔"
+    ],
+    "raw": "あっという「間の金曜日」→魔の金曜日→悪魔",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 3333
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "第2弾スタート！",
+    "chain": [
+     "第2弾スタート！",
+     "スター"
+    ],
+    "raw": "第2弾スタート！→スター",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3133
+    }
+   },
+   {
+    "machine": "視界",
+    "matched": false,
+    "keyword": "カレー",
+    "chain": [
+     "カレー",
+     "カレイ",
+     "霊"
+    ],
+    "raw": "カレー→カレイ→霊",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
