@@ -123,9 +123,13 @@ def d2(s):
 # data/result_exclude.json に手で書く。連想（assoc）にも載っていれば、そちらは対象外
 _rxp = B + '/data/result_exclude.json'
 RESULT_EXCLUDE = collections.defaultdict(set)
+RESULT_ADD = collections.defaultdict(set)   # 逆に、記事の見出しからは拾えないが全系だった機種（add）
 if os.path.exists(_rxp):
-    for _d, _m in _json.load(open(_rxp, encoding='utf-8')).get('exclude', []):
+    _rx = _json.load(open(_rxp, encoding='utf-8'))
+    for _d, _m in _rx.get('exclude', []):
         RESULT_EXCLUDE[_d].add(_m)
+    for _d, _m in _rx.get('add', []):
+        RESULT_ADD[_d].add(_m)
 
 # --- 対象日ごとの全系機種 ---
 days = {}
@@ -138,6 +142,7 @@ for a in raw:
     # 一覧表であって全台系の結果ではない。台数は使うが、全系機種としては数えない。
     ms = {cn(r['machine']) for r in a['results'] if not COLOR_TAG.search(r['machine'])}
     ms -= RESULT_EXCLUDE.get(t, set())
+    ms |= RESULT_ADD.get(t, set())
     ms |= {cn(x['machine']) for x in a['assoc'] if x['machine']}
     ms = {m for m in ms if m in MACHINES}
     if not ms: continue
