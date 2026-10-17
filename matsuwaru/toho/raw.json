@@ -39260,5 +39260,175 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/18/065649",
+  "articleDate": "2026-10-18",
+  "targetDate": "2026-10-17",
+  "postDate": "2026-10-16",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2111057136847614227",
+  "title": "10月17日のマルハン新宿東宝ビルまとめ✏️8機種+バラの全系メインの⑦のつく日",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": false,
+    "keyword": "アラーム2個",
+    "chain": [
+     "アラーム2個",
+     "デュオ"
+    ],
+    "raw": "アラーム2個→デュオ",
+    "result": null
+   },
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": false,
+    "keyword": "17日",
+    "chain": [
+     "17日",
+     "17台"
+    ],
+    "raw": "17日→17台",
+    "result": null
+   },
+   {
+    "machine": "マギレコ",
+    "matched": false,
+    "keyword": "QRコード",
+    "chain": [
+     "QRコード",
+     "コード"
+    ],
+    "raw": "QRコード→コード",
+    "result": null
+   },
+   {
+    "machine": "マギレコ",
+    "matched": false,
+    "keyword": "写真円形",
+    "chain": [
+     "写真円形",
+     "円島（マギレコ＋戦国乙女4の円形島）"
+    ],
+    "raw": "写真円形→円島（マギレコ＋戦国乙女4の円形島）",
+    "result": null
+   },
+   {
+    "machine": "Sアイム",
+    "matched": false,
+    "keyword": "アラーム",
+    "chain": [
+     "アラーム",
+     "アイム"
+    ],
+    "raw": "アラーム→アイム",
+    "result": null
+   },
+   {
+    "machine": "スーパーブラックジャック",
+    "matched": false,
+    "keyword": "黒胡椒",
+    "chain": [
+     "黒胡椒",
+     "ブラック"
+    ],
+    "raw": "黒胡椒→ブラック",
+    "result": null
+   },
+   {
+    "machine": "ワールドダイスター",
+    "matched": false,
+    "keyword": "目覚まし",
+    "chain": [
+     "目覚まし",
+     "覚醒",
+     "センス覚醒"
+    ],
+    "raw": "目覚まし→覚醒→センス覚醒",
+    "result": null
+   },
+   {
+    "machine": "チバリヨ2",
+    "matched": false,
+    "keyword": "2個セット",
+    "chain": [
+     "2個セット",
+     "チバリヨ【２】"
+    ],
+    "raw": "2個セット→チバリヨ【２】",
+    "result": null
+   },
+   {
+    "machine": "東リべ",
+    "matched": false,
+    "keyword": "早朝",
+    "chain": [
+     "早朝",
+     "総長"
+    ],
+    "raw": "早朝→総長",
+    "result": null
+   },
+   {
+    "machine": "Sエウレカ",
+    "matched": false,
+    "keyword": "7にまつわる",
+    "chain": [
+     "7にまつわる"
+    ],
+    "raw": "・7にまつわる",
+    "result": null
+   },
+   {
+    "machine": "Sエウレカ",
+    "matched": false,
+    "keyword": "ブレンド",
+    "chain": [
+     "ブレンド",
+     "blend",
+     "End",
+     "the END"
+    ],
+    "raw": "ブレンド→blend→End→the END",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "円形",
+    "chain": [
+     "円形",
+     "円島（マギレコ＋戦国乙女4の円形島）"
+    ],
+    "raw": "円形→円島（マギレコ＋戦国乙女4の円形島）",
+    "result": null
+   },
+   {
+    "machine": "見せる子",
+    "matched": false,
+    "keyword": "10月17日",
+    "chain": [
+     "10月17日",
+     "四谷みこBD🎂"
+    ],
+    "raw": "10月17日→四谷みこBD🎂",
+    "result": null
+   },
+   {
+    "machine": "リゼロ2nd",
+    "matched": false,
+    "keyword": "甘口と辛口",
+    "chain": [
+     "甘口と辛口",
+     "レムとラム"
+    ],
+    "raw": "甘口と辛口→レムとラム",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
