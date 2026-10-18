@@ -39430,5 +39430,123 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/19/073530",
+  "articleDate": "2026-10-19",
+  "targetDate": "2026-10-18",
+  "postDate": "2026-10-17",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2111419550776619397",
+  "title": "10月18日のマルハン新宿東宝ビルまとめ✏️8のつく日で「マイジャグⅥ」が全系に！",
+  "results": [
+   {
+    "machine": "マイジャグⅥ",
+    "plus": 17,
+    "total": 17,
+    "avg": 3565
+   },
+   {
+    "machine": "このすば",
+    "plus": 3,
+    "total": 3,
+    "avg": 3933
+   },
+   {
+    "machine": "アバサー",
+    "plus": 1,
+    "total": 2,
+    "avg": 250
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "マイジャグⅥ",
+    "matched": true,
+    "keyword": "ひとやすみひとやすみ",
+    "chain": [
+     "ひとやすみひとやすみ",
+     "一休さん",
+     "屏風の虎",
+     "虎"
+    ],
+    "raw": "ひとやすみひとやすみ→一休さん→屏風の虎→虎",
+    "result": {
+     "plus": 17,
+     "total": 17,
+     "avg": 3565
+    }
+   },
+   {
+    "machine": "マイジャグⅥ",
+    "matched": true,
+    "keyword": "ごはん",
+    "chain": [
+     "ごはん",
+     "米"
+    ],
+    "raw": "ごはん→米",
+    "result": {
+     "plus": 17,
+     "total": 17,
+     "avg": 3565
+    }
+   },
+   {
+    "machine": "このすば",
+    "matched": true,
+    "keyword": "ジャイアントコーン",
+    "chain": [
+     "ジャイアントコーン",
+     "ジャイアントトード"
+    ],
+    "raw": "ジャイアントコーン→ジャイアントトード",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3933
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": true,
+    "keyword": "腹いっぱい",
+    "chain": [
+     "腹いっぱい",
+     "満ぷくぅ"
+    ],
+    "raw": "腹いっぱい→満ぷくぅ",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": 250
+    }
+   },
+   {
+    "machine": "ハイパーラッシュ",
+    "matched": false,
+    "keyword": "アイスに♪マーク",
+    "chain": [
+     "アイスに♪マーク",
+     "音楽"
+    ],
+    "raw": "アイスに♪マーク→音楽",
+    "result": null
+   },
+   {
+    "machine": "バーサス",
+    "matched": false,
+    "keyword": "バチバチ",
+    "chain": [
+     "バチバチ",
+     "対立",
+     "vs"
+    ],
+    "raw": "バチバチ→対立→vs",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
