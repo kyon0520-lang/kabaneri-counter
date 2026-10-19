@@ -39548,5 +39548,144 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/20/080625",
+  "articleDate": "2026-10-20",
+  "targetDate": "2026-10-19",
+  "postDate": "2026-10-18",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2111781950939930673",
+  "title": "10月19日のマルハン新宿東宝ビルまとめ✏️9のつく日は末尾に9台並び、全系と多彩な仕掛け！",
+  "results": [
+   {
+    "machine": "末尾④（ジャグ・ハナ系）",
+    "plus": 19,
+    "total": 21,
+    "avg": 1786
+   },
+   {
+    "machine": "SAO2",
+    "plus": 8,
+    "total": 12,
+    "avg": 3225
+   },
+   {
+    "machine": "アレックス",
+    "plus": 3,
+    "total": 4,
+    "avg": 1450
+   },
+   {
+    "machine": "喰霊",
+    "plus": 2,
+    "total": 3,
+    "avg": 2633
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "末尾④（ジャグ・ハナ系以外）",
+    "matched": false,
+    "keyword": "爽",
+    "chain": [
+     "爽",
+     "メが四つ"
+    ],
+    "raw": "爽→メが四つ",
+    "result": null
+   },
+   {
+    "machine": "末尾④（ジャグ・ハナ系以外）",
+    "matched": false,
+    "keyword": "オリジナルチキンバーガー",
+    "chain": [
+     "オリジナルチキンバーガー",
+     "4種"
+    ],
+    "raw": "オリジナルチキンバーガー→4種",
+    "result": null
+   },
+   {
+    "machine": "SAO2",
+    "matched": true,
+    "keyword": "爽",
+    "chain": [
+     "爽",
+     "SO",
+     "SAO"
+    ],
+    "raw": "爽→SO→SAO",
+    "result": {
+     "plus": 8,
+     "total": 12,
+     "avg": 3225
+    }
+   },
+   {
+    "machine": "SAO2",
+    "matched": true,
+    "keyword": "爽",
+    "chain": [
+     "爽",
+     "漢字の中に××××",
+     "バレットサークル"
+    ],
+    "raw": "爽→漢字の中に××××→バレットサークル",
+    "result": {
+     "plus": 8,
+     "total": 12,
+     "avg": 3225
+    }
+   },
+   {
+    "machine": "アレックス",
+    "matched": true,
+    "keyword": "チキン",
+    "chain": [
+     "チキン",
+     "鳥"
+    ],
+    "raw": "チキン→鳥",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 1450
+    }
+   },
+   {
+    "machine": "アレックス",
+    "matched": true,
+    "keyword": "オリジナル",
+    "chain": [
+     "オリジナル",
+     "始祖"
+    ],
+    "raw": "オリジナル→始祖",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 1450
+    }
+   },
+   {
+    "machine": "喰霊",
+    "matched": true,
+    "keyword": "九尾",
+    "chain": [
+     "九尾",
+     "狐",
+     "管狐"
+    ],
+    "raw": "九尾→狐→管狐",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 2633
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
