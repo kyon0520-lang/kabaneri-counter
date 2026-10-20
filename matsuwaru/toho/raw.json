@@ -39687,5 +39687,107 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/21/080553",
+  "articleDate": "2026-10-21",
+  "targetDate": "2026-10-20",
+  "postDate": "2026-10-19",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2112144284585701691",
+  "title": "10月20日のマルハン新宿東宝ビルまとめ✏️0のつく日は「大都機種」のチェックは必須！",
+  "results": [
+   {
+    "machine": "ハッピー",
+    "plus": 7,
+    "total": 7,
+    "avg": 2471
+   },
+   {
+    "machine": "いざ番長",
+    "plus": 1,
+    "total": 3,
+    "avg": -467
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ハッピー",
+    "matched": true,
+    "keyword": "レシートに書いてあるハッピーアワー",
+    "chain": [
+     "レシートに書いてあるハッピーアワー",
+     "ハッピー"
+    ],
+    "raw": "レシートに書いてあるハッピーアワー→ハッピー",
+    "result": {
+     "plus": 7,
+     "total": 7,
+     "avg": 2471
+    }
+   },
+   {
+    "machine": "いざ番長",
+    "matched": true,
+    "keyword": "保険指導",
+    "chain": [
+     "保険指導",
+     "指導",
+     "愛の教育的武士道"
+    ],
+    "raw": "保険指導→指導→愛の教育的武士道",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": -467
+    }
+   },
+   {
+    "machine": "ギアス",
+    "matched": false,
+    "keyword": "TURURU",
+    "chain": [
+     "TURURU",
+     "ルル",
+     "ルルーシュ"
+    ],
+    "raw": "TURURU→ルル→ルルーシュ",
+    "result": null
+   },
+   {
+    "machine": "リゼロ",
+    "matched": false,
+    "keyword": "血圧100-60",
+    "chain": [
+     "血圧100-60",
+     "0多め"
+    ],
+    "raw": "血圧100-60→0多め",
+    "result": null
+   },
+   {
+    "machine": "リゼロ",
+    "matched": false,
+    "keyword": "0のつく日",
+    "chain": [
+     "0のつく日"
+    ],
+    "raw": "・0のつく日",
+    "result": null
+   },
+   {
+    "machine": "リゼロ",
+    "matched": false,
+    "keyword": "フリーダイヤル",
+    "chain": [
+     "フリーダイヤル",
+     "0円"
+    ],
+    "raw": "フリーダイヤル→0円",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
