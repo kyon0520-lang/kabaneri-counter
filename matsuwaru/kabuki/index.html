@@ -241,6 +241,7 @@ body.memo-open .memoscrim{display:block}
 .newstag{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:4px 9px;border-radius:6px}
 .newstag.fix{background:rgba(226,69,60,.16);color:#ff9c94}
 .newstag.feat{background:rgba(47,181,106,.18);color:#6fe0a4}
+.newstag.info{background:rgba(230,240,250,.12);color:#e6f0fa}
 .newsdate{font-size:11px;color:var(--sub)}
 .newstitle{font-size:14.5px;font-weight:700;margin:0 0 8px;color:var(--ink)}
 .newslede{font-size:12.5px;color:#c3d2e6;margin:0 0 9px}
@@ -709,6 +710,15 @@ if('serviceWorker' in navigator)
    新しい順に先頭へ追加していく。id は固定文字列（同じ日に2件出る可能性があるため）。
    一度閉じたら、そのidを見た記録として残し、同じidのうちは二度と出さない。 */
 const NEWS = [
+  {
+    id: '2026-10-21-php',
+    date: '2026年10月21日',
+    tag: 'info',
+    tagLabel: 'お知らせ',
+    title: 'PHPの脆弱性について（みんなのスロットは影響を受けません）',
+    lede: '最近、PHPの脆弱性が公表され、多くのサイトでメンテナンスが行われています。みんなのスロットはPHPを使っていないため、この脆弱性の影響は受けません。メンテナンスによる停止もなく、これまでどおりご利用いただけます。',
+    points: [],
+  },
   {
     id: '2026-09-20-todayis',
     date: '2026年9月20日',
