@@ -156,12 +156,15 @@
   .news-tag.feat{background:#2f7cf6}
   .news-tag.add{background:#1e8a4c}
   .news-tag.fix{background:#b5790a}
+  .news-tag.info{background:var(--ink)}
   .news-feat{
     display:flex;flex-direction:column;gap:14px;border:3px solid var(--ink);border-radius:22px;
     padding:22px 66px 22px 22px;margin-bottom:4px;text-decoration:none;color:inherit;position:relative;
     background:var(--panel);transition:transform .2s,box-shadow .2s;
   }
   @media (hover:hover){.news-feat.rv:hover{transform:translateY(-4px);box-shadow:0 14px 26px rgba(0,0,0,.14)}}
+  .news-feat.static{padding-right:22px}
+  .news-feat.static.rv:hover{transform:none;box-shadow:none}
   .news-feat .meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .news-feat .date{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
   .news-feat .ttl{font-family:var(--display);font-weight:900;font-size:clamp(17px,3vw,21px);line-height:1.55}
@@ -182,6 +185,7 @@
   @media (hover:hover){.news-row:hover .ttl{text-decoration:underline;text-underline-offset:3px}}
   @media (max-width:480px){
     .news-feat{padding:20px 56px 20px 18px}
+    .news-feat.static{padding-right:18px}
     .news-row{flex-direction:column;gap:3px}
     .news-row .date{width:auto}
   }
@@ -337,15 +341,14 @@
 <section class="blk news" id="news">
   <div class="wrap">
     <p class="outline rv">NEWS</p>
-    <a class="news-feat rv" href="./kabaneri-unato/2takuomikuji/">
+    <div class="news-feat static rv">
       <div class="meta">
-        <span class="news-tag feat">公開</span>
-        <span class="date">2026年9月18日・カバネリチャレンジおみくじ</span>
+        <span class="news-tag info">お知らせ</span>
+        <span class="date">2026年10月21日</span>
       </div>
-      <div class="ttl">カバネリチャレンジ２択サポートアプリを公開しました</div>
-      <p class="lede">カバネリチャレンジの中と右で迷ったときに、おみくじをタップするだけの「カバネリチャレンジサポートアプリ」を作りました。カバネリチャレンジの２択の参考にどうぞ。</p>
-      <span class="arrow">→</span>
-    </a>
+      <div class="ttl">PHPの脆弱性について（みんなのスロットは影響を受けません）</div>
+      <p class="lede">最近、PHPの脆弱性が公表され、多くのサイトでメンテナンスが行われています。みんなのスロットはPHPを使っておらず、HTMLとJavaScriptで作ってCloudflareのサービス上で動かしているため、この脆弱性の影響は受けません。メンテナンスによる停止もなく、これまでどおりご利用いただけます。</p>
+    </div>
     <div class="news-rest">
       <a class="news-row rv" href="./column/toho-event-units">
         <span class="date">09.29 COLUMN</span>
@@ -354,6 +357,10 @@
       <a class="news-row rv" href="./matsuwaru/toho/news.html">
         <span class="date">09.20 追加</span>
         <span class="ttl">イベント傾向チェッカーに「明日は何の日」タブを追加（全台系まつわるチェッカー）</span>
+      </a>
+      <a class="news-row rv" href="./kabaneri-unato/2takuomikuji/">
+        <span class="date">09.18 公開</span>
+        <span class="ttl">カバネリチャレンジ２択サポートアプリを公開しました（カバネリチャレンジおみくじ）</span>
       </a>
       <a class="news-row rv" href="./kabaneri-unato/news.html">
         <span class="date">09.07 修正</span>
