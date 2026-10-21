@@ -39789,5 +39789,206 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/22/075753",
+  "articleDate": "2026-10-22",
+  "targetDate": "2026-10-21",
+  "postDate": "2026-10-20",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2112506670094139482",
+  "title": "10月21日のマルハン新宿東宝ビルまとめ✏️ファンキー2を筆頭に全系特化で仕掛け大量！",
+  "results": [
+   {
+    "machine": "ファンキー2",
+    "plus": 32,
+    "total": 32,
+    "avg": 3269
+   },
+   {
+    "machine": "スタハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 3500
+   },
+   {
+    "machine": "ToLOVEる",
+    "plus": 1,
+    "total": 4,
+    "avg": 575
+   },
+   {
+    "machine": "SAO",
+    "plus": 2,
+    "total": 3,
+    "avg": 1067
+   },
+   {
+    "machine": "L鏡",
+    "plus": 3,
+    "total": 3,
+    "avg": 3400
+   },
+   {
+    "machine": "化物語",
+    "plus": 1,
+    "total": 3,
+    "avg": -900
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ファンキー2",
+    "matched": true,
+    "keyword": "一気",
+    "chain": [
+     "一気",
+     "ワン🐶"
+    ],
+    "raw": "一気→ワン🐶",
+    "result": {
+     "plus": 32,
+     "total": 32,
+     "avg": 3269
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "竜田",
+    "chain": [
+     "竜田",
+     "たつ",
+     "スタンド",
+     "スター"
+    ],
+    "raw": "竜田→たつ→スタンド→スター",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3500
+    }
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": true,
+    "keyword": "なれた〜い",
+    "chain": [
+     "なれた〜い",
+     "たい",
+     "たい焼き"
+    ],
+    "raw": "なれた〜い→たい→たい焼き",
+    "result": {
+     "plus": 1,
+     "total": 4,
+     "avg": 575
+    }
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "海苔",
+    "chain": [
+     "海苔",
+     "海藻",
+     "階層"
+    ],
+    "raw": "海苔→海藻→階層",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1067
+    }
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "切り抜け",
+    "chain": [
+     "切り抜け",
+     "キリ",
+     "キリト"
+    ],
+    "raw": "切り抜け→キリ→キリト",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1067
+    }
+   },
+   {
+    "machine": "L鏡",
+    "matched": true,
+    "keyword": "オクラ",
+    "chain": [
+     "オクラ",
+     "和名はアメリカネリ"
+    ],
+    "raw": "オクラ→和名はアメリカネリ",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3400
+    }
+   },
+   {
+    "machine": "L鏡",
+    "matched": true,
+    "keyword": "おにぎり",
+    "chain": [
+     "おにぎり",
+     "米",
+     "アメリカ"
+    ],
+    "raw": "おにぎり→米→アメリカ",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3400
+    }
+   },
+   {
+    "machine": "化物語",
+    "matched": true,
+    "keyword": "胡麻和えと胡麻マヨ",
+    "chain": [
+     "胡麻和えと胡麻マヨ",
+     "胡麻×2",
+     "倍倍チャンス"
+    ],
+    "raw": "胡麻和えと胡麻マヨ→胡麻×2→倍倍チャンス",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": -900
+    }
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "オリジン",
+    "chain": [
+     "オリジン",
+     "神",
+     "邪神"
+    ],
+    "raw": "オリジン→神→邪神",
+    "result": null
+   },
+   {
+    "machine": "うみねこ",
+    "matched": false,
+    "keyword": "キャラ誕生日",
+    "chain": [
+     "キャラ誕生日",
+     "右代宮絵羽"
+    ],
+    "raw": "キャラ誕生日→右代宮絵羽",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
