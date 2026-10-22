@@ -39990,5 +39990,88 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/23/063109",
+  "articleDate": "2026-10-23",
+  "targetDate": "2026-10-22",
+  "postDate": "2026-10-21",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2112869238419624009",
+  "title": "10月22日のマルハン新宿東宝ビルまとめ✏️777コンパスのトラブルでもブレないゾロ目仕掛け",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ドラハナ",
+    "matched": false,
+    "keyword": "つるかめ",
+    "chain": [
+     "つるかめ",
+     "鶴仙人、亀仙人",
+     "ドラゴンボール"
+    ],
+    "raw": "つるかめ→鶴仙人、亀仙人→ドラゴンボール",
+    "result": null
+   },
+   {
+    "machine": "獣王",
+    "matched": false,
+    "keyword": "サバ味噌煮",
+    "chain": [
+     "サバ味噌煮",
+     "サバンナ",
+     "獣王"
+    ],
+    "raw": "サバ味噌煮→サバンナ→獣王",
+    "result": null
+   },
+   {
+    "machine": "防振り",
+    "matched": false,
+    "keyword": "メイプル誕生日",
+    "chain": [
+     "メイプル誕生日"
+    ],
+    "raw": "・メイプル誕生日",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "スーパーロング",
+    "chain": [
+     "スーパーロング",
+     "機種名がスーパーロング"
+    ],
+    "raw": "スーパーロング→機種名がスーパーロング",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "上野",
+    "chain": [
+     "上野",
+     "パンダ",
+     "梓川かえで"
+    ],
+    "raw": "上野→パンダ→梓川かえで",
+    "result": null
+   },
+   {
+    "machine": "ギアスC.C.",
+    "matched": false,
+    "keyword": "つるかめ",
+    "chain": [
+     "つるかめ",
+     "長寿",
+     "不老不死"
+    ],
+    "raw": "つるかめ→長寿→不老不死",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
