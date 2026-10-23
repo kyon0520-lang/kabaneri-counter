@@ -40073,5 +40073,231 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "エグち"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/24/073421",
+  "articleDate": "2026-10-24",
+  "targetDate": "2026-10-23",
+  "postDate": "2026-10-22",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2113231446706098367",
+  "title": "10月23日のマルハン新宿東宝ビルまとめ✏️「エグち」で全系大量、仕掛けも充実！",
+  "results": [
+   {
+    "machine": "キンハナ",
+    "plus": 13,
+    "total": 14,
+    "avg": null
+   },
+   {
+    "machine": "モンハンサンブレイク",
+    "plus": 8,
+    "total": 10,
+    "avg": null
+   },
+   {
+    "machine": "北斗（※1台稼働停止中）",
+    "plus": 7,
+    "total": 8,
+    "avg": null
+   },
+   {
+    "machine": "モンハンライズ",
+    "plus": 6,
+    "total": 8,
+    "avg": null
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "plus": 5,
+    "total": 6,
+    "avg": null
+   },
+   {
+    "machine": "いざ番長",
+    "plus": 0,
+    "total": 3,
+    "avg": null
+   },
+   {
+    "machine": "シェイク",
+    "plus": 3,
+    "total": 3,
+    "avg": null
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "キンハナ",
+    "matched": true,
+    "keyword": "ラーメン王",
+    "chain": [
+     "ラーメン王",
+     "キング"
+    ],
+    "raw": "ラーメン王→キング",
+    "result": {
+     "plus": 13,
+     "total": 14,
+     "avg": null
+    }
+   },
+   {
+    "machine": "モンハンサンブレイク",
+    "matched": true,
+    "keyword": "緊急",
+    "chain": [
+     "緊急",
+     "緊急クエスト"
+    ],
+    "raw": "緊急→緊急クエスト",
+    "result": {
+     "plus": 8,
+     "total": 10,
+     "avg": null
+    }
+   },
+   {
+    "machine": "北斗",
+    "matched": false,
+    "keyword": "ラー1グランプリ",
+    "chain": [
+     "ラー1グランプリ",
+     "ラ王"
+    ],
+    "raw": "ラー1グランプリ→ラ王",
+    "result": null
+   },
+   {
+    "machine": "北斗",
+    "matched": false,
+    "keyword": "食券",
+    "chain": [
+     "食券",
+     "ケン"
+    ],
+    "raw": "食券→ケン",
+    "result": null
+   },
+   {
+    "machine": "北斗",
+    "matched": false,
+    "keyword": "青天",
+    "chain": [
+     "青天"
+    ],
+    "raw": "・青天",
+    "result": null
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "緊急",
+    "chain": [
+     "緊急",
+     "緊急クエスト"
+    ],
+    "raw": "緊急→緊急クエスト",
+    "result": {
+     "plus": 6,
+     "total": 8,
+     "avg": null
+    }
+   },
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": true,
+    "keyword": "エグち画像女性",
+    "chain": [
+     "エグち画像女性"
+    ],
+    "raw": "・エグち画像女性",
+    "result": {
+     "plus": 5,
+     "total": 6,
+     "avg": null
+    }
+   },
+   {
+    "machine": "いざ番長",
+    "matched": true,
+    "keyword": "ラー1グランプリ",
+    "chain": [
+     "ラー1グランプリ",
+     "真剣勝負",
+     "真剣"
+    ],
+    "raw": "ラー1グランプリ→真剣勝負→真剣",
+    "result": {
+     "plus": 0,
+     "total": 3,
+     "avg": null
+    }
+   },
+   {
+    "machine": "シェイク",
+    "matched": true,
+    "keyword": "抽選",
+    "chain": [
+     "抽選",
+     "混ぜる",
+     "振る"
+    ],
+    "raw": "抽選→混ぜる→振る",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": null
+    }
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "食券",
+    "chain": [
+     "食券",
+     "剣"
+    ],
+    "raw": "食券→剣",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "ラー1グランプリ",
+    "chain": [
+     "ラー1グランプリ",
+     "ラ王"
+    ],
+    "raw": "ラー1グランプリ→ラ王",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "食券",
+    "chain": [
+     "食券",
+     "ケン"
+    ],
+    "raw": "食券→ケン",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "雲",
+    "chain": [
+     "雲",
+     "雲のシュウザ"
+    ],
+    "raw": "雲→雲のシュウザ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
