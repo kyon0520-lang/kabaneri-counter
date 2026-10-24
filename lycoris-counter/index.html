@@ -383,6 +383,16 @@ html[data-theme="lyco"] .hdot.at{background:#e2453c;box-shadow:none}
 .setpick .mtab{padding:12px 0;font-size:13px}
 .sset{margin-left:10px;font-size:13px;font-weight:700;padding:2px 10px;border-radius:999px;color:var(--accent);border:1px solid var(--accent);vertical-align:3px}
 html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:linear-gradient(180deg,#ff6a5c,#c9241b)}
+.man p{margin:0 0 10px;font-size:13px;line-height:1.85}
+.man p:last-child,.man ul:last-child{margin-bottom:0}
+.man ul{margin:0 0 10px;padding-left:18px;font-size:13px;line-height:1.85}
+.man li{margin-bottom:4px}
+.man .mlabel{margin-top:20px}
+.man .mlabel:first-child{margin-top:4px}
+.hcyc{margin:12px 0 8px}
+.hcyc:first-child{margin-top:0}
+.cycpill{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;padding:3px 14px;border-radius:999px;color:#ff8a80;border:1px solid #e2453c;background:rgba(226,69,60,.12)}
+html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weight:800;padding:4px 16px;text-shadow:0 1px 0 rgba(90,0,0,.5);background:linear-gradient(180deg,#ff6a5c,#c9241b)}
 </style>
 </head>
 <body>
@@ -464,6 +474,107 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
       <div class="mlabel">データ</div>
       <div class="mgroup">
         <button class="mrow danger" id="reset"><span class="mname">記録をすべてリセット</span></button>
+      </div>
+    </div>
+    <div class="mlabel">ヘルプ</div>
+    <div class="mgroup">
+      <button class="mrow" data-go="manual"><span class="mname">取扱説明書</span><span class="ch">›</span></button>
+    </div>
+  </div>
+
+  <div class="mpage hidden" data-page="manual">
+    <div class="man">
+      <div class="mlabel">このカウンターについて</div>
+      <div class="mgroup pad">
+        <p>リコリス・リコイルのCZ・ATの当選を、ゾーンごとに数えて当選率を出すカウンターです。変換カウントと小役(共通ベルなど)の確率も、同じ画面で数えられます。</p>
+        <p>記録は、お使いの端末のブラウザの中に保存されます。</p>
+      </div>
+
+      <div class="mlabel">画面の見かた</div>
+      <div class="mgroup pad">
+        <p>上のタブで画面を切り替えます。</p>
+        <ul>
+          <li><b>カウント</b>:実戦中に押す画面です。</li>
+          <li><b>ゾーン合算</b>:4つのモードを合わせた、ゾーンごとの当選率です。</li>
+          <li><b>当選履歴</b>:当選の記録の一覧です。</li>
+        </ul>
+        <p>右上の ☰ ボタンで、メニュー(設定・実戦履歴の保存・この説明書)を開きます。</p>
+      </div>
+
+      <div class="mlabel">ゾーンを数える</div>
+      <div class="mgroup pad">
+        <p>カウント画面の上のタブで、モード(<b>通常・駆け抜け・上位後・リセット</b>)を選びます。モードごとに別々に数えます。駆け抜けとリセットは、600Gまでのゾーンだけが出ます。</p>
+        <p>ゾーンの行には、2つのボタンがあります。</p>
+        <ul>
+          <li><b>非当選</b>:そのゾーンを通過して当たらなかったとき。押すとすぐ記録されます。</li>
+          <li><b>当選</b>:そのゾーンでCZに当選したとき。押すと確認の画面が開きます。</li>
+        </ul>
+        <p>当選の確認画面では、次を入れて「履歴に追加」を押します。</p>
+        <ul>
+          <li><b>CZに当選したG数</b>(必須):前の当選から数えたG数です。</li>
+          <li><b>当選したCZ</b>(任意):オポジットバトル、ファーストリコリス、直撃から選びます。</li>
+          <li><b>AT当選 / AT非当選</b>(必須):そのCZでATに入ったかどうかです。</li>
+          <li><b>メモ</b>(任意)。</li>
+        </ul>
+        <p>当選を押すと、その<b>手前のゾーンは自動で「非当選」</b>として数えます。すでに自分で非当選を押したゾーンは、二重には数えません。当選のたびに、数え方は最初のゾーンからやり直しになります。</p>
+        <p>600G以降のゾーンは、「600G・750G・850G を表示」で開きます。</p>
+      </div>
+
+      <div class="mlabel">自力当選・戻す</div>
+      <div class="mgroup pad">
+        <p><b>自力当選(ゾーン外)</b>:ゾーンとは関係なく当たったときに押します。自力当選したG数を入れて記録します。<b>ゾーン当選率には、何も影響しません。</b>当選履歴にだけ残ります。</p>
+        <p><b>1つ戻す</b>:直前の記録を1つ取り消します。非当選や自力当選も取り消せます。</p>
+      </div>
+
+      <div class="mlabel">変換カウント・小役</div>
+      <div class="mgroup pad">
+        <p><b>変換カウント</b>(レア役変換・弱リコリス目高確):「当選」「非当選」を押すと、当選率が出ます。右の「↩」で、そのカードの直前の1回を取り消せます。</p>
+        <p><b>小役カウンター</b>(共通ベルなど):画面の下に出ます。「＋」か「−」を選んでから、真ん中のボタンを押して数えます。「現在のG数」を入れると、「1/○○.○」の確率が出ます。</p>
+        <p>変換カウントと小役は、4つのモードに関係なく、共通で数えます。どちらも、右上(右端)の ✕ で消せます。名前や数は、メニューの「設定」で変えられます。</p>
+      </div>
+
+      <div class="mlabel">ゾーン合算と当選履歴</div>
+      <div class="mgroup pad">
+        <p><b>ゾーン合算</b>は、リングの満ち具合が、そのゾーンの当選率です。一番高いゾーンだけが緑になります。</p>
+        <p><b>当選履歴</b>は、上から古い順です。開いたときは最新の5件だけが出ます。右上の「古い履歴を開く」で、すべて出ます。</p>
+        <ul>
+          <li>左の大きな数字は<b>実G数</b>です。CZに当選したG数を足していった合計で、ATに当選すると、0から数え直します。</li>
+          <li>ATに当選した記録には、赤い点の「AT当選」の行が付きます。</li>
+          <li>各行の「メモを追加」から、メモを書き足せます。✕で、その記録を消せます。</li>
+        </ul>
+      </div>
+
+      <div class="mlabel">実戦履歴の保存</div>
+      <div class="mgroup pad">
+        <p>1回の実戦が終わったら、メニューの<b>「実戦履歴を保存」</b>を押します。</p>
+        <ul>
+          <li><b>設定</b>(不明・1〜6)と<b>メモ</b>(店名・台番号など)を入れて保存します。</li>
+          <li>保存したあとに、今のカウントを0に戻すかを聞かれます。</li>
+          <li>保存した実戦は、メニューの「保存した実戦履歴」で見られます。ゾーン合算・変換カウント・小役・当選履歴が、そのときのまま残ります。</li>
+        </ul>
+      </div>
+
+      <div class="mlabel">設定</div>
+      <div class="mgroup pad">
+        <p>メニューの「設定」で、次を変えられます。</p>
+        <ul>
+          <li><b>ゾーン</b>:ゾーンのG数と名前、ゾーンの範囲(初期値は変えなくて大丈夫です)、カウント画面に出すゾーンの上限。</li>
+          <li><b>当選契機</b>:「当選したCZ」の選択肢。</li>
+          <li><b>カウントカード</b>:変換カウントの追加・名前変更・削除。</li>
+          <li><b>小役カウンター</b>:小役の追加・名前変更・削除。</li>
+        </ul>
+        <p>「記録をすべてリセット」は、今のカウントと当選履歴を消します。保存した実戦履歴は消えません。</p>
+      </div>
+
+      <div class="mlabel">注意</div>
+      <div class="mgroup pad">
+        <p>記録は、この端末のブラウザの中にだけ保存されます。次の場合は、記録が消えることがあります。</p>
+        <ul>
+          <li>ブラウザの履歴やサイトデータを消したとき。</li>
+          <li>プライベートブラウズで開いているとき。</li>
+        </ul>
+        <p>ほかの端末とは共有されません。大事な実戦は、「実戦履歴を保存」で残しておくと安心です。</p>
+        <p>ボタンを押すと、押した場所が光ります(対応している端末では、軽く振動もします)。光らなかったときは、押せていません。</p>
       </div>
     </div>
   </div>
@@ -743,7 +854,7 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
   });
 
   var menuOpen = false, menuPage = 'root';
-  var PAGE_TITLES = { root: 'メニュー', save: '実戦を保存', sessions: '保存した実戦履歴', sess: '実戦の詳細', zones: 'ゾーン', tags: '当選契機', convs: 'カウントカード', roles: '小役カウンター' };
+  var PAGE_TITLES = { root: 'メニュー', manual: '取扱説明書', save: '実戦を保存', sessions: '保存した実戦履歴', sess: '実戦の詳細', zones: 'ゾーン', tags: '当選契機', convs: 'カウントカード', roles: '小役カウンター' };
   function resetSigs(){ $('zoneEdit').dataset.sig = $('tagEdit').dataset.sig = $('convEdit').dataset.sig = $('roleEdit').dataset.sig = ''; }
   function openMenu(){ menuOpen = true; menuPage = 'root'; $('menu').classList.remove('hidden'); document.body.classList.add('menuopen'); resetSigs(); render(); $('menu').scrollTop = 0; }
   function closeMenu(){ menuOpen = false; $('menu').classList.add('hidden'); document.body.classList.remove('menuopen'); }
@@ -874,6 +985,19 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
     });
     return map;
   }
+  // ATに当選するまでをひとまとまり(1周期)として、各周期の先頭と、その周期のモードを求める。
+  // 周期のモードは、周期の最初のCZ当選のモードにする。
+  function histCycles(m){
+    var start = {}, mode = {}, fresh = true, cm = null;
+    m.trials.forEach(function(t){
+      if (t.kind !== 'zone' || t.gz == null) return;
+      if (fresh){ start[t.id] = true; cm = modeLabelOf(t); fresh = false; }
+      mode[t.id] = cm;
+      if (t.atr === 'win') fresh = true;
+    });
+    return { start: start, mode: mode };
+  }
+  function cycHead(label){ return '<div class="hcyc"><span class="cycpill">' + esc(label) + '</span></div>'; }
   function renderHistory(m){
     var cum = czCum(m);
     // 上から古い順に並べる。開いたときは最新の数件(いちばん下)だけを見せ、
@@ -884,13 +1008,14 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
     more.classList.toggle('hidden', all.length <= HIST_MAX);
     more.textContent = histAll ? '▴ 古い履歴を閉じる' : '▾ 古い履歴を開く(' + (all.length - HIST_MAX) + '件)';
     var xb = function(t){ return '<button class="x" data-del="' + t.id + '" aria-label="削除">✕</button>'; };
-    $('history').innerHTML = rows.length ? rows.map(function(t){
+    var cyc = histCycles(m);
+    $('history').innerHTML = rows.length ? rows.map(function(t, i){
       var z = t.kind === 'zone' ? zoneOf(m, t.g) : null;
       var ml = modeLabelOf(t);
       var title, sub;
       if (t.kind === 'zone' && t.gz != null){
         title = cum[t.id] + 'G';
-        sub = 'CZ当選 · ' + (z ? zoneShort(z) : '') + ' · ' + ml + (t.atr === 'miss' ? ' · AT非当選' : '');
+        sub = 'CZ当選 · ' + (z ? zoneShort(z) : '') + (t.atr === 'miss' ? ' · AT非当選' : '');
       } else {
         title = (z && z.name ? esc(z.name) : t.g + 'G');
         sub = KINDS[t.kind] + (z && !z.name && z.at !== t.g ? ' · ' + zoneLabel(z) : '') + ' · ' + ml;
@@ -900,8 +1025,10 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
         '<input class="memo" data-id="' + t.id + '" value="' + esc(t.memo || '') + '" placeholder="メモを追加" maxlength="60"></div>' + xb(t) + '</div>';
       // ATに当選した記録は、CZ当選のすぐ下に「○○G AT当選」の行を足す(赤丸)
       var atRow = t.atr === 'win' ? '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div>' +
-        '<div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選 · ' + ml + '</span></div></div>' + xb(t) + '</div>' : '';
-      return czRow + atRow;
+        '<div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div></div>' + xb(t) + '</div>' : '';
+      // 周期の先頭(一番上)に、その周期のモードを赤いラベルで出す。画面に出ている一番上の行が周期の途中でも、先頭に出す
+      var head = (cyc.start[t.id] || (i === 0 && cyc.mode[t.id])) ? cycHead(cyc.mode[t.id]) : '';
+      return head + czRow + atRow;
     }).join('') : '<div class="empty">まだ記録がありません</div>';
   }
 
@@ -991,17 +1118,18 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
     var cum = czCum(sn);
     var rows = sn.trials.filter(function(t){ return t.kind !== 'miss'; });
     if (!rows.length) return '<div class="empty">当選の記録はありません</div>';
+    var cyc = histCycles(sn);
     return rows.map(function(t){
       var z = t.kind === 'zone' ? zoneOf(sn, t.g) : null, ml = modeLabelOf(t), title, sub;
       if (t.kind === 'zone' && t.gz != null){
-        title = cum[t.id] + 'G'; sub = 'CZ当選 · ' + (z ? zoneShort(z) : '') + ' · ' + ml + (t.atr === 'miss' ? ' · AT非当選' : '');
+        title = cum[t.id] + 'G'; sub = 'CZ当選 · ' + (z ? zoneShort(z) : '') + (t.atr === 'miss' ? ' · AT非当選' : '');
       } else {
         title = z && z.name ? esc(z.name) : t.g + 'G'; sub = KINDS[t.kind] + ' · ' + ml;
       }
       var r = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div><div class="hmain"><div class="t">' + title + '<span>' + sub + '</span>' +
         (t.tag ? '<span class="htag">' + esc(t.tag) + '</span>' : '') + '</div>' + (t.memo ? '<div class="hmemo">' + esc(t.memo) + '</div>' : '') + '</div></div>';
-      if (t.atr === 'win') r += '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選 · ' + ml + '</span></div></div></div>';
-      return r;
+      if (t.atr === 'win') r += '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div></div></div>';
+      return (cyc.start[t.id] ? cycHead(cyc.mode[t.id]) : '') + r;
     }).join('');
   }
   function renderSessDetail(m){
