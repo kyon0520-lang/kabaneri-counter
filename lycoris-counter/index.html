@@ -74,6 +74,8 @@ button:disabled{opacity:.35;cursor:default}
 .bell .mode.r button{border-radius:0 4px 4px 0}
 .bell .mode button.on{background:var(--accent);border-color:var(--accent);color:#10151d}
 .bell .tapwrap{flex:1;min-width:0;--wr:0}
+.bell .mode .tapwrap{flex:0 0 auto;--wr:4px 0 0 4px}
+.bell .mode.r .tapwrap{--wr:0 4px 4px 0}
 .bell .rbtn{min-width:0;height:42px;border-radius:0;padding:0 4px;border-color:#e0b24a88;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;line-height:1.1}
 .bell .rbtn .lbl{max-width:100%;font-size:10px;color:#e8c06a;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bell .rbtn .num{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -392,6 +394,37 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
 .man li{margin-bottom:4px}
 .man .mlabel{margin-top:20px}
 .man .mlabel:first-child{margin-top:4px}
+.fig{position:relative;pointer-events:none;user-select:none;-webkit-user-select:none}
+.fno{position:absolute;z-index:3;width:20px;height:20px;border-radius:50%;background:#e2453c;color:#fff;font:700 12px/20px -apple-system,"Hiragino Sans",sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #fff,0 1px 4px rgba(0,0,0,.35)}
+.fig .zn,.fig .zp,.fig .zgo,.fig .tabs button,.fig .zmore,.fig .mode button,.fig .cvh,.fig .t,.fig .rate,.fig .atbtns button,.fig .selfrow button,.fig .undorow button,.fig .hit,.fig .miss,.fig .xbtn,.fig .fakein,.fig .tagsel,.fig .cvu,.fig .hrow .x,.fig .flbl,.fig .hcyc{position:relative}
+.fig .xbtn{position:absolute}
+.fig .fakein{padding:12px;border:1px solid var(--line);border-radius:8px;font-size:15px;text-align:center;margin-bottom:10px;background:rgba(255,255,255,.7);color:var(--ink)}
+.fig .fakein.ph{color:var(--sub);text-align:left;font-size:14px}
+.fig .fakein.memo{margin:2px 0 0 -6px;padding:4px 6px;border-color:transparent;background:transparent;text-align:left;font-size:13px;color:var(--sub)}
+.fig .tabs{margin-bottom:10px}
+.fig .mtabs{position:relative}
+.fig .zmore{display:block;width:100%}
+.fig .hrow:last-child .hln i{display:none}
+.fig .bell{margin-bottom:0}
+.flow{display:grid;gap:10px}
+.fstep{position:relative;padding:2px 0 2px 34px;font-size:13px;line-height:1.5}
+.fstep b{display:block;font-size:14px}
+.fstep span{color:var(--sub);font-size:12px}
+.fstep .fno{left:0;top:2px;box-shadow:none}
+.legend{margin:0 0 10px;padding:0;list-style:none;counter-reset:lg}
+.legend li{position:relative;padding:0 0 0 30px;margin-bottom:10px;font-size:13px;line-height:1.8;counter-increment:lg}
+.legend li::before{content:counter(lg);position:absolute;left:0;top:3px;width:20px;height:20px;border-radius:50%;background:#e2453c;color:#fff;font:700 12px/20px -apple-system,"Hiragino Sans",sans-serif;text-align:center}
+.legend:last-child,.legend:last-child li:last-child{margin-bottom:0}
+.demo{margin:10px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+.demo .dh{padding:8px 12px;font-weight:700;background:rgba(16,50,74,.08)}
+.demo .dr{display:flex;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--line)}
+.demo .dr.off{opacity:.55}
+.demo .dz{flex:0 0 64px;font-weight:700}
+.demo .dt{flex:0 0 72px;text-align:center;padding:3px 0;border-radius:999px;font-size:12px;font-weight:700}
+.demo .tm{background:#d6d9dc;color:#3d4a55}
+.demo .th{background:#2f7d12;color:#fff}
+.demo .tn{border:1px dashed #8a97a3;color:#5b6872}
+.demo em{font-style:normal;font-size:11px;color:var(--sub)}
 .hcyc{margin:12px 0 8px}
 .hcyc:first-child{margin-top:0}
 .cycpill{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.04em;padding:3px 14px;border-radius:999px;color:#ff8a80;border:1px solid #e2453c;background:rgba(226,69,60,.12)}
@@ -416,9 +449,9 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
 
   <div id="body" class="hidden">
     <div class="tabs">
-      <button id="tabCount" class="on">カウント</button>
-      <button id="tabRate">ゾーン合算</button>
-      <button id="tabHist">当選履歴</button>
+      <div class="tapwrap" style="--fl:123,167,232"><button id="tabCount" class="on">カウント</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div>
+      <div class="tapwrap" style="--fl:123,167,232"><button id="tabRate">ゾーン合算</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div>
+      <div class="tapwrap" style="--fl:123,167,232"><button id="tabHist">当選履歴</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div>
     </div>
 
     <section id="viewCount">
@@ -432,10 +465,10 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
           <div class="hidden" id="czRow"><div class="flbl">CZに当選したG数</div><input id="czG" type="number" inputmode="numeric" min="0" step="1" placeholder="例: 120" style="width:100%;margin-bottom:10px;text-align:center"></div>
           <div class="hidden" id="selfGrow"><input id="selfG" type="number" inputmode="numeric" min="0" step="1" placeholder="自力当選したG数" style="width:100%;margin-bottom:10px;text-align:center"></div>
           <div class="tagpick" id="tagPick"></div>
-          <div class="hidden" id="atRow"><div class="flbl">ATは?</div><div class="atbtns"><button class="atw" data-at="win">AT当選</button><button class="atm" data-at="miss">AT非当選</button></div></div>
+          <div class="hidden" id="atRow"><div class="flbl">ATは?</div><div class="atbtns"><div class="tapwrap" style="--fl:226,69,60"><button class="atw" data-at="win">AT当選</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div><div class="tapwrap" style="--fl:155,155,155"><button class="atm" data-at="miss">AT非当選</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div></div></div>
           <input id="memoIn" type="text" maxlength="60" placeholder="メモ(任意)" style="width:100%;margin-bottom:10px">
           <div class="btns">
-            <button id="cancel" class="miss">キャンセル</button>
+            <div class="tapwrap" style="--fl:155,155,155"><button id="cancel" class="miss">キャンセル</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div>
             <div class="tapwrap" style="--fl:74,165,46"><button id="confirm" class="hit">履歴に追加</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div>
           </div>
         </div>
@@ -490,64 +523,155 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       <div class="mlabel">このカウンターについて</div>
       <div class="mgroup pad">
         <p>リコリス・リコイルのCZ・ATの当選を、ゾーンごとに数えて当選率を出すカウンターです。変換カウントと小役(共通ベルなど)の確率も、同じ画面で数えられます。</p>
-        <p>記録は、お使いの端末のブラウザの中に保存されます。</p>
+        <p>下の図は、実際の画面と同じ見た目です(説明用なので、押しても動きません)。図の中の赤い番号は、図の下の説明と対応しています。</p>
       </div>
 
-      <div class="mlabel">画面の見かた</div>
+      <div class="mlabel">使い方の流れ</div>
       <div class="mgroup pad">
-        <p>上のタブで画面を切り替えます。</p>
-        <ul>
-          <li><b>カウント</b>:実戦中に押す画面です。</li>
-          <li><b>ゾーン合算</b>:4つのモードを合わせた、ゾーンごとの当選率です。</li>
-          <li><b>当選履歴</b>:当選の記録の一覧です。</li>
-        </ul>
-        <p>右上の ☰ ボタンで、メニュー(設定・実戦履歴の保存・この説明書)を開きます。</p>
+        <div class="flow">
+          <div class="fstep"><i class="fno">1</i><b>モードを選ぶ</b><span>通常・駆け抜け・上位後・リセットのどれか</span></div>
+          <div class="fstep"><i class="fno">2</i><b>ゾーンを通るたびに押す</b><span>当たらなかったら「非当選」、当たったら「当選」</span></div>
+          <div class="fstep"><i class="fno">3</i><b>当選したら入力する</b><span>G数・当選したCZ・AT当選かどうか</span></div>
+          <div class="fstep"><i class="fno">4</i><b>実戦が終わったら保存</b><span>メニューの「実戦履歴を保存」</span></div>
+        </div>
       </div>
 
-      <div class="mlabel">ゾーンを数える</div>
+      <div class="mlabel">1. 画面の見かた</div>
+      <div class="card fig">
+        <div class="tabs">
+          <button class="on">カウント<i class="fno" style="right:-6px;top:-9px">1</i></button>
+          <button>ゾーン合算</button>
+          <button>当選履歴</button>
+        </div>
+        <div class="mtabs">
+          <button class="mtab on">通常</button><button class="mtab">駆け抜け</button><button class="mtab">上位後</button><button class="mtab">リセット</button>
+          <i class="fno" style="right:6px;top:-9px">2</i>
+        </div>
+      </div>
       <div class="mgroup pad">
-        <p>カウント画面の上のタブで、モード(<b>通常・駆け抜け・上位後・リセット</b>)を選びます。モードごとに別々に数えます。駆け抜けとリセットは、600Gまでのゾーンだけが出ます。</p>
-        <p>ゾーンの行には、2つのボタンがあります。</p>
-        <ul>
-          <li><b>非当選</b>:そのゾーンを通過して当たらなかったとき。押すとすぐ記録されます。</li>
-          <li><b>当選</b>:そのゾーンでCZに当選したとき。押すと確認の画面が開きます。</li>
-        </ul>
-        <p>当選の確認画面では、次を入れて「履歴に追加」を押します。</p>
-        <ul>
-          <li><b>CZに当選したG数</b>(必須):前の当選から数えたG数です。</li>
-          <li><b>当選したCZ</b>(任意):オポジットバトル、ファーストリコリス、直撃から選びます。</li>
+        <ol class="legend">
+          <li><b>画面を切り替えるタブ</b>:「カウント」は実戦中に押す画面、「ゾーン合算」は当選率を見る画面、「当選履歴」は当選の記録の一覧です。</li>
+          <li><b>モードのタブ</b>:通常・駆け抜け・上位後・リセットを選びます。数えるのはモードごとに別々です。駆け抜けとリセットは、600Gまでのゾーンだけが出ます。</li>
+        </ol>
+        <p>右上の「☰」ボタンから、メニュー(設定・実戦履歴の保存・この説明書)を開きます。</p>
+      </div>
+
+      <div class="mlabel">2. ゾーンを数える</div>
+      <div class="card fig">
+        <div class="zhd">ZONE　RATE　HIT/MISS</div>
+        <div class="zrow"><span class="zn">引き戻し<i class="fno" style="left:-8px;top:-16px">1</i></span><div class="zb"><div class="zbar"><i style="width:50%"></i></div><div class="zs">2 / 4</div></div><span class="zp">50.0%<i class="fno" style="right:-2px;top:-16px">2</i></span><div class="tapwrap" style="--fl:74,165,46"><button class="zgo">当選<i class="fno" style="right:-4px;top:-10px">3</i></button></div><div class="tapwrap" style="--fl:155,155,155"><button class="zgo no">非当選<i class="fno" style="right:-4px;top:-10px">4</i></button></div></div>
+        <div class="zrow"><span class="zn">100G</span><div class="zb"><div class="zbar"><i style="width:25%"></i></div><div class="zs">1 / 4</div></div><span class="zp">25.0%</span><div class="tapwrap" style="--fl:74,165,46"><button class="zgo">当選</button></div><div class="tapwrap" style="--fl:155,155,155"><button class="zgo no">非当選</button></div></div>
+        <div class="zrow"><span class="zn">250G</span><div class="zb"><div class="zbar"><i style="width:0%"></i></div><div class="zs">0 / 3</div></div><span class="zp z0">0.0%</span><div class="tapwrap" style="--fl:74,165,46"><button class="zgo">当選</button></div><div class="tapwrap" style="--fl:155,155,155"><button class="zgo no">非当選</button></div></div>
+        <button class="zmore">600G・750G・850G を表示 ▾<i class="fno" style="right:6px;top:-9px">5</i></button>
+      </div>
+      <div class="mgroup pad">
+        <ol class="legend">
+          <li><b>ゾーン名</b>:引き戻し、100G、250G…のように、通過するゾーンが並びます。</li>
+          <li><b>当選率</b>:「当選した回数 ÷ 通過した回数」です。左のバーと「2 / 4」(当選 / 通過)でも見られます。</li>
+          <li><b>当選</b>:そのゾーンでCZに当選したときに押します。確認の画面が開きます(次の図)。</li>
+          <li><b>非当選</b>:そのゾーンを通って、当たらなかったときに押します。押すとすぐに記録されます。</li>
+          <li><b>ゾーンをもっと見る</b>:600G以降のゾーンを開きます。</li>
+        </ol>
+      </div>
+
+      <div class="mlabel">3. 「当選」を押したあと</div>
+      <div class="card fig">
+        <div class="target"><b>250Gゾーン当選</b></div>
+        <div class="flbl">CZに当選したG数<i class="fno" style="left:118px;top:-8px">1</i></div>
+        <div class="fakein">120</div>
+        <div class="tagpick"><div class="tagsel has"><span>オポジットバトル（ノーマルCZ）</span><span class="car">▼</span><i class="fno" style="right:26px;top:-9px">2</i></div></div>
+        <div class="flbl">ATは?<i class="fno" style="left:44px;top:-8px">3</i></div>
+        <div class="atbtns"><button class="atw on">AT当選</button><button class="atm">AT非当選</button></div>
+        <div class="fakein ph">メモ(任意)<i class="fno" style="right:8px;top:-9px">4</i></div>
+        <div class="btns"><button class="miss">キャンセル</button><div class="tapwrap" style="--fl:74,165,46"><button class="hit">履歴に追加<i class="fno" style="right:-4px;top:-10px">5</i></button></div></div>
+      </div>
+      <div class="mgroup pad">
+        <ol class="legend">
+          <li><b>CZに当選したG数</b>(必須):前のCZ当選(ATに当選したあとは、そこ)から数えた、CZに当選するまでのG数です。たとえば、はじめに120GでCZ当選、次に50GでCZ当選なら、2回目の「実G数」は170Gと記録されます。</li>
+          <li><b>当選したCZ</b>(任意):オポジットバトル、ファーストリコリス、直撃などから選びます。選択肢は、メニューの「設定」で変えられます。</li>
           <li><b>AT当選 / AT非当選</b>(必須):そのCZでATに入ったかどうかです。</li>
-          <li><b>メモ</b>(任意)。</li>
-        </ul>
-        <p>当選を押すと、その<b>手前のゾーンは自動で「非当選」</b>として数えます。すでに自分で非当選を押したゾーンは、二重には数えません。当選のたびに、数え方は最初のゾーンからやり直しになります。</p>
-        <p>600G以降のゾーンは、「600G・750G・850G を表示」で開きます。</p>
+          <li><b>メモ</b>(任意):台の状況などを書けます。</li>
+          <li><b>履歴に追加</b>:押すと記録されて、カウント画面に戻ります。やめるときは「キャンセル」です。</li>
+        </ol>
       </div>
 
-      <div class="mlabel">自力当選・戻す</div>
+      <div class="mlabel">手前のゾーンは自動で「非当選」になります</div>
       <div class="mgroup pad">
-        <p><b>自力当選(ゾーン外)</b>:ゾーンとは関係なく当たったときに押します。自力当選したG数を入れて記録します。<b>ゾーン当選率には、何も影響しません。</b>当選履歴にだけ残ります。</p>
-        <p><b>1つ戻す</b>:直前の記録を1つ取り消します。非当選や自力当選も取り消せます。</p>
-      </div>
-
-      <div class="mlabel">変換カウント・小役</div>
-      <div class="mgroup pad">
-        <p><b>変換カウント</b>(レア役変換・弱リコリス目高確):「当選」「非当選」を押すと、当選率が出ます。右の「↩」で、そのカードの直前の1回を取り消せます。</p>
-        <p><b>小役カウンター</b>(共通ベルなど):画面の下に出ます。「＋」か「−」を選んでから、真ん中のボタンを押して数えます。「現在のG数」を入れると、「1/○○.○」の確率が出ます。</p>
-        <p>変換カウントと小役は、4つのモードに関係なく、共通で数えます。どちらも、右上(右端)の ✕ で消せます。名前や数は、メニューの「設定」で変えられます。</p>
-      </div>
-
-      <div class="mlabel">ゾーン合算と当選履歴</div>
-      <div class="mgroup pad">
-        <p><b>ゾーン合算</b>は、リングの満ち具合が、そのゾーンの当選率です。一番高いゾーンだけが緑になります。</p>
-        <p><b>当選履歴</b>は、上から古い順です。開いたときは最新の5件だけが出ます。右上の「古い履歴を開く」で、すべて出ます。</p>
+        <p>当選を押すと、その手前のゾーンは、自動で「非当選」として数えます。いちいち非当選を押さなくても大丈夫です。</p>
+        <div class="demo">
+          <div class="dh">例:250Gゾーンで「当選」を押したとき</div>
+          <div class="dr"><span class="dz">引き戻し</span><span class="dt tm">非当選</span><em>自動</em></div>
+          <div class="dr"><span class="dz">100G</span><span class="dt tm">非当選</span><em>自動</em></div>
+          <div class="dr"><span class="dz">250G</span><span class="dt th">当選</span><em>押したゾーン</em></div>
+          <div class="dr off"><span class="dz">400G</span><span class="dt tn">数えない</span><em>まだ通っていない</em></div>
+        </div>
         <ul>
-          <li>左の大きな数字は<b>実G数</b>です。CZに当選したG数を足していった合計で、ATに当選すると、0から数え直します。</li>
-          <li>ATに当選した記録には、赤い点の「AT当選」の行が付きます。</li>
-          <li>各行の「メモを追加」から、メモを書き足せます。✕で、その記録を消せます。</li>
+          <li>すでに自分で「非当選」を押したゾーンは、二重には数えません。</li>
+          <li>当選のたびに、数え方は最初のゾーンからやり直しになります。</li>
         </ul>
       </div>
 
-      <div class="mlabel">実戦履歴の保存</div>
+      <div class="mlabel">4. 自力当選・1つ戻す</div>
+      <div class="card fig">
+        <div class="selfrow"><div class="tapwrap" style="--fl:217,144,42"><button class="self">自力当選(ゾーン外)<i class="fno" style="right:-4px;top:-10px">1</i></button></div></div>
+        <div class="undorow"><span>直前: 250G ゾーン当選</span><div class="tapwrap" style="--fl:123,167,232"><button>↩ 1つ戻す<i class="fno" style="right:-4px;top:-10px">2</i></button></div></div>
+      </div>
+      <div class="mgroup pad">
+        <ol class="legend">
+          <li><b>自力当選(ゾーン外)</b>:ゾーンとは関係なく当たったときに押します。自力当選したG数を入れて記録します。ATに入ったときは「AT当選」も選べます。<b>ゾーンの当選率には、何も影響しません。</b>当選履歴にだけ残ります。</li>
+          <li><b>1つ戻す</b>:直前の記録を1つ取り消します。非当選や自力当選も取り消せます。左には、直前の記録が出ます。押し間違えたら、すぐに押してください。</li>
+        </ol>
+      </div>
+
+      <div class="mlabel">5. 変換カウントと小役</div>
+      <div class="card cv fig">
+        <button class="xbtn">✕<i class="fno" style="right:14px;top:-12px">4</i></button>
+        <div class="cvh"><span class="cvn">レア役変換</span><span class="cvp">33.3%</span><i class="fno" style="left:-8px;top:-14px">1</i></div>
+        <div class="zbar"><i style="width:33.3%"></i></div>
+        <div class="cvs">1 / 3</div>
+        <div class="cvb"><div class="tapwrap" style="--fl:74,165,46"><button class="hit">当選</button></div><div class="tapwrap" style="--fl:155,155,155"><button class="miss">非当選</button></div><div class="tapwrap" style="--fl:123,167,232"><button class="cvu">↩<i class="fno" style="right:-4px;top:-10px">2</i></button></div></div>
+      </div>
+      <div class="card fig" style="padding:10px">
+        <div class="bell"><div class="mode"><button class="on">＋<i class="fno" style="left:-6px;top:-12px">3</i></button></div><div class="tapwrap" style="--fl:224,178,74"><button class="rbtn"><span class="lbl">共通ベル</span><span class="num">24</span></button></div><div class="mode r"><button>−</button></div><div class="rate">1/8.3<em>確率</em><i class="fno" style="right:0;top:-14px">5</i></div></div>
+      </div>
+      <div class="mgroup pad">
+        <ol class="legend">
+          <li><b>変換カウント</b>(レア役変換・弱リコリス目高確):結果に合わせて「当選」「非当選」を押すと、当選率が出ます。</li>
+          <li><b>↩</b>:そのカードの、直前の1回を取り消します。</li>
+          <li><b>小役カウンター</b>(共通ベルなど):画面の下に出ます。「＋」を選んでから真ん中のボタンを押すと数が増えます。数えすぎたときは、「−」を選んで押すと減らせます。</li>
+          <li><b>✕</b>:そのカードを消します。名前や数は、メニューの「設定」で変えられます。</li>
+          <li><b>確率</b>:小役カウンターの左にある「現在のG数」を入れると、「1/8.3」のような確率が出ます。</li>
+        </ol>
+        <p>変換カウントと小役は、4つのモードに関係なく、共通で数えます。</p>
+      </div>
+
+      <div class="mlabel">6. ゾーン合算</div>
+      <div class="card fig">
+        <div class="rings"><div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#262626" stroke-width="6"/><circle cx="50" cy="50" r="40" fill="none" stroke="var(--hit)" stroke-width="6" stroke-linecap="round" stroke-dasharray="125.7 251.3" transform="rotate(-90 50 50)"/><text x="50" y="58" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">50.0%</text></svg><div class="rz">引き戻し</div><div class="rn">当選 2 / 通過 4</div></div><div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#262626" stroke-width="6"/><circle cx="50" cy="50" r="40" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="62.8 251.3" transform="rotate(-90 50 50)"/><text x="50" y="58" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">25.0%</text></svg><div class="rz">100G</div><div class="rn">当選 1 / 通過 4</div></div><div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#262626" stroke-width="6"/><text x="50" y="58" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">0.0%</text></svg><div class="rz">250G</div><div class="rn">当選 0 / 通過 3</div></div></div>
+      </div>
+      <div class="mgroup pad">
+        <p>4つのモードを合わせた、ゾーンごとの当選率です。リングの満ち具合が当選率で、<b>一番高いゾーンだけが緑</b>になります。まだ数えていないゾーンは「未集計」と出ます。</p>
+      </div>
+
+      <div class="mlabel">7. 当選履歴</div>
+      <div class="card fig">
+        <div class="hcyc"><span class="cycpill">通常</span><i class="fno" style="left:70px;top:-6px">1</i></div>
+        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">120G<i class="fno" style="left:60px;top:-4px">2</i></div><div class="hsub">CZ当選 · 100G</div><div class="htagrow"><span class="htag">オポジットバトル（ノーマルCZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
+        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">170G</div><div class="hsub">CZ当選 · 250G</div><div class="htagrow"><span class="htag">ファーストリコリス（幼少期CZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
+        <div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">170G<i class="fno" style="left:60px;top:-4px">3</i></div><div class="hsub">AT当選</div><div class="fakein memo">メモを追加(終了画面など)<i class="fno" style="right:8px;top:-9px">4</i></div></div><button class="x">✕<i class="fno" style="right:-8px;top:-14px">5</i></button></div>
+      </div>
+      <div class="mgroup pad">
+        <ol class="legend">
+          <li><b>赤いラベル</b>:ATに当選するまでを1つのまとまり(1周期)として、その周期のモードを先頭に出します。</li>
+          <li><b>左の大きな数字</b>は<b>実G数</b>です。CZに当選したG数を足していった合計で、2つめは120G+50Gで170Gと出ています。</li>
+          <li><b>赤い点の行</b>:ATに当選した記録です。ここで、実G数は0から数え直しです。</li>
+          <li><b>メモ</b>:各行の「メモを追加」から、あとからでも書き足せます。ATの行には、終了画面などを書けます。</li>
+          <li><b>✕</b>:その記録を消します。</li>
+        </ol>
+        <p>履歴は上から古い順です。開いたときは最新の5件だけが出ます。右上の「古い履歴を開く」で、すべて出ます。</p>
+      </div>
+
+      <div class="mlabel">8. 実戦履歴の保存</div>
       <div class="mgroup pad">
         <p>1回の実戦が終わったら、メニューの<b>「実戦履歴を保存」</b>を押します。</p>
         <ul>
@@ -557,7 +681,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
         </ul>
       </div>
 
-      <div class="mlabel">設定</div>
+      <div class="mlabel">9. 設定とリセット</div>
       <div class="mgroup pad">
         <p>メニューの「設定」で、次を変えられます。</p>
         <ul>
@@ -569,15 +693,13 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
         <p>「記録をすべてリセット」は、今のカウントと当選履歴を消します。保存した実戦履歴は消えません。</p>
       </div>
 
-      <div class="mlabel">注意</div>
+      <div class="mlabel">困ったとき</div>
       <div class="mgroup pad">
-        <p>記録は、この端末のブラウザの中にだけ保存されます。次の場合は、記録が消えることがあります。</p>
         <ul>
-          <li>ブラウザの履歴やサイトデータを消したとき。</li>
-          <li>プライベートブラウズで開いているとき。</li>
+          <li><b>押し間違えた</b>:「1つ戻す」で、直前の記録を取り消します。履歴の✕で、古い記録も消せます。</li>
+          <li><b>押したのに反応しない</b>:押すと、押した場所が光ります(対応している端末では、軽く振動もします)。光らなかったときは、押せていません。</li>
+          <li><b>記録が消えた</b>:記録は、この端末のブラウザの中にだけ保存されます。ブラウザのサイトデータを消したときや、プライベートブラウズで開いているときは、消えることがあります。ほかの端末とは共有されません。大事な実戦は、「実戦履歴を保存」で残しておくと安心です。</li>
         </ul>
-        <p>ほかの端末とは共有されません。大事な実戦は、「実戦履歴を保存」で残しておくと安心です。</p>
-        <p>ボタンを押すと、押した場所が光ります(対応している端末では、軽く振動もします)。光らなかったときは、押せていません。</p>
       </div>
     </div>
   </div>
@@ -710,6 +832,9 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       '<label class="hap" for="hapticsw" aria-hidden="true"></label></div>';
   }
   var FL_WIN = '74,165,46', FL_MISS = '155,155,155', FL_SELF = '217,144,42', FL_BELL = '224,178,74', FL_UNDO = '123,167,232';
+  // タップされたラベルが、クリックの処理中に作り直されて消えると、Safariはスイッチを切り替えず触覚が出ない。
+  // 画面の作り直しは、クリックが終わってから行う。
+  function later(fn){ setTimeout(fn, 0); }
   function flash(w){
     if (!w) return;
     w.classList.remove('flash'); void w.offsetWidth; w.classList.add('flash');
@@ -813,8 +938,11 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     if (b.dataset.u){ c.seq.pop(); }
     else if (b.dataset.r){ c.seq.push(+b.dataset.r); if (navigator.vibrate) navigator.vibrate(10); }
     else return;
-    save(); renderConv(m);
-    if (b.dataset.r) flashSel('.cv[data-c="' + id + '"] button[data-r="' + b.dataset.r + '"]');
+    save();
+    later(function(){
+      renderConv(m);
+      if (b.dataset.r) flashSel('.cv[data-c="' + id + '"] button[data-r="' + b.dataset.r + '"]');
+    });
   });
 
   var roleMode = {};   // 小役ごとの ＋/− の選択(画面上だけで持つ)
@@ -826,9 +954,9 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     $('roles').innerHTML = m.roles.map(function(r){
       var md = roleMode[r.id] || 1;
       return '<div class="bell" data-r="' + r.id + '">' +
-        '<div class="mode"><button class="' + (md === 1 ? 'on' : '') + '" data-mode="1" aria-label="プラス">＋</button></div>' +
+        '<div class="mode">' + tapwrap('<button class="' + (md === 1 ? 'on' : '') + '" data-mode="1" aria-label="プラス">＋</button>', FL_BELL) + '</div>' +
         tapwrap('<button class="rbtn' + (md === -1 ? ' minus' : '') + '" data-count="1"><span class="lbl">' + esc(r.label) + '</span><span class="num">' + r.n + '</span></button>', FL_BELL, md === -1 && r.n === 0) +
-        '<div class="mode r"><button class="' + (md === -1 ? 'on' : '') + '" data-mode="-1" aria-label="マイナス">−</button></div>' +
+        '<div class="mode r">' + tapwrap('<button class="' + (md === -1 ? 'on' : '') + '" data-mode="-1" aria-label="マイナス">−</button>', FL_BELL) + '</div>' +
         '<div class="rate">' + (r.n > 0 && m.totalG > 0 ? '1/' + (m.totalG / r.n).toFixed(1) : '—') + '<em>確率</em></div>' +
         '<button class="xbtn" data-x="1" aria-label="この小役を削除">✕</button></div>';
     }).join('');
@@ -847,8 +975,10 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       var next = r.n + (roleMode[id] || 1); if (next < 0) return;
       r.n = next; if (navigator.vibrate) navigator.vibrate(10); save();
     } else return;
-    renderBell(m);
-    if (b.dataset.count) flashSel('.bell[data-r="' + id + '"] .rbtn');
+    later(function(){
+      renderBell(m);
+      if (b.dataset.count) flashSel('.bell[data-r="' + id + '"] .rbtn');
+    });
   });
   $('bellg').addEventListener('input', function(e){
     var m = cur(); if (!m) return;
@@ -930,15 +1060,15 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
   function renderModeTabs(m){
     var cur = modeOf(m).id;
     var html = MODES.map(function(md){
-      return '<button class="mtab' + (md.id === cur ? ' on' : '') + '" data-mode="' + md.id + '">' + md.label + '</button>';
+      return tapwrap('<button class="mtab' + (md.id === cur ? ' on' : '') + '" data-mode="' + md.id + '">' + md.label + '</button>', FL_UNDO);
     }).join('');
     $('modeTabsC').innerHTML = html;
   }
   function onModeTab(e){
-    var b = e.target.closest('button.mtab'); if (!b) return;
+    var b = pickBtn(e); if (!b || !b.classList.contains('mtab')) return;
     var m = cur(); if (!m || m.mode === b.dataset.mode) return;
     m.mode = b.dataset.mode; zExpand = false; histAll = false;
-    save(); render();
+    save(); later(render);
   }
   $('modeTabsC').addEventListener('click', onModeTab);
   // 4つのモードを合算したゾーンごとの成績(ゾーン合算の画面用)
@@ -973,7 +1103,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     var html = '<div class="zhd">ZONE　RATE　HIT/MISS</div>' + main.map(zoneRow).join('');
     if (rest.length){
       if (zExpand) html += rest.map(zoneRow).join('');
-      html += '<button class="zmore" data-more="1">' + (zExpand ? '閉じる ▴' : esc(rest.map(function(r){ return zoneShort(r.z); }).join('・')) + ' を表示 ▾') + '</button>';
+      html += tapwrap('<button class="zmore" data-more="1">' + (zExpand ? '閉じる ▴' : esc(rest.map(function(r){ return zoneShort(r.z); }).join('・')) + ' を表示 ▾') + '</button>', FL_UNDO);
     }
     $('zlist').innerHTML = html;
   }
@@ -1201,9 +1331,9 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
 
   function setMsg(text, err){ var el = $('msg'); el.textContent = text; el.className = 'msg' + (err ? ' err' : ''); }
 
-  $('tabCount').addEventListener('click', function(){ tab = 'count'; render(); });
-  $('tabRate').addEventListener('click', function(){ tab = 'rate'; render(); });
-  $('tabHist').addEventListener('click', function(){ tab = 'hist'; render(); });
+  $('tabCount').closest('.tapwrap').addEventListener('click', function(){ tab = 'count'; later(render); });
+  $('tabRate').closest('.tapwrap').addEventListener('click', function(){ tab = 'rate'; later(render); });
+  $('tabHist').closest('.tapwrap').addEventListener('click', function(){ tab = 'hist'; later(render); });
 
   var tagOpen = false;
   function renderTagPick(){
@@ -1244,7 +1374,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       $('czRow').classList.toggle('hidden', p.kind !== 'zone');
       $('atRow').classList.remove('hidden');
       $('atRow').querySelector('.flbl').textContent = p.kind === 'zone' ? 'ATは?' : 'ATに当選した場合';
-      $('atRow').querySelector('.atm').classList.toggle('hidden', p.kind !== 'zone');
+      $('atRow').querySelector('.atm').closest('.tapwrap').classList.toggle('hidden', p.kind !== 'zone');
       $('czG').value = '';
       p.atr = null; renderAtBtns();
       $('selfG').value = '';
@@ -1259,14 +1389,14 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     document.querySelectorAll('#atRow button').forEach(function(b){ b.classList.toggle('on', !!pending && pending.atr === b.dataset.at); });
   }
   $('atRow').addEventListener('click', function(e){
-    var b = e.target.closest('button[data-at]'); if (!b || !pending) return;
+    var b = pickBtn(e); if (!b || !b.dataset.at || !pending) return;
     pending.atr = pending.atr === b.dataset.at ? null : b.dataset.at;
     renderAtBtns();
   });
   // ゾーンの行の「当選」を押すと、そのゾーンの当選として確認パネルを開く
   $('zlist').addEventListener('click', function(e){
-    if (e.target.closest('button[data-more]')){ zExpand = !zExpand; renderTarget(cur()); return; }
     var pb = pickBtn(e);
+    if (pb && pb.dataset.more){ zExpand = !zExpand; later(function(){ renderTarget(cur()); }); return; }
     var nb = pb && pb.dataset.n ? pb : null;
     if (nb){
       var mm = cur(); if (!mm) return;
@@ -1274,7 +1404,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       mm.trials.push({ id: uid(), g: nz.at, kind: 'miss', mode: modeOf(mm).id, tag: '', memo: '', at: Date.now() });
       if (navigator.vibrate) navigator.vibrate(10);
       setMsg(zoneLabel(nz) + ' 非当選を記録しました');
-      save(); render(); flashSel('.zgo.no[data-n="' + nz.id + '"]'); return;
+      save(); later(function(){ render(); flashSel('.zgo.no[data-n="' + nz.id + '"]'); }); return;
     }
     var b = pb && pb.dataset.z ? pb : null; if (!b) return;
     var m = cur(); if (!m) return;
@@ -1312,16 +1442,16 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     showPending(null);
     save(); render(); flashSel(fz);
   }
-  $('confirm').closest('.tapwrap').addEventListener('click', confirmPending);
+  $('confirm').closest('.tapwrap').addEventListener('click', function(){ later(confirmPending); });
   $('memoIn').addEventListener('keydown', function(e){ if (e.key === 'Enter') confirmPending(); });
-  $('cancel').addEventListener('click', function(){ showPending(null); });
+  $('cancel').closest('.tapwrap').addEventListener('click', function(){ later(function(){ showPending(null); }); });
 
-  $('undo').closest('.tapwrap').addEventListener('click', function(){
+  $('undo').closest('.tapwrap').addEventListener('click', function(){ later(function(){
     var m = cur(); if (!m || !m.trials.length) return;
     var t = m.trials.pop();
     setMsg('取り消しました: ' + trialName(m, t));
     save(); render(); flashSel('#undo');
-  });
+  }); });
 
   $('histMore').addEventListener('click', function(){ histAll = !histAll; render(); });
   $('history').addEventListener('input', function(e){
