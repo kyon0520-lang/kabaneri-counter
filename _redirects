@@ -28,3 +28,7 @@
 # まつわるチェッカーを店舗別に分けた（2026-08-26）。旧URLは新宿東宝へ
 /matsuwaru/src/*   /matsuwaru/                       301
 /matsuwaru/data/*  /matsuwaru/toho/data/:splat        301
+
+# リコリス・リコイルカウンターのURLを変更(2026-10-24): zonecounter → lycoris-counter
+/zonecounter           /lycoris-counter/          301
+/zonecounter/*         /lycoris-counter/:splat    301
