@@ -2,7 +2,7 @@
 <html lang="ja" data-theme="lyco">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#2fc0d8">
 <meta name="robots" content="noindex, nofollow">
 <title>リコリス・リコイルカウンター</title>
@@ -23,6 +23,9 @@ body.hasbar .wrap{padding-bottom:calc(env(safe-area-inset-bottom) + 110px)}
 h1{font-size:17px;margin:0 0 14px;letter-spacing:.02em}
 h2{font-size:13px;margin:18px 0 8px;color:var(--sub);font-weight:700}
 select,input,button{font:inherit;color:inherit}
+/* 連打やダブルタップで画面が拡大されないようにする。入力欄は16px未満だとiPhoneが拡大するので16pxにそろえる */
+html,body,button,label,input,select{touch-action:manipulation;-webkit-text-size-adjust:100%}
+input,select{font-size:16px!important}
 select,input{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
 button{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:10px 14px;cursor:pointer}
 button:active{transform:scale(.97)}
@@ -1573,6 +1576,10 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
 
   render();
 })();
+</script>
+<script>
+// iPhoneのピンチ拡大を止める(ダブルタップ拡大は touch-action で止めている。連打を取りこぼさないよう、タップは止めない)
+['gesturestart','gesturechange','gestureend'].forEach(function(n){ document.addEventListener(n, function(e){ e.preventDefault(); }, { passive: false }); });
 </script>
 </body>
 </html>
