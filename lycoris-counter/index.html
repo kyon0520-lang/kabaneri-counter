@@ -131,6 +131,7 @@ button:disabled{opacity:.35;cursor:default}
 .hmain{flex:1;min-width:0}
 .hmain .t{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
 .hmain .t span{font-size:12px;font-weight:400;color:var(--sub);margin-left:8px}
+.hmain .t small.cg{font-size:12px;font-weight:400;font-style:normal;color:var(--sub);margin-left:6px;letter-spacing:0}
 .hsub{font-size:12px;color:var(--sub);margin-top:1px;line-height:1.4}
 .htagrow{margin-top:5px}
 .htagrow .htag{display:inline-block;max-width:100%;font-size:11px;line-height:1.5;white-space:normal}
@@ -468,8 +469,8 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
         <div class="undorow" id="undorow"><span id="last"></span><div class="tapwrap" style="--fl:123,167,232"><button id="undo">↩ 1つ戻す</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div></div>
         <div id="pending" class="hidden">
           <div class="target" id="pendingTitle"></div>
-          <div class="hidden" id="czRow"><div class="flbl">CZに当選したG数</div><input id="czG" type="number" inputmode="numeric" min="0" step="1" placeholder="例: 120" style="width:100%;margin-bottom:10px;text-align:center"></div>
-          <div class="hidden" id="selfGrow"><input id="selfG" type="number" inputmode="numeric" min="0" step="1" placeholder="自力当選したG数" style="width:100%;margin-bottom:10px;text-align:center"></div>
+          <div class="hidden" id="czRow"><div class="flbl">CZに当選したG数(カウンターG数)</div><input id="czG" type="number" inputmode="numeric" min="0" step="1" placeholder="例: 120" style="width:100%;margin-bottom:10px;text-align:center"></div>
+          <div class="hidden" id="selfGrow"><input id="selfG" type="number" inputmode="numeric" min="0" step="1" placeholder="自力当選したG数(カウンターG数)" style="width:100%;margin-bottom:10px;text-align:center"></div>
           <div class="tagpick" id="tagPick"></div>
           <div class="hidden" id="atRow"><div class="flbl">ATは?</div><div class="atbtns"><div class="tapwrap" style="--fl:226,69,60"><button class="atw" data-at="win">AT当選</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div><div class="tapwrap" style="--fl:155,155,155"><button class="atm" data-at="miss">AT非当選</button><label class="hap" for="hapticsw" aria-hidden="true"></label></div></div></div>
           <input id="memoIn" type="text" maxlength="60" placeholder="メモ(任意)" style="width:100%;margin-bottom:10px">
@@ -583,7 +584,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       <div class="mlabel">3. 「当選」を押したあと</div>
       <div class="card fig">
         <div class="target"><b>250Gゾーン当選</b></div>
-        <div class="flbl">CZに当選したG数<i class="fno" style="left:118px;top:-8px">1</i></div>
+        <div class="flbl">CZに当選したG数(カウンターG数)<i class="fno" style="left:118px;top:-8px">1</i></div>
         <div class="fakein">120</div>
         <div class="tagpick"><div class="tagsel has"><span>オポジットバトル（ノーマルCZ）</span><span class="car">▼</span><i class="fno" style="right:26px;top:-9px">2</i></div></div>
         <div class="flbl">ATは?<i class="fno" style="left:44px;top:-8px">3</i></div>
@@ -593,7 +594,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       </div>
       <div class="mgroup pad">
         <ol class="legend">
-          <li><b>CZに当選したG数</b>(必須):前のCZ当選(ATに当選したあとは、そこ)から数えた、CZに当選するまでのG数です。たとえば、はじめに120GでCZ当選、次に50GでCZ当選なら、2回目の「実G数」は170Gと記録されます。</li>
+          <li><b>CZに当選したG数(カウンターG数)</b>(必須):前のCZ当選(ATに当選したあとは、そこ)から数えた、データカウンターのG数です。たとえば、はじめにカウンター120GでCZ当選、次にカウンター50GでCZ当選なら、2回目は「170G(カウンターG数 50)」と記録されます。</li>
           <li><b>当選したCZ</b>(任意):オポジットバトル、ファーストリコリス、直撃などから選びます。選択肢は、メニューの「設定」で変えられます。</li>
           <li><b>AT当選 / AT非当選</b>(必須):そのCZでATに入ったかどうかです。AT当選が確定するゾーン(通常・上位後は850G、駆け抜け・リセットは600G)では、自動でAT当選になります。</li>
           <li><b>メモ</b>(任意):台の状況などを書けます。</li>
@@ -662,14 +663,14 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       <div class="mlabel">7. 当選履歴</div>
       <div class="card fig">
         <div class="hcyc"><span class="cycpill">通常</span><i class="fno" style="left:70px;top:-6px">1</i></div>
-        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">120G<i class="fno" style="left:60px;top:-4px">2</i></div><div class="hsub">CZ当選 · 100G</div><div class="htagrow"><span class="htag">オポジットバトル（ノーマルCZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
-        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">170G</div><div class="hsub">CZ当選 · 250G</div><div class="htagrow"><span class="htag">ファーストリコリス（幼少期CZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
+        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">120G<small class="cg">(カウンターG数 120)</small><i class="fno" style="left:60px;top:-4px">2</i></div><div class="hsub">CZ当選 · 100G</div><div class="htagrow"><span class="htag">オポジットバトル（ノーマルCZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
+        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">170G<small class="cg">(カウンターG数 50)</small></div><div class="hsub">CZ当選 · 250G</div><div class="htagrow"><span class="htag">ファーストリコリス（幼少期CZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
         <div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">170G<i class="fno" style="left:60px;top:-4px">3</i></div><div class="hsub">AT当選</div><div class="fakein memo">メモを追加(終了画面など)<i class="fno" style="right:8px;top:-9px">4</i></div></div><button class="x">✕<i class="fno" style="right:-8px;top:-14px">5</i></button></div>
       </div>
       <div class="mgroup pad">
         <ol class="legend">
           <li><b>赤いラベル</b>:ATに当選するまでを1つのまとまり(1周期)として、その周期のモードを先頭に出します。</li>
-          <li><b>左の大きな数字</b>は<b>実G数</b>です。CZに当選したG数を足していった合計で、2つめは120G+50Gで170Gと出ています。</li>
+          <li><b>左の大きな数字</b>は<b>実G数</b>で、横の「(カウンターG数 ○○)」が、そのとき入力した数です。実G数は、カウンターG数を足していった合計なので、2つめは120G+50Gで170Gと出ています。</li>
           <li><b>赤い点の行</b>:ATに当選した記録です。ここで、実G数は0から数え直しです。</li>
           <li><b>メモ</b>:各行の「メモを追加」から、あとからでも書き足せます。ATの行には、終了画面などを書けます。</li>
           <li><b>✕</b>:その記録を消します。</li>
@@ -1120,7 +1121,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
   function czCum(m){
     var run = 0, map = {};
     m.trials.forEach(function(t){
-      if (t.kind === 'self'){ if (t.atr === 'win') map[t.id] = run + t.g, run = 0; return; }
+      if (t.kind === 'self'){ run += t.g; map[t.id] = run; if (t.atr === 'win') run = 0; return; }
       if (t.kind !== 'zone' || t.gz == null) return;
       run += t.gz; map[t.id] = run;
       if (t.atr === 'win') run = 0;
@@ -1140,6 +1141,8 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     });
     return { start: start, mode: mode };
   }
+  // 実G数の横に、入力したカウンターのG数を添える(例: 170G(カウンターG数 90))
+  function cgNote(t){ return '<small class="cg">(カウンターG数 ' + (t.kind === 'self' ? t.g : t.gz) + ')</small>'; }
   function cycHead(label){ return '<div class="hcyc"><span class="cycpill">' + esc(label) + '</span></div>'; }
   function renderHistory(m){
     var cum = czCum(m);
@@ -1157,10 +1160,10 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       var ml = modeLabelOf(t);
       var title, sub;
       if (t.kind === 'zone' && t.gz != null){
-        title = cum[t.id] + 'G';
+        title = cum[t.id] + 'G' + cgNote(t);
         sub = ['CZ当選', z ? zoneShort(z) : '', t.atr === 'miss' ? 'AT非当選' : ''].filter(Boolean).join(' · ');
       } else {
-        title = (z && z.name ? esc(z.name) : t.g + 'G');
+        title = cum[t.id] != null ? cum[t.id] + 'G' + cgNote(t) : (z && z.name ? esc(z.name) : t.g + 'G');
         sub = KINDS[t.kind] + (z && !z.name && z.at !== t.g ? ' · ' + zoneLabel(z) : '') + ' · ' + ml;
       }
       var czRow = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div>' +
@@ -1266,9 +1269,9 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     return rows.map(function(t){
       var z = t.kind === 'zone' ? zoneOf(sn, t.g) : null, ml = modeLabelOf(t), title, sub;
       if (t.kind === 'zone' && t.gz != null){
-        title = cum[t.id] + 'G'; sub = ['CZ当選', z ? zoneShort(z) : '', t.atr === 'miss' ? 'AT非当選' : ''].filter(Boolean).join(' · ');
+        title = cum[t.id] + 'G' + cgNote(t); sub = ['CZ当選', z ? zoneShort(z) : '', t.atr === 'miss' ? 'AT非当選' : ''].filter(Boolean).join(' · ');
       } else {
-        title = z && z.name ? esc(z.name) : t.g + 'G'; sub = KINDS[t.kind] + ' · ' + ml;
+        title = cum[t.id] != null ? cum[t.id] + 'G' + cgNote(t) : (z && z.name ? esc(z.name) : t.g + 'G'); sub = KINDS[t.kind] + ' · ' + ml;
       }
       var r = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div><div class="hmain"><div class="t">' + title + '</div><div class="hsub">' + sub + '</div>' +
         (t.tag ? '<div class="htagrow"><span class="htag">' + esc(t.tag) + '</span></div>' : '') + (t.memo ? '<div class="hmemo">' + esc(t.memo) + '</div>' : '') + '</div></div>';
