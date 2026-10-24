@@ -744,7 +744,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
   // 記録1件の見出し(例: 「250Gゾーン当選」「引き戻し当選」「500G 自力当選」)
   function trialName(m, t){
     var z = t.kind === 'self' ? null : zoneOf(m, t.g);
-    if (t.kind === 'self') return t.g + 'G 自力当選';
+    if (t.kind === 'self') return t.g + 'G 自力当選' + (t.atr === 'win' ? '・AT当選' : '');
     if (t.kind === 'miss') return (z ? zoneLabel(z) : t.g + 'G') + ' 非当選';
     var base = z && z.name ? z.name + '当選' : t.g + 'Gゾーン当選';
     if (t.gz != null) base = t.gz + 'G ' + base + (t.atr === 'win' ? '・AT当選' : t.atr === 'miss' ? '・AT非当選' : '');
@@ -979,6 +979,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
   function czCum(m){
     var run = 0, map = {};
     m.trials.forEach(function(t){
+      if (t.kind === 'self'){ if (t.atr === 'win') map[t.id] = run + t.g, run = 0; return; }
       if (t.kind !== 'zone' || t.gz == null) return;
       run += t.gz; map[t.id] = run;
       if (t.atr === 'win') run = 0;
@@ -990,6 +991,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
   function histCycles(m){
     var start = {}, mode = {}, fresh = true, cm = null;
     m.trials.forEach(function(t){
+      if (t.kind === 'self'){ if (t.atr === 'win') fresh = true; return; }
       if (t.kind !== 'zone' || t.gz == null) return;
       if (fresh){ start[t.id] = true; cm = modeLabelOf(t); fresh = false; }
       mode[t.id] = cm;
@@ -1025,7 +1027,8 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
         '<input class="memo" data-id="' + t.id + '" value="' + esc(t.memo || '') + '" placeholder="メモを追加" maxlength="60"></div>' + xb(t) + '</div>';
       // ATに当選した記録は、CZ当選のすぐ下に「○○G AT当選」の行を足す(赤丸)
       var atRow = t.atr === 'win' ? '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div>' +
-        '<div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div></div>' + xb(t) + '</div>' : '';
+        '<div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div>' +
+        '<input class="memo" data-atid="' + t.id + '" value="' + esc(t.atmemo || '') + '" placeholder="メモを追加(終了画面など)" maxlength="60"></div>' + xb(t) + '</div>' : '';
       // 周期の先頭(一番上)に、その周期のモードを赤いラベルで出す。画面に出ている一番上の行が周期の途中でも、先頭に出す
       var head = (cyc.start[t.id] || (i === 0 && cyc.mode[t.id])) ? cycHead(cyc.mode[t.id]) : '';
       return head + czRow + atRow;
@@ -1065,7 +1068,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     var cz = 0, at = 0, self = 0;
     sn.trials.forEach(function(t){
       if (t.kind === 'zone'){ cz++; if (t.atr === 'win') at++; }
-      else if (t.kind === 'self') self++;
+      else if (t.kind === 'self'){ self++; if (t.atr === 'win') at++; }
     });
     return { cz: cz, at: at, self: self };
   }
@@ -1128,7 +1131,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       }
       var r = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div><div class="hmain"><div class="t">' + title + '<span>' + sub + '</span>' +
         (t.tag ? '<span class="htag">' + esc(t.tag) + '</span>' : '') + '</div>' + (t.memo ? '<div class="hmemo">' + esc(t.memo) + '</div>' : '') + '</div></div>';
-      if (t.atr === 'win') r += '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div></div></div>';
+      if (t.atr === 'win') r += '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div>' + (t.atmemo ? '<div class="hmemo">' + esc(t.atmemo) + '</div>' : '') + '</div></div>';
       return (cyc.start[t.id] ? cycHead(cyc.mode[t.id]) : '') + r;
     }).join('');
   }
@@ -1236,7 +1239,9 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       $('pendingTitle').innerHTML = '<b>' + (p.kind === 'zone' ? (p.zone.name ? p.zone.name + '当選' : p.g + 'Gゾーン当選') : '自力当選') + '</b>';
       $('selfGrow').classList.toggle('hidden', p.kind !== 'self');
       $('czRow').classList.toggle('hidden', p.kind !== 'zone');
-      $('atRow').classList.toggle('hidden', p.kind !== 'zone');
+      $('atRow').classList.remove('hidden');
+      $('atRow').querySelector('.flbl').textContent = p.kind === 'zone' ? 'ATは?' : 'ATに当選した場合';
+      $('atRow').querySelector('.atm').classList.toggle('hidden', p.kind !== 'zone');
       $('czG').value = '';
       p.atr = null; renderAtBtns();
       $('selfG').value = '';
@@ -1289,6 +1294,7 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       g = parseInt(v, 10);
     }
     var tr = { id: uid(), g: g, kind: pending.kind, mode: modeOf(m).id, tag: pending.tag || '', memo: $('memoIn').value.trim(), at: Date.now() };
+    if (pending.kind === 'self' && pending.atr === 'win') tr.atr = 'win';
     if (pending.kind === 'zone'){
       var cv = $('czG').value;
       if (cv === '' || !/^\d+$/.test(cv)){ setMsg('CZに当選したG数を入力してください', true); return; }
@@ -1316,9 +1322,9 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
 
   $('histMore').addEventListener('click', function(){ histAll = !histAll; render(); });
   $('history').addEventListener('input', function(e){
-    var id = e.target.dataset.id; if (!id) return;
+    var id = e.target.dataset.id, aid = e.target.dataset.atid; if (!id && !aid) return;
     var m = cur();
-    m.trials.forEach(function(t){ if (t.id === id) t.memo = e.target.value; });
+    m.trials.forEach(function(t){ if (id && t.id === id) t.memo = e.target.value; if (aid && t.id === aid) t.atmemo = e.target.value; });
     save();
   });
   $('history').addEventListener('click', function(e){
