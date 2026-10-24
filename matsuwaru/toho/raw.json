@@ -40299,5 +40299,187 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/25/072851",
+  "articleDate": "2026-10-25",
+  "targetDate": "2026-10-24",
+  "postDate": "2026-10-23",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2113593847498367355",
+  "title": "10月24日のマルハン新宿東宝ビルまとめ✏️月イチ周年日で圧巻の全系仕掛け！",
+  "results": [
+   {
+    "machine": "東京喰種",
+    "plus": 30,
+    "total": 39,
+    "avg": 3282
+   },
+   {
+    "machine": "ゴージャグ3",
+    "plus": 21,
+    "total": 22,
+    "avg": 2200
+   },
+   {
+    "machine": "真打吉宗",
+    "plus": 8,
+    "total": 12,
+    "avg": 2775
+   },
+   {
+    "machine": "L鏡",
+    "plus": 2,
+    "total": 3,
+    "avg": 3033
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "東京喰種",
+    "matched": true,
+    "keyword": "感謝",
+    "chain": [
+     "感謝",
+     "サンキュー",
+     "39台",
+     "喰種"
+    ],
+    "raw": "感謝→サンキュー→39台→喰種",
+    "result": {
+     "plus": 30,
+     "total": 39,
+     "avg": 3282
+    }
+   },
+   {
+    "machine": "東京喰種",
+    "matched": true,
+    "keyword": "申し訳ありません",
+    "chain": [
+     "申し訳ありません",
+     "ありま",
+     "有馬"
+    ],
+    "raw": "申し訳ありません→ありま→有馬",
+    "result": {
+     "plus": 30,
+     "total": 39,
+     "avg": 3282
+    }
+   },
+   {
+    "machine": "ゴージャグ3",
+    "matched": true,
+    "keyword": "ご理解ご協力",
+    "chain": [
+     "ご理解ご協力",
+     "ご◯ご◯",
+     "ゴーゴー"
+    ],
+    "raw": "ご理解ご協力→ご◯ご◯→ゴーゴー",
+    "result": {
+     "plus": 21,
+     "total": 22,
+     "avg": 2200
+    }
+   },
+   {
+    "machine": "真打吉宗",
+    "matched": true,
+    "keyword": "むじな",
+    "chain": [
+     "むじな",
+     "同じ穴のむじな",
+     "悪事の仲間",
+     "悪人"
+    ],
+    "raw": "むじな→同じ穴のむじな→悪事の仲間→悪人",
+    "result": {
+     "plus": 8,
+     "total": 12,
+     "avg": 2775
+    }
+   },
+   {
+    "machine": "真打吉宗",
+    "matched": true,
+    "keyword": "ナルト",
+    "chain": [
+     "ナルト",
+     "忍者",
+     "吉宗"
+    ],
+    "raw": "ナルト→忍者→吉宗",
+    "result": {
+     "plus": 8,
+     "total": 12,
+     "avg": 2775
+    }
+   },
+   {
+    "machine": "L鏡",
+    "matched": true,
+    "keyword": "ホウレン草",
+    "chain": [
+     "ホウレン草",
+     "報連相",
+     "サラリーマン"
+    ],
+    "raw": "ホウレン草→報連相→サラリーマン",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 3033
+    }
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "10月24日",
+    "chain": [
+     "10月24日",
+     "豆腐ようの日",
+     "豆腐"
+    ],
+    "raw": "10月24日→豆腐ようの日→豆腐",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "白髪ネギ",
+    "chain": [
+     "白髪ネギ",
+     "シロ"
+    ],
+    "raw": "白髪ネギ→シロ",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "大山",
+    "chain": [
+     "大山",
+     "山のフドウ"
+    ],
+    "raw": "大山→山のフドウ",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "天かす",
+    "chain": [
+     "天かす",
+     "天"
+    ],
+    "raw": "天かす→天",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
