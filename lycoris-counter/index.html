@@ -123,6 +123,9 @@ button:disabled{opacity:.35;cursor:default}
 .hmain{flex:1;min-width:0}
 .hmain .t{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
 .hmain .t span{font-size:12px;font-weight:400;color:var(--sub);margin-left:8px}
+.hsub{font-size:12px;color:var(--sub);margin-top:1px;line-height:1.4}
+.htagrow{margin-top:5px}
+.htagrow .htag{display:inline-block;max-width:100%;font-size:11px;line-height:1.5;white-space:normal}
 .hmain input.memo{width:100%;margin-top:2px;padding:4px 6px;margin-left:-6px;font-size:13px;color:var(--sub);background:transparent;border:1px solid transparent;border-radius:8px}
 .hmain input.memo:focus{background:var(--bg);border-color:var(--line);color:var(--ink);outline:none}
 .hmain input.memo::placeholder{color:#5f7893}
@@ -1017,17 +1020,17 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
       var title, sub;
       if (t.kind === 'zone' && t.gz != null){
         title = cum[t.id] + 'G';
-        sub = 'CZ当選 · ' + (z ? zoneShort(z) : '') + (t.atr === 'miss' ? ' · AT非当選' : '');
+        sub = ['CZ当選', z ? zoneShort(z) : '', t.atr === 'miss' ? 'AT非当選' : ''].filter(Boolean).join(' · ');
       } else {
         title = (z && z.name ? esc(z.name) : t.g + 'G');
         sub = KINDS[t.kind] + (z && !z.name && z.at !== t.g ? ' · ' + zoneLabel(z) : '') + ' · ' + ml;
       }
       var czRow = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div>' +
-        '<div class="hmain"><div class="t">' + title + '<span>' + sub + '</span>' + (t.tag ? '<span class="htag">' + esc(t.tag) + '</span>' : '') + '</div>' +
+        '<div class="hmain"><div class="t">' + title + '</div><div class="hsub">' + sub + '</div>' + (t.tag ? '<div class="htagrow"><span class="htag">' + esc(t.tag) + '</span></div>' : '') +
         '<input class="memo" data-id="' + t.id + '" value="' + esc(t.memo || '') + '" placeholder="メモを追加" maxlength="60"></div>' + xb(t) + '</div>';
       // ATに当選した記録は、CZ当選のすぐ下に「○○G AT当選」の行を足す(赤丸)
       var atRow = t.atr === 'win' ? '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div>' +
-        '<div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div>' +
+        '<div class="hmain"><div class="t">' + cum[t.id] + 'G</div><div class="hsub">AT当選</div>' +
         '<input class="memo" data-atid="' + t.id + '" value="' + esc(t.atmemo || '') + '" placeholder="メモを追加(終了画面など)" maxlength="60"></div>' + xb(t) + '</div>' : '';
       // 周期の先頭(一番上)に、その周期のモードを赤いラベルで出す。画面に出ている一番上の行が周期の途中でも、先頭に出す
       var head = (cyc.start[t.id] || (i === 0 && cyc.mode[t.id])) ? cycHead(cyc.mode[t.id]) : '';
@@ -1125,13 +1128,13 @@ html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weig
     return rows.map(function(t){
       var z = t.kind === 'zone' ? zoneOf(sn, t.g) : null, ml = modeLabelOf(t), title, sub;
       if (t.kind === 'zone' && t.gz != null){
-        title = cum[t.id] + 'G'; sub = 'CZ当選 · ' + (z ? zoneShort(z) : '') + (t.atr === 'miss' ? ' · AT非当選' : '');
+        title = cum[t.id] + 'G'; sub = ['CZ当選', z ? zoneShort(z) : '', t.atr === 'miss' ? 'AT非当選' : ''].filter(Boolean).join(' · ');
       } else {
         title = z && z.name ? esc(z.name) : t.g + 'G'; sub = KINDS[t.kind] + ' · ' + ml;
       }
-      var r = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div><div class="hmain"><div class="t">' + title + '<span>' + sub + '</span>' +
-        (t.tag ? '<span class="htag">' + esc(t.tag) + '</span>' : '') + '</div>' + (t.memo ? '<div class="hmemo">' + esc(t.memo) + '</div>' : '') + '</div></div>';
-      if (t.atr === 'win') r += '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">' + cum[t.id] + 'G<span>AT当選</span></div>' + (t.atmemo ? '<div class="hmemo">' + esc(t.atmemo) + '</div>' : '') + '</div></div>';
+      var r = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div><div class="hmain"><div class="t">' + title + '</div><div class="hsub">' + sub + '</div>' +
+        (t.tag ? '<div class="htagrow"><span class="htag">' + esc(t.tag) + '</span></div>' : '') + (t.memo ? '<div class="hmemo">' + esc(t.memo) + '</div>' : '') + '</div></div>';
+      if (t.atr === 'win') r += '<div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">' + cum[t.id] + 'G</div><div class="hsub">AT当選</div>' + (t.atmemo ? '<div class="hmemo">' + esc(t.atmemo) + '</div>' : '') + '</div></div>';
       return (cyc.start[t.id] ? cycHead(cyc.mode[t.id]) : '') + r;
     }).join('');
   }
