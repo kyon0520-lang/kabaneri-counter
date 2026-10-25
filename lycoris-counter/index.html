@@ -602,7 +602,6 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       </div>
       <div class="mlabel">設定</div>
       <div class="mgroup">
-        <button class="mrow" data-go="zones"><span class="mname">ゾーン</span><span class="ms" id="ms-zones"></span><span class="ch">›</span></button>
         <button class="mrow" data-go="tags"><span class="mname">当選契機</span><span class="ms" id="ms-tags"></span><span class="ch">›</span></button>
         <button class="mrow" data-go="convs"><span class="mname">カウントカード</span><span class="ms" id="ms-convs"></span><span class="ch">›</span></button>
         <button class="mrow" data-go="roles"><span class="mname">小役カウンター</span><span class="ms" id="ms-roles"></span><span class="ch">›</span></button>
@@ -794,7 +793,6 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       <div class="mgroup pad">
         <p>メニューの「設定」で、次を変えられます。</p>
         <ul>
-          <li><b>ゾーン</b>:ゾーンのG数と名前、ゾーンの範囲(初期値は変えなくて大丈夫です)、カウント画面に出すゾーンの上限。</li>
           <li><b>当選契機</b>:「当選したCZ」の選択肢。</li>
           <li><b>カウントカード</b>:変換カウントの追加・名前変更・削除。</li>
           <li><b>小役カウンター</b>:小役の追加・名前変更・削除。</li>
@@ -1111,7 +1109,6 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     $('mrootm').classList.toggle('hidden', !m);
     if (!m) return;
     $('ms-sess').textContent = m.sessions.length + '件';
-    $('ms-zones').textContent = m.zones.map(zoneShort).join('・');
     if (menuPage === 'save') renderSetPick();
     if (menuPage === 'sessions') renderSessList(m);
     if (menuPage === 'sess') renderSessDetail(m);
