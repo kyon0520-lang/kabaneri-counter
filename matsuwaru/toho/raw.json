@@ -40481,5 +40481,178 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/26/074254",
+  "articleDate": "2026-10-26",
+  "targetDate": "2026-10-25",
+  "postDate": "2026-10-24",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2113956368784994367",
+  "title": "10月25日のマルハン新宿東宝ビルまとめ✏️5のつく日はノーマル系特化の一日！",
+  "results": [
+   {
+    "machine": "沖ドキゴージャス",
+    "plus": 9,
+    "total": 17,
+    "avg": 747
+   },
+   {
+    "machine": "アイムEX",
+    "plus": 4,
+    "total": 5,
+    "avg": 1940
+   },
+   {
+    "machine": "ミスター",
+    "plus": 5,
+    "total": 5,
+    "avg": 3320
+   },
+   {
+    "machine": "ワールドダイスター",
+    "plus": 3,
+    "total": 4,
+    "avg": 1575
+   },
+   {
+    "machine": "タコスロ",
+    "plus": 3,
+    "total": 4,
+    "avg": 1875
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "沖ドキゴージャス",
+    "matched": true,
+    "keyword": "贅沢",
+    "chain": [
+     "贅沢",
+     "ゴージャス"
+    ],
+    "raw": "贅沢→ゴージャス",
+    "result": {
+     "plus": 9,
+     "total": 17,
+     "avg": 747
+    }
+   },
+   {
+    "machine": "アイムEX",
+    "matched": true,
+    "keyword": "感激",
+    "chain": [
+     "感激",
+     "ヒデキ感激",
+     "西城秀樹",
+     "サイ"
+    ],
+    "raw": "感激→ヒデキ感激→西城秀樹→サイ",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 1940
+    }
+   },
+   {
+    "machine": "ミスター",
+    "matched": true,
+    "keyword": "星街すいせい",
+    "chain": [
+     "星街すいせい",
+     "星",
+     "スター",
+     "ミスター"
+    ],
+    "raw": "星街すいせい→星→スター→ミスター",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3320
+    }
+   },
+   {
+    "machine": "ワールドダイスター",
+    "matched": true,
+    "keyword": "星街すいせい",
+    "chain": [
+     "星街すいせい",
+     "星",
+     "スター",
+     "ダイスター"
+    ],
+    "raw": "星街すいせい→星→スター→ダイスター",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 1575
+    }
+   },
+   {
+    "machine": "タコスロ",
+    "matched": true,
+    "keyword": "ソーセージ",
+    "chain": [
+     "ソーセージ",
+     "タコさんウインナー"
+    ],
+    "raw": "ソーセージ→タコさんウインナー",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 1875
+    }
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "パリパリチキン",
+    "chain": [
+     "パリパリチキン",
+     "鳥",
+     "鳥放題"
+    ],
+    "raw": "パリパリチキン→鳥→鳥放題",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "ハロウィン",
+    "chain": [
+     "ハロウィン",
+     "ゾンビ"
+    ],
+    "raw": "ハロウィン→ゾンビ",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "星街すいせい",
+    "chain": [
+     "星街すいせい",
+     "星",
+     "星罪レヴュー"
+    ],
+    "raw": "星街すいせい→星→星罪レヴュー",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "星街",
+    "chain": [
+     "星街",
+     "星",
+     "スター"
+    ],
+    "raw": "星街→星→スター",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
