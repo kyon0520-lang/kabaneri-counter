@@ -737,7 +737,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       </div>
       <div class="mgroup pad">
         <ol class="legend">
-          <li><b>変換カウント</b>(レア役変換・弱リコリス目高確):結果に合わせて「当選」「非当選」を押すと、当選率が出ます。</li>
+          <li><b>変換カウント</b>(レア役変換・弱リコリス目高確・150G高確):結果に合わせて「当選」「非当選」を押すと、当選率が出ます。</li>
           <li><b>↩</b>:そのカードの、直前の1回を取り消します。</li>
           <li><b>小役カウンター</b>(共通ベルなど):画面の下に出ます。「＋」を選んでから真ん中のボタンを押すと数が増えます。数えすぎたときは、「−」を選んで押すと減らせます。</li>
           <li><b>✕</b>:そのカードを消します。名前や数は、メニューの「設定」で変えられます。</li>
@@ -927,7 +927,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
         if (s.machines.length) return s;
       }
     } catch(e){}
-    var m0 = { id: uid(), name: 'リコリス・リコイル', zones: [{ id: uid() + 'h', at: 0, name: '引き戻し' }].concat(defaultZones([100, 250, 400, 600, 750, 850])), before: 0, after: 70, win: 2, hm: 1, showTo: 400, tags: ['オポジットバトル（ノーマルCZ）', 'ファーストリコリス（幼少期CZ）', '直撃'], convs: [{ id: uid() + 'r', label: 'レア役変換', seq: [] }, { id: uid() + 'w', label: '弱リコリス目高確', seq: [] }], roles: [{ id: uid() + 'b', label: '共通ベル', n: 0 }], totalG: 0, trials: [], sessions: [] };
+    var m0 = { id: uid(), name: 'リコリス・リコイル', zones: [{ id: uid() + 'h', at: 0, name: '引き戻し' }].concat(defaultZones([100, 250, 400, 600, 750, 850])), before: 0, after: 70, win: 2, hm: 1, showTo: 400, tags: ['オポジットバトル（ノーマルCZ）', 'ファーストリコリス（幼少期CZ）', '直撃'], convs: [{ id: uid() + 'r', label: 'レア役変換', seq: [] }, { id: uid() + 'w', label: '弱リコリス目高確', seq: [] }, { id: uid() + 'g', label: '150G高確', seq: [] }], roles: [{ id: uid() + 'b', label: '共通ベル', n: 0 }], totalG: 0, trials: [], sessions: [] };
     return { machines: [m0], currentId: m0.id };
   }
   // ---- 押した合図(振動と光る) ----
