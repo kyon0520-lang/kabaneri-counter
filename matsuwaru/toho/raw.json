@@ -40654,5 +40654,124 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/27/063432",
+  "articleDate": "2026-10-27",
+  "targetDate": "2026-10-26",
+  "postDate": "2026-10-25",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2114318598051438757",
+  "title": "10月26日のマルハン新宿東宝ビルまとめ✏️鉄板の末尾6+アナザー末尾①に加えて全系も多数！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "モンハンライズ",
+    "matched": false,
+    "keyword": "8品目",
+    "chain": [
+     "8品目",
+     "8台機種"
+    ],
+    "raw": "8品目→8台機種",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": false,
+    "keyword": "MILK",
+    "chain": [
+     "MILK",
+     "M!LK",
+     "爆裂愛してる",
+     "爆裂",
+     "めぐみん"
+    ],
+    "raw": "MILK→M!LK→爆裂愛してる→爆裂→めぐみん",
+    "result": null
+   },
+   {
+    "machine": "スターハナハナ",
+    "matched": false,
+    "keyword": "日本シリーズ",
+    "chain": [
+     "日本シリーズ",
+     "ベイスターズ",
+     "スター"
+    ],
+    "raw": "日本シリーズ→ベイスターズ→スター",
+    "result": null
+   },
+   {
+    "machine": "SAO",
+    "matched": false,
+    "keyword": "メジャー",
+    "chain": [
+     "メジャー",
+     "大谷翔平",
+     "二刀流"
+    ],
+    "raw": "メジャー→大谷翔平→二刀流",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "延長戦",
+    "chain": [
+     "延長戦",
+     "戦"
+    ],
+    "raw": "延長戦→戦",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "あおな",
+    "chain": [
+     "あおな",
+     "あお⑦"
+    ],
+    "raw": "あおな→あお⑦",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタァ",
+    "matched": false,
+    "keyword": "日本シリーズ",
+    "chain": [
+     "日本シリーズ",
+     "ベイスターズ",
+     "スター"
+    ],
+    "raw": "日本シリーズ→ベイスターズ→スター",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "セブン＆アイ",
+    "chain": [
+     "セブン＆アイ",
+     "7つ"
+    ],
+    "raw": "セブン＆アイ→7つ",
+    "result": null
+   }
+  ],
+  "unassigned": [
+   {
+    "machine": null,
+    "matched": false,
+    "keyword": "日本シリーズ",
+    "chain": [
+     "日本シリーズ",
+     "日本一決定戦"
+    ],
+    "raw": "日本シリーズ→日本一決定戦"
+   }
+  ]
  }
 ]
