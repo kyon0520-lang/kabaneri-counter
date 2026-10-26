@@ -168,6 +168,10 @@ td.dbar{padding:4px 6px}
 .st{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.6}
 .hh{display:flex;justify-content:space-between;align-items:center}
 .hhr{display:flex;justify-content:flex-end;margin:-4px 0 6px}
+.hhr.bot{justify-content:center;margin:2px 0 14px}
+.hgrp{margin-bottom:14px}
+.cycnum{display:inline-block;margin-right:6px;font-size:13px;font-weight:800;padding:3px 12px;border-radius:999px;color:#fff;background:linear-gradient(180deg,#4a557a,#1d2540);border:1px solid rgba(255,255,255,.55)}
+.hgrp:last-child{margin-bottom:0}
 .more{background:none;border:0;padding:4px 0 4px 12px;font-size:12px;font-weight:700;color:var(--accent)}
 .empty{color:var(--sub);font-size:14px;text-align:center;padding:24px 0}
 .erow{display:flex;gap:6px;align-items:center;margin-bottom:8px}
@@ -447,7 +451,7 @@ html[data-theme="lyco"] .sset{color:#fff;border:0;font-style:italic;background:l
 html[data-theme="lyco"] .cycpill{color:#fff;border:0;font-style:italic;font-weight:800;padding:4px 16px;text-shadow:0 1px 0 rgba(90,0,0,.5);background:linear-gradient(180deg,#ff6a5c,#c9241b)}
 /* ゲーム画面風の白抜き文字(白い文字に、ふちどり)。ふちの色は、ボタンの色の濃い色にそろえる */
 html[data-theme="lyco"]{--ol:#1c2a33}
-html[data-theme="lyco"] button,html[data-theme="lyco"] .mlabel,html[data-theme="lyco"] h2,html[data-theme="lyco"] .cycpill,html[data-theme="lyco"] .htag,
+html[data-theme="lyco"] button,html[data-theme="lyco"] .mlabel,html[data-theme="lyco"] h2,html[data-theme="lyco"] .cycpill,html[data-theme="lyco"] .cycnum,html[data-theme="lyco"] .htag,
 html[data-theme="lyco"] .zrow .zn,html[data-theme="lyco"] .zrow .zp,html[data-theme="lyco"] .cvn,html[data-theme="lyco"] .cvp,html[data-theme="lyco"] .hmain .t,html[data-theme="lyco"] .rz,
 html[data-theme="lyco"] .bell .rbtn .lbl,html[data-theme="lyco"] .bell .rbtn .num,html[data-theme="lyco"] .target b{
   font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;
@@ -470,6 +474,7 @@ html[data-theme="lyco"] .more{--ol:#0b2f7a;color:#fff;font-weight:800;font-style
 html[data-theme="lyco"] .mlabel,html[data-theme="lyco"] h2,html[data-theme="lyco"] .htag,html[data-theme="lyco"] .mtab.on,html[data-theme="lyco"] .hh>span{--ol:#0b2f7a}
 html[data-theme="lyco"] .hh>span,html[data-theme="lyco"] .mhead .mt{--ol:#0b2f7a;color:#fff;font-weight:900;text-shadow:calc(var(--r,1.2)*1.000px) calc(var(--r,1.2)*0.000px) var(--ol),calc(var(--r,1.2)*0.924px) calc(var(--r,1.2)*0.383px) var(--ol),calc(var(--r,1.2)*0.707px) calc(var(--r,1.2)*0.707px) var(--ol),calc(var(--r,1.2)*0.383px) calc(var(--r,1.2)*0.924px) var(--ol),calc(var(--r,1.2)*0.000px) calc(var(--r,1.2)*1.000px) var(--ol),calc(var(--r,1.2)*-0.383px) calc(var(--r,1.2)*0.924px) var(--ol),calc(var(--r,1.2)*-0.707px) calc(var(--r,1.2)*0.707px) var(--ol),calc(var(--r,1.2)*-0.924px) calc(var(--r,1.2)*0.383px) var(--ol),calc(var(--r,1.2)*-1.000px) calc(var(--r,1.2)*0.000px) var(--ol),calc(var(--r,1.2)*-0.924px) calc(var(--r,1.2)*-0.383px) var(--ol),calc(var(--r,1.2)*-0.707px) calc(var(--r,1.2)*-0.707px) var(--ol),calc(var(--r,1.2)*-0.383px) calc(var(--r,1.2)*-0.924px) var(--ol),calc(var(--r,1.2)*-0.000px) calc(var(--r,1.2)*-1.000px) var(--ol),calc(var(--r,1.2)*0.383px) calc(var(--r,1.2)*-0.924px) var(--ol),calc(var(--r,1.2)*0.707px) calc(var(--r,1.2)*-0.707px) var(--ol),calc(var(--r,1.2)*0.924px) calc(var(--r,1.2)*-0.383px) var(--ol)}
 /* 赤 */
+html[data-theme="lyco"] .cycnum{--ol:#10152a}
 html[data-theme="lyco"] .cycpill,html[data-theme="lyco"] .tabs button.on,html[data-theme="lyco"] .atbtns .atw.on,html[data-theme="lyco"] .erow button.danger{--ol:#7a1410}
 html[data-theme="lyco"] .tabs button.on,html[data-theme="lyco"] .atbtns .atw.on{--r:1.6}
 html[data-theme="lyco"] .atbtns .atw:not(.on){color:#fff}
@@ -535,6 +540,15 @@ html[data-theme="lyco"][data-skin="higan"] .zhd{color:var(--sub)}
 html[data-theme="lyco"][data-skin="higan"] .man p,html[data-theme="lyco"][data-skin="higan"] .man li,html[data-theme="lyco"][data-skin="higan"] .legend li{color:var(--ink)}
 html[data-theme="lyco"][data-skin="higan"] .demo .dh{background:rgba(255,255,255,.08)} html[data-theme="lyco"][data-skin="higan"] .demo .tm{background:#4a4346;color:#ecdede}
 html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-theme="lyco"][data-skin="higan"] .brand{color:#fff} html[data-theme="lyco"][data-skin="higan"] .brand span{color:#fff;text-shadow:0 1px 6px #000}
+/* 当選履歴の色分け: モード(5色)と、当選したCZの種類(3色) */
+.hcyc .cycpill.cm-normal{background:linear-gradient(180deg,#ff6a5c,#c9241b);--ol:#7a1410}
+.hcyc .cycpill.cm-run{background:linear-gradient(180deg,#ffb347,#e07a10);--ol:#7a3d00}
+.hcyc .cycpill.cm-high{background:linear-gradient(180deg,#b58cff,#6a35c8);--ol:#2f1470}
+.hcyc .cycpill.cm-hi2{background:linear-gradient(180deg,#4fd8ea,#0f8fa3);--ol:#04495a}
+.hcyc .cycpill.cm-reset{background:linear-gradient(180deg,#9bdc4a,#3f8f12);--ol:#14320a}
+.htagrow .htag.t-normal{background:linear-gradient(180deg,#5aa0ff,#1f55c8);--ol:#0b2f7a}
+.htagrow .htag.t-kid{background:linear-gradient(180deg,#ff8cc4,#d03a8a);--ol:#6e1448}
+.htagrow .htag.t-hit{background:linear-gradient(180deg,#ffd54a,#c48a00);--ol:#6b4700}
 </style>
 </head>
 <body>
@@ -694,7 +708,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       </div>
       <div class="mgroup pad">
         <ol class="legend">
-          <li><b>当選したCZ</b>(任意):オポジットバトル、ファーストリコリス、直撃などから選びます。選択肢は、メニューの「設定」で変えられます。</li>
+          <li><b>当選したCZ</b>(任意):オポジットバトル、ファーストリコリス、直撃などから選びます。選択肢は、メニューの「設定」で変えられます。<b>「直撃」を選ぶと、必ずATに当選するので、ATのボタンは出ず、自動でAT当選になります。</b></li>
           <li><b>AT当選 / AT非当選</b>(必須):そのCZでATに入ったかどうかです。AT当選が確定するゾーン(通常・上位後は850G、駆け抜け・リセットは600G、上位CZ❌後は250G)では、自動でAT当選になります。</li>
           <li><b>メモ</b>(任意):台の状況などを書けます。</li>
           <li><b>履歴に追加</b>:押すと記録されて、カウント画面に戻ります。やめるときは「キャンセル」です。G数は入れなくて大丈夫です。当選履歴には、ゾーン名(100Gや250Gなど)が載ります。</li>
@@ -761,22 +775,22 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
 
       <div class="mlabel">7. 当選履歴</div>
       <div class="card fig">
-        <div class="hcyc"><span class="cycpill">通常</span><i class="fno" style="left:70px;top:-6px">1</i></div>
-        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">100G<i class="fno" style="left:60px;top:-4px">2</i></div><div class="hsub">CZ当選 · ゾーン · AT非当選</div><div class="htagrow"><span class="htag">オポジットバトル（ノーマルCZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
-        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">250G</div><div class="hsub">CZ当選 · ゾーン</div><div class="htagrow"><span class="htag">ファーストリコリス（幼少期CZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
-        <div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">AT当選<i class="fno" style="left:76px;top:-4px">3</i></div><div class="fakein memo">メモを追加(終了画面など)<i class="fno" style="right:8px;top:-9px">4</i></div></div><button class="x">✕<i class="fno" style="right:-8px;top:-14px">5</i></button></div>
         <div class="hrow"><div class="hln"><span class="hdot self"></span><i></i></div><div class="hmain"><div class="t">540G<i class="fno" style="left:64px;top:-4px">6</i></div><div class="hsub">自力当選 · 通常</div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
+        <div class="hcyc"><span class="cycnum">2回目</span><span class="cycpill cm-normal">通常</span><i class="fno" style="left:150px;top:-6px">1</i></div>
+        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">100G<i class="fno" style="left:60px;top:-4px">2</i></div><div class="hsub">CZ当選 · ゾーン · AT非当選</div><div class="htagrow"><span class="htag t-normal">オポジットバトル（ノーマルCZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
+        <div class="hrow"><div class="hln"><span class="hdot zone"></span><i></i></div><div class="hmain"><div class="t">250G</div><div class="hsub">CZ当選 · ゾーン</div><div class="htagrow"><span class="htag t-kid">ファーストリコリス（幼少期CZ）</span></div><div class="fakein memo">メモを追加</div></div><button class="x">✕</button></div>
+        <div class="hrow"><div class="hln"><span class="hdot at"></span><i></i></div><div class="hmain"><div class="t">AT当選<i class="fno" style="left:76px;top:-4px">3</i></div><div class="fakein memo">メモを追加(終了画面など)<i class="fno" style="right:8px;top:-9px">4</i></div></div><button class="x">✕<i class="fno" style="right:-8px;top:-14px">5</i></button></div>
       </div>
       <div class="mgroup pad">
         <ol class="legend">
-          <li><b>赤いラベル</b>:ATに当選するまでを1つのまとまり(1周期)として、その周期のモードを先頭に出します。</li>
+          <li><b>「○回目」と赤いラベル</b>:ATに当選するまでを1つのまとまり(1周期)として、先頭に出します。「○回目」は、ATに当選するたびに1、2、3…と振る通し番号です(モードに関係なく続きます)。赤いラベルは、その周期のモードです。</li>
           <li><b>ゾーン当選の行</b>:当選したゾーン(100G、250G、引き戻しなど)が、大きく出ます。その下に「CZ当選 · ゾーン」と出て、AT非当選のときはその表示が続きます。選んだCZも出ます。</li>
           <li><b>赤い点の行</b>:ATに当選した記録です。ここで、1周期が終わります。</li>
           <li><b>メモ</b>:各行の「メモを追加」から、あとからでも書き足せます。ATの行には、終了画面などを書けます。</li>
           <li><b>✕</b>:その記録を消します。</li>
           <li><b>自力当選の行</b>:入力したG数が、そのまま大きく出ます。</li>
         </ol>
-        <p>履歴は上から古い順です。開いたときは最新の5件だけが出ます。右上の「古い履歴を開く」で、すべて出ます。</p>
+        <p>履歴は上から古い順で、<b>新しい記録がいちばん下</b>です。開いたときは、<b>最新の周期だけ</b>(前のATに当選したあとから、今まで)が出ます。いま何回目のATを目指しているかが、一番上の「○回目」で分かります。上の「前の周期も開く」で、それ以前の周期もすべて出ます。</p>
       </div>
 
       <div class="mlabel">8. 実戦履歴の保存</div>
@@ -785,7 +799,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
         <ul>
           <li><b>設定</b>(不明・1〜6)と<b>メモ</b>(店名・台番号など)を入れて保存します。</li>
           <li>保存したあとに、今のカウントを0に戻すかを聞かれます。</li>
-          <li>保存した実戦は、メニューの「保存した実戦履歴」で見られます。ゾーン合算・変換カウント・小役・当選履歴が、そのときのまま残ります。</li>
+          <li>保存した実戦は、メニューの「保存した実戦履歴」で見られます。ゾーン合算、通常・駆け抜けなどモードごとのゾーン当選率、変換カウント、小役、当選履歴が、そのときのまま残ります。</li>
         </ul>
       </div>
 
@@ -1237,28 +1251,51 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       (xb ? '<input class="memo" data-atid="' + t.id + '" value="' + esc(t.atmemo || '') + '" placeholder="メモを追加(終了画面など)" maxlength="60"></div>' + xb(t)
           : (t.atmemo ? '<div class="hmemo">' + esc(t.atmemo) + '</div>' : '') + '</div>') + '</div>';
   }
-  function cycHead(label){ return '<div class="hcyc"><span class="cycpill">' + esc(label) + '</span></div>'; }
-  function renderHistory(m){
-    // 上から古い順に並べる。開いたときは最新の数件(いちばん下)だけを見せ、
-    // 右上のボタンで、それより古い履歴もすべて開く
-    var all = m.trials.filter(function(t){ return t.kind !== 'miss'; });
-    var rows = histAll ? all : all.slice(-HIST_MAX);
-    var more = $('histMore');
-    more.classList.toggle('hidden', all.length <= HIST_MAX);
-    more.textContent = histAll ? '▴ 古い履歴を閉じる' : '▾ 古い履歴を開く(' + (all.length - HIST_MAX) + '件)';
+  // 周期の見出し: 「○回目」(ATに当選するたびに、モードに関係なく通し番号)と、その周期のモード
+  function modeIdByLabel(label){ for (var i = 0; i < MODES.length; i++) if (MODES[i].label === label) return MODES[i].id; return ''; }
+  // 当選したCZの種類(ノーマル・幼少期・直撃)で、ラベルの色を分ける。名前に含まれる言葉で判定する
+  function tagClass(tag){
+    if (/直撃/.test(tag)) return ' t-hit';
+    if (/幼少期|ファースト/.test(tag)) return ' t-kid';
+    if (/ノーマル|オポジット/.test(tag)) return ' t-normal';
+    return '';
+  }
+  function cycHead(no, label){ return '<div class="hcyc"><span class="cycnum">' + no + '回目</span>' + (label ? '<span class="cycpill cm-' + modeIdByLabel(label) + '">' + esc(label) + '</span>' : '') + '</div>'; }
+  // 当選履歴の組み立て。ATに当選するまでを1周期のまとまりにして、古い順に並べる(新しい記録がいちばん下)
+  function histBlocks(m, rows, editable, onlyLast){
+    var cyc = histCycles(m), groups = [], g = null, ended = true;
     var xb = function(t){ return '<button class="x" data-del="' + t.id + '" aria-label="削除">✕</button>'; };
-    var cyc = histCycles(m);
-    $('history').innerHTML = rows.length ? rows.map(function(t, i){
-      var hs = histTitle(m, t), title = hs.title, sub = hs.sub;
-      var czRow = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div>' +
-        '<div class="hmain"><div class="t">' + title + '</div><div class="hsub">' + sub + '</div>' + (t.tag ? '<div class="htagrow"><span class="htag">' + esc(t.tag) + '</span></div>' : '') +
-        '<input class="memo" data-id="' + t.id + '" value="' + esc(t.memo || '') + '" placeholder="メモを追加" maxlength="60"></div>' + xb(t) + '</div>';
-      // ATに当選した記録は、すぐ下に「AT当選」の行を足す(赤丸)
-      var atRow = t.atr === 'win' ? atRowHtml(t, xb) : '';
-      // 周期の先頭(一番上)に、その周期のモードを赤いラベルで出す。画面に出ている一番上の行が周期の途中でも、先頭に出す
-      var head = (cyc.start[t.id] || (i === 0 && cyc.mode[t.id])) ? cycHead(cyc.mode[t.id]) : '';
-      return head + czRow + atRow;
-    }).join('') : '<div class="empty">まだ記録がありません</div>';
+    rows.forEach(function(t){
+      if (!g || ended){ g = { head: null, html: '' }; groups.push(g); ended = false; }
+      if (g.head == null && cyc.mode[t.id]) g.head = cyc.mode[t.id];
+      var hs = histTitle(m, t);
+      g.html += '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div>' +
+        '<div class="hmain"><div class="t">' + hs.title + '</div><div class="hsub">' + hs.sub + '</div>' +
+        (t.tag ? '<div class="htagrow"><span class="htag' + tagClass(t.tag) + '">' + esc(t.tag) + '</span></div>' : '') +
+        (editable ? '<input class="memo" data-id="' + t.id + '" value="' + esc(t.memo || '') + '" placeholder="メモを追加" maxlength="60"></div>' + xb(t) + '</div>'
+                  : (t.memo ? '<div class="hmemo">' + esc(t.memo) + '</div>' : '') + '</div></div>');
+      if (t.atr === 'win'){ g.html += atRowHtml(t, editable ? xb : null); ended = true; }
+    });
+    var shown = groups.map(function(g, i){
+      return '<div class="hgrp">' + cycHead(i + 1, g.head) + g.html + '</div>';
+    });
+    return (onlyLast ? shown.slice(-1) : shown).join('');
+  }
+  // ATに当選するまでの周期の数(履歴の「○回目」の数)
+  function cycleCount(rows){
+    var n = 0, ended = true;
+    rows.forEach(function(t){ if (ended){ n++; ended = false; } if (t.atr === 'win') ended = true; });
+    return n;
+  }
+  function renderHistory(m){
+    // 古い順(新しい記録がいちばん下)。開いたときは、最新の周期(前のATに当選したあとから、今まで)だけを見せ、
+    // 上のボタンで、それ以前の周期もすべて開く
+    var all = m.trials.filter(function(t){ return t.kind !== 'miss'; });
+    var cycles = cycleCount(all);
+    var more = $('histMore');
+    more.classList.toggle('hidden', cycles <= 1);
+    more.textContent = histAll ? '▴ 最新の周期だけにする' : '▾ 前の周期も開く(' + (cycles - 1) + '回分)';
+    $('history').innerHTML = all.length ? histBlocks(m, all, true, !histAll) : '<div class="empty">まだ記録がありません</div>';
   }
 
   // ゾーンごとのリング表示(ゾーン合算の画面と、保存した実戦の詳細で共通)
@@ -1328,7 +1365,9 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     var m = cur(); if (!m) return;
     var snap = JSON.parse(JSON.stringify({
       zones: m.zones, before: m.before, after: m.after, showTo: m.showTo, tags: m.tags,
-      trials: m.trials, convs: m.convs, roles: m.roles, totalG: m.totalG
+      trials: m.trials, convs: m.convs, roles: m.roles, totalG: m.totalG,
+      // モード(通常・駆け抜けなど)ごとのゾーン当選率も、保存した時点の数字を残す
+      modeStats: MODES.map(function(md){ return { id: md.id, label: md.label, stats: zoneStats(m, md) }; })
     }));
     snap.id = uid(); snap.at = Date.now(); snap.setting = savePick; snap.memo = $('saveMemo').value.trim();
     m.sessions.push(snap);
@@ -1347,13 +1386,15 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   function histReadHtml(sn){
     var rows = sn.trials.filter(function(t){ return t.kind !== 'miss'; });
     if (!rows.length) return '<div class="empty">当選の記録はありません</div>';
-    var cyc = histCycles(sn);
-    return rows.map(function(t){
-      var hs = histTitle(sn, t), title = hs.title, sub = hs.sub;
-      var r = '<div class="hrow"><div class="hln"><span class="hdot ' + t.kind + '"></span><i></i></div><div class="hmain"><div class="t">' + title + '</div><div class="hsub">' + sub + '</div>' +
-        (t.tag ? '<div class="htagrow"><span class="htag">' + esc(t.tag) + '</span></div>' : '') + (t.memo ? '<div class="hmemo">' + esc(t.memo) + '</div>' : '') + '</div></div>';
-      if (t.atr === 'win') r += atRowHtml(t);
-      return (cyc.start[t.id] ? cycHead(cyc.mode[t.id]) : '') + r;
+    return histBlocks(sn, rows, false, false);
+  }
+  // モードごとのゾーン当選率(保存した時点の数字。古い保存分は、記録から計算し直す)。記録が1つもないモードは出さない
+  function modeStatsHtml(sn){
+    var list = sn.modeStats || MODES.map(function(md){ return { id: md.id, label: md.label, stats: zoneStats(sn, md) }; });
+    return list.map(function(ms){
+      var any = ms.stats.some(function(r){ return r.n > 0; });
+      if (!any) return '';
+      return '<div class="mlabel">' + esc(ms.label) + 'のゾーン当選率</div><div class="mgroup pad">' + ringsHtml(ms.stats) + '</div>';
     }).join('');
   }
   function renderSessDetail(m){
@@ -1371,6 +1412,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       '<div class="mgroup pad"><div class="sdate">' + fmtDate(sn.at) + '<span class="sset">' + settingLabel(sn) + '</span></div>' + (sn.memo ? '<div class="smemo">' + esc(sn.memo) + '</div>' : '') +
       '<div class="ssum">' + sessSummary(sn) + (sn.totalG ? '・' + sn.totalG + 'G' : '') + '</div></div>' +
       '<div class="mlabel">ゾーン合算</div><div class="mgroup pad">' + (stats.length ? ringsHtml(stats) : '<div class="empty">記録なし</div>') + '</div>' +
+      modeStatsHtml(sn) +
       (convs ? '<div class="mlabel">変換カウント</div><div class="mgroup pad">' + convs + '</div>' : '') +
       (roles ? '<div class="mlabel">小役カウンター</div><div class="mgroup pad">' + roles + '</div>' : '') +
       '<div class="mlabel">当選履歴</div><div class="mgroup pad">' + histReadHtml(sn) + '</div>' +
@@ -1421,7 +1463,11 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
 
   $('tabCount').closest('.tapwrap').addEventListener('click', function(){ tab = 'count'; later(render); });
   $('tabRate').closest('.tapwrap').addEventListener('click', function(){ tab = 'rate'; later(render); });
-  $('tabHist').closest('.tapwrap').addEventListener('click', function(){ tab = 'hist'; later(render); });
+  $('tabHist').closest('.tapwrap').addEventListener('click', function(){
+    // 当選履歴を開いたときは、いつも最新の周期だけにして、上(周期の頭)から見せる
+    tab = 'hist'; histAll = false;
+    later(function(){ render(); window.scrollTo(0, 0); });
+  });
 
   var tagOpen = false;
   function renderTagPick(){
@@ -1447,8 +1493,22 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     pending.tag = i < 0 ? '' : cur().tags[i];
     tagOpen = false;
     renderTagPick();
+    syncAt();
   });
 
+  // AT当選が確定するとき(確定ゾーン、または当選したCZが「直撃」)は、ATのボタンを出さず、自動でAT当選にする
+  function syncAt(){
+    var p = pending; if (!p) return;
+    var zoneSure = p.kind === 'zone' && atSure(cur(), p.zone), tagSure = p.tag === '直撃';
+    var sure = zoneSure || tagSure;
+    if (sure){ p.atr = 'win'; p.autoAt = true; }
+    else if (p.autoAt){ p.atr = null; p.autoAt = false; }
+    p.sure = sure;
+    $('atRow').querySelector('.atbtns').classList.toggle('hidden', sure);
+    $('atRow').querySelector('.atm').closest('.tapwrap').classList.toggle('hidden', p.kind !== 'zone');
+    $('atRow').querySelector('.flbl').textContent = sure ? (zoneSure ? 'AT当選確定のゾーンです' : 'AT当選確定(直撃)') : (p.kind === 'zone' ? 'ATは?' : 'ATに当選した場合');
+    renderAtBtns();
+  }
   function showPending(p){
     pending = p;
     $('zlist').classList.toggle('hidden', !!p);
@@ -1460,13 +1520,10 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       $('pendingTitle').innerHTML = '<b>' + (p.kind === 'zone' ? (p.zone.name ? p.zone.name + '当選' : p.g + 'Gゾーン当選') : '自力当選') + '</b>';
       $('selfGrow').classList.toggle('hidden', p.kind !== 'self');
       $('atRow').classList.remove('hidden');
-      p.sure = p.kind === 'zone' && atSure(cur(), p.zone);
-      p.atr = p.sure ? 'win' : null; renderAtBtns();
-      $('atRow').querySelector('.flbl').textContent = p.kind === 'zone' ? (p.sure ? 'AT当選確定のゾーンです' : 'ATは?') : 'ATに当選した場合';
-      $('atRow').querySelector('.atm').closest('.tapwrap').classList.toggle('hidden', p.kind !== 'zone' || p.sure);
+      p.tag = ''; p.atr = null; p.autoAt = false;
+      syncAt();
       $('selfG').value = '';
       $('memoIn').value = '';
-      p.tag = '';
       tagOpen = false;
       renderTagPick();
     }
