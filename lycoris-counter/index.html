@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#2fc0d8">
-<meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-title" content="リコリコカウンター">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="icon" type="image/png" href="./icon-192.png">
@@ -399,6 +398,20 @@ html[data-theme="lyco"] .bell .xbtn{color:#d6ecff}
 .mtab.on{color:var(--accent);border-color:var(--accent);background:rgba(123,167,232,.12)}
 html[data-theme="lyco"] .mtab{border-radius:999px;font-style:italic;font-weight:800;color:#1a2127;border:2px solid #2c6a64;background:linear-gradient(135deg,transparent 62%,rgba(0,0,0,.24) 62%),linear-gradient(180deg,#dfe3e6,#a3a9ae)}
 html[data-theme="lyco"] .mtab.on{color:#fff;border-color:#cfe6ff;text-shadow:0 1px 0 rgba(0,40,110,.5);background:linear-gradient(180deg,#3a92ff,#1458cc)}
+.mtabs[class*=" v"]{flex-direction:column;gap:6px}
+.mtabs .mrow{display:flex;gap:4px}
+.mtabs .mrow>.tapwrap,.mtabs .mrow>button{flex:1 1 0;min-width:0}
+.mtabs .mrow.big .mtab{font-size:14px;padding:13px 2px}
+.mtabs .mrow.chips{justify-content:center;gap:6px}
+.mtabs .mrow.chips>.tapwrap{flex:0 0 auto}
+.mtabs .mrow.chips .mtab{padding:5px 14px;font-size:11px}
+.mtabs .mrow.half .mtab{padding:5px 2px;font-size:11px;opacity:.85}
+.mtabs .mrow.pager>.tapwrap:nth-child(2){flex:3 1 0}
+.mtabs .mrow.pager>.tapwrap:not(:nth-child(2)){flex:1 1 0}
+.mtabs .mrow.pager .mtab{font-size:14px;padding:12px 2px}
+.mtabs .mrow.sheet,.mtabs .mrow.sub2{padding:6px;border-radius:14px;background:rgba(255,255,255,.07)}
+.mtabs .mrow.sheet .mtab,.mtabs .mrow.sub2 .mtab{font-size:11px}
+.mtabs .mtab.next{font-size:11px;opacity:.9}
 .mtabs.hidden{display:none}
 .flbl{font-size:11px;color:var(--sub);margin:0 0 4px;letter-spacing:.06em}
 .atbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
@@ -680,7 +693,7 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
       <div class="mlabel">使い方の流れ</div>
       <div class="mgroup pad">
         <div class="flow">
-          <div class="fstep"><i class="fno">1</i><b>モードを選ぶ</b><span>通常・駆け抜け・上位後・上位CZ❌後・リセットのどれか</span></div>
+          <div class="fstep"><i class="fno">1</i><b>モードを選ぶ</b><span>◀ ▶ で切り替え、名前を押すと一覧から選べます(通常・駆け抜け・上位後・上位CZ❌後・リセット)</span></div>
           <div class="fstep"><i class="fno">2</i><b>ゾーンを通るたびに押す</b><span>当たらなかったら「非当選」、当たったら「当選」</span></div>
           <div class="fstep"><i class="fno">3</i><b>当選したら入力する</b><span>当選したCZ・AT当選かどうか・メモ</span></div>
           <div class="fstep"><i class="fno">4</i><b>実戦が終わったら保存</b><span>メニューの「実戦履歴を保存」</span></div>
@@ -694,15 +707,15 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
           <button>ゾーン合算</button>
           <button>当選履歴</button>
         </div>
-        <div class="mtabs">
-          <button class="mtab on">通常</button><button class="mtab">駆け抜け</button><button class="mtab">上位後</button><button class="mtab">上位CZ❌後</button><button class="mtab">リセット</button>
+        <div class="mtabs v3"><div class="mrow pager">
+          <div class="tapwrap"><button class="mtab arw">◀</button></div><div class="tapwrap"><button class="mtab cur on">通常 ▾</button></div><div class="tapwrap"><button class="mtab arw">▶</button></div></div>
           <i class="fno" style="right:6px;top:-9px">2</i>
         </div>
       </div>
       <div class="mgroup pad">
         <ol class="legend">
           <li><b>画面を切り替えるタブ</b>:「カウント」は実戦中に押す画面、「ゾーン合算」は当選率を見る画面、「当選履歴」は当選の記録の一覧です。</li>
-          <li><b>モードのタブ</b>:通常・駆け抜け・上位後・上位CZ❌後・リセットを選びます。数えるのはモードごとに別々です。駆け抜けとリセットは600Gまで、上位CZ❌後は250Gまでのゾーンだけが出ます(リセットには、引き戻しはありません)。</li>
+          <li><b>モード切り替え</b>:◀ ▶ で順に切り替え、モード名を押すと5つの一覧(通常・駆け抜け・上位後・上位CZ❌後・リセット)が開いて選べます。数えるのはモードごとに別々です。駆け抜けとリセットは600Gまで、上位CZ❌後は250Gまでのゾーンだけが出ます(リセットには、引き戻しはありません)。</li>
         </ol>
         <p>右上の「☰」ボタンから、メニュー(設定・実戦履歴の保存・この説明書)を開きます。</p>
       </div>
@@ -1221,17 +1234,57 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
       return { z: r.z, w: r.w, n: n, pct: n ? r.w / n * 100 : null };
     });
   }
+  // モードタブの見た目の案(?tabs=1〜5で切り替えて比べる。0は今の5つ並び)
+  var TABV = +(new URLSearchParams(location.search).get('tabs') || 3), mOpen = false;
+  var MAIN = ['normal', 'run', 'high'];
+  function mById(id){ for (var i = 0; i < MODES.length; i++) if (MODES[i].id === id) return MODES[i]; }
+  function mBtn(md, cur, cls, label){
+    return tapwrap('<button class="mtab ' + (cls || '') + (md.id === cur ? ' on' : '') + '" data-mode="' + md.id + '">' + (label || md.label) + '</button>', FL_UNDO);
+  }
+  function aBtn(act, cls, label, on){
+    return tapwrap('<button class="mtab ' + cls + (on ? ' on' : '') + '" data-act="' + act + '">' + label + '</button>', FL_UNDO);
+  }
   function renderModeTabs(m){
-    var cur = modeOf(m).id;
-    var html = MODES.map(function(md){
-      return tapwrap('<button class="mtab' + (md.id === cur ? ' on' : '') + '" data-mode="' + md.id + '">' + md.label + '</button>', FL_UNDO);
-    }).join('');
-    $('modeTabsC').innerHTML = html;
+    var cur = modeOf(m).id, box = $('modeTabsC'), h = '';
+    var sub = ['hi2', 'reset'].map(function(i){ return mById(i); });
+    var mains = MAIN.map(function(i){ return mById(i); });
+    box.className = 'mtabs' + (TABV ? ' v' + TABV : '');
+    if (TABV === 1){
+      var isSub = cur === 'hi2' || cur === 'reset';
+      h = '<div class="mrow">' + mains.map(function(md){ return mBtn(md, cur); }).join('') +
+          aBtn('more', 'more', isSub ? mById(cur).label : '⋯ その他', isSub || mOpen) + '</div>';
+      if (mOpen || isSub && mOpen) h += '<div class="mrow sub2">' + sub.map(function(md){ return mBtn(md, cur); }).join('') + '</div>';
+    } else if (TABV === 2){
+      h = '<div class="mrow big">' + mains.map(function(md){ return mBtn(md, cur); }).join('') + '</div>' +
+          '<div class="mrow chips">' + sub.map(function(md){ return mBtn(md, cur, 'chip'); }).join('') + '</div>';
+    } else if (TABV === 3){
+      h = '<div class="mrow pager">' + aBtn('prev', 'arw', '◀') + aBtn('sheet', 'cur', modeOf(m).label + ' ▾', true) + aBtn('next', 'arw', '▶') + '</div>';
+      if (mOpen) h += '<div class="mrow sheet">' + MODES.map(function(md){ return mBtn(md, cur); }).join('') + '</div>';
+    } else if (TABV === 4){
+      h = '<div class="mrow big">' + mains.map(function(md){ return mBtn(md, cur); }).join('') + '</div>' +
+          '<div class="mrow half">' + sub.map(function(md){ return mBtn(md, cur, 'gray'); }).join('') + '</div>';
+    } else if (TABV === 5){
+      var next = { normal: ['reset'], run: ['reset'], high: ['hi2', 'normal'], hi2: ['high', 'normal'], reset: ['normal', 'run'] }[cur] || [];
+      h = '<div class="mrow">' + mBtn(mById(cur), cur) + next.map(function(i){ return mBtn(mById(i), cur, 'next', '→ ' + mById(i).label); }).join('') +
+          aBtn('sheet', 'more', '他…', mOpen) + '</div>';
+      if (mOpen) h += '<div class="mrow sheet">' + MODES.map(function(md){ return mBtn(md, cur); }).join('') + '</div>';
+    } else {
+      h = MODES.map(function(md){ return mBtn(md, cur); }).join('');
+    }
+    box.innerHTML = h;
   }
   function onModeTab(e){
     var b = pickBtn(e); if (!b || !b.classList.contains('mtab')) return;
-    var m = cur(); if (!m || m.mode === b.dataset.mode) return;
-    m.mode = b.dataset.mode; zExpand = false; histCyc = 1;
+    var m = cur(); if (!m) return;
+    var act = b.dataset.act;
+    if (act){
+      if (act === 'more' || act === 'sheet'){ mOpen = !mOpen; later(render); return; }
+      var i = 0; MODES.forEach(function(md, k){ if (md.id === m.mode) i = k; });
+      m.mode = MODES[(i + (act === 'next' ? 1 : MODES.length - 1)) % MODES.length].id;
+      zExpand = false; histCyc = 1; save(); later(render); return;
+    }
+    if (m.mode === b.dataset.mode){ if (mOpen){ mOpen = false; later(render); } return; }
+    m.mode = b.dataset.mode; zExpand = false; histCyc = 1; mOpen = false;
     save(); later(render);
   }
   $('modeTabsC').addEventListener('click', onModeTab);
