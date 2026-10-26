@@ -9,8 +9,27 @@
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="icon" type="image/png" href="./icon-192.png">
 <script>
-// 見た目(テーマ)。初期は彼岸花。メニューの「テーマ」で選ぶと、端末に残る。?skin=lyco のように、アドレスでも切り替えられる
-(function(){try{var q=new URLSearchParams(location.search).get('skin');if(q==='higan'||q==='lyco')localStorage.setItem('zoneCounter.skin',q);var k=localStorage.getItem('zoneCounter.skin');if(k!=='lyco')document.documentElement.setAttribute('data-skin','higan');}catch(e){document.documentElement.setAttribute('data-skin','higan');}})();
+// 見た目(テーマ)。初期は彼岸花。メニューの「テーマ」で選ぶと、端末に残る。?skin=lyco のように、アドレスでも切り替えられる。
+// カスタム: 自分で選んだ画像を、背景にする。画像は、この端末の中にだけ保存する。
+(function(){
+  var H = document.documentElement;
+  function get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  window.applyTheme = function(){
+    var skin = get('zoneCounter.skin'), img = get('zoneCounter.bgimg');
+    if (skin === 'custom' && !img) skin = 'higan';   // 画像がないときは、初期の見た目
+    if (skin === 'lyco' || skin === 'custom') H.removeAttribute('data-skin'); else H.setAttribute('data-skin', 'higan');
+    if (skin === 'custom'){
+      var dim = parseInt(get('zoneCounter.bgdim'), 10); if (isNaN(dim)) dim = 35;
+      H.setAttribute('data-bg', 'image');
+      H.style.setProperty('--bgimg', 'url("' + img + '")');
+      H.style.setProperty('--dim', (dim / 100).toFixed(2));
+    } else { H.removeAttribute('data-bg'); H.style.removeProperty('--bgimg'); }
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', skin === 'lyco' ? '#2fc0d8' : skin === 'custom' ? '#222222' : '#0b0507');
+  };
+  try { var q = new URLSearchParams(location.search).get('skin'); if (q === 'higan' || q === 'lyco' || q === 'custom') localStorage.setItem('zoneCounter.skin', q); } catch(e){}
+  window.applyTheme();
+})();
 </script>
 <title>リコリス・リコイルカウンター</title>
 <style>
@@ -167,7 +186,7 @@ td.dbar{padding:4px 6px}
 .barpct{flex:0 0 44px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .st{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.6}
 .hh{display:flex;justify-content:space-between;align-items:center}
-.hhr{display:flex;justify-content:flex-end;margin:-4px 0 6px}
+.hhr{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin:-4px 0 6px}
 .hhr.bot{justify-content:center;margin:2px 0 14px}
 .hgrp{margin-bottom:14px}
 .cycnum{display:inline-block;margin-right:6px;font-size:13px;font-weight:800;padding:3px 12px;border-radius:999px;color:#fff;background:linear-gradient(180deg,#4a557a,#1d2540);border:1px solid rgba(255,255,255,.55)}
@@ -549,6 +568,14 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
 .htagrow .htag.t-normal{background:linear-gradient(180deg,#5aa0ff,#1f55c8);--ol:#0b2f7a}
 .htagrow .htag.t-kid{background:linear-gradient(180deg,#ff8cc4,#d03a8a);--ol:#6e1448}
 .htagrow .htag.t-hit{background:linear-gradient(180deg,#ffd54a,#c48a00);--ol:#6b4700}
+/* ===== カスタムのテーマ(背景を選ぶ) ===== */
+html[data-theme="lyco"][data-bg="image"] body,html[data-theme="lyco"][data-bg="image"] .menu{background:linear-gradient(rgba(0,0,0,var(--dim,.35)),rgba(0,0,0,var(--dim,.35))),var(--bgimg) center/cover no-repeat fixed}
+html[data-theme="lyco"][data-bg] body::before{display:none}
+html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg="image"] .brand svg{color:#fff}
+.bgprev{width:100%;height:120px;border-radius:10px;border:2px solid var(--line);background:#888 center/cover no-repeat;margin:8px 0}
+.bgprev.empty{display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--sub)}
+.bgrange{width:100%;margin:6px 0 2px}
+.filebtn{display:block;text-align:center;padding:14px 0;border-radius:12px;font-weight:800;cursor:pointer}
 </style>
 </head>
 <body>
@@ -601,7 +628,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     </section>
 
     <section id="viewHist" class="hidden">
-      <div class="hhr"><button id="histMore" class="more hidden"></button></div>
+      <div class="hhr"><button id="histLess" class="more hidden"></button><button id="histMore" class="more hidden"></button></div>
       <div class="card" id="history"></div>
     </section>
 
@@ -634,6 +661,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     <div class="mgroup" id="skinGroup">
       <button class="mrow" data-skin="higan"><span class="mname">彼岸花(黒と赤)</span><span class="ms"></span></button>
       <button class="mrow" data-skin="lyco"><span class="mname">水色(リコリス)</span><span class="ms"></span></button>
+      <button class="mrow" data-skin="custom"><span class="mname">カスタム(自分の画像)</span><span class="ms"></span><span class="ch">›</span></button>
     </div>
     <div class="mlabel">ヘルプ</div>
     <div class="mgroup">
@@ -790,7 +818,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
           <li><b>✕</b>:その記録を消します。</li>
           <li><b>自力当選の行</b>:入力したG数が、そのまま大きく出ます。</li>
         </ol>
-        <p>履歴は上から古い順で、<b>新しい記録がいちばん下</b>です。開いたときは、<b>最新の周期だけ</b>(前のATに当選したあとから、今まで)が出ます。いま何回目のATを目指しているかが、一番上の「○回目」で分かります。上の「前の周期も開く」で、それ以前の周期もすべて出ます。</p>
+        <p>履歴は上から古い順で、<b>新しい記録がいちばん下</b>です。開いたときは、<b>最新の周期だけ</b>(前のATに当選したあとから、今まで)が出ます。いま何回目のATを目指しているかが、一番上の「○回目」で分かります。上の「前の10周期を開く」を押すたびに、10周期ずつ古い周期が出ます(一度に多く出すと、開くのが遅くなるためです)。「最新の周期だけにする」で、元に戻ります。</p>
       </div>
 
       <div class="mlabel">8. 実戦履歴の保存</div>
@@ -805,7 +833,8 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
 
       <div class="mlabel">テーマ(見た目)</div>
       <div class="mgroup pad">
-        <p>メニューの「テーマ」で、見た目を2つから選べます。初期は「彼岸花(黒と赤)」で、もう1つは「水色(リコリス)」です。選んだ見た目は、この端末に残ります。</p>
+        <p>メニューの「テーマ」で、見た目を選べます。初期は「彼岸花(黒と赤)」で、ほかに「水色(リコリス)」と、自分の画像を背景にする「カスタム」があります。選んだ見た目は、この端末に残ります。</p>
+        <p><b>カスタム</b>:「カスタム(自分の画像)」を選ぶと、背景に自分の画像を使えます。メニューの中の「画像を選ぶ」で、画像を選びます。選んだ画像は、縮小して、この端末の中にだけ保存されます(どこにも送られません)。「画像の暗さ」で、文字の読みやすさを調整できます。「選んだ画像を消す」で、初期の見た目に戻ります。</p>
       </div>
 
       <div class="mlabel">9. 設定とリセット</div>
@@ -827,6 +856,20 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
           <li><b>記録が消えた</b>:記録は、この端末のブラウザの中にだけ保存されます。ブラウザのサイトデータを消したときや、プライベートブラウズで開いているときは、消えることがあります。ほかの端末とは共有されません。大事な実戦は、「実戦履歴を保存」で残しておくと安心です。</li>
         </ul>
       </div>
+    </div>
+  </div>
+
+  <div class="mpage hidden" data-page="custom">
+    <p class="mdesc">背景に、自分の画像を使えます。選んだ画像は、この端末の中にだけ保存されます。</p>
+    <div class="mlabel">自分の画像</div>
+    <div class="mgroup pad">
+      <div class="bgprev empty" id="bgPrev">画像は選ばれていません</div>
+      <button id="bgFileBtn" style="width:100%;padding:14px 0;font-size:15px">画像を選ぶ</button>
+      <input type="file" id="bgFile" accept="image/*" style="display:none">
+      <div class="flbl" style="margin-top:14px">画像の暗さ(文字を読みやすくします)<span id="bgDimV" style="float:right"></span></div>
+      <input type="range" class="bgrange" id="bgDim" min="0" max="70" step="5">
+      <div class="msg" id="bgMsg"></div>
+      <button class="mrow danger" id="bgClear" style="margin-top:8px"><span class="mname">選んだ画像を消す</span></button>
     </div>
   </div>
 
@@ -904,7 +947,8 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   var state = load();
   var tab = 'count';
   var HIST_MAX = 5;
-  var histAll = false;
+  var histCyc = 1;      // 当選履歴に出す周期の数(新しいほうから)。古い履歴は、10周期ずつ増やす
+  var HIST_STEP = 10;
   var pending = null; // { g, kind } 備考入力待ちの当選
 
   function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -1116,10 +1160,11 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   });
 
   var menuOpen = false, menuPage = 'root';
-  var PAGE_TITLES = { root: 'メニュー', manual: '取扱説明書', save: '実戦を保存', sessions: '保存した実戦履歴', sess: '実戦の詳細', zones: 'ゾーン', tags: '当選契機', convs: 'カウントカード', roles: '小役カウンター' };
+  var PAGE_TITLES = { custom: 'カスタムのテーマ', root: 'メニュー', manual: '取扱説明書', save: '実戦を保存', sessions: '保存した実戦履歴', sess: '実戦の詳細', zones: 'ゾーン', tags: '当選契機', convs: 'カウントカード', roles: '小役カウンター' };
   function resetSigs(){ $('zoneEdit').dataset.sig = $('tagEdit').dataset.sig = $('convEdit').dataset.sig = $('roleEdit').dataset.sig = ''; }
   function openMenu(){ menuOpen = true; menuPage = 'root'; $('menu').classList.remove('hidden'); document.body.classList.add('menuopen'); resetSigs(); render(); $('menu').scrollTop = 0; }
   function closeMenu(){ menuOpen = false; $('menu').classList.add('hidden'); document.body.classList.remove('menuopen'); }
+  window.__goPage = function(p){ goPage(p); };
   function goPage(p){ menuPage = p; resetSigs(); renderMenu(cur()); $('menu').scrollTop = 0; }
   function renderMenu(m){
     if (!menuOpen) return;
@@ -1186,7 +1231,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   function onModeTab(e){
     var b = pickBtn(e); if (!b || !b.classList.contains('mtab')) return;
     var m = cur(); if (!m || m.mode === b.dataset.mode) return;
-    m.mode = b.dataset.mode; zExpand = false; histAll = false;
+    m.mode = b.dataset.mode; zExpand = false; histCyc = 1;
     save(); later(render);
   }
   $('modeTabsC').addEventListener('click', onModeTab);
@@ -1262,7 +1307,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   }
   function cycHead(no, label){ return '<div class="hcyc"><span class="cycnum">' + no + '回目</span>' + (label ? '<span class="cycpill cm-' + modeIdByLabel(label) + '">' + esc(label) + '</span>' : '') + '</div>'; }
   // 当選履歴の組み立て。ATに当選するまでを1周期のまとまりにして、古い順に並べる(新しい記録がいちばん下)
-  function histBlocks(m, rows, editable, onlyLast){
+  function histBlocks(m, rows, editable, limit){
     var cyc = histCycles(m), groups = [], g = null, ended = true;
     var xb = function(t){ return '<button class="x" data-del="' + t.id + '" aria-label="削除">✕</button>'; };
     rows.forEach(function(t){
@@ -1279,7 +1324,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     var shown = groups.map(function(g, i){
       return '<div class="hgrp">' + cycHead(i + 1, g.head) + g.html + '</div>';
     });
-    return (onlyLast ? shown.slice(-1) : shown).join('');
+    return (limit ? shown.slice(-limit) : shown).join('');
   }
   // ATに当選するまでの周期の数(履歴の「○回目」の数)
   function cycleCount(rows){
@@ -1292,10 +1337,14 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     // 上のボタンで、それ以前の周期もすべて開く
     var all = m.trials.filter(function(t){ return t.kind !== 'miss'; });
     var cycles = cycleCount(all);
-    var more = $('histMore');
-    more.classList.toggle('hidden', cycles <= 1);
-    more.textContent = histAll ? '▴ 最新の周期だけにする' : '▾ 前の周期も開く(' + (cycles - 1) + '回分)';
-    $('history').innerHTML = all.length ? histBlocks(m, all, true, !histAll) : '<div class="empty">まだ記録がありません</div>';
+    // 一度に画面へ作る数を、10周期ずつに抑える(全部を一度に作ると、記録が多いときに開くのが遅くなる)
+    var show = Math.min(histCyc, cycles), rest = cycles - show;
+    var more = $('histMore'), less = $('histLess');
+    more.classList.toggle('hidden', rest <= 0);
+    more.textContent = '▾ 前の' + Math.min(HIST_STEP, rest) + '周期を開く(あと' + rest + '回分)';
+    less.classList.toggle('hidden', show <= 1);
+    less.textContent = '▴ 最新の周期だけにする';
+    $('history').innerHTML = all.length ? histBlocks(m, all, true, show) : '<div class="empty">まだ記録がありません</div>';
   }
 
   // ゾーンごとのリング表示(ゾーン合算の画面と、保存した実戦の詳細で共通)
@@ -1386,7 +1435,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   function histReadHtml(sn){
     var rows = sn.trials.filter(function(t){ return t.kind !== 'miss'; });
     if (!rows.length) return '<div class="empty">当選の記録はありません</div>';
-    return histBlocks(sn, rows, false, false);
+    return histBlocks(sn, rows, false, 0);
   }
   // モードごとのゾーン当選率(保存した時点の数字。古い保存分は、記録から計算し直す)。記録が1つもないモードは出さない
   function modeStatsHtml(sn){
@@ -1465,7 +1514,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   $('tabRate').closest('.tapwrap').addEventListener('click', function(){ tab = 'rate'; later(render); });
   $('tabHist').closest('.tapwrap').addEventListener('click', function(){
     // 当選履歴を開いたときは、いつも最新の周期だけにして、上(周期の頭)から見せる
-    tab = 'hist'; histAll = false;
+    tab = 'hist'; histCyc = 1;
     later(function(){ render(); window.scrollTo(0, 0); });
   });
 
@@ -1594,7 +1643,9 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     save(); render(); flashSel('#undo');
   }); });
 
-  $('histMore').addEventListener('click', function(){ histAll = !histAll; render(); });
+  // 当選履歴だけを作り直す(画面全体は作り直さない)
+  $('histMore').addEventListener('click', function(){ histCyc += HIST_STEP; var m = cur(); if (m) renderHistory(m); });
+  $('histLess').addEventListener('click', function(){ histCyc = 1; var m = cur(); if (m) renderHistory(m); window.scrollTo(0, 0); });
   $('history').addEventListener('input', function(e){
     var id = e.target.dataset.id, aid = e.target.dataset.atid; if (!id && !aid) return;
     var m = cur();
@@ -1710,24 +1761,64 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
 })();
 </script>
 <script>
-// テーマの選択(メニューの「テーマ」)
+// テーマの選択(メニューの「テーマ」)と、カスタムの設定
 (function(){
-  var KEY = 'zoneCounter.skin';
-  function current(){ return document.documentElement.getAttribute('data-skin') === 'higan' ? 'higan' : 'lyco'; }
+  function get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function set(k, v){ try { localStorage.setItem(k, v); return true; } catch(e){ return false; } }
+  function skin(){ var k = get('zoneCounter.skin'); return k === 'lyco' || (k === 'custom' && get('zoneCounter.bgimg')) ? k : 'higan'; }
   function mark(){
-    var c = current();
+    var c = skin();
     document.querySelectorAll('#skinGroup .mrow').forEach(function(b){
-      b.querySelector('.ms').textContent = b.dataset.skin === c ? '✓ 選択中' : '';
+      var on = b.dataset.skin === c, t = on ? '✓ 選択中' : '';
+      if (b.dataset.skin === 'custom' && on) t = '✓ 自分の画像';
+      b.querySelector('.ms').textContent = t;
     });
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', c === 'higan' ? '#0b0507' : '#2fc0d8');
+    var img = get('zoneCounter.bgimg'), pv = document.getElementById('bgPrev');
+    if (img){ pv.className = 'bgprev'; pv.style.backgroundImage = 'url("' + img + '")'; pv.textContent = ''; }
+    else { pv.className = 'bgprev empty'; pv.style.backgroundImage = 'none'; pv.textContent = '画像は選ばれていません'; }
+    var dim = parseInt(get('zoneCounter.bgdim'), 10); if (isNaN(dim)) dim = 35;
+    document.getElementById('bgDim').value = dim; document.getElementById('bgDimV').textContent = dim + '%';
   }
+  function apply(){ window.applyTheme(); mark(); }
   document.getElementById('skinGroup').addEventListener('click', function(e){
     var b = e.target.closest('button[data-skin]'); if (!b) return;
-    if (b.dataset.skin === 'higan') document.documentElement.setAttribute('data-skin', 'higan');
-    else document.documentElement.removeAttribute('data-skin');
-    try { localStorage.setItem(KEY, b.dataset.skin); } catch(err){}
-    mark();
+    if (b.dataset.skin === 'custom'){
+      // 画像を選ぶまでは、見た目を変えず、設定のページだけ開く
+      if (window.__goPage) window.__goPage('custom');
+      msg(get('zoneCounter.bgimg') ? '' : '「画像を選ぶ」で画像を選ぶと、背景になります');
+      if (get('zoneCounter.bgimg')){ set('zoneCounter.skin', 'custom'); apply(); }
+      return;
+    }
+    set('zoneCounter.skin', b.dataset.skin);
+    apply();
+  });
+  function msg(t, err){ var m = document.getElementById('bgMsg'); m.textContent = t; m.className = 'msg' + (err ? ' err' : ''); }
+  // 選んだ画像は、端末に収まるよう、縮小して(長辺1280px)保存する
+  document.getElementById('bgFile').addEventListener('change', function(e){
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    var fr = new FileReader();
+    fr.onload = function(){
+      var im = new Image();
+      im.onload = function(){
+        var sc = Math.min(1, 1280 / Math.max(im.width, im.height)), cv = document.createElement('canvas');
+        cv.width = Math.round(im.width * sc); cv.height = Math.round(im.height * sc);
+        cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+        var url = cv.toDataURL('image/jpeg', 0.82);
+        if (!set('zoneCounter.bgimg', url)){ msg('画像が大きすぎて、保存できませんでした。ほかの画像を選んでください', true); return; }
+        set('zoneCounter.skin', 'custom'); msg('画像を設定しました'); apply();
+      };
+      im.onerror = function(){ msg('この画像は読み込めませんでした', true); };
+      im.src = fr.result;
+    };
+    fr.onerror = function(){ msg('この画像は読み込めませんでした', true); };
+    fr.readAsDataURL(f); e.target.value = '';
+  });
+  document.getElementById('bgFileBtn').addEventListener('click', function(){ document.getElementById('bgFile').click(); });
+  document.getElementById('bgDim').addEventListener('input', function(e){ set('zoneCounter.bgdim', e.target.value); document.getElementById('bgDimV').textContent = e.target.value + '%'; window.applyTheme(); });
+  document.getElementById('bgClear').addEventListener('click', function(){
+    try { localStorage.removeItem('zoneCounter.bgimg'); } catch(err){}
+    if (get('zoneCounter.skin') === 'custom') set('zoneCounter.skin', 'higan');
+    msg('画像を消しました。初期の見た目に戻りました'); apply();
   });
   mark();
 })();
