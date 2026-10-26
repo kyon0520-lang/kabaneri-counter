@@ -369,7 +369,9 @@ html[data-theme="lyco"] .bell .tapwrap{--wr:0}
 html[data-theme="lyco"] .bell .rate{color:#ffe56a;font-style:italic;font-weight:800;font-family:inherit}
 html[data-theme="lyco"] .bell .rate em{color:#d6ecff}
 html[data-theme="lyco"] .bell .xbtn{color:#d6ecff}
-.mtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 12px}
+.mtabs{display:flex;gap:4px;margin:0 0 12px}
+.mtabs>.tapwrap,.mtabs>button{flex:1 1 auto}
+.mtabs .mtab{font-size:11px;padding:9px 2px;white-space:nowrap}
 .mtab{padding:9px 0;font-size:12px;font-weight:700;letter-spacing:.02em;border-radius:6px;color:var(--sub);background:transparent;border:1px solid #333}
 .mtab.on{color:var(--accent);border-color:var(--accent);background:rgba(123,167,232,.12)}
 html[data-theme="lyco"] .mtab{border-radius:999px;font-style:italic;font-weight:800;color:#1a2127;border:2px solid #2c6a64;background:linear-gradient(135deg,transparent 62%,rgba(0,0,0,.24) 62%),linear-gradient(180deg,#dfe3e6,#a3a9ae)}
@@ -636,7 +638,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       <div class="mlabel">使い方の流れ</div>
       <div class="mgroup pad">
         <div class="flow">
-          <div class="fstep"><i class="fno">1</i><b>モードを選ぶ</b><span>通常・駆け抜け・上位後・リセットのどれか</span></div>
+          <div class="fstep"><i class="fno">1</i><b>モードを選ぶ</b><span>通常・駆け抜け・上位後・上位CZ❌後・リセットのどれか</span></div>
           <div class="fstep"><i class="fno">2</i><b>ゾーンを通るたびに押す</b><span>当たらなかったら「非当選」、当たったら「当選」</span></div>
           <div class="fstep"><i class="fno">3</i><b>当選したら入力する</b><span>当選したCZ・AT当選かどうか・メモ</span></div>
           <div class="fstep"><i class="fno">4</i><b>実戦が終わったら保存</b><span>メニューの「実戦履歴を保存」</span></div>
@@ -651,14 +653,14 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
           <button>当選履歴</button>
         </div>
         <div class="mtabs">
-          <button class="mtab on">通常</button><button class="mtab">駆け抜け</button><button class="mtab">上位後</button><button class="mtab">リセット</button>
+          <button class="mtab on">通常</button><button class="mtab">駆け抜け</button><button class="mtab">上位後</button><button class="mtab">上位CZ❌後</button><button class="mtab">リセット</button>
           <i class="fno" style="right:6px;top:-9px">2</i>
         </div>
       </div>
       <div class="mgroup pad">
         <ol class="legend">
           <li><b>画面を切り替えるタブ</b>:「カウント」は実戦中に押す画面、「ゾーン合算」は当選率を見る画面、「当選履歴」は当選の記録の一覧です。</li>
-          <li><b>モードのタブ</b>:通常・駆け抜け・上位後・リセットを選びます。数えるのはモードごとに別々です。駆け抜けとリセットは、600Gまでのゾーンだけが出ます(リセットには、引き戻しはありません)。</li>
+          <li><b>モードのタブ</b>:通常・駆け抜け・上位後・上位CZ❌後・リセットを選びます。数えるのはモードごとに別々です。駆け抜けとリセットは600Gまで、上位CZ❌後は250Gまでのゾーンだけが出ます(リセットには、引き戻しはありません)。</li>
         </ol>
         <p>右上の「☰」ボタンから、メニュー(設定・実戦履歴の保存・この説明書)を開きます。</p>
       </div>
@@ -693,7 +695,7 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
       <div class="mgroup pad">
         <ol class="legend">
           <li><b>当選したCZ</b>(任意):オポジットバトル、ファーストリコリス、直撃などから選びます。選択肢は、メニューの「設定」で変えられます。</li>
-          <li><b>AT当選 / AT非当選</b>(必須):そのCZでATに入ったかどうかです。AT当選が確定するゾーン(通常・上位後は850G、駆け抜け・リセットは600G)では、自動でAT当選になります。</li>
+          <li><b>AT当選 / AT非当選</b>(必須):そのCZでATに入ったかどうかです。AT当選が確定するゾーン(通常・上位後は850G、駆け抜け・リセットは600G、上位CZ❌後は250G)では、自動でAT当選になります。</li>
           <li><b>メモ</b>(任意):台の状況などを書けます。</li>
           <li><b>履歴に追加</b>:押すと記録されて、カウント画面に戻ります。やめるときは「キャンセル」です。G数は入れなくて大丈夫です。当選履歴には、ゾーン名(100Gや250Gなど)が載ります。</li>
         </ol>
@@ -963,11 +965,12 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
   function defaultZones(list){
     return (list || [100, 200, 300]).map(function(at){ return { id: uid() + at, at: at }; });
   }
-  // モード(通常・駆け抜け・上位後・リセット)。駆け抜けとリセットは600Gまでのゾーンしかない
+  // モード(通常・駆け抜け・上位後・上位CZ❌後・リセット)。駆け抜けとリセットは600G、上位CZ❌後は250Gまでのゾーンしかない
   var MODES = [
     { id: 'normal', label: '通常',     max: null, atAt: 850 },
     { id: 'run',    label: '駆け抜け', max: 600, atAt: 600 },
     { id: 'high',   label: '上位後',   max: null, atAt: 850 },
+    { id: 'hi2',    label: '上位CZ❌後', max: 250, atAt: 250 },   // 上位CZに失敗したあとは、250Gまでに必ず当たる(250はAT確定)
     { id: 'reset',  label: 'リセット', max: 600, noPull: true, atAt: 600 }   // リセットには引き戻し(0G)がない
   ];
   function modeOf(m){
