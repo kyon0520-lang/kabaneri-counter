@@ -699,19 +699,19 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
         </ol>
       </div>
 
-      <div class="mlabel">手前のゾーンは自動で「非当選」になります</div>
+      <div class="mlabel">当選率の数え方</div>
       <div class="mgroup pad">
-        <p>当選を押すと、その手前のゾーンは、自動で「非当選」として数えます。いちいち非当選を押さなくても大丈夫です。</p>
+        <p>当選率は、そのゾーンで<b>押した「当選」と「非当選」の回数だけ</b>で計算します。ほかのゾーンには、影響しません。</p>
         <div class="demo">
           <div class="dh">例:250Gゾーンで「当選」を押したとき</div>
-          <div class="dr"><span class="dz">引き戻し</span><span class="dt tm">非当選</span><em>自動</em></div>
-          <div class="dr"><span class="dz">100G</span><span class="dt tm">非当選</span><em>自動</em></div>
-          <div class="dr"><span class="dz">250G</span><span class="dt th">当選</span><em>押したゾーン</em></div>
-          <div class="dr off"><span class="dz">400G</span><span class="dt tn">数えない</span><em>まだ通っていない</em></div>
+          <div class="dr"><span class="dz">引き戻し</span><span class="dt tn">変わらない</span><em>押していない</em></div>
+          <div class="dr"><span class="dz">100G</span><span class="dt tn">変わらない</span><em>押していない</em></div>
+          <div class="dr"><span class="dz">250G</span><span class="dt th">当選 +1</span><em>押したゾーン</em></div>
+          <div class="dr"><span class="dz">400G</span><span class="dt tn">変わらない</span><em>押していない</em></div>
         </div>
         <ul>
-          <li>すでに自分で「非当選」を押したゾーンは、二重には数えません。</li>
-          <li>当選のたびに、数え方は最初のゾーンからやり直しになります。</li>
+          <li>通ったのに当たらなかったゾーンは、必ず「非当選」を押してください。押さないと、通過した回数に入らず、当選率が高く出ます。</li>
+          <li>自力当選は、ゾーンの当選率に影響しません。</li>
         </ul>
       </div>
 
@@ -1141,27 +1141,18 @@ html[data-theme="lyco"][data-skin="higan"] .brand svg{color:#fff} html[data-them
     if (e.key === 'Escape' && menuOpen){ if (menuPage === 'root') closeMenu(); else goPage(menuPage === 'sess' ? 'sessions' : 'root'); }
   });
 
-  // ゾーンごとの当選数・通過数。当選したゾーンの手前は、スルーとして数える
+  // ゾーンごとの当選数・通過数。押した「当選」「非当選」だけを、そのゾーンに数える(ほかのゾーンには影響しない)。
+  // 自力当選は、ゾーンの当選率に影響しない。
   function zoneStats(m, mdArg){
     var md = mdArg || modeOf(m);
     var st = zonesIn(m, md).map(function(z){ return { z: z, w: 0, x: 0 }; });
-    var seen = {};   // いまの周期で、非当選を自分で記録したゾーン
     m.trials.forEach(function(t){
-      if (tMode(t) !== md.id) return;
-      if (t.kind === 'miss'){
-        var mz = zoneOf(m, t.g);
-        st.forEach(function(r){ if (r.z === mz){ r.x++; seen[r.z.id] = true; } });
-        return;
-      }
-      // 自力当選はゾーン当選率に一切影響させない(手前のゾーンも数えない)。周期の区切りとしてだけ扱う。
-      if (t.kind === 'self'){ seen = {}; return; }
-      // ゾーン当選の位置より手前のゾーンは、非当選として数える。
-      // すでに非当選を自分で押したゾーンは、二重に数えない。当選したゾーン自体は当選だけ。
+      if (tMode(t) !== md.id || t.kind === 'self') return;
+      var tz = zoneOf(m, t.g);
       st.forEach(function(r){
-        if (zoneOf(m, t.g) === r.z) r.w++;
-        else if (zTo(m, r.z) <= t.g && !seen[r.z.id]) r.x++;
+        if (r.z !== tz) return;
+        if (t.kind === 'miss') r.x++; else r.w++;
       });
-      seen = {};
     });
     return st.map(function(r){
       var n = r.w + r.x;
