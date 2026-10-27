@@ -414,6 +414,21 @@ html[data-theme="lyco"] .mtab.on{color:#fff;border-color:#cfe6ff;text-shadow:0 1
 .mtabs .mrow.sheet .mtab,.mtabs .mrow.sub2 .mtab{font-size:11px}
 .mtabs .mtab.next{font-size:11px;opacity:.9}
 .mtabs.hidden{display:none}
+/* 初回のお知らせ(取扱説明書の案内) */
+.guide{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.guide.hidden{display:none}
+.guide .gcard{width:100%;max-width:340px;border-radius:20px;padding:22px 20px 18px;color:#10324a;text-align:center;border:2px solid #cfe6ff;box-shadow:0 12px 40px rgba(0,0,0,.5);background:linear-gradient(165deg,#e9fbf6 0%,#cdeef6 45%,#b9dcf4 100%);animation:gin .25s ease-out}
+@keyframes gin{from{transform:translateY(14px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.guide .gtag{display:inline-block;padding:3px 12px;border-radius:999px;background:#e2453c;color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em}
+.guide h3{margin:10px 0 6px;font-size:19px;font-weight:900;font-style:italic;color:#fff;--ol:#0b2f7a;-webkit-text-stroke:0;text-shadow:-1px -1px 0 var(--ol),1px -1px 0 var(--ol),-1px 1px 0 var(--ol),1px 1px 0 var(--ol),0 2px 0 var(--ol)}
+.guide p{margin:0 0 12px;font-size:13px;line-height:1.7}
+.guide ul{margin:0 0 14px;padding:0;list-style:none;text-align:left;font-size:12.5px;line-height:1.6}
+.guide li{padding:6px 10px;margin-bottom:5px;border-radius:10px;background:rgba(255,255,255,.65)}
+.guide li b{color:#1456c8}
+.guide .gbtn{display:block;width:100%;border:0;border-radius:999px;padding:13px 0;font:800 15px var(--gothic);font-style:italic;color:#fff;cursor:pointer}
+.guide .gopen{background:linear-gradient(180deg,#3a92ff,#1458cc);border:2px solid #cfe6ff;text-shadow:0 1px 0 rgba(0,40,110,.5)}
+.guide .glater{margin-top:8px;background:transparent;color:#3d6a86;font-size:13px;font-style:normal;font-weight:700}
+
 .flbl{font-size:11px;color:var(--sub);margin:0 0 4px;letter-spacing:.06em}
 .atbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .atbtns button{padding:14px 0;font-size:14px;font-weight:700;border-radius:4px;background:transparent}
@@ -648,6 +663,20 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
 
   </div>
   <div id="none" class="empty">読み込めませんでした。ページを再読み込みしてください</div>
+</div>
+<div class="guide hidden" id="guide" role="dialog" aria-modal="true" aria-labelledby="guideT">
+  <div class="gcard">
+    <span class="gtag">お知らせ</span>
+    <h3 id="guideT">はじめて使うにあたって</h3>
+    <p>このアプリには、図つきの取扱説明書があります。先に目を通してからご使用ください。</p>
+    <ul>
+      <li><b>画面の見かた</b> 各ボタンの意味を図で説明</li>
+      <li><b>使い方の流れ</b> モード選びから実戦の保存まで</li>
+      <li><b>困ったとき</b> 押し間違い・記録の直し方</li>
+    </ul>
+    <button class="gbtn gopen" id="guideOpen">取扱説明書を開く</button>
+    <button class="gbtn glater" id="guideLater">あとで見る</button>
+  </div>
 </div>
 <div class="menu hidden" id="menu" role="dialog" aria-modal="true" aria-label="メニュー">
  <div class="mwrap">
@@ -1199,6 +1228,13 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
   $('menuBtn').addEventListener('click', openMenu);
   $('menuClose').addEventListener('click', closeMenu);
   $('menuBack').addEventListener('click', function(){ goPage(menuPage === 'sess' ? 'sessions' : 'root'); });
+  // 初回のお知らせ。取扱説明書を開くか、あとで見るかを選ぶ(?guide=1 でいつでも出せる)
+  var GUIDE_KEY = 'zoneCounter.guide1';
+  function guideSeen(){ try { return !!localStorage.getItem(GUIDE_KEY); } catch (e) { return false; } }
+  function guideClose(){ $('guide').classList.add('hidden'); try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {} }
+  $('guideOpen').addEventListener('click', function(){ guideClose(); openMenu(); goPage('manual'); });
+  $('guideLater').addEventListener('click', guideClose);
+  if (/[?&]guide=1/.test(location.search) || !guideSeen()) $('guide').classList.remove('hidden');
   $('menu').addEventListener('click', function(e){
     var b = e.target.closest('button[data-go]'); if (b){ goPage(b.dataset.go); return; }
     var pb = e.target.closest('button[data-set]'); if (pb){ savePick = pb.dataset.set; renderSetPick(); return; }
