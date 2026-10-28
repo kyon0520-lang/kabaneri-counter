@@ -40773,5 +40773,164 @@
     "raw": "日本シリーズ→日本一決定戦"
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/28/090442",
+  "articleDate": "2026-10-28",
+  "targetDate": "2026-10-27",
+  "postDate": "2026-10-26",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2114684619803197585",
+  "title": "10月27日のマルハン新宿東宝ビルまとめ✏️「ファンキー2」を筆頭に全系×8機種+バラエティ2機種の全系特化日！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ファンキー2",
+    "matched": false,
+    "keyword": "お椀",
+    "chain": [
+     "お椀",
+     "ワン🐶"
+    ],
+    "raw": "お椀→ワン🐶",
+    "result": null
+   },
+   {
+    "machine": "ファンキー2",
+    "matched": false,
+    "keyword": "伝票に数量「1 1」",
+    "chain": [
+     "伝票に数量「1 1」",
+     "ワンワン🐶"
+    ],
+    "raw": "伝票に数量「1 1」→ワンワン🐶",
+    "result": null
+   },
+   {
+    "machine": "マギレコ",
+    "matched": false,
+    "keyword": "QRコード",
+    "chain": [
+     "QRコード",
+     "Q",
+     "9台"
+    ],
+    "raw": "QRコード→Q→9台",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "ラー油、しゅう油",
+    "chain": [
+     "ラー油、しゅう油",
+     "ラー油、醤油、アイラブユー"
+    ],
+    "raw": "ラー油、しゅう油→ラー油、醤油、アイラブユー",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "44分投稿",
+    "chain": [
+     "44分投稿",
+     "４台機種"
+    ],
+    "raw": "44分投稿→４台機種",
+    "result": null
+   },
+   {
+    "machine": "アレックス",
+    "matched": false,
+    "keyword": "しんぱち食堂",
+    "chain": [
+     "しんぱち食堂",
+     "家紋が羽"
+    ],
+    "raw": "しんぱち食堂→家紋が羽",
+    "result": null
+   },
+   {
+    "machine": "アレックス",
+    "matched": false,
+    "keyword": "44分投稿",
+    "chain": [
+     "44分投稿",
+     "4台機種"
+    ],
+    "raw": "44分投稿→4台機種",
+    "result": null
+   },
+   {
+    "machine": "Lディスク",
+    "matched": false,
+    "keyword": "キャラ誕生日",
+    "chain": [
+     "キャラ誕生日",
+     "シンディ"
+    ],
+    "raw": "キャラ誕生日→シンディ",
+    "result": null
+   },
+   {
+    "machine": "シェイク",
+    "matched": false,
+    "keyword": "サーモン",
+    "chain": [
+     "サーモン",
+     "鮭",
+     "SHAKE"
+    ],
+    "raw": "サーモン→鮭→SHAKE",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "魚",
+    "chain": [
+     "魚"
+    ],
+    "raw": "・魚",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "7にまつわる",
+    "chain": [
+     "7にまつわる",
+     "エウレカ"
+    ],
+    "raw": "7にまつわる→エウレカ",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "魚",
+    "chain": [
+     "魚",
+     "魚群(パロディ演出)"
+    ],
+    "raw": "魚→魚群(パロディ演出)",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "雨",
+    "chain": [
+     "雨",
+     "傘",
+     "アンブレラ"
+    ],
+    "raw": "雨→傘→アンブレラ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
