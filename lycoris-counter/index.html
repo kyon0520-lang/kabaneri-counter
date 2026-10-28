@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#2fc0d8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-title" content="リコリコカウンター">
+<link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <link rel="icon" type="image/png" href="./icon-192.png">
 <script>
@@ -1228,6 +1229,8 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
   $('menuBtn').addEventListener('click', openMenu);
   $('menuClose').addEventListener('click', closeMenu);
   $('menuBack').addEventListener('click', function(){ goPage(menuPage === 'sess' ? 'sessions' : 'root'); });
+  // ホーム画面に追加できるように、サービスワーカーを登録する(オフラインでも起動できる)
+  if ('serviceWorker' in navigator) window.addEventListener('load', function(){ navigator.serviceWorker.register('./sw.js').catch(function(){}); });
   // 初回のお知らせ。取扱説明書を開くか、あとで見るかを選ぶ(?guide=1 でいつでも出せる)
   var GUIDE_KEY = 'zoneCounter.guide1';
   function guideSeen(){ try { return !!localStorage.getItem(GUIDE_KEY); } catch (e) { return false; } }
