@@ -40932,5 +40932,104 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/29/080925",
+  "articleDate": "2026-10-29",
+  "targetDate": "2026-10-28",
+  "postDate": "2026-10-27",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2115043470469632170",
+  "title": "10月28日のマルハン新宿東宝ビルまとめ✏️全系×複数に加え、「マイジャグ」も扱いが◎",
+  "results": [
+   {
+    "machine": "北斗（1台稼働停止中）",
+    "plus": 7,
+    "total": 8,
+    "avg": 2888
+   },
+   {
+    "machine": "まほあこ",
+    "plus": 5,
+    "total": 6,
+    "avg": 6683
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "北斗",
+    "matched": false,
+    "keyword": "特定保健指導",
+    "chain": [
+     "特定保健指導",
+     "メタボリックシンドローム",
+     "シン"
+    ],
+    "raw": "特定保健指導→メタボリックシンドローム→シン",
+    "result": null
+   },
+   {
+    "machine": "北斗",
+    "matched": false,
+    "keyword": "ショック",
+    "chain": [
+     "ショック",
+     "YouはShock",
+     "愛をとりもどせ！！"
+    ],
+    "raw": "ショック→YouはShock→愛をとりもどせ！！",
+    "result": null
+   },
+   {
+    "machine": "まほあこ",
+    "matched": true,
+    "keyword": "アニメ化",
+    "chain": [
+     "アニメ化",
+     "現在アニメ再放送中"
+    ],
+    "raw": "アニメ化→現在アニメ再放送中",
+    "result": {
+     "plus": 5,
+     "total": 6,
+     "avg": 6683
+    }
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "キャラ誕生日",
+    "chain": [
+     "キャラ誕生日"
+    ],
+    "raw": "・キャラ誕生日",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "カグラバチ",
+    "chain": [
+     "カグラバチ",
+     "妖刀",
+     "魔剣"
+    ],
+    "raw": "カグラバチ→妖刀→魔剣",
+    "result": null
+   },
+   {
+    "machine": "とんスキ",
+    "matched": false,
+    "keyword": "少し時間をおいて見に行ったら",
+    "chain": [
+     "少し時間をおいて見に行ったら",
+     "放浪"
+    ],
+    "raw": "少し時間をおいて見に行ったら→放浪",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
