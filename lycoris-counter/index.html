@@ -1237,7 +1237,8 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
   function guideClose(){ $('guide').classList.add('hidden'); try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {} }
   $('guideOpen').addEventListener('click', function(){ guideClose(); openMenu(); goPage('manual'); });
   $('guideLater').addEventListener('click', guideClose);
-  if (/[?&]guide=1/.test(location.search) || !guideSeen()) $('guide').classList.remove('hidden');
+  // 見せた時点で「見た」にする(ボタンを押さずにアプリを閉じても、次からは出さない)
+  if (/[?&]guide=1/.test(location.search) || !guideSeen()){ $('guide').classList.remove('hidden'); try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {} }
   $('menu').addEventListener('click', function(e){
     var b = e.target.closest('button[data-go]'); if (b){ goPage(b.dataset.go); return; }
     var pb = e.target.closest('button[data-set]'); if (pb){ savePick = pb.dataset.set; renderSetPick(); return; }
