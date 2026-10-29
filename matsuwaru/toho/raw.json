@@ -41031,5 +41031,120 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/30/074156",
+  "articleDate": "2026-10-30",
+  "targetDate": "2026-10-29",
+  "postDate": "2026-10-28",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2115405792337907854",
+  "title": "10月29日のマルハン新宿東宝ビルまとめ✏️リコリコが全系！",
+  "results": [
+   {
+    "machine": "リコリコ",
+    "plus": 15,
+    "total": 19,
+    "avg": 4111
+   },
+   {
+    "machine": "スタハナ",
+    "plus": 3,
+    "total": 3,
+    "avg": 3233
+   },
+   {
+    "machine": "アバサー",
+    "plus": 2,
+    "total": 2,
+    "avg": 1550
+   },
+   {
+    "machine": "Sエウレカ",
+    "plus": 2,
+    "total": 2,
+    "avg": 3200
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "リコリコ",
+    "matched": true,
+    "keyword": "木枯らし1号",
+    "chain": [
+     "木枯らし1号",
+     "ファースト",
+     "ファーストリコリス"
+    ],
+    "raw": "木枯らし1号→ファースト→ファーストリコリス",
+    "result": {
+     "plus": 15,
+     "total": 19,
+     "avg": 4111
+    }
+   },
+   {
+    "machine": "スタハナ",
+    "matched": true,
+    "keyword": "生姜焼き",
+    "chain": [
+     "生姜焼き",
+     "玉ねぎ",
+     "オニオン"
+    ],
+    "raw": "生姜焼き→玉ねぎ→オニオン",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 3233
+    }
+   },
+   {
+    "machine": "アバサー",
+    "matched": true,
+    "keyword": "29日",
+    "chain": [
+     "29日",
+     "ぷくぅの日"
+    ],
+    "raw": "29日→ぷくぅの日",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 1550
+    }
+   },
+   {
+    "machine": "Sエウレカ",
+    "matched": true,
+    "keyword": "年明け",
+    "chain": [
+     "年明け",
+     "2027年",
+     "７"
+    ],
+    "raw": "年明け→2027年→７",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 3200
+    }
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "GABAN",
+    "chain": [
+     "GABAN",
+     "宇宙刑事ギャバン",
+     "刑事",
+     "警察"
+    ],
+    "raw": "GABAN→宇宙刑事ギャバン→刑事→警察",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
