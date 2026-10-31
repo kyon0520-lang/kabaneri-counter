@@ -41146,5 +41146,98 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/10/31/082044",
+  "articleDate": "2026-10-31",
+  "targetDate": "2026-10-30",
+  "postDate": "2026-10-29",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2115768238248431794",
+  "title": "10月30日のマルハン新宿東宝ビルまとめ✏️0のつく日でキンハナ筆頭に仕掛けあり！",
+  "results": [
+   {
+    "machine": "キンハナ",
+    "plus": 13,
+    "total": 14,
+    "avg": 2671
+   },
+   {
+    "machine": "このすば",
+    "plus": 3,
+    "total": 3,
+    "avg": 2033
+   },
+   {
+    "machine": "DMC5",
+    "plus": 2,
+    "total": 3,
+    "avg": 867
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "キンハナ",
+    "matched": true,
+    "keyword": "キングマック来店",
+    "chain": [
+     "キングマック来店"
+    ],
+    "raw": "・キングマック来店",
+    "result": {
+     "plus": 13,
+     "total": 14,
+     "avg": 2671
+    }
+   },
+   {
+    "machine": "キンハナ",
+    "matched": true,
+    "keyword": "金曜日",
+    "chain": [
+     "金曜日",
+     "キンハナ"
+    ],
+    "raw": "金曜日→キンハナ",
+    "result": {
+     "plus": 13,
+     "total": 14,
+     "avg": 2671
+    }
+   },
+   {
+    "machine": "このすば",
+    "matched": true,
+    "keyword": "キャベツ",
+    "chain": [
+     "キャベツ",
+     "このすば"
+    ],
+    "raw": "キャベツ→このすば",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 2033
+    }
+   },
+   {
+    "machine": "DMC5",
+    "matched": true,
+    "keyword": "お肉2個、じゃがいも2個",
+    "chain": [
+     "お肉2個、じゃがいも2個",
+     "ニコ",
+     "ニコズレポート"
+    ],
+    "raw": "お肉2個、じゃがいも2個→ニコ→ニコズレポート",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 867
+    }
+   }
+  ],
+  "unassigned": []
  }
 ]
