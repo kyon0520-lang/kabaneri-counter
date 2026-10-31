@@ -41239,5 +41239,198 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/01/072525",
+  "articleDate": "2026-11-01",
+  "targetDate": "2026-10-31",
+  "postDate": "2026-10-30",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2116130572976394525",
+  "title": "10月31日のマルハン新宿東宝ビルまとめ✏️ネオアイムEXを筆頭に全系特化な一日！バラエティも複数仕掛け！",
+  "results": [
+   {
+    "machine": "ネオアイムEX",
+    "plus": 33,
+    "total": 40,
+    "avg": 1788
+   },
+   {
+    "machine": "攻殻機動隊",
+    "plus": 4,
+    "total": 5,
+    "avg": 2340
+   },
+   {
+    "machine": "パリピ孔明",
+    "plus": 3,
+    "total": 4,
+    "avg": 1350
+   },
+   {
+    "machine": "南国育ち",
+    "plus": 2,
+    "total": 3,
+    "avg": 1200
+   },
+   {
+    "machine": "エウレカ",
+    "plus": 1,
+    "total": 2,
+    "avg": -400
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ネオアイムEX",
+    "matched": true,
+    "keyword": "10/31",
+    "chain": [
+     "10/31",
+     "10文字のサイ"
+    ],
+    "raw": "10/31→10文字のサイ",
+    "result": {
+     "plus": 33,
+     "total": 40,
+     "avg": 1788
+    }
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": true,
+    "keyword": "おばけのシール",
+    "chain": [
+     "おばけのシール",
+     "ゴースト",
+     "囁くのよ私のゴーストが"
+    ],
+    "raw": "おばけのシール→ゴースト→囁くのよ私のゴーストが",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2340
+    }
+   },
+   {
+    "machine": "パリピ孔明",
+    "matched": true,
+    "keyword": "惣菜三品",
+    "chain": [
+     "惣菜三品",
+     "三国志"
+    ],
+    "raw": "惣菜三品→三国志",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 1350
+    }
+   },
+   {
+    "machine": "パリピ孔明",
+    "matched": true,
+    "keyword": "ハロウィン",
+    "chain": [
+     "ハロウィン",
+     "原作の始まり",
+     "渋谷ハロウィン"
+    ],
+    "raw": "ハロウィン→原作の始まり→渋谷ハロウィン",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 1350
+    }
+   },
+   {
+    "machine": "南国育ち",
+    "matched": true,
+    "keyword": "パトカー",
+    "chain": [
+     "パトカー",
+     "パトランプ"
+    ],
+    "raw": "パトカー→パトランプ",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 1200
+    }
+   },
+   {
+    "machine": "エウレカ",
+    "matched": true,
+    "keyword": "二転三転コンパス",
+    "chain": [
+     "二転三転コンパス",
+     "サミー機種2台"
+    ],
+    "raw": "二転三転コンパス→サミー機種2台",
+    "result": {
+     "plus": 1,
+     "total": 2,
+     "avg": -400
+    }
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "10/31",
+    "chain": [
+     "10/31",
+     "花園ゆりね誕生日"
+    ],
+    "raw": "10/31→花園ゆりね誕生日",
+    "result": null
+   },
+   {
+    "machine": "北斗転生2",
+    "matched": false,
+    "keyword": "二転三転",
+    "chain": [
+     "二転三転",
+     "転生"
+    ],
+    "raw": "二転三転→転生",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "蒸し鶏",
+    "chain": [
+     "蒸し鶏",
+     "鳥"
+    ],
+    "raw": "蒸し鶏→鳥",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "POLICE",
+    "chain": [
+     "POLICE",
+     "警察署"
+    ],
+    "raw": "POLICE→警察署",
+    "result": null
+   },
+   {
+    "machine": "タクトオーパス",
+    "matched": false,
+    "keyword": "コンパス",
+    "chain": [
+     "コンパス",
+     "パス",
+     "オーパス"
+    ],
+    "raw": "コンパス→パス→オーパス",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
