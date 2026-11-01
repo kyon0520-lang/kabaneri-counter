@@ -441,6 +441,13 @@ html[data-theme="lyco"] .mtab.on{color:#fff;border-color:#cfe6ff;text-shadow:0 1
 .guide .gopen{background:linear-gradient(180deg,#3a92ff,#1458cc);border:2px solid #cfe6ff;text-shadow:0 1px 0 rgba(0,40,110,.5)}
 .guide .glater{margin-top:8px;background:transparent;color:#3d6a86;font-size:13px;font-style:normal;font-weight:700}
 
+.ask{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.55)}
+.ask.hidden{display:none}
+.ask .acard{width:100%;max-width:320px;border-radius:16px;padding:20px 18px 16px;background:#16222e;color:#fff;border:1px solid #3a4c5e;box-shadow:0 12px 40px rgba(0,0,0,.5);text-align:center}
+.ask p{margin:0 0 16px;font-size:14px;line-height:1.7;white-space:pre-line}
+.ask .arow{display:flex;gap:10px}
+.ask button{flex:1;border:0;border-radius:999px;padding:12px 0;font:700 14px var(--gothic);color:#fff;background:#3a4c5e;cursor:pointer}
+.ask button.aok{background:#d8453c}
 .flbl{font-size:11px;color:var(--sub);margin:0 0 4px;letter-spacing:.06em}
 .atbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .atbtns button{padding:14px 0;font-size:14px;font-weight:700;border-radius:4px;background:transparent}
@@ -694,6 +701,7 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
     <button class="gbtn glater" id="guideLater">あとで見る</button>
   </div>
 </div>
+<div class="ask hidden" id="ask" role="alertdialog" aria-modal="true"><div class="acard"><p id="askMsg"></p><div class="arow"><button id="askNo">キャンセル</button><button class="aok" id="askYes">はい</button></div></div></div>
 <div class="menu hidden" id="menu" role="dialog" aria-modal="true" aria-label="メニュー">
  <div class="mwrap">
   <div class="mhead"><button id="menuBack" aria-label="戻る">‹</button><span class="mt" id="menuTitle">メニュー</span><button id="menuClose" aria-label="閉じる">✕</button></div>
@@ -1167,9 +1175,11 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
     var id = b.closest('.cv').dataset.c, c = m.convs.filter(function(x){ return x.id === id; })[0];
     if (!c) return;
     if (b.dataset.x){
-      if (!confirm('「' + c.label + '」を削除しますか?' + (c.seq.length ? '記録も消えます。' : ''))) return;
-      m.convs = m.convs.filter(function(x){ return x !== c; });
-      save(); render(); return;
+      ask('「' + c.label + '」を削除しますか?' + (c.seq.length ? '記録も消えます。' : ''), function(){
+        m.convs = m.convs.filter(function(x){ return x !== c; });
+        save(); render();
+      });
+      return;
     }
     if (b.dataset.u){ c.seq.pop(); }
     else if (b.dataset.r){ c.seq.push(+b.dataset.r); if (navigator.vibrate) navigator.vibrate(10); }
@@ -1202,9 +1212,11 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
     var id = b.closest('.bell').dataset.r, r = m.roles.filter(function(x){ return x.id === id; })[0];
     if (!r) return;
     if (b.dataset.x){
-      if (!confirm('「' + r.label + '」を削除しますか?' + (r.n ? '回数も消えます。' : ''))) return;
-      m.roles = m.roles.filter(function(x){ return x !== r; });
-      save(); render(); return;
+      ask('「' + r.label + '」を削除しますか?' + (r.n ? '回数も消えます。' : ''), function(){
+        m.roles = m.roles.filter(function(x){ return x !== r; });
+        save(); render();
+      });
+      return;
     }
     if (b.dataset.mode){ roleMode[id] = +b.dataset.mode; }
     else if (b.dataset.count){
@@ -1253,6 +1265,21 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
   // 初回のお知らせ。取扱説明書を開くか、あとで見るかを選ぶ(?guide=1 でいつでも出せる)
   var GUIDE_KEY = 'zoneCounter.guide1';
   function guideSeen(){ try { return !!localStorage.getItem(GUIDE_KEY); } catch (e) { return false; } }
+  // confirm()は表示している間ずっとメインスレッドを止め、その待ち時間が「操作の反応が遅い」と計測されるため、画面内の確認ダイアログで代用する
+  var askCb = null, askNo = null;
+  function ask(msg, yes, no, yesLabel, noLabel){
+    askCb = yes; askNo = no || null;
+    $('askMsg').textContent = msg;
+    $('askYes').textContent = yesLabel || 'はい'; $('askNo').textContent = noLabel || 'キャンセル';
+    $('ask').classList.remove('hidden');
+  }
+  function askDone(ok){
+    var f = ok ? askCb : askNo; askCb = askNo = null;
+    $('ask').classList.add('hidden');
+    if (f) f();
+  }
+  $('askYes').addEventListener('click', function(){ askDone(true); });
+  $('askNo').addEventListener('click', function(){ askDone(false); });
   function guideClose(){ $('guide').classList.add('hidden'); try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {} }
   $('guideOpen').addEventListener('click', function(){ guideClose(); openMenu(); goPage('manual'); });
   $('guideLater').addEventListener('click', guideClose);
@@ -1264,9 +1291,11 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
     var sb = e.target.closest('button[data-sess]'); if (sb){ sessId = sb.dataset.sess; goPage('sess'); return; }
     var db = e.target.closest('button[data-delsess]');
     if (db){
-      var m = cur(); if (!m || !confirm('この実戦履歴を削除しますか?')) return;
-      m.sessions = m.sessions.filter(function(x){ return x.id !== db.dataset.delsess; });
-      save(); goPage('sessions');
+      var m = cur(); if (!m) return;
+      ask('この実戦履歴を削除しますか?', function(){
+        m.sessions = m.sessions.filter(function(x){ return x.id !== db.dataset.delsess; });
+        save(); goPage('sessions');
+      });
     }
   });
   $('saveSess').addEventListener('click', openSaveSession);
@@ -1533,9 +1562,8 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
     }));
     snap.id = uid(); snap.at = Date.now(); snap.setting = savePick; snap.memo = $('saveMemo').value.trim();
     m.sessions.push(snap);
-    var reset = confirm('実戦履歴に保存しました。\n続けて、今のカウントをリセットしますか?\n(「キャンセル」を押すと、今のカウントは残ります)');
-    if (reset) resetCounts(m);
-    save(); closeMenu(); render();
+    var fin = function(){ save(); closeMenu(); render(); };
+    ask('実戦履歴に保存しました。\n続けて、今のカウントをリセットしますか?', function(){ resetCounts(m); fin(); }, fin, 'リセットする', '残す');
   }
   var sessId = null;
   function renderSessList(m){
@@ -1767,10 +1795,12 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
   });
   $('history').addEventListener('click', function(e){
     var b = e.target.closest('button[data-del]'); if (!b) return;
-    if (!confirm('この記録を削除しますか?')) return;
-    var m = cur();
-    m.trials = m.trials.filter(function(t){ return t.id !== b.dataset.del; });
-    save(); render();
+    var did = b.dataset.del;
+    ask('この記録を削除しますか?', function(){
+      var m = cur();
+      m.trials = m.trials.filter(function(t){ return t.id !== did; });
+      save(); render();
+    });
   });
 
   $('addZone').addEventListener('click', function(){
@@ -1794,9 +1824,9 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
   $('roleEdit').addEventListener('click', function(e){
     var b = e.target.closest('button[data-dr]'); if (!b) return;
     var m = cur(), r = m.roles.filter(function(x){ return x.id === b.dataset.dr; })[0];
-    if (!r || (r.n && !confirm('「' + r.label + '」とその回数を削除しますか?'))) return;
-    m.roles = m.roles.filter(function(x){ return x !== r; });
-    save(); render();
+    if (!r) return;
+    var delR = function(){ m.roles = m.roles.filter(function(x){ return x !== r; }); save(); render(); };
+    if (r.n) ask('「' + r.label + '」とその回数を削除しますか?', delR); else delR();
   });
 
   $('addConv').addEventListener('click', function(){
@@ -1813,9 +1843,9 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
   $('convEdit').addEventListener('click', function(e){
     var b = e.target.closest('button[data-dc]'); if (!b) return;
     var m = cur(), c = m.convs.filter(function(x){ return x.id === b.dataset.dc; })[0];
-    if (!c || (c.seq.length && !confirm('「' + c.label + '」とその記録を削除しますか?'))) return;
-    m.convs = m.convs.filter(function(x){ return x !== c; });
-    save(); render();
+    if (!c) return;
+    var delC = function(){ m.convs = m.convs.filter(function(x){ return x !== c; }); save(); render(); };
+    if (c.seq.length) ask('「' + c.label + '」とその記録を削除しますか?', delC); else delC();
   });
 
   $('addTag').addEventListener('click', function(){
@@ -1867,7 +1897,7 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
 
   $('reset').addEventListener('click', function(){
     var m = cur(); if (!m) return;
-    if (confirm('「' + m.name + '」の記録をすべて消しますか?')){ resetCounts(m); closeMenu(); save(); render(); }
+    ask('「' + m.name + '」の記録をすべて消しますか?', function(){ resetCounts(m); closeMenu(); save(); render(); });
   });
 
   render();
