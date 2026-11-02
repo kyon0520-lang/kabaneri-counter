@@ -2026,7 +2026,7 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
     if (!env) { alert('書き出せる記録がありません。'); return; }
     var url = URL.createObjectURL(new Blob([env], { type: 'application/json' }));
     var a = document.createElement('a');
-    a.href = url; a.download = 'みんなのスロット記録-' + stamp() + '.mnslot';
+    a.href = url; a.download = 'リコリコカウンター記録-' + stamp() + '.mnslot';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
   }
