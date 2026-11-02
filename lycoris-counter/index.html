@@ -2000,5 +2000,59 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
 ['gesturestart','gesturechange','gestureend'].forEach(function(n){ document.addEventListener(n, function(e){ e.preventDefault(); }, { passive: false }); });
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "c71c6cecd8e04f668c0d4b7e50d706da"}'></script>
+<!-- web-migration:start -->
+<script>
+/* ウェブ版: 記録をファイルに書き出す（先行公開版）。メニューの「データ」の下に「バックアップ」を足す。
+   ・記録を書き出す（ファイル）: .mnslot をダウンロード。アプリ版の「記録を読み込む」で取り込める
+   形式（封筒）: { app: 'minnanoslot-lycoris', version: 1, exportedAt, state: <記録そのもの> }
+   「アプリに移行する」「記録をコピー」は、アプリの公開後に、web-migration-block.html で差し替える */
+(function(){
+  var KEY = 'zoneCounter.v2', APP = 'minnanoslot-lycoris';
+  function stateText(){
+    try {
+      var s = localStorage.getItem(KEY);
+      var o = s && JSON.parse(s);
+      return (o && Array.isArray(o.machines) && o.machines.length) ? s : null;
+    } catch (e) { return null; }
+  }
+  function envelope(){
+    var s = stateText(); if (!s) return null;
+    return JSON.stringify({ app: APP, version: 1, exportedAt: new Date().toISOString(), state: JSON.parse(s) });
+  }
+  function stamp(){ var d = new Date(), p = function(n){ return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+
+  function exportFile(){
+    var env = envelope();
+    if (!env) { alert('書き出せる記録がありません。'); return; }
+    var url = URL.createObjectURL(new Blob([env], { type: 'application/json' }));
+    var a = document.createElement('a');
+    a.href = url; a.download = 'みんなのスロット記録-' + stamp() + '.mnslot';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  }
+
+  // 検査・テスト用
+  window.__webMigration = { envelope: envelope };
+
+  // メニュー: 「データ」の下に足す
+  var root = document.querySelector('#menu [data-page="root"]');
+  if (!root) return;
+  var labels = root.querySelectorAll('.mlabel'), data = null;
+  for (var i = 0; i < labels.length; i++) if (labels[i].textContent.trim() === 'データ') { data = labels[i]; break; }
+  if (!data) return;
+  var group = data.nextElementSibling;           // 「データ」の項目のまとまり
+  var anchor = group ? group.nextSibling : null;
+  var wrap = document.createElement('div');
+  wrap.innerHTML = '<div class="mlabel">バックアップ</div>'
+    + '<p class="mdesc">いまの記録を、ファイルに書き出して保存できます。</p>'
+    + '<div class="mgroup">'
+    + '<button type="button" class="mrow" id="mnFile"><span class="mname">記録を書き出す（ファイル）</span></button>'
+    + '</div>';
+  var parent = data.parentNode;
+  while (wrap.firstChild) parent.insertBefore(wrap.firstChild, anchor);
+  document.getElementById('mnFile').addEventListener('click', exportFile);
+})();
+</script>
+<!-- web-migration:end -->
 </body>
 </html>
