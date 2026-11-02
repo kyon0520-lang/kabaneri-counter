@@ -41432,5 +41432,319 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "東京大戦"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/02/090626",
+  "articleDate": "2026-11-02",
+  "targetDate": "2026-11-01",
+  "postDate": "2026-10-31",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2116492988922868042",
+  "title": "11月1日のマルハン新宿東宝ビルまとめ✏️ 大都機種&amp;エンターライズ機種丸ごとのド派手な仕掛け！",
+  "results": [
+   {
+    "machine": "SAO2",
+    "plus": 8,
+    "total": 12,
+    "avg": 4933
+   },
+   {
+    "machine": "真打吉宗",
+    "plus": 9,
+    "total": 12,
+    "avg": 7225
+   },
+   {
+    "machine": "ワールドダイスター",
+    "plus": 3,
+    "total": 4,
+    "avg": 4925
+   },
+   {
+    "machine": "SAO",
+    "plus": 3,
+    "total": 3,
+    "avg": 4333
+   },
+   {
+    "machine": "いざ番長",
+    "plus": 2,
+    "total": 3,
+    "avg": 6567
+   },
+   {
+    "machine": "シェイク",
+    "plus": 1,
+    "total": 3,
+    "avg": -267
+   },
+   {
+    "machine": "L鏡",
+    "plus": 2,
+    "total": 3,
+    "avg": 2500
+   },
+   {
+    "machine": "モンハンサンブレイク",
+    "plus": 9,
+    "total": 10,
+    "avg": 2840
+   },
+   {
+    "machine": "モンハンライズ",
+    "plus": 8,
+    "total": 8,
+    "avg": 9250
+   },
+   {
+    "machine": "DMC5",
+    "plus": 0,
+    "total": 3,
+    "avg": -567
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "大都機種",
+    "matched": false,
+    "keyword": "東京大戦",
+    "chain": [
+     "東京大戦",
+     "東京",
+     "大都会"
+    ],
+    "raw": "東京大戦→東京→大都会",
+    "result": null
+   },
+   {
+    "machine": "SAO2",
+    "matched": true,
+    "keyword": "ポスターのキャラがガン構えてる",
+    "chain": [
+     "ポスターのキャラがガン構えてる"
+    ],
+    "raw": "・ポスターのキャラがガン構えてる",
+    "result": {
+     "plus": 8,
+     "total": 12,
+     "avg": 4933
+    }
+   },
+   {
+    "machine": "真打吉宗",
+    "matched": true,
+    "keyword": "東京大戦",
+    "chain": [
+     "東京大戦",
+     "戦",
+     "吉宗"
+    ],
+    "raw": "東京大戦→戦→吉宗",
+    "result": {
+     "plus": 9,
+     "total": 12,
+     "avg": 7225
+    }
+   },
+   {
+    "machine": "ワールドダイスター",
+    "matched": true,
+    "keyword": "スタートダッシュ",
+    "chain": [
+     "スタートダッシュ",
+     "スター",
+     "ダイスター"
+    ],
+    "raw": "スタートダッシュ→スター→ダイスター",
+    "result": {
+     "plus": 3,
+     "total": 4,
+     "avg": 4925
+    }
+   },
+   {
+    "machine": "SAO",
+    "matched": true,
+    "keyword": "ポンデリング",
+    "chain": [
+     "ポンデリング",
+     "リンクスタート"
+    ],
+    "raw": "ポンデリング→リンクスタート",
+    "result": {
+     "plus": 3,
+     "total": 3,
+     "avg": 4333
+    }
+   },
+   {
+    "machine": "いざ番長",
+    "matched": true,
+    "keyword": "歌舞伎町",
+    "chain": [
+     "歌舞伎町",
+     "番長歌舞伎"
+    ],
+    "raw": "歌舞伎町→番長歌舞伎",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 6567
+    }
+   },
+   {
+    "machine": "シェイク",
+    "matched": true,
+    "keyword": "おやつ",
+    "chain": [
+     "おやつ",
+     "さぼり",
+     "サボハニ"
+    ],
+    "raw": "おやつ→さぼり→サボハニ",
+    "result": {
+     "plus": 1,
+     "total": 3,
+     "avg": -267
+    }
+   },
+   {
+    "machine": "L鏡",
+    "matched": true,
+    "keyword": "スター",
+    "chain": [
+     "スター",
+     "星条旗",
+     "サラリーマン鏡"
+    ],
+    "raw": "スター→星条旗→サラリーマン鏡",
+    "result": {
+     "plus": 2,
+     "total": 3,
+     "avg": 2500
+    }
+   },
+   {
+    "machine": "リゼロ",
+    "matched": false,
+    "keyword": "無性に",
+    "chain": [
+     "無性に",
+     "無",
+     "ゼロ"
+    ],
+    "raw": "無性に→無→ゼロ",
+    "result": null
+   },
+   {
+    "machine": "吉宗",
+    "matched": false,
+    "keyword": "東京大戦",
+    "chain": [
+     "東京大戦",
+     "戦",
+     "吉宗"
+    ],
+    "raw": "東京大戦→戦→吉宗",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "ハロウィン",
+    "chain": [
+     "ハロウィン",
+     "ゾンビ"
+    ],
+    "raw": "ハロウィン→ゾンビ",
+    "result": null
+   },
+   {
+    "machine": "番長ゼロ",
+    "matched": false,
+    "keyword": "ドーナツ",
+    "chain": [
+     "ドーナツ",
+     "ゼロ",
+     "番ゼロ"
+    ],
+    "raw": "ドーナツ→ゼロ→番ゼロ",
+    "result": null
+   },
+   {
+    "machine": "エンターライズ機種",
+    "matched": false,
+    "keyword": "レオ",
+    "chain": [
+     "レオ",
+     "西武ライオンズ",
+     "エンタライオン"
+    ],
+    "raw": "レオ→西武ライオンズ→エンタライオン",
+    "result": null
+   },
+   {
+    "machine": "モンハンサンブレイク",
+    "matched": true,
+    "keyword": "おやつ",
+    "chain": [
+     "おやつ",
+     "ブレイクタイム",
+     "サンブレイク"
+    ],
+    "raw": "おやつ→ブレイクタイム→サンブレイク",
+    "result": {
+     "plus": 9,
+     "total": 10,
+     "avg": 2840
+    }
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": true,
+    "keyword": "ぽこぽこ",
+    "chain": [
+     "ぽこぽこ",
+     "ぽこあポケモン",
+     "モンスター"
+    ],
+    "raw": "ぽこぽこ→ぽこあポケモン→モンスター",
+    "result": {
+     "plus": 8,
+     "total": 8,
+     "avg": 9250
+    }
+   },
+   {
+    "machine": "DMC5",
+    "matched": true,
+    "keyword": "ドーナツ3つ",
+    "chain": [
+     "ドーナツ3つ",
+     "3台機種"
+    ],
+    "raw": "ドーナツ3つ→3台機種",
+    "result": {
+     "plus": 0,
+     "total": 3,
+     "avg": -567
+    }
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "ハロウィン",
+    "chain": [
+     "ハロウィン",
+     "ゾンビ"
+    ],
+    "raw": "ハロウィン→ゾンビ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
