@@ -41746,5 +41746,171 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/03/073344",
+  "articleDate": "2026-11-03",
+  "targetDate": "2026-11-02",
+  "postDate": "2026-11-01",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2116855336942575809",
+  "title": "11月2日のマルハン新宿東宝ビルまとめ✏️入替初日はリバイバル導入&amp;減台機種に注目！",
+  "results": [
+   {
+    "machine": "ハッピーVⅢ",
+    "plus": 6,
+    "total": 7,
+    "avg": 2571
+   },
+   {
+    "machine": "スマスロ北斗",
+    "plus": 5,
+    "total": 5,
+    "avg": 3860
+   },
+   {
+    "machine": "防振り",
+    "plus": 4,
+    "total": 5,
+    "avg": 3260
+   },
+   {
+    "machine": "Sこのすば",
+    "plus": 2,
+    "total": 2,
+    "avg": 500
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "ハッピーVⅢ",
+    "matched": true,
+    "keyword": "テールスープ",
+    "chain": [
+     "テールスープ",
+     "おっぽ"
+    ],
+    "raw": "テールスープ→おっぽ",
+    "result": {
+     "plus": 6,
+     "total": 7,
+     "avg": 2571
+    }
+   },
+   {
+    "machine": "ハッピーVⅢ",
+    "matched": true,
+    "keyword": "肉7枚",
+    "chain": [
+     "肉7枚",
+     "7台機種"
+    ],
+    "raw": "肉7枚→7台機種",
+    "result": {
+     "plus": 6,
+     "total": 7,
+     "avg": 2571
+    }
+   },
+   {
+    "machine": "スマスロ北斗",
+    "matched": true,
+    "keyword": "ケガしないよう",
+    "chain": [
+     "ケガしないよう",
+     "転ばないよう",
+     "リン"
+    ],
+    "raw": "ケガしないよう→転ばないよう→リン",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3860
+    }
+   },
+   {
+    "machine": "スマスロ北斗",
+    "matched": true,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種"
+    ],
+    "raw": "・減台機種",
+    "result": {
+     "plus": 5,
+     "total": 5,
+     "avg": 3860
+    }
+   },
+   {
+    "machine": "防振り",
+    "matched": true,
+    "keyword": "がんこ",
+    "chain": [
+     "がんこ",
+     "メープル",
+     "防振り"
+    ],
+    "raw": "がんこ→メープル→防振り",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 3260
+    }
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": true,
+    "keyword": "むぎめしにとろろ",
+    "chain": [
+     "むぎめしにとろろ",
+     "ウィズ"
+    ],
+    "raw": "むぎめしにとろろ→ウィズ",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 500
+    }
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": true,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種"
+    ],
+    "raw": "・減台機種",
+    "result": {
+     "plus": 2,
+     "total": 2,
+     "avg": 500
+    }
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "海苔",
+    "chain": [
+     "海苔",
+     "海藻",
+     "回想"
+    ],
+    "raw": "海苔→海藻→回想",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "復活導入記念",
+    "chain": [
+     "復活導入記念"
+    ],
+    "raw": "・復活導入記念",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
