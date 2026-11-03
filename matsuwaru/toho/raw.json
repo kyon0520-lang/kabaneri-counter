@@ -41912,5 +41912,134 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/04/071755",
+  "articleDate": "2026-11-04",
+  "targetDate": "2026-11-03",
+  "postDate": "2026-11-02",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2117217709570379777",
+  "title": "11月3日のマルハン新宿東宝ビルまとめ✏️モンキーV（18台）を含む全系+3台並び！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "モンキーV",
+    "matched": false,
+    "keyword": "豚山",
+    "chain": [
+     "豚山",
+     "山佐"
+    ],
+    "raw": "豚山→山佐",
+    "result": null
+   },
+   {
+    "machine": "モンキーV",
+    "matched": false,
+    "keyword": "スタートダッシュ",
+    "chain": [
+     "スタートダッシュ",
+     "フライングスタート(競艇)"
+    ],
+    "raw": "スタートダッシュ→フライングスタート(競艇)",
+    "result": null
+   },
+   {
+    "machine": "モンキーV",
+    "matched": false,
+    "keyword": "トッピング",
+    "chain": [
+     "トッピング",
+     "ピングー",
+     "ペンギン"
+    ],
+    "raw": "トッピング→ピングー→ペンギン",
+    "result": null
+   },
+   {
+    "machine": "Sアイム",
+    "matched": false,
+    "keyword": "野菜",
+    "chain": [
+     "野菜",
+     "サイ",
+     "つのっち"
+    ],
+    "raw": "野菜→サイ→つのっち",
+    "result": null
+   },
+   {
+    "machine": "ミスター",
+    "matched": false,
+    "keyword": "スタートダッシュ",
+    "chain": [
+     "スタートダッシュ",
+     "スター"
+    ],
+    "raw": "スタートダッシュ→スター",
+    "result": null
+   },
+   {
+    "machine": "ミスター",
+    "matched": false,
+    "keyword": "そんなこんな",
+    "chain": [
+     "そんなこんな",
+     "コンな",
+     "コンたろ"
+    ],
+    "raw": "そんなこんな→コンな→コンたろ",
+    "result": null
+   },
+   {
+    "machine": "禁書目録2",
+    "matched": false,
+    "keyword": "オーダー",
+    "chain": [
+     "オーダー",
+     "ラストオーダー"
+    ],
+    "raw": "オーダー→ラストオーダー",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "キャラ誕",
+    "chain": [
+     "キャラ誕",
+     "結城美柑🎂"
+    ],
+    "raw": "キャラ誕→結城美柑🎂",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "ニンニク",
+    "chain": [
+     "ニンニク",
+     "にく",
+     "29",
+     "ぷくぅ"
+    ],
+    "raw": "ニンニク→にく→29→ぷくぅ",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "豚山",
+    "chain": [
+     "豚山",
+     "ブタ"
+    ],
+    "raw": "豚山→ブタ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
