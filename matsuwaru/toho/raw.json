@@ -42041,5 +42041,144 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/05/073209",
+  "articleDate": "2026-11-05",
+  "targetDate": "2026-11-04",
+  "postDate": "2026-11-03",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2117580096198615196",
+  "title": "11月4日のマルハン新宿東宝ビルまとめ✏️「マギレコ」「戦国乙女4」の円形島が全系に！",
+  "results": [
+   {
+    "machine": "マギレコ",
+    "plus": 9,
+    "total": 9,
+    "avg": 4433
+   },
+   {
+    "machine": "ウルミラ",
+    "plus": 4,
+    "total": 5,
+    "avg": 2780
+   },
+   {
+    "machine": "Lディスク",
+    "plus": 4,
+    "total": 4,
+    "avg": 2650
+   }
+  ],
+  "assoc": [
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "五色",
+    "chain": [
+     "五色",
+     "ソウルジェム"
+    ],
+    "raw": "五色→ソウルジェム",
+    "result": {
+     "plus": 9,
+     "total": 9,
+     "avg": 4433
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "セレクト",
+    "chain": [
+     "セレクト",
+     "コネクト"
+    ],
+    "raw": "セレクト→コネクト",
+    "result": {
+     "plus": 9,
+     "total": 9,
+     "avg": 4433
+    }
+   },
+   {
+    "machine": "マギレコ",
+    "matched": true,
+    "keyword": "惣菜の配置が円卓、週の真ん中",
+    "chain": [
+     "惣菜の配置が円卓、週の真ん中",
+     "円卓真ん中",
+     "マギレコ"
+    ],
+    "raw": "惣菜の配置が円卓、週の真ん中→円卓真ん中→マギレコ",
+    "result": {
+     "plus": 9,
+     "total": 9,
+     "avg": 4433
+    }
+   },
+   {
+    "machine": "ウルミラ",
+    "matched": true,
+    "keyword": "キサンタン（成分表）",
+    "chain": [
+     "キサンタン（成分表）",
+     "タン",
+     "ベコたん"
+    ],
+    "raw": "キサンタン（成分表）→タン→ベコたん",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2780
+    }
+   },
+   {
+    "machine": "ウルミラ",
+    "matched": true,
+    "keyword": "牛乳",
+    "chain": [
+     "牛乳",
+     "牛",
+     "ベコたん"
+    ],
+    "raw": "牛乳→牛→ベコたん",
+    "result": {
+     "plus": 4,
+     "total": 5,
+     "avg": 2780
+    }
+   },
+   {
+    "machine": "Lディスク",
+    "matched": true,
+    "keyword": "揚げ浸し",
+    "chain": [
+     "揚げ浸し",
+     "アゲ浸し",
+     "アゲ↑ビタ押し"
+    ],
+    "raw": "揚げ浸し→アゲ浸し→アゲ↑ビタ押し",
+    "result": {
+     "plus": 4,
+     "total": 4,
+     "avg": 2650
+    }
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "惣菜の配置が円卓、週の真ん中",
+    "chain": [
+     "惣菜の配置が円卓、週の真ん中",
+     "円卓真ん中",
+     "戦国乙女4"
+    ],
+    "raw": "惣菜の配置が円卓、週の真ん中→円卓真ん中→戦国乙女4",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
