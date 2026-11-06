@@ -42180,5 +42180,103 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/06/085716",
+  "articleDate": "2026-11-06",
+  "targetDate": "2026-11-05",
+  "postDate": "2026-11-04",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2117942517295727028",
+  "title": "11月5日のマルハン新宿東宝ビルまとめ✏️「ゴージャグ3」の全系筆頭にノーマルタイプ強め！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ゴージャグ3",
+    "matched": false,
+    "keyword": "14時〜15時くらい",
+    "chain": [
+     "14時〜15時くらい",
+     "午後"
+    ],
+    "raw": "14時〜15時くらい→午後",
+    "result": null
+   },
+   {
+    "machine": "ゴージャグ3",
+    "matched": false,
+    "keyword": "夜中3時",
+    "chain": [
+     "夜中3時",
+     "ゴージャグ3"
+    ],
+    "raw": "夜中3時→ゴージャグ3",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "AI",
+    "chain": [
+     "AI",
+     "愛",
+     "ToLOVEる"
+    ],
+    "raw": "AI→愛→ToLOVEる",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "寝不足",
+    "chain": [
+     "寝不足",
+     "すいみん不足",
+     "キテレツ大百科",
+     "発明"
+    ],
+    "raw": "寝不足→すいみん不足→キテレツ大百科→発明",
+    "result": null
+   },
+   {
+    "machine": "バーサス",
+    "matched": false,
+    "keyword": "610円",
+    "chain": [
+     "610円",
+     "武藤 敬司",
+     "クロス・ウィザード",
+     "クロス",
+     "Ｘ"
+    ],
+    "raw": "610円→武藤 敬司→クロス・ウィザード→クロス→Ｘ",
+    "result": null
+   },
+   {
+    "machine": "ギアスCC",
+    "matched": false,
+    "keyword": "夜中",
+    "chain": [
+     "夜中",
+     "夜",
+     "ナイト"
+    ],
+    "raw": "夜中→夜→ナイト",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "キャラ誕",
+    "chain": [
+     "キャラ誕",
+     "梓川かえで"
+    ],
+    "raw": "キャラ誕→梓川かえで",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
