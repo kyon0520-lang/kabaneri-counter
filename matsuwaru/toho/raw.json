@@ -42278,5 +42278,160 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/07/080841",
+  "articleDate": "2026-11-07",
+  "targetDate": "2026-11-06",
+  "postDate": "2026-11-05",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2118307286494089592",
+  "title": "11月6日のマルハン新宿東宝ビルまとめ✏️鉄板の末尾6+アナザー末尾②に加えて全系も大量！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ニューキンハナ",
+    "matched": false,
+    "keyword": "展示会",
+    "chain": [
+     "展示会",
+     "10字かい",
+     "10文字"
+    ],
+    "raw": "展示会→10字かい→10文字",
+    "result": null
+   },
+   {
+    "machine": "北斗",
+    "matched": false,
+    "keyword": "アカギ",
+    "chain": [
+     "アカギ",
+     "天才",
+     "俺は天才だぁ",
+     "アミバ"
+    ],
+    "raw": "アカギ→天才→俺は天才だぁ→アミバ",
+    "result": null
+   },
+   {
+    "machine": "北斗",
+    "matched": false,
+    "keyword": "展示会",
+    "chain": [
+     "展示会",
+     "10字かい",
+     "パチスロホクトノケン"
+    ],
+    "raw": "展示会→10字かい→パチスロホクトノケン",
+    "result": null
+   },
+   {
+    "machine": "ヴヴヴ",
+    "matched": false,
+    "keyword": "超絶",
+    "chain": [
+     "超絶",
+     "超",
+     "超革命RUSH"
+    ],
+    "raw": "超絶→超→超革命RUSH",
+    "result": null
+   },
+   {
+    "machine": "このすば",
+    "matched": false,
+    "keyword": "黄色のジャイアントコーン",
+    "chain": [
+     "黄色のジャイアントコーン",
+     "ジャイアントトード"
+    ],
+    "raw": "黄色のジャイアントコーン→ジャイアントトード",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "わかめスープ",
+    "chain": [
+     "わかめスープ",
+     "海藻",
+     "無名回想"
+    ],
+    "raw": "わかめスープ→海藻→無名回想",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女4",
+    "matched": false,
+    "keyword": "アカギ",
+    "chain": [
+     "アカギ",
+     "きたぜぬるりと",
+     "自模ったのは白",
+     "シロ"
+    ],
+    "raw": "アカギ→きたぜぬるりと→自模ったのは白→シロ",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "ジャイアントコーン",
+    "chain": [
+     "ジャイアントコーン",
+     "めくる",
+     "姫くり"
+    ],
+    "raw": "ジャイアントコーン→めくる→姫くり",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタァ",
+    "matched": false,
+    "keyword": "展示会",
+    "chain": [
+     "展示会",
+     "10字かい",
+     "10文字"
+    ],
+    "raw": "展示会→10字かい→10文字",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "メニュー写真7つ",
+    "chain": [
+     "メニュー写真7つ",
+     "７つ"
+    ],
+    "raw": "メニュー写真7つ→７つ",
+    "result": null
+   }
+  ],
+  "unassigned": [
+   {
+    "machine": null,
+    "matched": false,
+    "keyword": "投稿時間 39分",
+    "chain": [
+     "投稿時間 39分",
+     "3+9＝12"
+    ],
+    "raw": "投稿時間 39分→3+9＝12"
+   },
+   {
+    "machine": null,
+    "matched": false,
+    "keyword": "黄色のジャイアントコーン",
+    "chain": [
+     "黄色のジャイアントコーン",
+     "チョコ＆ミルクの2種"
+    ],
+    "raw": "黄色のジャイアントコーン→チョコ＆ミルクの2種"
+   }
+  ]
  }
 ]
