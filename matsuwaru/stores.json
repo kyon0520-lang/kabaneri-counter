@@ -11,7 +11,7 @@
       "since": "2026-02-22",
       "sinceNote": "⚠️ 検索できるデータは、エンドウ店長の就任日以降のものです。",
       "aboutSince": "現在の店長の就任日",
-      "columns": true,
+      "columns": false,
       "example": "会議",
       "version": 7,
       "lineupUrl": "https://www.maruhan.co.jp/hall/3044/kisyu.html",
