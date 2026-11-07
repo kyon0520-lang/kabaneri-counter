@@ -42433,5 +42433,175 @@
     "raw": "黄色のジャイアントコーン→チョコ＆ミルクの2種"
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/08/080910",
+  "articleDate": "2026-11-08",
+  "targetDate": "2026-11-07",
+  "postDate": "2026-11-06",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2118667257295552874",
+  "title": "11月7日のマルハン新宿東宝ビルまとめ✏️圧倒的全系特化！新宿の7のつく日は説明不要の強さ！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "Lカバネリ",
+    "matched": false,
+    "keyword": "貝汁",
+    "chain": [
+     "貝汁",
+     "貝",
+     "海",
+     "海門"
+    ],
+    "raw": "貝汁→貝→海→海門",
+    "result": null
+   },
+   {
+    "machine": "キンハナ",
+    "matched": false,
+    "keyword": "気付けば～、気付けば～",
+    "chain": [
+     "気付けば～、気付けば～",
+     "同じ言葉2回"
+    ],
+    "raw": "気付けば～、気付けば～→同じ言葉2回",
+    "result": null
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": false,
+    "keyword": "気付けば～、気付けば～",
+    "chain": [
+     "気付けば～、気付けば～",
+     "同じ言葉2回"
+    ],
+    "raw": "気付けば～、気付けば～→同じ言葉2回",
+    "result": null
+   },
+   {
+    "machine": "ニューキンハナ",
+    "matched": false,
+    "keyword": "気付けば～、気付けば～",
+    "chain": [
+     "気付けば～、気付けば～",
+     "同じ言葉2回"
+    ],
+    "raw": "気付けば～、気付けば～→同じ言葉2回",
+    "result": null
+   },
+   {
+    "machine": "スタハナ",
+    "matched": false,
+    "keyword": "気付けば～、気付けば～",
+    "chain": [
+     "気付けば～、気付けば～",
+     "同じ言葉2回"
+    ],
+    "raw": "気付けば～、気付けば～→同じ言葉2回",
+    "result": null
+   },
+   {
+    "machine": "ハッピー",
+    "matched": false,
+    "keyword": "7にまつわる",
+    "chain": [
+     "7にまつわる",
+     "7台機種"
+    ],
+    "raw": "7にまつわる→7台機種",
+    "result": null
+   },
+   {
+    "machine": "攻殻機動隊",
+    "matched": false,
+    "keyword": "脳汁",
+    "chain": [
+     "脳汁",
+     "脳",
+     "電脳ハック"
+    ],
+    "raw": "脳汁→脳→電脳ハック",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "7にまつわる機種",
+    "chain": [
+     "7にまつわる機種"
+    ],
+    "raw": "・7にまつわる機種",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "七味唐からし",
+    "chain": [
+     "七味唐からし",
+     "七"
+    ],
+    "raw": "七味唐からし→七",
+    "result": null
+   },
+   {
+    "machine": "SAO",
+    "matched": false,
+    "keyword": "切りはなし無効（食券）",
+    "chain": [
+     "切りはなし無効（食券）",
+     "キリ",
+     "キリト"
+    ],
+    "raw": "切りはなし無効（食券）→キリ→キリト",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "テーブル番号13",
+    "chain": [
+     "テーブル番号13",
+     "13文字"
+    ],
+    "raw": "テーブル番号13→13文字",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "7にまつわる機種",
+    "chain": [
+     "7にまつわる機種"
+    ],
+    "raw": "・7にまつわる機種",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "七味唐からし",
+    "chain": [
+     "七味唐からし",
+     "七"
+    ],
+    "raw": "七味唐からし→七",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "お守り",
+    "chain": [
+     "お守り",
+     "神社"
+    ],
+    "raw": "お守り→神社",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
