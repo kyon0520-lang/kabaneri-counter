@@ -61,10 +61,12 @@ if _os.path.exists(_lp):
     # 入替直後の新台がここに入る。公式の表記から頭のS/Lと末尾の型番を落として名前にする
     def _disp(nm):
         # P-WORLD は別名を / で連ねている。照合には全部使うが、表示は先頭だけ
-        t = nm.split('/')[0].strip()
+        # 「L/Vivy/A5」のように頭のS/Lだけが区切られている表記は、その次を名前とみなす
+        ps = [x.strip() for x in nm.split('/')]
+        t = ps[1] if len(ps) > 1 and re.fullmatch(r'[SLPＳＬ]?B?', ps[0]) else ps[0]
         t = re.sub(r'^[SLPＳＬ]\s*', '', t)
-        t = re.sub(r'\s*[A-Za-z]+\d*$', '', t)
-        return t.strip(' /／・')
+        # 英字だけの機種名（Vivy など）は型番と区別できないので、消えてしまうときは落とさない
+        return re.sub(r'\s*[A-Za-z]+\d*$', '', t).strip(' /／・') or t.strip(' /／・')
     NEVER = [[_disp(nm), u] for nm, u in LINEUP['slots'] if nm not in _used]
 # フロアごとに別枠で動く機種（data/floors.json）。集計は別機種のままだが、
 # 「選ばれた機種」の並びだけは displayMerge の指定で1つにまとめて見せる。
