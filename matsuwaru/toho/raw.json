@@ -42603,5 +42603,98 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/09/081311",
+  "articleDate": "2026-11-09",
+  "targetDate": "2026-11-08",
+  "postDate": "2026-11-07",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2119029663045759093",
+  "title": "11月8日のマルハン新宿東宝ビルまとめ✏️おすすめ機種+山佐機種が全系！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "Lカバネリ",
+    "matched": false,
+    "keyword": "オススメ機種",
+    "chain": [
+     "オススメ機種"
+    ],
+    "raw": "・オススメ機種",
+    "result": null
+   },
+   {
+    "machine": "ゴッドイーター",
+    "matched": false,
+    "keyword": "神社",
+    "chain": [
+     "神社",
+     "神"
+    ],
+    "raw": "神社→神",
+    "result": null
+   },
+   {
+    "machine": "ゴッドイーター",
+    "matched": false,
+    "keyword": "8日",
+    "chain": [
+     "8日",
+     "プレミアム山佐デー"
+    ],
+    "raw": "8日→プレミアム山佐デー",
+    "result": null
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": false,
+    "keyword": "花園神社",
+    "chain": [
+     "花園神社",
+     "花",
+     "ハナビ"
+    ],
+    "raw": "花園神社→花→ハナビ",
+    "result": null
+   },
+   {
+    "machine": "ハイパラ",
+    "matched": false,
+    "keyword": "8日",
+    "chain": [
+     "8日",
+     "プレミアム山佐デー"
+    ],
+    "raw": "8日→プレミアム山佐デー",
+    "result": null
+   },
+   {
+    "machine": "リゼロ",
+    "matched": false,
+    "keyword": "熊",
+    "chain": [
+     "熊",
+     "ベア",
+     "ベアトリス"
+    ],
+    "raw": "熊→ベア→ベアトリス",
+    "result": null
+   },
+   {
+    "machine": "うみねこ",
+    "matched": false,
+    "keyword": "熊",
+    "chain": [
+     "熊",
+     "ベア",
+     "ベアトリーチェ"
+    ],
+    "raw": "熊→ベア→ベアトリーチェ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
