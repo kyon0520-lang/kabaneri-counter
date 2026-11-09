@@ -67,7 +67,9 @@ if _os.path.exists(_lp):
         t = re.sub(r'^[SLPＳＬ]\s*', '', t)
         # 英字だけの機種名（Vivy など）は型番と区別できないので、消えてしまうときは落とさない
         return re.sub(r'\s*[A-Za-z]+\d*$', '', t).strip(' /／・') or t.strip(' /／・')
-    NEVER = [[_disp(nm), u] for nm, u in LINEUP['slots'] if nm not in _used]
+    # 公式の表記が長い機種は、ホールでの呼び名で見せる（ラインナップ照合の「表示名」）
+    _alias = {k: v for k, v in _adj.get('表示名', {}).items() if not k.startswith('_')}
+    NEVER = [[_alias.get(_disp(nm), _disp(nm)), u] for nm, u in LINEUP['slots'] if nm not in _used]
 # フロアごとに別枠で動く機種（data/floors.json）。集計は別機種のままだが、
 # 「選ばれた機種」の並びだけは displayMerge の指定で1つにまとめて見せる。
 DISPMERGE = {}
