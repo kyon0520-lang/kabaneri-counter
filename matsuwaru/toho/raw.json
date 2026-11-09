@@ -42696,5 +42696,113 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/10/080635",
+  "articleDate": "2026-11-10",
+  "targetDate": "2026-11-09",
+  "postDate": "2026-11-08",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2119392126161314134",
+  "title": "11月9日のマルハン新宿東宝ビルまとめ✏️多彩な仕掛けが展開される⑨のつく日",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "末尾⑥（ジャグ・ハナ系）",
+    "matched": false,
+    "keyword": "時間15:46",
+    "chain": [
+     "時間15:46",
+     "6"
+    ],
+    "raw": "時間15:46→6",
+    "result": null
+   },
+   {
+    "machine": "末尾⑥（ジャグ・ハナ系）",
+    "matched": false,
+    "keyword": "240円トッピング無料券",
+    "chain": [
+     "240円トッピング無料券",
+     "2+4+0=6"
+    ],
+    "raw": "240円トッピング無料券→2+4+0=6",
+    "result": null
+   },
+   {
+    "machine": "L炎炎2",
+    "matched": false,
+    "keyword": "11/9",
+    "chain": [
+     "11/9",
+     "119番の日",
+     "消防"
+    ],
+    "raw": "11/9→119番の日→消防",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": false,
+    "keyword": "びっくり亭",
+    "chain": [
+     "びっくり亭",
+     "焼肉鉄板",
+     "キャベツと豚肉",
+     "キャベツ"
+    ],
+    "raw": "びっくり亭→焼肉鉄板→キャベツと豚肉→キャベツ",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "増台機種",
+    "chain": [
+     "増台機種"
+    ],
+    "raw": "・増台機種",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "ランチを探して",
+    "chain": [
+     "ランチを探して",
+     "サガして"
+    ],
+    "raw": "ランチを探して→サガして",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "びっくり亭",
+    "chain": [
+     "びっくり亭",
+     "焼肉鉄板",
+     "キャベツと豚肉",
+     "豚"
+    ],
+    "raw": "びっくり亭→焼肉鉄板→キャベツと豚肉→豚",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "びっくり亭",
+    "chain": [
+     "びっくり亭",
+     "焼肉鉄板",
+     "キャベツと豚肉",
+     "豚"
+    ],
+    "raw": "びっくり亭→焼肉鉄板→キャベツと豚肉→豚",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
