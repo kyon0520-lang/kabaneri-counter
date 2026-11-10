@@ -42804,5 +42804,64 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/11/080907",
+  "articleDate": "2026-11-11",
+  "targetDate": "2026-11-10",
+  "postDate": "2026-11-09",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2119755716407730387",
+  "title": "11月10日のマルハン新宿東宝ビルまとめ✏️全系４機種に、東京喰種の状況◎！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "モンハンライズ",
+    "matched": false,
+    "keyword": "10％増量",
+    "chain": [
+     "10％増量",
+     "10台機種"
+    ],
+    "raw": "10％増量→10台機種",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "戻ってきて",
+    "chain": [
+     "戻ってきて",
+     "戻り",
+     "モドリスカンク"
+    ],
+    "raw": "戻ってきて→戻り→モドリスカンク",
+    "result": null
+   },
+   {
+    "machine": "このすば",
+    "matched": false,
+    "keyword": "ジャイアントコーン",
+    "chain": [
+     "ジャイアントコーン",
+     "ジャイアントトード"
+    ],
+    "raw": "ジャイアントコーン→ジャイアントトード",
+    "result": null
+   },
+   {
+    "machine": "リゼロ",
+    "matched": false,
+    "keyword": "リフレッシュ",
+    "chain": [
+     "リフレッシュ",
+     "おねだりフレッシュ"
+    ],
+    "raw": "リフレッシュ→おねだりフレッシュ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
