@@ -42863,5 +42863,112 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/12/080915",
+  "articleDate": "2026-11-12",
+  "targetDate": "2026-11-11",
+  "postDate": "2026-11-10",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2120116852181623060",
+  "title": "11月11日のマルハン新宿東宝ビルまとめ✏️月ゾロ鉄板の末尾ゾロ目や11台設置機種を筆頭に全系複数あり！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ドラハナ",
+    "matched": false,
+    "keyword": "11/11",
+    "chain": [
+     "11/11",
+     "11台機種"
+    ],
+    "raw": "11/11→11台機種",
+    "result": null
+   },
+   {
+    "machine": "ゴジエヴァ2",
+    "matched": false,
+    "keyword": "11/11",
+    "chain": [
+     "11/11",
+     "11台機種"
+    ],
+    "raw": "11/11→11台機種",
+    "result": null
+   },
+   {
+    "machine": "獣王",
+    "matched": false,
+    "keyword": "秋桜",
+    "chain": [
+     "秋桜",
+     "しゅうおう",
+     "濁点つけて",
+     "じゅうおう"
+    ],
+    "raw": "秋桜→しゅうおう→濁点つけて→じゅうおう",
+    "result": null
+   },
+   {
+    "machine": "防振り",
+    "matched": false,
+    "keyword": "超ハード食感",
+    "chain": [
+     "超ハード食感",
+     "超ハード",
+     "防振り"
+    ],
+    "raw": "超ハード食感→超ハード→防振り",
+    "result": null
+   },
+   {
+    "machine": "化物語",
+    "matched": false,
+    "keyword": "炭水化物",
+    "chain": [
+     "炭水化物",
+     "化物"
+    ],
+    "raw": "炭水化物→化物",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "秋桜",
+    "chain": [
+     "秋桜",
+     "桜",
+     "桜無名"
+    ],
+    "raw": "秋桜→桜→桜無名",
+    "result": null
+   },
+   {
+    "machine": "ギアスCC",
+    "matched": false,
+    "keyword": "レモン",
+    "chain": [
+     "レモン",
+     "CCレモン",
+     "CC"
+    ],
+    "raw": "レモン→CCレモン→CC",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "キャラ誕生日🎂",
+    "chain": [
+     "キャラ誕生日🎂",
+     "エキュート"
+    ],
+    "raw": "キャラ誕生日🎂→エキュート",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
