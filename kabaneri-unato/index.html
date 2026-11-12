@@ -972,6 +972,11 @@
     <div class="trcode" id="trcode" hidden></div>
 
     <div class="tract">
+      <button id="trexport">記録を書き出す（ファイル）</button>
+      <p class="sub">いまの端末の実戦の記録を、ファイルに保存します。</p>
+    </div>
+
+    <div class="tract">
       <label class="wlbl"><i>＋</i>コードで受け取る</label>
       <input id="trinput" type="text" inputmode="latin" autocapitalize="characters"
              placeholder="例 ABCD-2345" maxlength="12" aria-label="引き継ぎコード">
@@ -1992,6 +1997,24 @@ document.getElementById('trmake').addEventListener('click', async () => {
   } finally {
     btn.disabled = false; btn.textContent = '引き継ぎコードを発行';
   }
+});
+
+/* ファイルに書き出す（アプリ版・リニューアル版と同じ形式の封筒）。
+   この版には数値のカスタマイズが無いので num は null */
+document.getElementById('trexport').addEventListener('click', () => {
+  if (!hist.length) { toast('保存された実戦がありません'); return; }
+  const env = {
+    app: 'minnanoslot-kabaneri', version: 1, exportedAt: new Date().toISOString(),
+    state: { records: hist, num: null }
+  };
+  const d = new Date(), p = n => String(n).padStart(2, '0');
+  const stamp = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  const url = URL.createObjectURL(new Blob([JSON.stringify(env)], { type: 'application/json' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = `カバネリ海門カウンター記録-${stamp}.kabslot`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  toast(`実戦 ${fmt(hist.length)}件をファイルに書き出しました`);
 });
 
 document.getElementById('trtake').addEventListener('click', async () => {
