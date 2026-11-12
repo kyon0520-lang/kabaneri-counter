@@ -42970,5 +42970,75 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/13/072713",
+  "articleDate": "2026-11-13",
+  "targetDate": "2026-11-12",
+  "postDate": "2026-11-11",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2120479402991771733",
+  "title": "11月12日のマルハン新宿東宝ビルまとめ✏️32台設置のファンキー2に丸ごと仕掛け！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ファンキー2",
+    "matched": false,
+    "keyword": "31分投稿",
+    "chain": [
+     "31分投稿",
+     "ワン🐶"
+    ],
+    "raw": "31分投稿→ワン🐶",
+    "result": null
+   },
+   {
+    "machine": "ファンキー2",
+    "matched": false,
+    "keyword": "ファン感告知",
+    "chain": [
+     "ファン感告知",
+     "ファンキー"
+    ],
+    "raw": "ファン感告知→ファンキー",
+    "result": null
+   },
+   {
+    "machine": "ToLOVEる",
+    "matched": false,
+    "keyword": "常夜",
+    "chain": [
+     "常夜",
+     "夜",
+     "ダークネス"
+    ],
+    "raw": "常夜→夜→ダークネス",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "豚バラ",
+    "chain": [
+     "豚バラ",
+     "ブタ"
+    ],
+    "raw": "豚バラ→ブタ",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "花園神社",
+    "chain": [
+     "花園神社",
+     "花園ゆりね"
+    ],
+    "raw": "花園神社→花園ゆりね",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
