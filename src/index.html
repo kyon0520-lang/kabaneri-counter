@@ -1041,7 +1041,7 @@
       <button data-set="none">不明</button>
     </div>
         <div class="histlist" id="histlist"></div>
-    <p class="note">行をタップすると内訳が開きます。<!-- ==SEND:START== --><br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button><!-- ==SEND:END== --></p>
+    <p class="note">行をタップすると内訳が開きます。<br><span id="ptundorow" hidden>過去のCZ突入ptは、新しい仕組みに換算してあります。<button class="linkbtn" id="ptundo">換算前に戻す</button></span><!-- ==SEND:START== --><br>みんなのスロットへの送信：<b id="sendstate">—</b> <button class="linkbtn" id="sendtoggle">変更</button><!-- ==SEND:END== --></p>
   </section>
 
   <!-- カード群をJSで描画 -->
@@ -1434,7 +1434,11 @@
 <input type="checkbox" switch id="hapticsw" class="haptic" tabindex="-1" aria-hidden="true">
 
 <script>
-const NO_PT = 1, GLOW_PT = 15, HI_PT = 15;   // 高確発光もポイントは発光と同じ（発光率には入れない）
+/* 無名・生駒のポイント。2026-11-13の解析で、発光・高確発光など=10pt（最大100pt）と判明したため
+   15→10に変更した（非発光=1ptのまま）。高確発光もポイントは発光と同じ（発光率には入れない）。
+   すでに保存した実戦（czPointsBy を持たない古い記録）の概算だけは、当時の15ptのまま計算する */
+const NO_PT = 1, GLOW_PT = 10, HI_PT = 10;
+const OLD_GLOW_PT = 15, OLD_HI_PT = 15;
 
 /* 銅藍のポイント計算が誤っていたため2026-09-07の解析で判明、修正した
    （非発光=1ptのまま、発光・高確=15pt→2pt）。すでに数えている人の値が
@@ -1448,6 +1452,7 @@ function localDateStr(){
 }
 function charPt(id){
   if (id === 'blue' && localDateStr() >= BLUE_PT_FIX_DATE) return { no:1, glow:2, hi:2 };
+  if (id === 'blue') return { no:1, glow:15, hi:15 };     // 修正日より前の端末日付のときだけ
   return { no:NO_PT, glow:GLOW_PT, hi:HI_PT };
 }
 
@@ -1462,6 +1467,7 @@ const AVG_IDS = ['red', 'green'];
 
 const KEY = 'kabaneri-cz-counter-v1';
 let state;
+let czPtv = 2;       // 保存してある突入ptの換算状況（2=新しい仕組み）
 let czLog = [];      // CZ突入時のポイント記録
 let bell = { n:0, g:0 };   // 下段ベルの回数と現在のG数
 const WIN_MODES = { normal:'通常', through:'駆け抜け後', upper:'上位後', reset:'リセット後' };
@@ -1512,6 +1518,7 @@ function load(){
         : [];
       bell = { n:Math.max(0, +(raw.bell && raw.bell.n) || 0),
                g:Math.max(0, +(raw.bell && raw.bell.g) || 0) };
+      czPtv = +raw.ptv || 1;
       memo = typeof raw.memo === 'string' ? raw.memo.slice(0, 2000) : '';
       wins = Array.isArray(raw.wins) ? raw.wins.filter(w => w && isFinite(+w.g)).slice(0, 500) : [];
       winMode = (WIN_MODES[raw.winMode] || raw.winMode === 'all') ? raw.winMode : 'normal';
@@ -1530,7 +1537,7 @@ let saveFailed = false;
 
 function save(){
   try {
-    localStorage.setItem(KEY, JSON.stringify({ state, czLog, bell, memo, wins, winMode }));
+    localStorage.setItem(KEY, JSON.stringify({ ptv:PTV, state, czLog, bell, memo, wins, winMode }));
     saveFailed = false;
   } catch(e) {
     // 押すたびに出すとうるさいので、失敗し始めた1回だけ知らせる
@@ -1763,8 +1770,8 @@ function toast(msg, action, label){
 }
 
 /* ---------- CZ突入時のポイント分布 ---------- */
-const DIST_STEP = 15, DIST_MAX = 150;
-const DIST_ROWS = [15,30,45,60,75,90,105,120,135,150];
+const DIST_STEP = 10, DIST_MAX = 100;
+const DIST_ROWS = [10,20,30,40,50,60,70,80,90,100];
 
 // 銅藍は周期突入。規定ptの最大は解析で判明した14pt、2pt刻み（取説参照）
 const BLUE_DIST_STEP = 2, BLUE_DIST_MAX = 14;
@@ -1778,7 +1785,7 @@ function distIndex(pt, step = DIST_STEP, max = DIST_MAX, rowsLen = DIST_ROWS.len
 
 /* ポイントの配列から、分布の表の中身を作る。
    規定pt分布グラフと実戦履歴の両方で同じ見た目を使うための共通処理。
-   opts.step/max/rows を渡すと、無名・生駒（15pt刻み）以外の刻みでも使える */
+   opts.step/max/rows を渡すと、無名・生駒（10pt刻み）以外の刻みでも使える */
 function distRowsHtml(pts, opts = {}){
   const step = opts.step || DIST_STEP;
   const max = opts.max || DIST_MAX;
@@ -2127,6 +2134,108 @@ function saveHist(){
   } catch(e){ return false; }
 }
 
+
+/* ---------- 過去のCZ突入ptの換算（2026-11-14）----------
+   無名・生駒の発光・高確が15pt→10ptに変わったので、すでに保存した突入時のptも新しい仕組みに概算で直す。
+   突入時のptは合計しか残っていないため、15で割った「あまり」を非発光の回数、「商」を発光・高確の回数とみなして
+   10ptで計算し直す（非発光が1周期で15回以上あった周期だけ、5ptほど低く出る）。
+   非発光の通算の回数を超えるなど、記録と合わないキャラは直さない。銅藍は直さない。
+   直す前の値は端末に控え、「換算前に戻す」で戻せる。直した印は記録の ptv（2=換算済み、1=旧pt）。 */
+const PTV = 2;
+const PT_BACKUP_KEY = 'kabaneri-ptbackup-v1';
+const ptNew = p => p - 5 * Math.floor(p / 15);
+function ptBackupLoad(){
+  try { const b = JSON.parse(localStorage.getItem(PT_BACKUP_KEY)); return b && typeof b === 'object' ? b : null; }
+  catch(e) { return null; }
+}
+/* 無名・生駒の数値を自分で変えている端末は、その値で数えた記録なので換算しない */
+function ptMigrateAllowed(){
+  return typeof numStore === 'undefined' || !(numStore && numStore.ng);
+}
+/* rows: [{c, pt}]。換算した配列と件数を返す */
+function ptConvertRows(rows, noTotal){
+  const bad = {};
+  ['red', 'green'].forEach(id => {
+    const ne = rows.reduce((a, x) => a + (x.c === id ? x.pt % 15 : 0), 0);
+    if (ne > (+noTotal[id] || 0)) bad[id] = true;
+  });
+  let n = 0;
+  const out = rows.map(x => {
+    if ((x.c === 'red' || x.c === 'green') && !bad[x.c] && Number.isInteger(x.pt) && x.pt > 0) { n++; return { c:x.c, pt:ptNew(x.pt) }; }
+    return { c:x.c, pt:x.pt };
+  });
+  return { out, n };
+}
+function ptBackupWrite(b){
+  try { localStorage.setItem(PT_BACKUP_KEY, JSON.stringify(b)); return true; } catch(e) { return false; }
+}
+/* 保存済みの実戦。換算した件数を返す（0なら何も変えていない） */
+function ptMigrateHist(){
+  const todo = hist.filter(r => r && typeof r === 'object' && r.ptv === undefined);
+  if (!todo.length) return 0;
+  const allowed = ptMigrateAllowed();
+  const staged = todo.map(r => {
+    let out = null;
+    if (allowed && Array.isArray(r.czPointsBy) && r.chars) {
+      const rr = ptConvertRows(r.czPointsBy.map(x => ({ c:String(x && x.c), pt:+(x && x.pt) })),
+        { red:r.chars.red && r.chars.red.no, green:r.chars.green && r.chars.green.no });
+      if (rr.n) out = rr.out;
+    }
+    return [r, out];
+  });
+  const b = ptBackupLoad() || {};
+  let need = false;
+  staged.forEach(([r, out]) => {
+    if (out && !(r.id in b)) { b[r.id] = { czPoints:r.czPoints, czPointsBy:r.czPointsBy }; need = true; }
+  });
+  if (need && !ptBackupWrite(b)) return 0;      // 控えを残せないときは直さない
+  let n = 0;
+  staged.forEach(([r, out]) => {
+    if (out) { r.czPointsBy = out; r.czPoints = out.map(x => x.pt); r.ptv = PTV; n++; }
+    else r.ptv = 1;
+  });
+  return n;
+}
+/* いま数えている途中の突入ptの記録（czLog） */
+function ptMigrateCur(){
+  if (czPtv >= PTV) return 0;
+  czPtv = PTV;
+  if (!czLog.length || !ptMigrateAllowed()) return 0;
+  const rr = ptConvertRows(czLog, { red:state.red.no, green:state.green.no });
+  if (!rr.n) return 0;
+  const b = ptBackupLoad() || {};
+  if (!b.__cur) { b.__cur = { czLog:czLog.map(x => ({ c:x.c, pt:x.pt })) }; if (!ptBackupWrite(b)) { czPtv = 1; return 0; } }
+  czLog = rr.out;
+  return rr.n;
+}
+function updatePtUndoRow(){
+  const row = document.getElementById('ptundorow');
+  if (row) row.hidden = !ptBackupLoad();
+}
+function undoPtMigration(){
+  const b = ptBackupLoad(); if (!b) return;
+  hist.forEach(r => {
+    const o = r && b[r.id]; if (!o) return;
+    if (o.czPoints === undefined) delete r.czPoints; else r.czPoints = o.czPoints;
+    if (o.czPointsBy === undefined) delete r.czPointsBy; else r.czPointsBy = o.czPointsBy;
+    r.ptv = 1;
+  });
+  if (b.__cur) czLog = b.__cur.czLog;
+  saveHist(); save();
+  try { localStorage.removeItem(PT_BACKUP_KEY); } catch(e) {}
+  render(); renderDist(); renderHist(); updatePtUndoRow();
+  toast('換算前のポイントに戻しました');
+}
+function ptMigrateAll(){
+  const pending = hist.some(r => r && typeof r === 'object' && r.ptv === undefined);
+  const a = ptMigrateHist();
+  const b = ptMigrateCur();
+  if (a || pending) saveHist();         // 換算しなかった実戦にも印（ptv:1）を残す
+  if (a || b) save();
+  if (a || b) toast('過去の突入ptを新しい仕組みに換算しました', undoPtMigration, '元に戻す');
+  updatePtUndoRow();
+}
+
 /* 保存＝送信できる形。このまま API に送れる */
 function buildRecord(){
   const chars = {};
@@ -2148,6 +2257,7 @@ function buildRecord(){
     evidence: null,
     memo,            // 端末内だけに残す
     wins,            // 当選履歴。端末内だけに残す
+    ptv: PTV,        // 突入ptの数え方（2=発光・高確10pt）
     sent: false
   };
 }
@@ -2169,7 +2279,7 @@ function recTotals(r){
   } else {
     ptSum = AVG_IDS.reduce((a, id) => {
       const c = r.chars[id];
-      return c ? a + c.no * NO_PT + c.glow * GLOW_PT + (c.hi || 0) * HI_PT - (c.lost || 0) : a;
+      return c ? a + c.no * NO_PT + c.glow * OLD_GLOW_PT + (c.hi || 0) * OLD_HI_PT - (c.lost || 0) : a;
     }, 0);
     czN = cz;
   }
@@ -3216,6 +3326,7 @@ document.getElementById('trtake').addEventListener('click', async () => {
     const add = (j.records || []).filter(r => r && r.id && !have.has(r.id));
     hist = hist.concat(add).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     if (hist.length > 500) hist.length = 500;
+    ptMigrateHist();
 
     if (!saveHist()) {
       toast('読み込んだ記録を保存できませんでした');
@@ -3741,6 +3852,18 @@ document.getElementById('a2hsx').addEventListener('click', closeA2hs);
    一度閉じたら、そのidを見た記録として残し、同じidのうちは二度と出さない。 */
 const NEWS = [
   {
+    id: '2026-11-14-pt-fix',
+    date: '2026年11月14日',
+    tag: 'fix',
+    title: '発光・高確発光などのポイントを修正しました',
+    lede: '新しく解析が出たことにより、以下の点を修正しました。',
+    points: [
+      '無名・生駒の「発光」「高確発光など」のポイントを15pt→10ptに変更しました（非発光1ptは変更ありません）。規定ポイントの最大は100ptと判明しています',
+      '規定pt分布グラフを、15pt刻み（最大150pt）から10pt刻み（最大100pt）に変更しました',
+      '過去の実戦履歴のCZ突入時のポイントも、新しい仕組みに合わせて概算で換算しました（実戦履歴の画面の下の「換算前に戻す」で戻せます）。非発光が1周期で15回以上あった周期は、5pt前後低く出ることがあります',
+    ],
+  },
+  {
     id: '2026-10-30-lycoris-counter',
     date: '2026年10月30日',
     tag: 'feat',
@@ -3809,6 +3932,21 @@ document.getElementById('newsmodal').addEventListener('click', e => {
 /* ---------- 起動 ---------- */
 load();
 loadHist();
+ptMigrateAll();
+
+(function(){
+  const b = document.getElementById('ptundo'); if (!b) return;
+  let armed = false, t = null;
+  b.addEventListener('click', () => {
+    if (!armed) {
+      armed = true; b.textContent = 'もう一度押すと戻します';
+      t = setTimeout(() => { armed = false; b.textContent = '換算前に戻す'; }, 4000);
+      return;
+    }
+    clearTimeout(t); armed = false; b.textContent = '換算前に戻す';
+    undoPtMigration();
+  });
+})();
 /* ==SEND:START== */
 loadSendCfg();
 /* ==SEND:END== */
