@@ -43040,5 +43040,69 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/14/072730",
+  "articleDate": "2026-11-14",
+  "targetDate": "2026-11-13",
+  "postDate": "2026-11-12",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2120841573755990442",
+  "title": "11月13日のマルハン新宿東宝ビルまとめ✏️マイジャグVを筆頭に全系複数+3台並び多数！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "マイジャグV",
+    "matched": false,
+    "keyword": "間違ってみそきんメシ",
+    "chain": [
+     "間違ってみそきんメシ",
+     "メシ",
+     "米",
+     "マイジャグV"
+    ],
+    "raw": "間違ってみそきんメシ→メシ→米→マイジャグV",
+    "result": null
+   },
+   {
+    "machine": "サンダー",
+    "matched": false,
+    "keyword": "15時",
+    "chain": [
+     "15時",
+     "3時",
+     "サンダー"
+    ],
+    "raw": "15時→3時→サンダー",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "19時",
+    "chain": [
+     "19時",
+     "7時",
+     "セブン",
+     "エウレカ"
+    ],
+    "raw": "19時→7時→セブン→エウレカ",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "カグラバ",
+    "chain": [
+     "カグラバ",
+     "グラ",
+     "グランベルム"
+    ],
+    "raw": "カグラバ→グラ→グランベルム",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
