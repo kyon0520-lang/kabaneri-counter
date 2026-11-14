@@ -43104,5 +43104,63 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/15/072937",
+  "articleDate": "2026-11-15",
+  "targetDate": "2026-11-14",
+  "postDate": "2026-11-13",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2121203995872207152",
+  "title": "11月14日のマルハン新宿東宝ビルまとめ✏️④のつく日のポスターが一新！ 狙い所をチェック",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "SAOⅡ",
+    "matched": false,
+    "keyword": "X新機能",
+    "chain": [
+     "X新機能",
+     "銃士X（敵キャラ）"
+    ],
+    "raw": "X新機能→銃士X（敵キャラ）",
+    "result": null
+   },
+   {
+    "machine": "ハッピーVⅢ",
+    "matched": false,
+    "keyword": "幸いです",
+    "chain": [
+     "幸いです",
+     "ハッピー"
+    ],
+    "raw": "幸いです→ハッピー",
+    "result": null
+   },
+   {
+    "machine": "まほあこ",
+    "matched": false,
+    "keyword": "キャラ誕",
+    "chain": [
+     "キャラ誕",
+     "柊うてな🎂"
+    ],
+    "raw": "キャラ誕→柊うてな🎂",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "写真",
+    "chain": [
+     "写真",
+     "邪神"
+    ],
+    "raw": "写真→邪神",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
