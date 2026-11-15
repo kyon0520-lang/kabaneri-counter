@@ -43162,5 +43162,135 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/16/072646",
+  "articleDate": "2026-11-16",
+  "targetDate": "2026-11-15",
+  "postDate": "2026-11-14",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2121566391325360485",
+  "title": "11月15日のマルハン新宿東宝ビルまとめ✏️ファンキー2（32台）が全系！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ファンキー2",
+    "matched": false,
+    "keyword": "ファン感最終日",
+    "chain": [
+     "ファン感最終日",
+     "ファン",
+     "ファンキー"
+    ],
+    "raw": "ファン感最終日→ファン→ファンキー",
+    "result": null
+   },
+   {
+    "machine": "スーパーブラックジャック",
+    "matched": false,
+    "keyword": "ファン感最終日",
+    "chain": [
+     "ファン感最終日",
+     "ファン",
+     "ファンキー"
+    ],
+    "raw": "ファン感最終日→ファン→ファンキー",
+    "result": null
+   },
+   {
+    "machine": "アレックス",
+    "matched": false,
+    "keyword": "鶏の唐揚げ",
+    "chain": [
+     "鶏の唐揚げ",
+     "とり"
+    ],
+    "raw": "鶏の唐揚げ→とり",
+    "result": null
+   },
+   {
+    "machine": "アレックス",
+    "matched": false,
+    "keyword": "350円",
+    "chain": [
+     "350円",
+     "BT350＋α"
+    ],
+    "raw": "350円→BT350＋α",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": false,
+    "keyword": "ケバブサンド",
+    "chain": [
+     "ケバブサンド",
+     "バブ",
+     "炭酸力",
+     "しゅわしゅわ"
+    ],
+    "raw": "ケバブサンド→バブ→炭酸力→しゅわしゅわ",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "白身魚",
+    "chain": [
+     "白身魚",
+     "魚"
+    ],
+    "raw": "白身魚→魚",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "白身魚",
+    "chain": [
+     "白身魚",
+     "城",
+     "甲鉄城"
+    ],
+    "raw": "白身魚→城→甲鉄城",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "紅しょうが",
+    "chain": [
+     "紅しょうが",
+     "ジンジャー",
+     "神社"
+    ],
+    "raw": "紅しょうが→ジンジャー→神社",
+    "result": null
+   },
+   {
+    "machine": "青ブタ",
+    "matched": false,
+    "keyword": "長かった",
+    "chain": [
+     "長かった",
+     "機種名1番長い"
+    ],
+    "raw": "長かった→機種名1番長い",
+    "result": null
+   },
+   {
+    "machine": "リゼロ2nd",
+    "matched": false,
+    "keyword": "欲望",
+    "chain": [
+     "欲望",
+     "強欲"
+    ],
+    "raw": "欲望→強欲",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
