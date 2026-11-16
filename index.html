@@ -90,10 +90,6 @@
     .car-inner{transition:none}
   }
 
-  .hero-tag{
-    margin:26px 0 0;text-align:center;font-family:var(--display);font-weight:900;
-    font-size:clamp(15px,3.4vw,19px);line-height:1.7;text-wrap:balance;
-  }
   .car-caption{display:flex;align-items:center;justify-content:space-between;gap:16px}
   .car-caption b{
     font-family:var(--display);font-weight:700;font-size:14px;flex:1;text-align:center;
@@ -116,10 +112,72 @@
   }
 
   /* ===== CONCEPT ===== */
-  .concept h2{font-family:var(--display);font-weight:900;font-size:clamp(21px,3.6vw,28px);
-    line-height:1.6;margin:0 0 14px;max-width:18em}
+  .concept h2{font-family:var(--display);font-weight:900;font-size:clamp(25px,6.4vw,46px);
+    line-height:1.45;margin:0 0 24px;max-width:14em}
   .concept p:not(.outline){font-size:13.5px;line-height:1.9;color:var(--ink-2);max-width:34em;margin:0}
-  .concept p.next{margin-top:14px}
+  .concept p.lead{
+    font-family:var(--display);font-weight:700;font-size:clamp(16px,3.2vw,21px);line-height:1.95;
+    color:var(--ink);max-width:28em;margin:0 0 18px;
+  }
+  .concept p.sub{font-size:14.5px;line-height:2;max-width:36em;margin:0 0 38px}
+  .concept p.flow-label{
+    font-family:var(--display);font-weight:900;font-size:13px;letter-spacing:.08em;
+    color:var(--ink);max-width:none;margin:0 0 14px;
+  }
+  .concept p.closing{
+    font-family:var(--display);font-weight:900;font-size:clamp(22px,4.8vw,32px);line-height:1.5;
+    color:var(--ink);max-width:none;margin:48px 0 0;
+  }
+  .concept mark{background:linear-gradient(transparent 58%,#cfe0ff 58%);color:inherit;padding:0 .08em}
+  .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:30px}
+  .step{
+    position:relative;display:flex;align-items:center;gap:16px;
+    border:2px solid var(--ink);border-radius:18px;padding:16px 18px;background:var(--panel);
+  }
+  .step .ico{flex:0 0 96px;width:96px;height:auto;color:var(--ink)}
+  .step .txt{display:flex;flex-direction:column;gap:4px}
+  .step b{font-family:var(--display);font-weight:900;font-size:16px;line-height:1.5}
+  .step .txt span{font-size:12.5px;color:var(--ink-2);line-height:1.75}
+  .step:not(:last-child)::after{
+    content:"↓";position:absolute;left:50%;bottom:-27px;transform:translateX(-50%);
+    font-weight:900;font-size:18px;line-height:1;
+  }
+  @media (min-width:720px){
+    .steps{grid-template-columns:repeat(3,1fr);gap:38px}
+    .step{flex-direction:column;align-items:flex-start;gap:12px;padding:20px}
+    .step .ico{flex:none;width:100%;max-width:150px}
+    .step:not(:last-child)::after{content:"→";left:auto;right:-30px;bottom:auto;top:50%;transform:translateY(-50%)}
+  }
+  /* ===== SERVICE ===== */
+  .service .news-tag{margin:0 0 14px}
+  .service h2.svc-name{
+    font-family:var(--display);font-weight:900;font-size:clamp(30px,7vw,52px);
+    line-height:1.3;margin:0 0 16px;
+  }
+  .service p.svc-lead{
+    font-family:var(--display);font-weight:700;font-size:clamp(15px,3vw,19px);line-height:1.95;
+    color:var(--ink);max-width:30em;margin:0 0 30px;
+  }
+  .service mark{background:linear-gradient(transparent 58%,#cfe0ff 58%);color:inherit;padding:0 .08em}
+  .svc-demo{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .svc-item{
+    display:flex;flex-direction:column;border:2px solid var(--ink);border-radius:18px;
+    overflow:hidden;background:var(--panel);
+  }
+  .svc-item .shot{
+    background:var(--panel-2);padding:18px 10px 0;display:flex;justify-content:center;align-items:flex-start;
+    height:clamp(250px,62vw,420px);overflow:hidden;
+  }
+  .svc-item img{
+    width:78%;max-width:260px;height:auto;display:block;
+    border:3px solid var(--ink);border-bottom:0;border-radius:20px 20px 0 0;background:#0a1420;
+  }
+  .svc-txt{padding:14px 16px 18px}
+  .svc-txt b{display:block;font-family:var(--display);font-weight:900;font-size:13px;line-height:1.5;margin:0 0 6px;text-wrap:balance}
+  .service .svc-txt p{font-size:11.5px;line-height:1.8;color:var(--ink-2);margin:0}
+  .service p.svc-note{font-size:12px;line-height:1.9;color:var(--ink-2);max-width:42em;margin:22px 0 0}
+  .service p.svc-note a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+  @media (min-width:720px){.svc-demo{gap:18px}.svc-txt b{font-size:16px}.service .svc-txt p{font-size:13px}}
 
   /* ===== WORK ===== */
   .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
@@ -149,8 +207,6 @@
   .work-card .txt{display:block;padding:14px 16px 18px}
   .work-card .nm{display:block;font-family:var(--display);font-weight:700;font-size:13.5px;margin:0 0 8px;line-height:1.5}
   .work-card .dsc{display:block;font-size:11.5px;color:var(--ink-2);line-height:1.7;margin:0}
-  .work-note{margin:18px 0 0;font-size:12px;color:var(--ink-2);line-height:1.8}
-  .work-note a{font-weight:700;color:var(--ink)}
 
   /* ===== NEWS =====
      最新1件だけカルーセルの「中央だけ大きくなる」演出と呼応する特集枠、残りは一覧 */
@@ -257,6 +313,7 @@
   <div class="wrap">
     <nav class="topnav" id="topnav">
       <a href="#concept">CONCEPT</a>
+      <a href="#service">SERVICE</a>
       <a href="#work">TOOL</a>
       <a href="#news">NEWS</a>
       <a href="#profile">PROFILE</a>
@@ -300,17 +357,83 @@
         <b id="carLabel"></b>
         <button type="button" class="car-arrow" id="carNext" aria-label="次のツール">›</button>
       </div>
-    </div>
-    <p class="hero-tag rv">スロットの設定判別を、みんなのデータで。</p>
-  </div>
+    </div>  </div>
 </section>
 
 <section class="blk concept" id="concept">
   <div class="wrap">
     <p class="outline rv">CONCEPT</p>
-    <h2 class="rv">みんなの「あったらいいな」を、<br>かたちに。</h2>
-    <p class="rv">日々パチスロを打ちながら、「こういうのがあったらいいのにな」という、オリジナルパチスロツールを開発し、公開しています。同じように感じている「みんな」にも使ってもらえたらという思いが、「みんなのスロット」というサイト名の由来です。</p>
-    <p class="next rv">いつか、数えた実戦記録を持ち寄って、あなたの1台ぶんが明日の誰かの判別材料になる。そんな場所にしていきたいと思っています。</p>
+    <h2 class="rv">ひとりじゃなく、<br>みんなでカウントしよう。</h2>
+    <p class="lead rv">みんなのスロットは、<mark>データを「みんなで共有する」、全く新しいタイプのカウンターツール</mark>を目指しています。</p>
+    <p class="sub rv">ひとりで数えた1台ぶんのデータだけでは、その数字が多いのか少ないのか、なかなか判断できません。数えた実戦記録を持ち寄って、みんなのデータを重ねていけば、ひとりでは見えなかった傾向が見えてくる。今日あなたが数えた1台ぶんの記録が、明日、誰かの<mark>設定推測に役立つ</mark>手がかりになります。</p>
+    <p class="flow-label rv">めざす流れ</p>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <g id="cn"><path d="M-16 0v6a16 6 0 0 0 32 0v-6"/><ellipse rx="16" ry="6"/></g>
+      </defs>
+    </svg>
+    <ol class="steps">
+      <li class="step rv">
+        <svg class="ico" viewBox="0 0 120 90" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+          <use href="#cn" transform="translate(60 72) scale(1.3)"/>
+          <use href="#cn" transform="translate(60 64) scale(1.3)"/>
+          <use href="#cn" transform="translate(60 56) scale(1.3)"/>
+          <use href="#cn" transform="translate(60 26) rotate(-8) scale(1.3)" stroke="#2f7cf6"/>
+        </svg>
+        <div class="txt"><b>数える</b><span>台の前で、いつものカウンターを使って自分の実戦を数える。</span></div>
+      </li>
+      <li class="step rv">
+        <svg class="ico" viewBox="0 0 120 90" fill="#fff" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+          <use href="#cn" transform="translate(22 76)"/>
+          <use href="#cn" transform="translate(22 69)"/>
+          <use href="#cn" transform="translate(22 52) rotate(-8)" stroke="#2f7cf6"/>
+          <use href="#cn" transform="translate(60 76)"/>
+          <use href="#cn" transform="translate(60 69)"/>
+          <use href="#cn" transform="translate(60 62)"/>
+          <use href="#cn" transform="translate(60 38) rotate(-8)" stroke="#2f7cf6"/>
+          <use href="#cn" transform="translate(98 76)"/>
+          <use href="#cn" transform="translate(98 60) rotate(-8)" stroke="#2f7cf6"/>
+        </svg>
+        <div class="txt"><b>持ち寄る</b><span>数えた記録をみんなで持ち寄って、ひとつのデータに重ねる。</span></div>
+      </li>
+      <li class="step rv">
+        <svg class="ico" viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+          <path d="M10 76H110"/>
+          <rect x="18" y="52" width="16" height="24"/>
+          <rect x="40" y="38" width="16" height="38"/>
+          <rect x="62" y="14" width="16" height="62" stroke="#2f7cf6" fill="#cfe0ff"/>
+          <rect x="84" y="44" width="16" height="32"/>
+        </svg>
+        <div class="txt"><b>設定推測に役立つ</b><span>1台ぶんでは見えない傾向が、みんなのデータなら見えてくる。</span></div>
+      </li>
+    </ol>
+    <p class="closing rv">さあ、みんなでカウントしよう。</p>
+  </div>
+</section>
+
+<section class="blk service" id="service">
+  <div class="wrap">
+    <p class="outline rv">SERVICE</p>
+    <span class="news-tag feat rv">iPhoneアプリ版の機能</span>
+    <h2 class="svc-name rv">みんなの共有</h2>
+    <p class="svc-lead rv">カウントした実戦を持ち寄って、<mark>設定ごとの数字</mark>をみんなで見られるサービスです。</p>
+    <div class="svc-demo">
+      <div class="svc-item rv">
+        <div class="shot"><img src="./img/share-consent.jpg" alt="共有の同意画面。送るもの・送らないもの・みんなからの見え方・料金について" loading="lazy"></div>
+        <div class="svc-txt">
+          <b>あなたのカウントが、みんなのデータに</b>
+          <p>「共有する」を選ぶだけ。カウントした実戦が、みんなのデータに加わります。</p>
+        </div>
+      </div>
+      <div class="svc-item rv">
+        <div class="shot"><img src="./img/share-stats.jpg" alt="みんなの共有の画面。設定ごとのゾーン別の当選数と率" loading="lazy"></div>
+        <div class="svc-txt">
+          <b>設定ごとの当選率が、ひと目でわかる</b>
+          <p>集まったカウントを、設定ごと・ゾーンごとの当選率に。設定を推測するときの目安になります。</p>
+        </div>
+      </div>
+    </div>
+    <p class="svc-note rv">画面の数字はサンプルです。くわしくは<a href="./privacy.html">プライバシーポリシー</a>をご覧ください。</p>
   </div>
 </section>
 
@@ -339,9 +462,7 @@
           <span class="dsc">カバネリチャレンジ演出の「中押し・右押し」2択をサポートするおみくじアプリ。</span>
         </span>
       </a>
-    </div>
-    <p class="work-note rv">カバネリ海門発光カウンターの数え方や画面の見かたは、<a href="./kabaneri-unato/manual">取扱説明書</a>にまとめています。</p>
-  </div>
+    </div>  </div>
 </section>
 
 <section class="blk news" id="news">
@@ -412,6 +533,7 @@
   <div class="wrap row">
     <nav>
       <a href="#concept">CONCEPT</a>
+      <a href="#service">SERVICE</a>
       <a href="#work">TOOL</a>
       <a href="#news">NEWS</a>
       <a href="#profile">PROFILE</a>
