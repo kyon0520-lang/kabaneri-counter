@@ -37,6 +37,8 @@ if _os.path.exists(_lp):
         return re.sub(r'[\s\u3000/／・~〜\-!！?？:：\.]', '', _ud.normalize('NFKC', x).lower())
     _hall = [(_n(nm), u, nm) for nm, u in LINEUP['slots']]
     _used = set()          # どの設置機種に当たったか（当たらなかったものが新台）
+    _owner = {}            # 設置機種 → 当てた機種
+    _byname = set()        # 機種名そのもの（または限定の指定）で当たった機種。読みで当たったものと区別する
     def _match(m):
         """(設置しているか, 台数) を返す"""
         if m in _out: return False, 0
@@ -52,6 +54,8 @@ if _os.path.exists(_lp):
                    if _n(k) in h and not any(g in h for g in ng)]
             if hit:
                 _used.update(raw for _, raw in hit)
+                for _, raw in hit: _owner.setdefault(raw, m)
+                if k == m or m in _only: _byname.add(m)
                 return True, sum(u for u, _ in hit)
         return False, 0
     _mt = {m: _match(m) for m in MACHINES}
@@ -69,7 +73,6 @@ if _os.path.exists(_lp):
         return re.sub(r'\s*[A-Za-z]+\d*$', '', t).strip(' /／・') or t.strip(' /／・')
     # 公式の表記が長い機種は、ホールでの呼び名で見せる（ラインナップ照合の「表示名」）
     _alias = {k: v for k, v in _adj.get('表示名', {}).items() if not k.startswith('_')}
-    NEVER = [[_alias.get(_disp(nm), _disp(nm)), u] for nm, u in LINEUP['slots'] if nm not in _used]
 # フロアごとに別枠で動く機種（data/floors.json）。集計は別機種のままだが、
 # 「選ばれた機種」の並びだけは displayMerge の指定で1つにまとめて見せる。
 DISPMERGE = {}
@@ -168,6 +171,71 @@ for a in raw:
         if cn(m) in MACHINES: u[cn(m)] = n
     UHIST[t] = u
 alldays = sorted(days)
+
+# --- 略称の自動対応づけ ---
+# ブログは略称（東リベ・まほあこ・ゴジエヴァ2）、公式の設置機種ページは正式名
+# （東京リベンジャーズ・魔法少女にあこがれて・ゴジラ対エヴァンゲリオン2）で書くため、
+# readings.json に読みを足すまで「全系になっていない機種」に残ってしまっていた。
+# 最近全系になった機種は設置されているはずなので、どの設置機種にも当たっていなければ、
+# 略称の文字が正式名に順番どおり含まれる設置機種（漢字はかな読みでも見る）と対応づける。
+# 候補が1対1に決まるときだけ当てる。複数あって決められないものは何もしない。
+# 当たった枠が読み違いで別の機種に取られている場合（エヴァBTの読み「エヴァンゲリオン」が
+# ゴジエヴァ2の枠に当たっていた）は、持ち主が名前ではなく読みで当たっていて、
+# しかも長く全系になっていない（＝撤去済みの可能性が高い）ときに限って付け替える。
+AUTO_PAIRS = []
+RECENT_DAYS, STALE_DAYS = 60, 120
+if LINEUP:
+    try:
+        import pykakasi as _pk
+        _kk = _pk.kakasi()
+        _hira = lambda s: ''.join(x['hira'] for x in _kk.convert(s))
+    except ImportError:
+        _hira = None
+    def _kn(s):
+        s = _n(s)
+        return ''.join(chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c for c in s)
+    def _subseq(a, b):
+        it = iter(b)
+        return len(a) >= 2 and a[0] == b[:1] and all(c in it for c in a)
+    def _common(a, b):
+        # いちばん長い共通部分の長さ（モンハンサンブレイク ↔ MHRサンブレイク の「サンブレイク」）
+        return max((k for i in range(len(a)) for k in range(len(a) - i, 0, -1) if a[i:i + k] in b), default=0)
+    def _abbr(m, slot):
+        # 「スマスロ東京リベンジャーズ」の頭の「スマスロ」は略称に入らないので落とす
+        full = re.sub(r'^(スマスロ|パチスロ)\s*', '', _disp(slot))
+        a, b = _kn(m), _kn(full)
+        if _subseq(a, b): return True
+        # 呼び方が違うだけで、名前の大部分が同じもの
+        if _common(a, b) >= max(4, (len(a) + 1) // 2): return True
+        return bool(_hira) and _subseq(_kn(_hira(m)), _kn(_hira(full)))
+    _lastseen = {}
+    for _d in alldays:
+        for _m in days[_d]: _lastseen[_m] = _d
+    _ref = d2(LINEUP['fetched'])
+    _age = lambda m: (_ref - d2(_lastseen[m])).days if m in _lastseen else 10 ** 6
+    _slotu = dict((nm, u) for nm, u in LINEUP['slots'])
+    _need = [m for m in MACHINES if m not in INSTALLED and _age(m) <= RECENT_DAYS]
+    # 空いている枠と、読みで当たったまま長く全系になっていない機種の枠
+    _free = [nm for nm, _ in LINEUP['slots'] if nm not in _used or (
+        _owner.get(nm) not in _byname and _age(_owner.get(nm)) > STALE_DAYS)]
+    _cand = {m: [nm for nm in _free if _abbr(m, nm)] for m in _need}
+    _rev = collections.defaultdict(list)
+    for m, ss in _cand.items():
+        for nm in ss: _rev[nm].append(m)
+    for m in sorted(_need):
+        ss = _cand[m]
+        if len(ss) != 1 or len(_rev[ss[0]]) != 1: continue
+        nm = ss[0]
+        old = _owner.get(nm) if nm in _used else None
+        if old:
+            UNITS[old] -= _slotu[nm]
+            if UNITS[old] <= 0:
+                UNITS.pop(old); INSTALLED.discard(old)
+        INSTALLED.add(m); UNITS[m] = UNITS.get(m, 0) + _slotu[nm]
+        _used.add(nm); _owner[nm] = m
+        AUTO_PAIRS.append([m, nm] + ([old] if old else []))
+        print('   略称の自動対応：%s ＝ %s%s' % (m, nm, '（%s から付け替え）' % old if old else ''))
+    NEVER = [[_alias.get(_disp(nm), _disp(nm)), u] for nm, u in LINEUP['slots'] if nm not in _used]
 
 # 台数が載っていない日は、その機種の直近の記録で埋める（入れ替えは月曜なので近い日ほど確か）
 _seen = collections.defaultdict(list)
@@ -379,7 +447,7 @@ def _bydate_row(d):
 thismonth = {
     'month': ym,
     'lineup': ({'fetched': LINEUP['fetched'], 'machines': len(LINEUP['slots']),
-                'installed': len(INSTALLED)} if LINEUP else None),
+                'installed': len(INSTALLED), 'autoPairs': AUTO_PAIRS} if LINEUP else None),
     'done': [[m, n, last[m]] for m, n in donec.most_common()],
     'notYet': notyet,
     'never': (NEVER if LINEUP else []),
