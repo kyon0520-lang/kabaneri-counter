@@ -43292,5 +43292,143 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/17/082616",
+  "articleDate": "2026-11-17",
+  "targetDate": "2026-11-16",
+  "postDate": "2026-11-15",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2121928732059529383",
+  "title": "11月16日のマルハン新宿東宝ビルまとめ✏️鉄板の末尾6+アナザー末尾②+全系×7機種！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ジャグラーガールズ",
+    "matched": false,
+    "keyword": "準備",
+    "chain": [
+     "準備",
+     "レディ",
+     "ガール"
+    ],
+    "raw": "準備→レディ→ガール",
+    "result": null
+   },
+   {
+    "machine": "GGO",
+    "matched": false,
+    "keyword": "SAOシリーズ",
+    "chain": [
+     "SAOシリーズ",
+     "ガンゲイル・オンライン"
+    ],
+    "raw": "SAOシリーズ→ガンゲイル・オンライン",
+    "result": null
+   },
+   {
+    "machine": "喰霊",
+    "matched": false,
+    "keyword": "無料",
+    "chain": [
+     "無料",
+     "ゼロ"
+    ],
+    "raw": "無料→ゼロ",
+    "result": null
+   },
+   {
+    "machine": "新鬼武者3",
+    "matched": false,
+    "keyword": "おにぎり",
+    "chain": [
+     "おにぎり",
+     "鬼斬チャージ"
+    ],
+    "raw": "おにぎり→鬼斬チャージ",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "生姜",
+    "chain": [
+     "生姜",
+     "ジンジャー",
+     "神社"
+    ],
+    "raw": "生姜→ジンジャー→神社",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "昆布",
+    "chain": [
+     "昆布",
+     "海藻",
+     "回想"
+    ],
+    "raw": "昆布→海藻→回想",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "おにぎり",
+    "chain": [
+     "おにぎり",
+     "無名"
+    ],
+    "raw": "おにぎり→無名",
+    "result": null
+   },
+   {
+    "machine": "戦国恋姫",
+    "matched": false,
+    "keyword": "おにぎり",
+    "chain": [
+     "おにぎり",
+     "鬼",
+     "5人目のキャラ・示唆"
+    ],
+    "raw": "おにぎり→鬼→5人目のキャラ・示唆",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "810円",
+    "chain": [
+     "810円",
+     "ばいお"
+    ],
+    "raw": "810円→ばいお",
+    "result": null
+   }
+  ],
+  "unassigned": [
+   {
+    "machine": null,
+    "matched": false,
+    "keyword": "呼出番号102",
+    "chain": [
+     "呼出番号102",
+     "②"
+    ],
+    "raw": "呼出番号102→②"
+   },
+   {
+    "machine": null,
+    "matched": false,
+    "keyword": "ダブルロース",
+    "chain": [
+     "ダブルロース",
+     "②"
+    ],
+    "raw": "ダブルロース→②"
+   }
+  ]
  }
 ]
