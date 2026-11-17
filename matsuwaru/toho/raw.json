@@ -43430,5 +43430,143 @@
     "raw": "ダブルロース→②"
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/18/073037",
+  "articleDate": "2026-11-18",
+  "targetDate": "2026-11-17",
+  "postDate": "2026-11-16",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2122291125298020638",
+  "title": "11月17日のマルハン新宿東宝ビルまとめ✏️全系7機種にバラエティ1機種、7まつわりには注目！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ドラハナ",
+    "matched": false,
+    "keyword": "ドンペンのおなかに大きく”ド”",
+    "chain": [
+     "ドンペンのおなかに大きく”ド”",
+     "ドから始まる機種"
+    ],
+    "raw": "ドンペンのおなかに大きく”ド”→ドから始まる機種",
+    "result": null
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": false,
+    "keyword": "会社の集まり",
+    "chain": [
+     "会社の集まり",
+     "集会所クエスト"
+    ],
+    "raw": "会社の集まり→集会所クエスト",
+    "result": null
+   },
+   {
+    "machine": "ハッピー",
+    "matched": false,
+    "keyword": "17日",
+    "chain": [
+     "17日",
+     "7台機種"
+    ],
+    "raw": "17日→7台機種",
+    "result": null
+   },
+   {
+    "machine": "からくり2",
+    "matched": false,
+    "keyword": "あついと",
+    "chain": [
+     "あついと",
+     "いと",
+     "糸"
+    ],
+    "raw": "あついと→いと→糸",
+    "result": null
+   },
+   {
+    "machine": "いざ番長",
+    "matched": false,
+    "keyword": "一番街",
+    "chain": [
+     "一番街",
+     "番"
+    ],
+    "raw": "一番街→番",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "サラダチキン",
+    "chain": [
+     "サラダチキン",
+     "鳥",
+     "鳥放題"
+    ],
+    "raw": "サラダチキン→鳥→鳥放題",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "パジャマ",
+    "chain": [
+     "パジャマ",
+     "パジャマステージ",
+     "ゾンサガ"
+    ],
+    "raw": "パジャマ→パジャマステージ→ゾンサガ",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "7にまつわる",
+    "chain": [
+     "7にまつわる"
+    ],
+    "raw": "・7にまつわる",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "11/17",
+    "chain": [
+     "11/17",
+     "レンコンの日",
+     "レントン"
+    ],
+    "raw": "11/17→レンコンの日→レントン",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "7にまつわる",
+    "chain": [
+     "7にまつわる"
+    ],
+    "raw": "・7にまつわる",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "歌舞伎町",
+    "chain": [
+     "歌舞伎町",
+     "かぶき",
+     "武器"
+    ],
+    "raw": "歌舞伎町→かぶき→武器",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
