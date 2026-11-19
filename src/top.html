@@ -204,6 +204,13 @@
   .work-card .txt{display:block;padding:14px 16px 18px}
   .work-card .nm{display:block;font-family:var(--display);font-weight:700;font-size:13.5px;margin:0 0 8px;line-height:1.5}
   .work-card .dsc{display:block;font-size:11.5px;color:var(--ink-2);line-height:1.7;margin:0}
+  .work-card.ended .frame img{filter:grayscale(1) opacity(.55)}
+  .work-card.ended .news-tag{margin:0 0 8px}
+  .work-card.ended:active{transform:none}
+  @media (hover:hover){
+    .work-card.ended.rv:hover{transform:none;box-shadow:none}
+    .work-card.ended:hover .frame img{transform:none}
+  }
 
   /* ===== NEWS =====
      最新1件だけカルーセルの「中央だけ大きくなる」演出と呼応する特集枠、残りは一覧 */
@@ -221,8 +228,6 @@
     background:var(--panel);transition:transform .2s,box-shadow .2s;
   }
   @media (hover:hover){.news-feat.rv:hover{transform:translateY(-4px);box-shadow:0 14px 26px rgba(0,0,0,.14)}}
-  .news-feat.static{padding-right:22px}
-  .news-feat.static.rv:hover{transform:none;box-shadow:none}
   .news-feat .meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .news-feat .date{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
   .news-feat .ttl{font-family:var(--display);font-weight:900;font-size:clamp(17px,3vw,21px);line-height:1.55}
@@ -238,12 +243,11 @@
     display:flex;align-items:baseline;gap:12px;text-decoration:none;color:inherit;
     padding:13px 0;border-top:1px solid var(--line);
   }
-  .news-row .date{flex:0 0 auto;font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums;width:6.5em}
+  .news-row .date{flex:0 0 auto;font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums;width:7.5em}
   .news-row .ttl{font-family:var(--display);font-weight:700;font-size:13px;line-height:1.6}
-  @media (hover:hover){.news-row:hover .ttl{text-decoration:underline;text-underline-offset:3px}}
+  @media (hover:hover){a.news-row:hover .ttl{text-decoration:underline;text-underline-offset:3px}}
   @media (max-width:480px){
     .news-feat{padding:20px 56px 20px 18px}
-    .news-feat.static{padding-right:18px}
     .news-row{flex-direction:column;gap:3px}
     .news-row .date{width:auto}
   }
@@ -328,7 +332,7 @@
       <div class="car-viewport" id="carViewport">
         <div class="car-track" id="carTrack">
           <!-- 0: 複製（前へ用） -->
-          <div class="car-slide" data-tool="2">
+          <div class="car-slide" data-tool="3">
             <a class="car-inner" href="./matsuwaru/toho/"><img src="./img/shot-matsuwaru-hero.jpg" alt=""></a>
           </div>
           <!-- 1 -->
@@ -337,13 +341,17 @@
           </div>
           <!-- 2（初期状態で中央） -->
           <div class="car-slide" data-tool="1">
-            <a class="car-inner" href="./kabaneri-unato/2takuomikuji/"><img src="./img/shot-omikuji-hero.jpg" alt="カバネリチャレンジおみくじの紹介画像"></a>
+            <a class="car-inner" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener"><img src="./img/shot-ios-hero.jpg" alt="カバネリ海門カウンターのiPhoneアプリの紹介画像"></a>
           </div>
           <!-- 3 -->
           <div class="car-slide" data-tool="2">
+            <a class="car-inner" href="./kabaneri-unato/2takuomikuji/"><img src="./img/shot-omikuji-hero.jpg" alt="カバネリチャレンジおみくじの紹介画像"></a>
+          </div>
+          <!-- 4 -->
+          <div class="car-slide" data-tool="3">
             <a class="car-inner" href="./matsuwaru/toho/"><img src="./img/shot-matsuwaru-hero.jpg" alt="全台系まつわるチェッカーの紹介画像"></a>
           </div>
-          <!-- 4: 複製（次へ用） -->
+          <!-- 5: 複製（次へ用） -->
           <div class="car-slide" data-tool="0">
             <a class="car-inner" href="./kabaneri-unato/"><img src="./img/shot-kabaneri-hero.jpg" alt=""></a>
           </div>
@@ -437,18 +445,11 @@
   <div class="wrap">
     <p class="outline rv">TOOL</p>
     <div class="work-grid">
-      <a class="work-card rv" href="./kabaneri-unato/">
-        <span class="art"><span class="frame"><img src="./img/shot-kabaneri.jpg" alt="カバネリ海門発光カウンターの画面"></span></span>
+      <a class="work-card rv" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener">
+        <span class="art"><span class="frame"><img src="./img/shot-ios.jpg" alt="カバネリ海門カウンターのiPhoneアプリの紹介画像"></span></span>
         <span class="txt">
-          <span class="nm">カバネリ海門発光カウンター</span>
-          <span class="dsc">スマスロ カバネリ 海門決戦の発光・CZ・下段ベルを数えるカウンター。</span>
-        </span>
-      </a>
-      <a class="work-card rv" href="./matsuwaru/toho/">
-        <span class="art"><span class="frame"><img src="./img/shot-matsuwaru.jpg" alt="全台系まつわるチェッカーの画面"></span></span>
-        <span class="txt">
-          <span class="nm">全台系まつわるチェッカー（マルハン新宿東宝ビル店）</span>
-          <span class="dsc">店長の示唆から、その日の全台系を逆引きするツール。</span>
+          <span class="nm">カバネリ海門カウンター iPhone版</span>
+          <span class="dsc">みんなでデータを共有できる、iPhone向けのカウンター。App Storeで公開中。</span>
         </span>
       </a>
       <a class="work-card rv" href="./kabaneri-unato/2takuomikuji/">
@@ -458,21 +459,41 @@
           <span class="dsc">カバネリチャレンジ演出の「中押し・右押し」2択をサポートするおみくじアプリ。</span>
         </span>
       </a>
+      <a class="work-card rv" href="./matsuwaru/toho/">
+        <span class="art"><span class="frame"><img src="./img/shot-matsuwaru.jpg" alt="全台系まつわるチェッカーの画面"></span></span>
+        <span class="txt">
+          <span class="nm">全台系まつわるチェッカー（マルハン新宿東宝ビル店）</span>
+          <span class="dsc">店長の示唆から、その日の全台系を逆引きするツール。</span>
+        </span>
+      </a>
+      <div class="work-card ended rv">
+        <span class="art"><span class="frame"><img src="./img/shot-kabaneri.jpg" alt="カバネリ海門発光カウンター（ウェブ版）の画面"></span></span>
+        <span class="txt">
+          <span class="news-tag info">サービス終了</span>
+          <span class="nm">カバネリ海門発光カウンター（ウェブ版）</span>
+          <span class="dsc">iPhoneアプリ版への移行に伴い、サービスを終了しました。</span>
+        </span>
+      </div>
     </div>  </div>
 </section>
 
 <section class="blk news" id="news">
   <div class="wrap">
     <p class="outline rv">NEWS</p>
-    <div class="news-feat static rv">
+    <a class="news-feat rv" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener">
       <div class="meta">
-        <span class="news-tag info">お知らせ</span>
-        <span class="date">2026年10月21日</span>
+        <span class="news-tag feat">公開</span>
+        <span class="date">2026年11月17日・カバネリ海門カウンター（iPhoneアプリ）</span>
       </div>
-      <div class="ttl">PHPの脆弱性について（みんなのスロットは影響を受けません）</div>
-      <p class="lede">最近、PHPの脆弱性が公表され、多くのサイトでメンテナンスが行われています。みんなのスロットはPHPを使っていないため、この脆弱性の影響は受けません。メンテナンスによる停止もなく、これまでどおりご利用いただけます。</p>
-    </div>
+      <div class="ttl">カバネリ海門カウンターのiPhoneアプリを公開しました</div>
+      <p class="lede">発光率・規定ptグラフ・当選履歴・周期当選率を、アプリで記録・確認できます。カウントしたデータを共有して、設定ごとの数字をみんなで見られる「みんなの共有」にも対応。無料で使えます。</p>
+      <span class="arrow">→</span>
+    </a>
     <div class="news-rest">
+      <div class="news-row rv">
+        <span class="date">10.21 お知らせ</span>
+        <span class="ttl">PHPの脆弱性について（みんなのスロットは影響を受けません）</span>
+      </div>
       <a class="news-row rv" href="./matsuwaru/toho/news.html">
         <span class="date">09.20 追加</span>
         <span class="ttl">イベント傾向チェッカーに「明日は何の日」タブを追加（全台系まつわるチェッカー）</span>
@@ -568,15 +589,17 @@
 (function () {
   var tools = [
     { label: 'カバネリ海門発光カウンター' },
-    { label: 'カバネリチャレンジおみくじ〈最新〉' },
+    { label: 'カバネリ海門 iPhoneアプリ〈最新〉' },
+    { label: 'カバネリチャレンジおみくじ' },
     { label: '全台系まつわるチェッカー' }
   ];
   var viewport = document.getElementById('carViewport');
   var track = document.getElementById('carTrack');
-  var slides = Array.prototype.slice.call(track.children); // [clone2, real0, real1, real2, clone0]
+  var slides = Array.prototype.slice.call(track.children); // [複製(末尾), 実体0..N-1, 複製(先頭)]
+  var count = slides.length - 2;  // 実体の枚数
   var label = document.getElementById('carLabel');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var pos = 2;       // トラック上の位置（0〜4）
+  var pos = 2;       // トラック上の位置。最初は2番目の実体（iPhoneアプリ）を中央に置く
   var busy = false;
 
   function setPos(p, animate) {
@@ -596,8 +619,8 @@
     busy = true;
     setPos(p, true);
     setTimeout(function () {
-      if (p === 4) { pos = 1; setPos(1, false); }        // 複製→実体（先頭）へ無音で跳ぶ
-      else if (p === 0) { pos = 3; setPos(3, false); }    // 複製→実体（末尾）へ無音で跳ぶ
+      if (p === count + 1) { pos = 1; setPos(1, false); }       // 複製→実体（先頭）へ無音で跳ぶ
+      else if (p === 0) { pos = count; setPos(count, false); }   // 複製→実体（末尾）へ無音で跳ぶ
       else { pos = p; }
       busy = false;
     }, reduceMotion ? 0 : 500);
