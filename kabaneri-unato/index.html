@@ -763,7 +763,7 @@
   <button id="histbtn">実戦履歴</button>
   
   <button id="trbtn">記録の引き継ぎ</button>
-  <a id="appbtn" href="https://apps.apple.com/app/id6834330259" target="_blank" rel="noopener">iPhoneアプリ版（App Store）</a>
+  <a id="appbtn" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener">iPhoneアプリ版（App Store）</a>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
   <a id="newsbtn" href="./news.html" target="_blank" rel="noopener">お知らせ</a>
 </nav>
@@ -2548,7 +2548,7 @@ function checkNews(){
       <p class="newslede">${esc(n.lede)}</p>
       ${n.points.length ? `<ul>${n.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>` : ''}
       ${n.url ? `<a class="newsgo" href="${n.url}" target="_blank" rel="noopener">${esc(n.linkLabel || 'くわしく見る')}</a>` : ''}
-      ${n.appStore ? '<a class="newsbadge" href="https://apps.apple.com/app/id6834330259" target="_blank" rel="noopener"><img src="./app-store-badge-ja.svg" width="109" height="40" alt="App Storeからダウンロード"></a>' : ''}
+      ${n.appStore ? '<a class="newsbadge" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener"><img src="./app-store-badge-ja.svg" width="109" height="40" alt="App Storeからダウンロード"></a>' : ''}
     </div>
     ${n.transfer ? '<div class="newstr"><span>このブラウザの記録をアプリに移す方は</span><button type="button" id="newstrbtn">引き継ぎ機能はこちら ›</button></div>' : ''}`;
   const tb = document.getElementById('newstrbtn');
