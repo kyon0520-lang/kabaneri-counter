@@ -43568,5 +43568,76 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/19/065928",
+  "articleDate": "2026-11-19",
+  "targetDate": "2026-11-18",
+  "postDate": "2026-11-17",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2122653498542309807",
+  "title": "11月18日のマルハン新宿東宝ビルまとめ✏️ジャグ2機種で62台が🌈",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ネオアイム",
+    "matched": false,
+    "keyword": "野菜たっぷり",
+    "chain": [
+     "野菜たっぷり",
+     "サイたっぷり"
+    ],
+    "raw": "野菜たっぷり→サイたっぷり",
+    "result": null
+   },
+   {
+    "machine": "ゴージャグ3",
+    "matched": false,
+    "keyword": "散策",
+    "chain": [
+     "散策",
+     "3作目",
+     "ゴージャグ3"
+    ],
+    "raw": "散策→3作目→ゴージャグ3",
+    "result": null
+   },
+   {
+    "machine": "Sカバネリ",
+    "matched": false,
+    "keyword": "ウマイィ",
+    "chain": [
+     "ウマイィ",
+     "ウマ",
+     "美馬"
+    ],
+    "raw": "ウマイィ→ウマ→美馬",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "会議",
+    "chain": [
+     "会議",
+     "脳内会議"
+    ],
+    "raw": "会議→脳内会議",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "会議",
+    "chain": [
+     "会議",
+     "作戦会議"
+    ],
+    "raw": "会議→作戦会議",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
