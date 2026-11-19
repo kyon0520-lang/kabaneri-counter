@@ -591,6 +591,25 @@
     background:#2f6bd8;color:#fff;text-decoration:none;
     font-size:12.5px;font-weight:700;padding:9px 14px;border-radius:9px;
   }
+  /* 公式バッジは周囲に、バッジの高さの1/4以上の余白を取る（Appleのガイドライン） */
+  .newsnotice{
+    margin:0 0 10px;padding:9px 11px;border-radius:9px;font-size:12.5px;font-weight:700;line-height:1.6;
+    background:rgba(226,69,60,.14);border:1px solid rgba(226,69,60,.38);color:#ffb4ad;
+  }
+  .newsbadge{display:inline-block;margin-top:8px;padding:10px 10px 10px 0;line-height:0}
+  .newsbadge img{display:block;height:40px;width:auto}
+  .newstr{margin-top:14px;text-align:center;font-size:12px;color:var(--muted)}
+  .newstr span{display:block;margin-bottom:2px}
+  .newstr button{
+    appearance:none;border:0;background:none;color:var(--blue);font-family:inherit;
+    font-size:13px;font-weight:700;padding:8px 10px;cursor:pointer;
+  }
+  /* ==STOP:START== */
+  /* ウェブ版のカウンターは使えない。背景に画面は残し、案内のカードだけ操作できる */
+  body.stopped{overflow:hidden}
+  body.stopped #newsx{display:none}
+  body.stopped #trmodal{z-index:58}   /* 案内カード(55)の上、トースト(60)の下 */
+  /* ==STOP:END== */
   .newslink{text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
   .newslink a{font-size:12px;color:var(--blue);text-decoration:none;font-weight:700}
   /* ==WINS:START== */
@@ -853,12 +872,6 @@
     cursor:pointer;margin-bottom:6px;
   }
   .tract button.primary{background:#2f6bd8;border-color:#2f6bd8;color:#fff}
-  .trcode{
-    background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.4);
-    border-radius:10px;padding:14px;text-align:center;margin:4px 0 2px;
-  }
-  .trcode b{display:block;font-size:26px;font-weight:700;letter-spacing:.22em;color:#8fc0ff}
-  .trcode span{display:block;font-size:10.5px;color:var(--muted);margin-top:6px;line-height:1.7}
   .trnote{border-top:1px solid var(--line);padding-top:12px}
   .sheet .acts button{
     flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;
@@ -993,6 +1006,7 @@
   <a id="mypagebtn" href="/mypage/" target="_blank" rel="noopener">ブラウザで実戦履歴を見る</a>
   <!-- ==SEND:END== -->
   <button id="trbtn">記録の引き継ぎ</button>
+  <a id="appbtn" href="https://apps.apple.com/app/id6834330259" target="_blank" rel="noopener">iPhoneアプリ版（App Store）</a>
   <a id="manualbtn" href="./manual.html" target="_blank" rel="noopener">取扱説明書</a>
   <a id="newsbtn" href="./news.html" target="_blank" rel="noopener">お知らせ</a>
 </nav>
@@ -1267,29 +1281,14 @@
 <div class="modal" id="trmodal" hidden>
   <div class="sheet" role="dialog" aria-modal="true">
     <h2>記録の引き継ぎ</h2>
-    <p class="sub">機種変更などで、保存した実戦の記録を別の端末に移せます。登録は要りません。</p>
+    <p class="sub">保存した実戦の記録を、iPhoneアプリ版に移せます。登録は要りません。</p>
 
     <div class="tract">
-      <button class="primary" id="trmake">引き継ぎコードを発行</button>
-      <p class="sub">いまの端末の記録を一時的に預けて、コードを出します。</p>
+      <button class="primary" id="trexport">記録を書き出す（ファイル）</button>
+      <p class="sub">いまの端末の実戦の記録を、ファイルに保存します。このファイルを、アプリの「記録の引き継ぎ」→「ファイルから読み込む」で選ぶと、記録が移ります。同じ実戦は重ならず、足されます。</p>
     </div>
 
-    <div class="trcode" id="trcode" hidden></div>
-
-    <div class="tract">
-      <button id="trexport">記録を書き出す（ファイル）</button>
-      <p class="sub">いまの端末の実戦の記録を、ファイルに保存します。</p>
-    </div>
-
-    <div class="tract">
-      <label class="wlbl"><i>＋</i>コードで受け取る</label>
-      <input id="trinput" type="text" inputmode="latin" autocapitalize="characters"
-             placeholder="例 ABCD-2345" maxlength="12" aria-label="引き継ぎコード">
-      <button id="trtake">この端末に読み込む</button>
-      <p class="sub">いまの端末の記録に、読み込んだぶんを足します。同じ実戦は重ねません。</p>
-    </div>
-
-    <p class="sub trnote">預けた記録は<b>3日で自動的に消えます</b>。メモの中身も一緒に預かるので、店舗名など人に見せたくないことを書いている場合はご注意ください。</p>
+    <p class="sub trnote">ファイルには<b>メモの中身も入ります</b>。店舗名など人に見せたくないことを書いている場合は、ファイルの扱いにご注意ください。移せるのは保存済みの実戦だけで、数え途中のカウントは移りません。</p>
     <div class="acts stack"><button class="ghostish" id="trclose">閉じる</button></div>
   </div>
 </div>
@@ -3252,46 +3251,17 @@ winScrim.addEventListener('click', closeWin);
 /* ==WINS:END== */
 
 /* ---------- 記録の引き継ぎ ----------
-   会員登録の代わりに、短命なコードで別の端末へ移す。
-   預けるのは実戦の記録だけ。数え途中のカウントは移さない。 */
+   iPhoneアプリ版に移すため、記録をファイルに書き出す。
+   移すのは実戦の記録だけ。数え途中のカウントは移さない。
+   （以前あった引き継ぎコードは、アプリで受け取れないので外した。サーバー側 /api/transfer はそのまま残してある） */
 const trModal = document.getElementById('trmodal');
 
-document.getElementById('trbtn').addEventListener('click', () => {
+function openTransfer(){
   closeMenu();
-  document.getElementById('trcode').hidden = true;
-  document.getElementById('trinput').value = '';
   trModal.hidden = false;
-});
+}
+document.getElementById('trbtn').addEventListener('click', openTransfer);
 document.getElementById('trclose').addEventListener('click', () => { trModal.hidden = true; });
-
-/* 4文字ずつに区切って読みやすくする */
-const prettyCode = c => c.replace(/(.{4})(?=.)/g, '$1-');
-
-document.getElementById('trmake').addEventListener('click', async () => {
-  if (!hist.length) { toast('保存された実戦がありません'); return; }
-  const btn = document.getElementById('trmake');
-  btn.disabled = true; btn.textContent = '発行しています…';
-  try {
-    const res = await fetch('/api/transfer', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ records: hist, machine: 'kabaneri-unato' })
-    });
-    const j = await res.json();
-    if (!j.ok) { toast(j.error || '発行できませんでした'); return; }
-    const box = document.getElementById('trcode');
-    const until = new Date(j.expiresAt);
-    box.innerHTML = `<b>${esc(prettyCode(j.code))}</b>`
-      + `<span>実戦 ${fmt(j.count)}件を預かりました<br>`
-      + `${until.getMonth() + 1}/${until.getDate()} ${String(until.getHours()).padStart(2, '0')}時ごろまで有効です<br>`
-      + `新しい端末で、このコードを入れてください</span>`;
-    box.hidden = false;
-  } catch (e) {
-    toast('通信できませんでした。電波の良い場所でお試しください');
-  } finally {
-    btn.disabled = false; btn.textContent = '引き継ぎコードを発行';
-  }
-});
 
 /* ファイルに書き出す（アプリ版・リニューアル版と同じ形式の封筒）。
    この版には数値のカスタマイズが無いので num は null */
@@ -3309,38 +3279,6 @@ document.getElementById('trexport').addEventListener('click', () => {
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 4000);
   toast(`実戦 ${fmt(hist.length)}件をファイルに書き出しました`);
-});
-
-document.getElementById('trtake').addEventListener('click', async () => {
-  const code = document.getElementById('trinput').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (code.length !== 8) { toast('コードは8文字です'); return; }
-  const btn = document.getElementById('trtake');
-  btn.disabled = true; btn.textContent = '読み込んでいます…';
-  try {
-    const res = await fetch('/api/transfer?code=' + encodeURIComponent(code));
-    const j = await res.json();
-    if (!j.ok) { toast(j.error || '読み込めませんでした'); return; }
-
-    // 同じ実戦は重ねない。日付の新しい順に並べ直す
-    const have = new Set(hist.map(r => r.id));
-    const add = (j.records || []).filter(r => r && r.id && !have.has(r.id));
-    hist = hist.concat(add).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-    if (hist.length > 500) hist.length = 500;
-    ptMigrateHist();
-
-    if (!saveHist()) {
-      toast('読み込んだ記録を保存できませんでした');
-      loadHist();
-      return;
-    }
-    renderHist(); renderDist();
-    trModal.hidden = true;
-    toast(add.length ? `${fmt(add.length)}件を読み込みました` : '新しい記録はありませんでした');
-  } catch (e) {
-    toast('通信できませんでした。電波の良い場所でお試しください');
-  } finally {
-    btn.disabled = false; btn.textContent = 'この端末に読み込む';
-  }
 });
 
 /* ---------- 結果カード ---------- */
@@ -3852,6 +3790,21 @@ document.getElementById('a2hsx').addEventListener('click', closeA2hs);
    一度閉じたら、そのidを見た記録として残し、同じidのうちは二度と出さない。 */
 const NEWS = [
   {
+    id: '2026-11-app-release',
+    date: '2026年11月19日',
+    tag: 'feat',
+    title: 'バージョンアップして、iPhoneアプリ版が出ました',
+    lede: 'カバネリ海門カウンターが、バージョンアップして iPhone アプリになりました。',
+    points: [
+      'カウント機能と実戦履歴の保存は、無料で使えます（広告が表示されます）。広告を消したい方は、買い切りの広告フリー版もあります',
+      '新しく「みんなの共有」機能が加わりました（テスト版）。みんなの実戦のカウントを集めて、設定ごとの平均などを見られます',
+    ],
+    appStore: true,     // 公式のApp Storeバッジを出す
+    endNotice: true,    // 「ウェブ版は終了します（しました）」の一文を出す
+    daily: true,        // 終了日の前は、毎日1回まで出す
+    transfer: true,     // 下に「引き継ぎ機能はこちら」を出す
+  },
+  {
     id: '2026-11-14-pt-fix',
     date: '2026年11月14日',
     tag: 'fix',
@@ -3898,13 +3851,24 @@ const NEWS = [
 ];
 const NEWS_SEEN_KEY = 'kabaneri-news-seen-v1';
 
+/* ウェブ版を使える最後の日。この日の翌日から、カウンターは使えなくなる（端末の日付で判定。STOP版だけ） */
+const WEB_END_DATE = '2026-11-20';
+const WEB_END_LABEL = '11月20日';
+
 function newsSeen(){
   try { return localStorage.getItem(NEWS_SEEN_KEY); } catch(e) { return null; }
 }
+/* 既読の印。daily の項目は、1日1回まで出す */
+const newsMark = n => n.daily ? n.id + '@' + localDateStr() : n.id;
 
 function checkNews(){
-  if (!NEWS.length || newsSeen() === NEWS[0].id) return;
+  const stopped = document.body.classList.contains('stopped');
+  if (!NEWS.length || (!stopped && newsSeen() === newsMark(NEWS[0]))) return;
   const n = NEWS[0];
+  // ウェブ版の終了のお知らせ。終了日の当日までは「終了します」、翌日からは「終了しました」
+  const notice = n.endNotice
+    ? (stopped ? `${WEB_END_LABEL}で、ウェブ版は終了し、アプリ版に移行しました。` : `${WEB_END_LABEL}で、こちらのウェブ版は終了し、アプリ版に移行します。`)
+    : '';
   document.getElementById('newslist').innerHTML = `
     <div class="newscard">
       <div class="newsrow">
@@ -3912,21 +3876,28 @@ function checkNews(){
         <span class="newsdate">${n.date}</span>
       </div>
       <div class="newstitle">${esc(n.title)}</div>
+      ${notice ? `<div class="newsnotice">${esc(notice)}</div>` : ''}
       <p class="newslede">${esc(n.lede)}</p>
       ${n.points.length ? `<ul>${n.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>` : ''}
       ${n.url ? `<a class="newsgo" href="${n.url}" target="_blank" rel="noopener">${esc(n.linkLabel || 'くわしく見る')}</a>` : ''}
-    </div>`;
+      ${n.appStore ? '<a class="newsbadge" href="https://apps.apple.com/app/id6834330259" target="_blank" rel="noopener"><img src="./app-store-badge-ja.svg" width="109" height="40" alt="App Storeからダウンロード"></a>' : ''}
+    </div>
+    ${n.transfer ? '<div class="newstr"><span>このブラウザの記録をアプリに移す方は</span><button type="button" id="newstrbtn">引き継ぎ機能はこちら ›</button></div>' : ''}`;
+  const tb = document.getElementById('newstrbtn');
+  if (tb) tb.addEventListener('click', () => { if (!stopped) closeNews(); openTransfer(); });
+  if (n.endNotice) document.querySelector('#newsmodal .newshead .sub').textContent =
+    stopped ? 'ウェブ版のカウンターは終了しました' : `ウェブ版は${WEB_END_LABEL}で終了します`;
   document.getElementById('newsmodal').hidden = false;
 }
 
 function closeNews(){
   document.getElementById('newsmodal').hidden = true;
-  try { localStorage.setItem(NEWS_SEEN_KEY, NEWS[0].id); } catch(e) {}
+  try { localStorage.setItem(NEWS_SEEN_KEY, newsMark(NEWS[0])); } catch(e) {}
 }
 
 document.getElementById('newsx').addEventListener('click', closeNews);
 document.getElementById('newsmodal').addEventListener('click', e => {
-  if (e.target.id === 'newsmodal') closeNews();
+  if (e.target.id === 'newsmodal' && !document.body.classList.contains('stopped')) closeNews();
 });
 
 /* ---------- 起動 ---------- */
@@ -3980,12 +3951,27 @@ if (storageWorks()) {
 // 記録を読み込んでから判定する（保存済みの件数で文面が変わるため）
 // お知らせと同時に出すと重なるので、ホーム画面案内を出したときはお知らせを見送る
 // （次に開いたときに出る）
+/* ==STOP:START== */
+// 終了日の翌日からは、ウェブ版のカウンターは使えない。背景の画面は残したまま、操作を全部止める（タップもキーボードも）。
+// 案内のカード・記録の引き継ぎ・トーストだけが操作できる。保存してある記録には触らない
+// 終了日（WEB_END_DATE）の当日までは、いつもどおり使える。案内は、毎日1回ポップアップで出る
+if (localDateStr() > WEB_END_DATE) {
+  document.body.classList.add('stopped');
+  Array.prototype.forEach.call(document.body.children, el => {
+    if (el.tagName === 'SCRIPT' || ['newsmodal', 'trmodal', 'toast'].indexOf(el.id) >= 0) return;
+    el.inert = true;
+  });
+}
+checkNews();
+/* ==STOP:END== */
+/* ==STOP!:START== */
 let a2hsShown = false;
 if (isIOS() && !isStandalone() && storageWorks() && !localStorage.getItem(A2HS_KEY)) {
   showA2hs();
   a2hsShown = true;
 }
 if (!a2hsShown) checkNews();
+/* ==STOP!:END== */
 /* ==SEND:START== */
 // 参加しているかを先に確かめてから、溜まっている分を送り直す
 loadMe().then(() => {

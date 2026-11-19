@@ -29,6 +29,9 @@
   .lede{font-size:12.5px;color:#c3d2e6;margin:0 0 9px}
   ul{margin:0;padding-left:1.15em}
   li{font-size:12.5px;color:#c3d2e6;margin-bottom:5px}
+  /* 公式バッジは周囲に、バッジの高さの1/4以上の余白を取る（Appleのガイドライン） */
+  .badge{display:inline-block;margin-top:8px;padding:10px 10px 10px 0;line-height:0}
+  .badge img{display:block;height:40px;width:auto}
   .go{
     display:inline-flex;align-items:center;gap:6px;margin-top:6px;
     background:#2f6bd8;color:#fff;text-decoration:none;
@@ -39,6 +42,22 @@
 <div class="wrap">
 <a class="back" href="./">← カバネリ海門カウンター</a>
 <h1>お知らせ</h1>
+
+<div class="card">
+  <div class="row">
+    <span class="tag feat">公開</span>
+    <span class="date">2026年11月19日</span>
+  </div>
+  <div class="title">バージョンアップして、iPhoneアプリ版が出ました</div>
+  <p class="lede" style="color:#ffb4ad;font-weight:700">11月20日で、こちらのウェブ版は終了し、アプリ版に移行します。</p>
+  <p class="lede">カバネリ海門カウンターが、バージョンアップして iPhone アプリになりました。</p>
+  <ul>
+    <li>カウント機能と実戦履歴の保存は、無料で使えます（広告が表示されます）。広告を消したい方は、買い切りの広告フリー版もあります</li>
+    <li>新しく「みんなの共有」機能が加わりました（テスト版）。みんなの実戦のカウントを集めて、設定ごとの平均などを見られます</li>
+  </ul>
+  <a class="badge" href="https://apps.apple.com/app/id6834330259" target="_blank" rel="noopener"><img src="./app-store-badge-ja.svg" width="109" height="40" alt="App Storeからダウンロード"></a>
+  <p class="lede">このブラウザの記録をアプリに移すには、<a href="./" style="color:var(--blue)">カウンター</a>のメニュー →「記録の引き継ぎ」→「記録を書き出す（ファイル）」で書き出し、アプリの「記録の引き継ぎ」→「ファイルから読み込む」で選びます。</p>
+</div>
 
 <div class="card">
   <div class="row">

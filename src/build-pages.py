@@ -16,6 +16,7 @@
   WINS_ENABLED   … 当選履歴カウンター（左端の「当選」つまみごと）
   CYCLE_ENABLED  … 当選履歴の中の周期カウンター（何周期目・周期到達・周期別の当選率）
   ADGATE_ENABLED … 無料利用の日次リワード広告ゲート（いまはダミー広告。AdSense審査中）
+  STOP_ENABLED   … ウェブ版のカウンターを使えなくする（背景に画面は残るが操作できない。案内と記録の書き出しだけ）
 
 CYCLE は WINS の中に入っている。WINS を False にすれば周期も一緒に消えるので、
 CYCLE を単体で False にするのは「当選履歴は残すが周期だけやめる」ときだけ。
@@ -28,9 +29,12 @@ SEND_ENABLED = False
 WINS_ENABLED = False
 CYCLE_ENABLED = False
 ADGATE_ENABLED = False
+# ウェブ版のカウンターを使えなくして、iPhoneアプリ版への案内と記録の引き継ぎだけ出す。
+# False にすると、いまのカウンターのまま（案内は、お知らせとして1回だけ出る）
+STOP_ENABLED = True
 
 # 内側（CYCLE）から順に処理する
-FEATURES = {'SEND': SEND_ENABLED, 'CYCLE': CYCLE_ENABLED, 'WINS': WINS_ENABLED, 'ADGATE': ADGATE_ENABLED}
+FEATURES = {'SEND': SEND_ENABLED, 'CYCLE': CYCLE_ENABLED, 'WINS': WINS_ENABLED, 'ADGATE': ADGATE_ENABLED, 'STOP': STOP_ENABLED}
 
 # 原本に置いた印。CSS/JS は /* */、HTML は <!-- --> で囲む
 #   ==NAME:START==  〜 ==NAME:END==   … その機能を含めるときだけ残る
@@ -53,12 +57,16 @@ ADSENSE = ('<script async src="https://pagead2.googlesyndication.com/pagead/js/a
            '?client=ca-pub-8933350487899087" crossorigin="anonymous"></script>')
 
 
-def site_head(html, title_tag, url):
+def site_head(html, title_tag, url, ads=True):
     """title の直後に、正式なアドレス（canonical）と AdSense のコードを入れる。
     www 付きや .html 付きのアドレスと同じページだと Google に伝えるため"""
     assert title_tag in html, f'{title_tag} が見つかりません'
-    add = f'\n<link rel="canonical" href="{url}">\n{ADSENSE}'
+    add = f'\n<link rel="canonical" href="{url}">' + (f'\n{ADSENSE}' if ads else '')
     return html.replace(title_tag, title_tag + add, 1)
+
+DESC = ('iPhoneアプリ版が出ました。ウェブ版のカウンターは11月20日で終了し、アプリ版に移行します。記録はファイルに書き出して、アプリに移せます。'
+        if STOP_ENABLED else
+        '非発光1pt・発光10ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。スマホでそのまま使えます。')
 
 HEAD_ADD = f'''<link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
@@ -66,12 +74,12 @@ HEAD_ADD = f'''<link rel="manifest" href="./manifest.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="みんなのスロット">
 <meta property="og:title" content="カバネリ海門カウンター">
-<meta property="og:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。スマホでそのまま使えます。">
+<meta property="og:description" content="{DESC}">
 <meta property="og:url" content="{SITE}">
 <meta property="og:image" content="{SITE}ogp.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="カバネリ海門カウンター">
-<meta name="twitter:description" content="非発光1pt・発光15ptで数えて、平均発光率とCZ 1回あたりの平均ポイントを自動計算。">
+<meta name="twitter:description" content="{DESC}">
 <meta name="twitter:image" content="{SITE}ogp.png">
 '''
 
@@ -155,7 +163,8 @@ def build_app():
 
     assert TITLE in src, 'title タグが見つかりません'
     out = src.replace(TITLE, HEAD_ADD + TITLE, 1)
-    out = site_head(out, TITLE, SITE)
+    # カウンターを止めた版は、中身がほとんど無いページなので、広告のコードは外す（取扱説明書・お知らせは残す）
+    out = site_head(out, TITLE, SITE, ads=not STOP_ENABLED)
 
     # 実ファイルのアイコンを使うので、その場描きのアイコン登録だけを差し替える
     # （範囲を広く取ると、あいだに書いた処理まで消えるので終端を明示する）

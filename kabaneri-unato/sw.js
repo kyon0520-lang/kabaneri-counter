@@ -1,6 +1,6 @@
 // オフラインでも起動できるようにするサービスワーカー
 // index.html を更新したら CACHE の数字を上げること（古いキャッシュが残るのを防ぐ）
-const CACHE = 'kabaneri-counter-v117';
+const CACHE = 'kabaneri-counter-v118';
 
 const ASSETS = [
   './',
@@ -10,7 +10,8 @@ const ASSETS = [
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  './app-store-badge-ja.svg'
 ];
 
 self.addEventListener('install', e => {
