@@ -332,26 +332,30 @@
       <div class="car-viewport" id="carViewport">
         <div class="car-track" id="carTrack">
           <!-- 0: 複製（前へ用） -->
-          <div class="car-slide" data-tool="3">
+          <div class="car-slide" data-tool="4">
             <a class="car-inner" href="./matsuwaru/toho/"><img src="./img/shot-matsuwaru-hero.jpg" alt=""></a>
           </div>
           <!-- 1 -->
           <div class="car-slide" data-tool="0">
             <a class="car-inner" href="./kabaneri-unato/"><img src="./img/shot-kabaneri-hero.jpg" alt="カバネリ海門発光カウンターの紹介画像"></a>
           </div>
-          <!-- 2（初期状態で中央） -->
+          <!-- 2 -->
           <div class="car-slide" data-tool="1">
             <a class="car-inner" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener"><img src="./img/shot-ios-hero.jpg" alt="カバネリ海門カウンターのiPhoneアプリの紹介画像"></a>
           </div>
-          <!-- 3 -->
+          <!-- 3（初期状態で中央） -->
           <div class="car-slide" data-tool="2">
-            <a class="car-inner" href="./kabaneri-unato/2takuomikuji/"><img src="./img/shot-omikuji-hero.jpg" alt="カバネリチャレンジおみくじの紹介画像"></a>
+            <a class="car-inner" href="https://apps.apple.com/jp/app/id6831198935" target="_blank" rel="noopener"><img src="./img/shot-lyc-hero.jpg" alt="リコリス・リコイルカウンターのiPhoneアプリの紹介画像"></a>
           </div>
           <!-- 4 -->
           <div class="car-slide" data-tool="3">
+            <a class="car-inner" href="./kabaneri-unato/2takuomikuji/"><img src="./img/shot-omikuji-hero.jpg" alt="カバネリチャレンジおみくじの紹介画像"></a>
+          </div>
+          <!-- 5 -->
+          <div class="car-slide" data-tool="4">
             <a class="car-inner" href="./matsuwaru/toho/"><img src="./img/shot-matsuwaru-hero.jpg" alt="全台系まつわるチェッカーの紹介画像"></a>
           </div>
-          <!-- 5: 複製（次へ用） -->
+          <!-- 6: 複製（次へ用） -->
           <div class="car-slide" data-tool="0">
             <a class="car-inner" href="./kabaneri-unato/"><img src="./img/shot-kabaneri-hero.jpg" alt=""></a>
           </div>
@@ -445,6 +449,13 @@
   <div class="wrap">
     <p class="outline rv">TOOL</p>
     <div class="work-grid">
+      <a class="work-card rv" href="https://apps.apple.com/jp/app/id6831198935" target="_blank" rel="noopener">
+        <span class="art"><span class="frame"><img src="./img/shot-lyc.jpg" alt="リコリス・リコイルカウンターのiPhoneアプリの紹介画像"></span></span>
+        <span class="txt">
+          <span class="nm">リコリス・リコイルカウンター iPhone版</span>
+          <span class="dsc">ゾーンごとの当選率を数えて、みんなでデータを共有できる、iPhone向けのカウンター。App Storeで公開中。</span>
+        </span>
+      </a>
       <a class="work-card rv" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener">
         <span class="art"><span class="frame"><img src="./img/shot-ios.jpg" alt="カバネリ海門カウンターのiPhoneアプリの紹介画像"></span></span>
         <span class="txt">
@@ -480,16 +491,20 @@
 <section class="blk news" id="news">
   <div class="wrap">
     <p class="outline rv">NEWS</p>
-    <a class="news-feat rv" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener">
+    <a class="news-feat rv" href="https://apps.apple.com/jp/app/id6831198935" target="_blank" rel="noopener">
       <div class="meta">
         <span class="news-tag feat">公開</span>
-        <span class="date">2026年11月17日・カバネリ海門カウンター（iPhoneアプリ）</span>
+        <span class="date">2026年11月17日・リコリス・リコイルカウンター（iPhoneアプリ）</span>
       </div>
-      <div class="ttl">カバネリ海門カウンターのiPhoneアプリを公開しました</div>
-      <p class="lede">発光率・規定ptグラフ・当選履歴・周期当選率を、アプリで記録・確認できます。カウントしたデータを共有して、設定ごとの数字をみんなで見られる「みんなの共有」にも対応。無料で使えます。</p>
+      <div class="ttl">リコリス・リコイルカウンターのiPhoneアプリを公開しました</div>
+      <p class="lede">ゾーンごとの当選・非当選を記録して、当選率と当選履歴を確認できます。カウントしたデータを共有して、設定ごとの数字をみんなで見られる「みんなの共有」にも対応。無料で使えます。</p>
       <span class="arrow">→</span>
     </a>
     <div class="news-rest">
+      <a class="news-row rv" href="https://apps.apple.com/jp/app/id6834330259" target="_blank" rel="noopener">
+        <span class="date">11.17 公開</span>
+        <span class="ttl">カバネリ海門カウンターのiPhoneアプリを公開しました（カバネリ海門カウンター）</span>
+      </a>
       <div class="news-row rv">
         <span class="date">10.21 お知らせ</span>
         <span class="ttl">PHPの脆弱性について（みんなのスロットは影響を受けません）</span>
@@ -589,7 +604,8 @@
 (function () {
   var tools = [
     { label: 'カバネリ海門発光カウンター' },
-    { label: 'カバネリ海門 iPhoneアプリ〈最新〉' },
+    { label: 'カバネリ海門 iPhoneアプリ' },
+    { label: 'リコリコ iPhoneアプリ〈最新〉' },
     { label: 'カバネリチャレンジおみくじ' },
     { label: '全台系まつわるチェッカー' }
   ];
@@ -599,7 +615,7 @@
   var count = slides.length - 2;  // 実体の枚数
   var label = document.getElementById('carLabel');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var pos = 2;       // トラック上の位置。最初は2番目の実体（iPhoneアプリ）を中央に置く
+  var pos = 3;       // トラック上の位置。最初は3番目の実体（最新のiPhoneアプリ）を中央に置く
   var busy = false;
 
   function setPos(p, animate) {
