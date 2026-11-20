@@ -43639,5 +43639,79 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/20/083833",
+  "articleDate": "2026-11-20",
+  "targetDate": "2026-11-19",
+  "postDate": "2026-11-18",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2123015891931873789",
+  "title": "11月19日のマルハン新宿東宝ビルまとめ✏️末尾に並びに全系と多彩な仕掛けの⑨のつく日",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "末尾⑤（ジャグ・ハナ系）",
+    "matched": false,
+    "keyword": "スンスン背景",
+    "chain": [
+     "スンスン背景",
+     "ねぎ5束",
+     "⑤"
+    ],
+    "raw": "スンスン背景→ねぎ5束→⑤",
+    "result": null
+   },
+   {
+    "machine": "マギレコ",
+    "matched": false,
+    "keyword": "SAITAMA",
+    "chain": [
+     "SAITAMA",
+     "さいたま",
+     "みたま"
+    ],
+    "raw": "SAITAMA→さいたま→みたま",
+    "result": null
+   },
+   {
+    "machine": "マギレコ",
+    "matched": false,
+    "keyword": "10%OFF",
+    "chain": [
+     "10%OFF",
+     "10台"
+    ],
+    "raw": "10%OFF→10台",
+    "result": null
+   },
+   {
+    "machine": "喰霊",
+    "matched": false,
+    "keyword": "写真が無い",
+    "chain": [
+     "写真が無い",
+     "写真ゼロ",
+     "ゼロ",
+     "喰霊"
+    ],
+    "raw": "写真が無い→写真ゼロ→ゼロ→喰霊",
+    "result": null
+   },
+   {
+    "machine": "見える子",
+    "matched": false,
+    "keyword": "アクスタに「幽」",
+    "chain": [
+     "アクスタに「幽」",
+     "幽霊",
+     "見える子ちゃん"
+    ],
+    "raw": "アクスタに「幽」→幽霊→見える子ちゃん",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
