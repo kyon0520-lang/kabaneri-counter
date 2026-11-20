@@ -2054,5 +2054,84 @@ html[data-theme="lyco"][data-bg="image"] .brand,html[data-theme="lyco"][data-bg=
 })();
 </script>
 <!-- web-migration:end -->
+<!-- web-stop:start -->
+<style>
+.wsm{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.wsm[hidden]{display:none}
+.wsc{position:relative;width:100%;max-width:420px;background:#161a22;color:#ececec;border-radius:14px;padding:20px 18px 16px;box-shadow:0 10px 40px rgba(0,0,0,.6);font-family:inherit;line-height:1.6}
+.wsc h2{margin:0 0 12px;font-size:17px}
+.wsc .wsub{margin:0 0 12px;font-size:12px;color:#9ab}
+.wsc .wsn{margin:0 0 10px;padding:9px 11px;border-radius:9px;font-size:12.5px;font-weight:700;background:rgba(226,69,60,.14);border:1px solid rgba(226,69,60,.38);color:#ffb4ad}
+.wsc p{margin:0 0 8px;font-size:13px}
+.wsc .wsbadge{display:inline-block;margin-top:4px;padding:10px 10px 10px 0;line-height:0}
+.wsc .wsbadge img{display:block;height:40px;width:auto}
+.wsc .wstr{margin-top:10px;padding-top:12px;border-top:1px solid #2c3340;font-size:12px;color:#9ab}
+.wsc .wsb{display:block;width:100%;margin:8px 0 6px;padding:12px;border:0;border-radius:10px;background:#2f6bd8;color:#fff;font-size:14px;font-weight:700;font-family:inherit}
+.wsc .wsx{position:absolute;top:8px;right:10px;border:0;background:none;color:#9ab;font-size:20px;padding:6px 10px}
+body.stopped{overflow:hidden}
+body.stopped .wsx{display:none}
+</style>
+<div class="wsm" id="wsm" hidden>
+  <div class="wsc" role="dialog" aria-modal="true">
+    <button type="button" class="wsx" id="wsx" aria-label="閉じる">✕</button>
+    <h2>iPhoneアプリ版が出ました</h2>
+    <div class="wsn" id="wsNotice"></div>
+    <p>リコリス・リコイルのカウンターが、iPhoneアプリになりました。当選履歴の記録に加えて、確定CZ・ATのエピソードと終了画面も記録できます。</p>
+    <a class="wsbadge" href="https://apps.apple.com/jp/app/id6831198935" target="_blank" rel="noopener"><img src="./app-store-badge-ja.svg" width="109" height="40" alt="App Storeからダウンロード"></a>
+    <div class="wstr">
+      <b>このブラウザの記録をアプリに移す方は</b>
+      <button type="button" class="wsb" id="wsExport">記録を書き出す（ファイル）</button>
+      <p style="font-size:11.5px;color:#9ab;margin:0">書き出したファイルを、アプリのメニュー「記録を読み込む（ファイル）」で選ぶと移せます。アプリにすでに記録がある場合は、読み込むと置き換わります。ファイルにはメモの中身も入ります。</p>
+    </div>
+  </div>
+</div>
+<script>
+/* ウェブ版の終了。WEB_END_DATE の翌日(端末の日付)から、カウンターを操作不能にして案内だけ出す。
+   保存してある記録は消さない（書き出しはずっと使える） */
+(function(){
+  var WEB_END_DATE = '2026-11-20', LABEL = '11月20日', SEEN = 'lycoris-webstop-seen', APP = 'https://apps.apple.com/jp/app/id6831198935';
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  var d = new Date(), today = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  var stopped = today > WEB_END_DATE;
+  var m = document.getElementById('wsm');
+  function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+  function toast(t){ alert(t); }
+  document.getElementById('wsNotice').textContent = stopped ? LABEL + 'で、ウェブ版は終了し、アプリ版に移行しました。' : LABEL + 'で、こちらのウェブ版は終了し、アプリ版に移行します。';
+  function close(){ m.hidden = true; lsSet(SEEN, today); }
+  document.getElementById('wsx').addEventListener('click', close);
+  m.addEventListener('click', function(e){ if (e.target === m && !stopped) close(); });
+  document.getElementById('wsExport').addEventListener('click', function(){
+    var env = window.__webMigration && window.__webMigration.envelope();
+    if (!env) { toast('書き出せる記録がありません。'); return; }
+    var url = URL.createObjectURL(new Blob([env], { type: 'application/json' }));
+    var a = document.createElement('a'), n = new Date();
+    a.href = url; a.download = 'リコリコカウンター記録-' + n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate()) + '.mnslot';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  });
+  // メニューにもアプリ版への入口（ポップアップは1日1回なので）
+  var root = document.querySelector('#menu [data-page="root"]');
+  if (root) {
+    var ls = root.querySelectorAll('.mlabel'), help = null;
+    for (var i = 0; i < ls.length; i++) if (ls[i].textContent.trim() === 'ヘルプ') { help = ls[i]; break; }
+    var w = document.createElement('div');
+    w.innerHTML = '<div class="mlabel">iPhoneアプリ版</div><div class="mgroup"><button type="button" class="mrow" id="wsApp"><span class="mname">App Storeで見る</span><span class="ch">›</span></button><button type="button" class="mrow" id="wsOpen"><span class="mname">記録をアプリに移す</span><span class="ch">›</span></button></div>';
+    var par = help ? help.parentNode : root;
+    while (w.firstChild) par.insertBefore(w.firstChild, help);
+    document.getElementById('wsApp').addEventListener('click', function(){ window.open(APP, '_blank', 'noopener'); });
+    document.getElementById('wsOpen').addEventListener('click', function(){ var mn = document.getElementById('menu'); if (mn) mn.classList.add('hidden'); m.hidden = false; });
+  }
+  if (stopped) {
+    document.body.classList.add('stopped');
+    Array.prototype.forEach.call(document.body.children, function(el){ if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el === m) return; el.inert = true; });
+    m.hidden = false;
+  } else if (lsGet(SEEN) !== today) {
+    m.hidden = false;
+  }
+})();
+</script>
+<!-- web-stop:end -->
+
 </body>
 </html>
