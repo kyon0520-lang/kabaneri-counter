@@ -43713,5 +43713,56 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/21/070356",
+  "articleDate": "2026-11-21",
+  "targetDate": "2026-11-20",
+  "postDate": "2026-11-19",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2123378311611207708",
+  "title": "11月20日のマルハン新宿東宝ビルまとめ✏️0のつく日は「30Φ」&amp;「大都機種」のチェックは必須！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "スタハナ",
+    "matched": false,
+    "keyword": "チラシにガーリック",
+    "chain": [
+     "チラシにガーリック",
+     "リック",
+     "星のカービィ",
+     "スター"
+    ],
+    "raw": "チラシにガーリック→リック→星のカービィ→スター",
+    "result": null
+   },
+   {
+    "machine": "SAO",
+    "matched": false,
+    "keyword": "チラシに雪の結晶",
+    "chain": [
+     "チラシに雪の結晶",
+     "SAO"
+    ],
+    "raw": "チラシに雪の結晶→SAO",
+    "result": null
+   },
+   {
+    "machine": "鏡",
+    "matched": false,
+    "keyword": "チラシにガーリック",
+    "chain": [
+     "チラシにガーリック",
+     "リック",
+     "星のカービィ",
+     "スター"
+    ],
+    "raw": "チラシにガーリック→リック→星のカービィ→スター",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
