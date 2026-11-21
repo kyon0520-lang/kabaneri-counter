@@ -43764,5 +43764,124 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/22/071307",
+  "articleDate": "2026-11-22",
+  "targetDate": "2026-11-21",
+  "postDate": "2026-11-20",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2123740852535038212",
+  "title": "11月21日のマルハン新宿東宝ビルまとめ✏️東京喰種をはじめ大量の全系！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "東京喰種",
+    "matched": false,
+    "keyword": "びっくり亭",
+    "chain": [
+     "びっくり亭",
+     "東京初進出",
+     "東京"
+    ],
+    "raw": "びっくり亭→東京初進出→東京",
+    "result": null
+   },
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": false,
+    "keyword": "17〜19分",
+    "chain": [
+     "17〜19分",
+     "17台機種"
+    ],
+    "raw": "17〜19分→17台機種",
+    "result": null
+   },
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": false,
+    "keyword": "酒が進む",
+    "chain": [
+     "酒が進む",
+     "アルコール"
+    ],
+    "raw": "酒が進む→アルコール",
+    "result": null
+   },
+   {
+    "machine": "沖ドキDUOアンコール",
+    "matched": false,
+    "keyword": "びっくり亭",
+    "chain": [
+     "びっくり亭",
+     "びっくりマーク",
+     "！"
+    ],
+    "raw": "びっくり亭→びっくりマーク→！",
+    "result": null
+   },
+   {
+    "machine": "ミスタージャグラー",
+    "matched": false,
+    "keyword": "たくあん",
+    "chain": [
+     "たくあん",
+     "大根",
+     "コン"
+    ],
+    "raw": "たくあん→大根→コン",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": false,
+    "keyword": "びっくり亭",
+    "chain": [
+     "びっくり亭",
+     "びっくりマーク",
+     "！"
+    ],
+    "raw": "びっくり亭→びっくりマーク→！",
+    "result": null
+   },
+   {
+    "machine": "Sこのすば",
+    "matched": false,
+    "keyword": "キャベツ",
+    "chain": [
+     "キャベツ",
+     "連続演出(このすば)"
+    ],
+    "raw": "キャベツ→連続演出(このすば)",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "酒が進む",
+    "chain": [
+     "酒が進む",
+     "酒の肴",
+     "魚🐟"
+    ],
+    "raw": "酒が進む→酒の肴→魚🐟",
+    "result": null
+   },
+   {
+    "machine": "リゼロ2nd",
+    "matched": false,
+    "keyword": "ノンアルコールビール",
+    "chain": [
+     "ノンアルコールビール",
+     "アルコールゼロ",
+     "ゼロ"
+    ],
+    "raw": "ノンアルコールビール→アルコールゼロ→ゼロ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
