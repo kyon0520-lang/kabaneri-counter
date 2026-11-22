@@ -43883,5 +43883,78 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/23/072907",
+  "articleDate": "2026-11-23",
+  "targetDate": "2026-11-22",
+  "postDate": "2026-11-21",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2124103369514229812",
+  "title": "11月22日のマルハン新宿東宝ビルまとめ✏️末尾ゾロ目の平均+2,931枚とブレない強さ！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "かぐや様",
+    "matched": false,
+    "keyword": "うどん",
+    "chain": [
+     "うどん",
+     "ドン",
+     "ドーンだＹＯ！"
+    ],
+    "raw": "うどん→ドン→ドーンだＹＯ！",
+    "result": null
+   },
+   {
+    "machine": "Vivy",
+    "matched": false,
+    "keyword": "ティッシュがマツキヨ",
+    "chain": [
+     "ティッシュがマツキヨ",
+     "マツモトキヨシ",
+     "マツモトチャンス"
+    ],
+    "raw": "ティッシュがマツキヨ→マツモトキヨシ→マツモトチャンス",
+    "result": null
+   },
+   {
+    "machine": "南国育ちSP",
+    "matched": false,
+    "keyword": "31分ポスト遅れ",
+    "chain": [
+     "31分ポスト遅れ",
+     "遅れ"
+    ],
+    "raw": "31分ポスト遅れ→遅れ",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "一福",
+    "chain": [
+     "一福",
+     "いっぷく",
+     "ぷくぅ"
+    ],
+    "raw": "一福→いっぷく→ぷくぅ",
+    "result": null
+   },
+   {
+    "machine": "ギアスC.C.",
+    "matched": false,
+    "keyword": "ブラックカレー",
+    "chain": [
+     "ブラックカレー",
+     "黒",
+     "黒の騎士団"
+    ],
+    "raw": "ブラックカレー→黒→黒の騎士団",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
