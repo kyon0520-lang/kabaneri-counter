@@ -43956,5 +43956,137 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [
+   "あかまる取材"
+  ],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/24/084911",
+  "articleDate": "2026-11-24",
+  "targetDate": "2026-11-23",
+  "postDate": "2026-11-22",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2124465452852408357",
+  "title": "11月23日のマルハン新宿東宝ビルまとめ✏️31台設置マイジャグⅥを筆頭に9機種の派手な全系！！！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "マイジャグⅥ",
+    "matched": false,
+    "keyword": "別班",
+    "chain": [
+     "別班",
+     "VIVANT",
+     "VI"
+    ],
+    "raw": "別班→VIVANT→VI",
+    "result": null
+   },
+   {
+    "machine": "マイジャグⅥ",
+    "matched": false,
+    "keyword": "ごはん",
+    "chain": [
+     "ごはん",
+     "米",
+     "マイジャグ"
+    ],
+    "raw": "ごはん→米→マイジャグ",
+    "result": null
+   },
+   {
+    "machine": "からくり2",
+    "matched": false,
+    "keyword": "別班",
+    "chain": [
+     "別班",
+     "日曜劇場"
+    ],
+    "raw": "別班→日曜劇場",
+    "result": null
+   },
+   {
+    "machine": "サンダー",
+    "matched": false,
+    "keyword": "勤労感謝の日",
+    "chain": [
+     "勤労感謝の日",
+     "サンキュー",
+     "3台9文字（スマスロサンダーV）"
+    ],
+    "raw": "勤労感謝の日→サンキュー→3台9文字（スマスロサンダーV）",
+    "result": null
+   },
+   {
+    "machine": "DMC5",
+    "matched": false,
+    "keyword": "焼肉ライク",
+    "chain": [
+     "焼肉ライク",
+     "ヤキニ「クライ」ク",
+     "クライ"
+    ],
+    "raw": "焼肉ライク→ヤキニ「クライ」ク→クライ",
+    "result": null
+   },
+   {
+    "machine": "星矢黄金",
+    "matched": false,
+    "keyword": "火の魔術師",
+    "chain": [
+     "火の魔術師",
+     "火",
+     "火時計"
+    ],
+    "raw": "火の魔術師→火→火時計",
+    "result": null
+   },
+   {
+    "machine": "化物語",
+    "matched": false,
+    "keyword": "キムチ",
+    "chain": [
+     "キムチ",
+     "つけもの",
+     "けもの"
+    ],
+    "raw": "キムチ→つけもの→けもの",
+    "result": null
+   },
+   {
+    "machine": "ゾンサガ",
+    "matched": false,
+    "keyword": "キャラ誕",
+    "chain": [
+     "キャラ誕",
+     "ゆうぎり🎂誕生日"
+    ],
+    "raw": "キャラ誕→ゆうぎり🎂誕生日",
+    "result": null
+   },
+   {
+    "machine": "レヴュスタ",
+    "matched": false,
+    "keyword": "チップスター",
+    "chain": [
+     "チップスター",
+     "スター"
+    ],
+    "raw": "チップスター→スター",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "火の魔術師",
+    "chain": [
+     "火の魔術師",
+     "魔術師たち"
+    ],
+    "raw": "火の魔術師→魔術師たち",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
