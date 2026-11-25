@@ -44088,5 +44088,108 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/25/083646",
+  "articleDate": "2026-11-25",
+  "targetDate": "2026-11-24",
+  "postDate": "2026-11-23",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2124828031168688291",
+  "title": "11月24日のマルハン新宿東宝ビルまとめ✏️全系×6機種+バラエティ1機種の計7機種仕掛け！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "インデックス2",
+    "matched": false,
+    "keyword": "増台機種",
+    "chain": [
+     "増台機種"
+    ],
+    "raw": "・増台機種",
+    "result": null
+   },
+   {
+    "machine": "ハッピー",
+    "matched": false,
+    "keyword": "増台機種",
+    "chain": [
+     "増台機種"
+    ],
+    "raw": "・増台機種",
+    "result": null
+   },
+   {
+    "machine": "ドラハナ",
+    "matched": false,
+    "keyword": "つるかめ食堂",
+    "chain": [
+     "つるかめ食堂",
+     "鶴仙人、亀仙人",
+     "ドラゴンボール"
+    ],
+    "raw": "つるかめ食堂→鶴仙人、亀仙人→ドラゴンボール",
+    "result": null
+   },
+   {
+    "machine": "ミスター",
+    "matched": false,
+    "keyword": "こんにゃくラーメン",
+    "chain": [
+     "こんにゃくラーメン",
+     "コン🦊"
+    ],
+    "raw": "こんにゃくラーメン→コン🦊",
+    "result": null
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": false,
+    "keyword": "ラーメン．つけ麺",
+    "chain": [
+     "ラーメン．つけ麺",
+     "僕イケメン",
+     "狩野英孝",
+     "狩"
+    ],
+    "raw": "ラーメン．つけ麺→僕イケメン→狩野英孝→狩",
+    "result": null
+   },
+   {
+    "machine": "モンハンライズ",
+    "matched": false,
+    "keyword": "減台機種",
+    "chain": [
+     "減台機種"
+    ],
+    "raw": "・減台機種",
+    "result": null
+   },
+   {
+    "machine": "化物語",
+    "matched": false,
+    "keyword": "鴨肉2種盛り",
+    "chain": [
+     "鴨肉2種盛り",
+     "倍々チャンス"
+    ],
+    "raw": "鴨肉2種盛り→倍々チャンス",
+    "result": null
+   },
+   {
+    "machine": "バイオRE:2",
+    "matched": false,
+    "keyword": "鴨肉2種盛り",
+    "chain": [
+     "鴨肉2種盛り",
+     "倍よ",
+     "バイオ"
+    ],
+    "raw": "鴨肉2種盛り→倍よ→バイオ",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
