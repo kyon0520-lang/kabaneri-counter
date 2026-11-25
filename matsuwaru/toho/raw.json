@@ -44191,5 +44191,109 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/26/081028",
+  "articleDate": "2026-11-26",
+  "targetDate": "2026-11-25",
+  "postDate": "2026-11-24",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2125190269570265364",
+  "title": "11月25日のマルハン新宿東宝ビルまとめ✏️5のつく日はノーマルの扱い良し！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "ミスター",
+    "matched": false,
+    "keyword": "黒糖",
+    "chain": [
+     "黒糖",
+     "黒"
+    ],
+    "raw": "黒糖→黒",
+    "result": null
+   },
+   {
+    "machine": "炎炎2",
+    "matched": false,
+    "keyword": "つぶつぶ",
+    "chain": [
+     "つぶつぶ",
+     "同じ言葉繰り返し"
+    ],
+    "raw": "つぶつぶ→同じ言葉繰り返し",
+    "result": null
+   },
+   {
+    "machine": "炎炎2",
+    "matched": false,
+    "keyword": "600円",
+    "chain": [
+     "600円",
+     "00",
+     "円円"
+    ],
+    "raw": "600円→00→円円",
+    "result": null
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": false,
+    "keyword": "ケバブ丼",
+    "chain": [
+     "ケバブ丼",
+     "どーん"
+    ],
+    "raw": "ケバブ丼→どーん",
+    "result": null
+   },
+   {
+    "machine": "このすば",
+    "matched": false,
+    "keyword": "ケバブ",
+    "chain": [
+     "ケバブ",
+     "キャベツ"
+    ],
+    "raw": "ケバブ→キャベツ",
+    "result": null
+   },
+   {
+    "machine": "七つま",
+    "matched": false,
+    "keyword": "セブン",
+    "chain": [
+     "セブン",
+     "七"
+    ],
+    "raw": "セブン→七",
+    "result": null
+   },
+   {
+    "machine": "リゼロ2",
+    "matched": false,
+    "keyword": "冬がキター、アイス",
+    "chain": [
+     "冬がキター、アイス",
+     "氷属性"
+    ],
+    "raw": "冬がキター、アイス→氷属性",
+    "result": null
+   },
+   {
+    "machine": "リゼロ2",
+    "matched": false,
+    "keyword": "Frozen",
+    "chain": [
+     "Frozen",
+     "原題『アナと雪の女王』",
+     "雪"
+    ],
+    "raw": "Frozen→原題『アナと雪の女王』→雪",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
