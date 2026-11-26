@@ -44295,5 +44295,95 @@
    }
   ],
   "unassigned": []
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/27/072117",
+  "articleDate": "2026-11-27",
+  "targetDate": "2026-11-26",
+  "postDate": "2026-11-25",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2125552659965116846",
+  "title": "11月26日のマルハン新宿東宝ビルまとめ✏️なんとしても奪取したい末尾⑥",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "タコスロ",
+    "matched": false,
+    "keyword": "海鮮",
+    "chain": [
+     "海鮮",
+     "タコ"
+    ],
+    "raw": "海鮮→タコ",
+    "result": null
+   },
+   {
+    "machine": "スターハナハナ",
+    "matched": false,
+    "keyword": "牛スター、SUNSTAR",
+    "chain": [
+     "牛スター、SUNSTAR"
+    ],
+    "raw": "・牛スター、SUNSTAR",
+    "result": null
+   },
+   {
+    "machine": "シェイクBT",
+    "matched": false,
+    "keyword": "商談",
+    "chain": [
+     "商談",
+     "しょうだん",
+     "ショウダウン"
+    ],
+    "raw": "商談→しょうだん→ショウダウン",
+    "result": null
+   },
+   {
+    "machine": "アバサー",
+    "matched": false,
+    "keyword": "海鮮",
+    "chain": [
+     "海鮮",
+     "魚"
+    ],
+    "raw": "海鮮→魚",
+    "result": null
+   },
+   {
+    "machine": "グランベルム",
+    "matched": false,
+    "keyword": "歯ブラシセット",
+    "chain": [
+     "歯ブラシセット",
+     "ナカミミエール"
+    ],
+    "raw": "歯ブラシセット→ナカミミエール",
+    "result": null
+   },
+   {
+    "machine": "邪神ちゃん",
+    "matched": false,
+    "keyword": "邪道",
+    "chain": [
+     "邪道"
+    ],
+    "raw": "・邪道",
+    "result": null
+   }
+  ],
+  "unassigned": [
+   {
+    "machine": null,
+    "matched": false,
+    "keyword": "191kcal m&ms",
+    "chain": [
+     "191kcal m&ms",
+     "末尾1"
+    ],
+    "raw": "191kcal m&ms→末尾1"
+   }
+  ]
  }
 ]
