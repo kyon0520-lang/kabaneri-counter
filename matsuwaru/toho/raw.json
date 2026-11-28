@@ -44385,5 +44385,131 @@
     "raw": "191kcal m&ms→末尾1"
    }
   ]
+ },
+ {
+  "events": [],
+  "articleUrl": "https://sloslo-blog.hatenablog.com/entry/2026/11/28/082635",
+  "articleDate": "2026-11-28",
+  "targetDate": "2026-11-27",
+  "postDate": "2026-11-26",
+  "tenchou": "@endo1maruhan",
+  "tweetUrl": "https://x.com/endo1maruhan/status/2125915223953732034",
+  "title": "11月27日のマルハン新宿東宝ビルまとめ✏️7のつく日は7機種以上の全系あり！",
+  "results": [],
+  "assoc": [
+   {
+    "machine": "戦国乙女5",
+    "matched": false,
+    "keyword": "葵（サンプル写真メニュー）",
+    "chain": [
+     "葵（サンプル写真メニュー）",
+     "徳川家家紋"
+    ],
+    "raw": "葵（サンプル写真メニュー）→徳川家家紋",
+    "result": null
+   },
+   {
+    "machine": "戦国乙女5",
+    "matched": false,
+    "keyword": "サンプル写真14品（見切れていないメニュー）",
+    "chain": [
+     "サンプル写真14品（見切れていないメニュー）",
+     "14台機種"
+    ],
+    "raw": "サンプル写真14品（見切れていないメニュー）→14台機種",
+    "result": null
+   },
+   {
+    "machine": "ハッピー",
+    "matched": false,
+    "keyword": "和幸",
+    "chain": [
+     "和幸",
+     "幸"
+    ],
+    "raw": "和幸→幸",
+    "result": null
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": false,
+    "keyword": "ふらふら",
+    "chain": [
+     "ふらふら",
+     "フラワー"
+    ],
+    "raw": "ふらふら→フラワー",
+    "result": null
+   },
+   {
+    "machine": "Lハナビ",
+    "matched": false,
+    "keyword": "投稿遅れ",
+    "chain": [
+     "投稿遅れ",
+     "遅れ",
+     "ハナビ"
+    ],
+    "raw": "投稿遅れ→遅れ→ハナビ",
+    "result": null
+   },
+   {
+    "machine": "このすば",
+    "matched": false,
+    "keyword": "キャベツおかわり",
+    "chain": [
+     "キャベツおかわり"
+    ],
+    "raw": "・キャベツおかわり",
+    "result": null
+   },
+   {
+    "machine": "エウレカ",
+    "matched": false,
+    "keyword": "27日",
+    "chain": [
+     "27日",
+     "7のつく日",
+     "セブン"
+    ],
+    "raw": "27日→7のつく日→セブン",
+    "result": null
+   },
+   {
+    "machine": "DMC5",
+    "matched": false,
+    "keyword": "さつき（サンプル写真メニュー）",
+    "chain": [
+     "さつき（サンプル写真メニュー）",
+     "5月",
+     "メイ"
+    ],
+    "raw": "さつき（サンプル写真メニュー）→5月→メイ",
+    "result": null
+   },
+   {
+    "machine": "DMC5",
+    "matched": false,
+    "keyword": "紅葉",
+    "chain": [
+     "紅葉",
+     "エンターライズ"
+    ],
+    "raw": "紅葉→エンターライズ",
+    "result": null
+   },
+   {
+    "machine": "かのかり",
+    "matched": false,
+    "keyword": "ペアセット",
+    "chain": [
+     "ペアセット",
+     "彼女"
+    ],
+    "raw": "ペアセット→彼女",
+    "result": null
+   }
+  ],
+  "unassigned": []
  }
 ]
